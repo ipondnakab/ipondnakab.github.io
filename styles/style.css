@@ -23,7 +23,7 @@ body {
   color: #111;
 }
 .content {
-  width: 40%;
+  width: 80vw;
   height: fit-content;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -44,4 +44,13 @@ body {
 .content > header > #logo_kku {
   width: 150px;
   align-self: center;
+}
+
+
+
+@media only screen and (min-width: 765px) {
+  /* For tablets: */
+  .content {
+    width: 50vw;
+  }
 }
