@@ -22,6 +22,7 @@ body {
   font-family: "Bai Jamjuree", sans-serif;
   color: #111;
 }
+
 .content {
   width: 80vw;
   height: fit-content;
@@ -33,9 +34,11 @@ body {
   border-radius: 8px;
   border: #fffa solid 1px;
 }
+
 .content > header {
   text-align: center;
 }
+
 .content > header > h1 {
   text-shadow: 2px 2px #9b412d;
   font-size: 3rem;
@@ -46,10 +49,8 @@ body {
   align-self: center;
 }
 
-
-
 @media only screen and (min-width: 765px) {
-  /* For tablets: */
+  /* For Tablets and Desktops */
   .content {
     width: 50vw;
   }
