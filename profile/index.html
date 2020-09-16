@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kittipat's Resume</title>
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <link rel="stylesheet" href="styles/percenbar.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/footer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav id="navbar">
+      <header id="navbar-left">
+        <img
+          id="profile"
+          src="https://scontent.fbkk14-1.fna.fbcdn.net/v/t1.0-9/118008550_3291837230910207_7339790013663114968_o.jpg?_nc_cat=106&_nc_sid=174925&_nc_eui2=AeGfe3BUjWjdM_iavrFqN51Jng4xdFAZRceeDjF0UBlFx_q6hVohDNXf_ME47X-KgHfRHNi2NIzi6X58vg2rCiF3&_nc_ohc=CmWcY4SGyUYAX-UjBNm&_nc_ht=scontent.fbkk14-1.fna&oh=ffba6b34a6c9dcc391624a6c60258369&oe=5F7539B5"
+          alt="Profile"
+        />
+        <div class="detail">
+          <h1 href="#default" id="logo">Kittipat Daengdee</h1>
+          <p id="discription-profile">
+            Computer Engineering of KhonKaenUniversity
+          </p>
+        </div>
+      </header>
+      <section id="navbar-right">
+        <div id="social">
+          <article class="item-social">
+            <a href="https://www.facebook.com/ipondnakab">
+              <img
+                class="logo-social"
+                src="img/facebook.svg"
+                alt="logo-facebook"
+              />
+            </a>
+          </article>
+          <article class="item-social">
+            <a href="https://www.instagram.com/ipondnakab/">
+              <img
+                class="logo-social"
+                src="img/instagram-sketched.svg"
+                alt="logo-facebook"
+              />
+            </a>
+          </article>
+          <article class="item-social">
+            <a href="">
+              <img class="logo-social" src="img/chat.svg" alt="logo-facebook" />
+            </a>
+          </article>
+        </div>
+      </section>
+    </nav>
+    <div style="height: 400px; display: flex; align-items: flex-end; margin: 30px;" >
+      <section id="about">
+        <h1>About Me</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+          ratione, aliquid quos ad facilis sed delectus in necessitatibus quam
+          molestiae nam excepturi temporibus officiis laboriosam, recusandae
+          consequuntur alias debitis nesciunt?
+        </p>
+      </section>
+    </div>
+    <main>
+      <h1>Programming skill</h1>
+      <section id="dev-skill">
+        <aside>
+          <img src="img/code.svg" alt="img-code" />
+        </aside>
+        <section class="display-skill">
+          <article>
+            <p>HTML</p>
+            <div class="progress">
+              <div class="bar bars shadow HTML" id="HTML"></div>
+            </div>
+          </article>
+          <article>
+            <p>CSS/SCSS</p>
+            <div class="progress">
+              <div class="bar bars shadow CSS" id="CSS"></div>
+            </div>
+          </article>
+          <article>
+            <p>JS</p>
+            <div class="progress">
+              <div class="bar bars shadow JS" id="JS"></div>
+            </div>
+          </article>
+          <article>
+            <p>TS</p>
+            <div class="progress">
+              <div class="bar bars shadow TS" id="TS"></div>
+            </div>
+          </article>
+          <article>
+            <p>JAVA</p>
+            <div class="progress">
+              <div class="bar bars shadow JAVA" id="JAVA"></div>
+            </div>
+          </article>
+          <article>
+            <p>Python</p>
+            <div class="progress">
+              <div class="bar bars shadow Python" id="Python"></div>
+            </div>
+          </article>
+          <article>
+            <p>C#</p>
+            <div class="progress">
+              <div class="bar bars shadow C" id="C"></div>
+            </div>
+          </article>
+        </section>
+      </section>
+      <section id="education">
+        <h1>Education</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Timeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MMW</td>
+              <td>2005 - 2014</td>
+            </tr>
+            <tr>
+              <td>SRW</td>
+              <td>2014 - 2017</td>
+            </tr>
+            <tr>
+              <td>KKU</td>
+              <td>2017 - presen</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <footer>
+      <div id="contact">
+        <header>
+          <h1>Contact me</h1>
+        </header>
+        <form action="">
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" placeholder="Name" />
+          <label for="email">Email:</label>
+          <input type="text" name="email" id="email" placeholder="Email" />
+          <label for="discription">Discription:</label>
+          <textarea
+            name="discription"
+            id="discription"
+            cols="30"
+            rows="2"
+          ></textarea>
+          <input type="submit" value="submit" />
+        </form>
+      </div>
+      <div id="socail">
+        <header>
+          <h1>Socail Media</h1>
+        </header>
+        <ul>
+          <li>Facebook</li>
+          <li>Instargram</li>
+          <li>Line</li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+  <script>
+    // Fuction for nav-bar
+    window.onscroll = function () {
+      scrollFunction();
+    };
+    function scrollFunction() {
+      if (
+        document.body.scrollTop > 10 ||
+        document.documentElement.scrollTop > 10
+      ) {
+        document.getElementById("navbar").style.padding = "8px 32px";
+        document.getElementById("logo").style.fontSize = "1rem";
+        document.getElementById("profile").style.height = "40px";
+        document.getElementById("profile").style.width = "40px";
+        // document.getElementById("social").style.display = "none";
+        document.getElementById("discription-profile").style.fontSize =
+          "0.5rem";
+      } else {
+        document.getElementById("navbar").style.padding = "50px 260px";
+        document.getElementById("logo").style.fontSize = "1.75rem";
+        document.getElementById("profile").style.height = "120px";
+        document.getElementById("profile").style.width = "120px";
+        // document.getElementById("social").style.display = "flex";
+        document.getElementById("discription-profile").style.fontSize = "1rem";
+      }
+    }
+    ///////////////////////////
+    // const programing = {
+    //   HTML: 90,
+    //   "CSS/SCSS": 90,
+    //   JS: 90,
+    //   TS: 80,
+    //   JAVA: 70,
+    //   Python: 65,
+    //   "C#": 60,
+    //   "Ladder Diagrams": 50,
+    // };
+    // programing.forEach((langues, index) => {
+    //   const displaySkill = document.querySelector(".display-skill");
+    //   displaySkill.appendChild();
+    // });
+
+    const bars = document.querySelectorAll(".bar");
+    const progress = document.querySelectorAll(".progress");
+
+    bars.forEach((bar, index) => {
+      const randomWidth = Math.floor(Math.random() * 65 + 10);
+      bar.style.width = `${0}%`;
+
+      document.querySelector("#dev-skill").addEventListener("mouseover", () => {
+        const randomTiming = Math.floor(Math.random() * 2 + 2);
+        console.log(randomTiming);
+        bar.style.transitionDuration = `${randomTiming}s`;
+        // bar.style.width = "100%";
+        document.getElementById("HTML").style.width = "90%";
+        document.getElementById("CSS").style.width = "90%";
+        document.getElementById("JS").style.width = "90%";
+        document.getElementById("TS").style.width = "80%";
+        document.getElementById("JAVA").style.width = "75%";
+        document.getElementById("Python").style.width = "70%";
+        document.getElementById("C").style.width = "55%";
+      });
+    });
+  </script>
+</html>
