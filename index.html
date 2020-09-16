@@ -3,37 +3,81 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kittipat's example page</title>
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Scripts -->
-    <script src="scripts/script.js"></script>
+    <title>Kittipat's Lab 6</title>
+    <script src="../scripts/navbar.js"></script>
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/button.css" />
   </head>
   <body>
-    <div class="content">
-      <header>
-        <h1>Khon Kaen University</h1>
-        <img src="images/img.png" id="logo_kku" />
+    <nav id="navbar">
+      <header id="navbar-left">
+        <img
+          id="profile"
+          src="https://scontent.fbkk14-1.fna.fbcdn.net/v/t1.0-9/118008550_3291837230910207_7339790013663114968_o.jpg?_nc_cat=106&_nc_sid=174925&_nc_eui2=AeGfe3BUjWjdM_iavrFqN51Jng4xdFAZRceeDjF0UBlFx_q6hVohDNXf_ME47X-KgHfRHNi2NIzi6X58vg2rCiF3&_nc_ohc=CmWcY4SGyUYAX-UjBNm&_nc_ht=scontent.fbkk14-1.fna&oh=ffba6b34a6c9dcc391624a6c60258369&oe=5F7539B5"
+          alt="Profile"
+        />
+        <div class="detail">
+          <h1 href="#default" id="logo">Kittipat Daengdee</h1>
+          <p id="discription-profile">
+            Computer Engineering of KhonKaenUniversity
+          </p>
+        </div>
       </header>
-      <main>
-        <p>Khon Kaen University has many outstanding places</p>
-        <ul>
-          <li>ศาลเจ้าพ่อมอดินแดง</li>
-          <li>พิพิธภัณฑ์ธรรมชาติวิทยา มข</li>
-          <li>อุโมงค์ต้นไม้</li>
-        </ul>
-      </main>
-      <footer>
-        <p>
-          Have yo been in these places? If not, please do so. For more
-          infomation, Please click
-          <a href="https://www.kku.ac.th/">Khon Kaen University</a>
-        </p>
-      </footer>
-    </div>
+      <section id="navbar-right">
+        <div id="social">
+          <article class="item-social">
+            <a href="https://www.facebook.com/ipondnakab">
+              <img
+                class="logo-social"
+                src="../img/facebook.svg"
+                alt="logo-facebook"
+              />
+            </a>
+          </article>
+          <article class="item-social">
+            <a href="https://www.instagram.com/ipondnakab/">
+              <img
+                class="logo-social"
+                src="../img/instagram-sketched.svg"
+                alt="logo-facebook"
+              />
+            </a>
+          </article>
+          <article class="item-social">
+            <a href="">
+              <img
+                class="logo-social"
+                src="../img/chat.svg"
+                alt="logo-facebook"
+              />
+            </a>
+          </article>
+        </div>
+      </section>
+    </nav>
+
+    <section
+      id="about"
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 290px;
+      "
+    >
+      <h1>Kittipat's Labery</h1>
+
+      <a class="button-s1" href="./Lab1-2020/">Lab 1 Grading Form </a>
+      <a class="button-s1" href="./Lab2-2020/">Lab 2 Web Design</a>
+      <a class="button-s1" href="./Lab3-2020/">Lab 3 Prototype and HTML</a>
+      <a class="button-s1" href="./Lab4-2020/">Lab 4 Lab 4 HTML and CSS</a>
+      <a class="button-s1" href="./Lab5-2020/">Lab 5 Develop a website that represents your resume</a>
+      <a class="button-s1" href="./Lab6-2020/">Lab 6 JavaScript Fundamentals (Part 1)</a>
+
+
+    </section>
+
+    <div style="height: 50vh"></div>
   </body>
 </html>
