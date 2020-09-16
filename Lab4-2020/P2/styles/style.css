@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.content {
+  width: fit-content;
+}
+
+nav {
+  width: 100%;
+  background-color: black;
+  display: flex;
+  height: 40px;
+  align-items: center;
+}
+nav > ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  margin: 0;
+}
+nav > ul > li > a {
+  margin: 5px;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+}
+nav > ul > li > a:hover {
+  background-color: purple;
+  transition: 0.2s;
+}
+
+.active-bt {
+  background-color: purple;
+}
+.topic {
+  padding: 5px;
+  border-width: 5px;
+  border-style: solid;
+}
+
+.bg-green {
+  border-color: green;
+  background-color: lightgreen;
+}
+
+.bg-blue {
+  border-color: blue;
+  background-color: lightblue;
+}
+
+#ul {
+  list-style-type: circle;
+}
+
+#ol {
+  list-style-type: upper-roman;
+}

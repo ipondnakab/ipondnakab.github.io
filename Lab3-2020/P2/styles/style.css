@@ -1,0 +1,25 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: lightyellow;
+}
+tr:nth-child(odd) {
+  background-color: lightblue;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  padding: 20px;
+  text-align: center;
+}

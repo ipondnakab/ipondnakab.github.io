@@ -1,0 +1,16 @@
+div {
+    width: 100 vw;
+}
+
+h1{
+    width: fit-content;
+    margin: 0 auto;
+    background-color: cornflowerblue;
+}
+
+p {
+    border: 10px solid green;
+    padding: 25px 50px;
+    background-color: lightyellow;
+
+}
