@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="lib/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Kittipat Daengdee 613040438-2</title>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a class="nav-menu-item" href="index.html">Home page</a></li>
+        <li><a class="nav-menu-item" href="thai-books.html">Thai books</a></li>
+        <li>
+          <a class="nav-menu-item" href="eng-books.html">English books</a>
+        </li>
+        <li><a class="nav-menu-item" href="links.html">Links</a></li>
+        <li class="active">
+          <a class="nav-menu-item" href="order.html">Order</a>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <header>
+        <h1>Recommened English books collection</h1>
+      </header>
+      <section class="eg-book-collection">
+        <div class="row-books">
+          <article style="cursor: pointer;" onclick="document.location.href = 'book-orders.html'">
+            <h4>1</h4>
+            <div class="image-book">
+              <img src="util/pride.jpg" alt="pride.jpg" />
+            </div>
+          </article>
+          <article style="cursor: pointer;" onclick="document.location.href = 'book-orders.html'">
+            <h4>2</h4>
+            <div class="image-book">
+              <img src="util/the-lord.jpg" alt="the-lord.jpg" />
+            </div>
+          </article>
+          <article style="cursor: pointer;" onclick="document.location.href = 'book-orders.html'">
+            <h4>3</h4>
+            <div class="image-book">
+              <img src="util/harry.jpg" alt="harry.jpg" />
+            </div>
+          </article>
+          <article style="cursor: pointer;" onclick="document.location.href = 'book-orders.html'">
+            <h4>4</h4>
+            <div class="image-book">
+              <img src="util/to-kill.jpg" alt="to-kill.jpg" />
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+  <script>
+    const isInteger = (value) => parseInt(value) == value;
+    loop: while (true) {
+      let getInput = prompt("Enter a positive integers.");
+
+      if (isInteger(getInput) && parseInt(getInput) > 0) {
+        alert(`You would like to order ${getInput} books`);
+        break loop;
+      }
+    }
+  </script>
+</html>

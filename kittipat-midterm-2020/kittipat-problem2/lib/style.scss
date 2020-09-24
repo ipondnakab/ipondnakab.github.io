@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    font-family: "Bai Jamjuree", sans-serif;
+}
+a {
+    :link {
+        color: red !important;
+    }
+    :hover {
+        color: pink !important;
+    }
+    :visited {
+        color: green !important;
+    }
+    :active {
+        color: blue !important;
+    }
+}
+nav {
+    > ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: blue;
+        transition: 0.4s;
+        .active {
+            background-color: #000000a0;
+        }
+        > li {
+            float: left;
+            padding: 16px;
+            .nav-menu-item {
+                display: block;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+            }
+        }
+
+        :hover {
+            opacity: 0.8;
+            transition: 0.4s;
+        }
+    }
+}
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    > header {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        align-items: center;
+        h1 {
+            width: fit-content;
+        }
+        img {
+            width: 25vw;
+        }
+    }
+
+    .qoute {
+        > h4 {
+            color: brown;
+        }
+        > p {
+            color: hotpink;
+        }
+    }
+
+    .top-th-book {
+        > table {
+            border: black 1px solid;
+            width: 100%;
+            border-collapse: collapse;
+            th {
+                border: black 1px solid;
+            }
+            td {
+                border: black 1px solid;
+                padding: 8px;
+            }
+            .price {
+                text-align: right;
+            }
+            thead {
+                background-color: #55eecc;
+            }
+            tbody {
+                tr:nth-child(even) {
+                    background-color: #ccc;
+                }
+                tr:hover {
+                    background-color: black;
+                    color: white;
+                }
+            }
+        }
+    }
+    .eg-book-collection {
+        .row-books {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            > article {
+                margin: 2vw;
+                > h4 {
+                    width: fit-content;
+                    margin: 0 auto;
+                    padding: 12px;
+                }
+                .image-book {
+                    margin: auto 0;
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
+                }
+            }
+        }
+    }
+
+    .link-video {
+        width: 100vw;
+        video {
+            width: 50vw;
+            height: auto;
+        }
+    }
+    .orders {
+        .form-orders {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                margin-top: 12px;
+            }
+            input {
+                max-width: 340px;
+                margin-left: 12px;
+                padding: 10px;
+                border: none;
+                border-bottom: 1px black solid;
+            }
+            p > a {
+                :link {
+                    color: red !important;
+                }
+                :hover {
+                    color: pink !important;
+                }
+                :visited {
+                    color: green !important;
+                }
+                :active {
+                    color: blue !important;
+                }
+            }
+        }
+        button {
+            width: 100vw;
+            position: absolute !important;
+            left: 0;
+            bottom: 0;
+            height: 48px;
+            background-color: green;
+            color: white;
+            border: none;
+        }
+    }
+}

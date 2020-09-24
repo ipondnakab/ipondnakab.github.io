@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="lib/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Kittipat Daengdee 613040438-2</title>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a class="nav-menu-item" href="index.html">Home page</a></li>
+        <li><a class="nav-menu-item" href="thai-books.html">Thai books</a></li>
+        <li>
+          <a class="nav-menu-item" href="eng-books.html">English books</a>
+        </li>
+        <li>
+          <a class="nav-menu-item" href="links.html">Links</a>
+        </li>
+        <li class="active">
+          <a class="nav-menu-item" href="order.html">Order</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main>
+      <section class="orders">
+        <form class="form-orders" action="#">
+          <label for="email">อีเมล</label>
+          <input type="text" name="email" id="email" placeholder="อีเมล์"/>
+          <label for="phone">เบอร์โทร</label>
+          <input type="text" name="phone" id="phone" placeholder="เบอร์โทร"/>
+          <label for="amount">จำนวนเล่มของหนังสือ 30 ชาติในเชียงราย</label>
+          <input type="number" name="amount" id="amount" placeholder="จำนวนหนังสือ"/>
+          <p>
+            การสร้างบัญชีนี้คุณยอมรับ
+            <a href="book-orders.html">ข้อกำหนดและความเป็นส่วนตัวของเรา</a>
+          </p>
+        </form>
+        <button id="bt-order">สังซื้อสินค้า</button>
+      </section>
+    </main>
+  </body>
+  <script>
+    const bt = document.querySelector("#bt-order");
+    const email = document.querySelector("#email");
+    const phone = document.querySelector("#phone");
+    const amount = document.querySelector("#amount");
+
+    bt.addEventListener("click", () => {
+      alert(
+        `ขอบคุณ ${email.value} ${phone.value} สำหรับการสั้งซื้อหนังสือ 30 ชาติในเชียงราย จำนวน ${amount.value} เล่ม`
+      );
+    });
+  </script>
+</html>

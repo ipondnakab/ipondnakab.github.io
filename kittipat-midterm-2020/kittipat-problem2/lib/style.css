@@ -1,0 +1,221 @@
+body {
+  margin: 0;
+  font-family: "Bai Jamjuree", sans-serif;
+}
+
+a :link {
+  color: red !important;
+}
+
+a :hover {
+  color: pink !important;
+}
+
+a :visited {
+  color: green !important;
+}
+
+a :active {
+  color: blue !important;
+}
+
+nav > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: blue;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+nav > ul .active {
+  background-color: #000000a0;
+}
+
+nav > ul > li {
+  float: left;
+  padding: 16px;
+}
+
+nav > ul > li .nav-menu-item {
+  display: block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+nav > ul :hover {
+  opacity: 0.8;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 32px;
+}
+
+main > header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-item-align: center;
+      align-self: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main > header h1 {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+main > header img {
+  width: 25vw;
+}
+
+main .qoute > h4 {
+  color: brown;
+}
+
+main .qoute > p {
+  color: hotpink;
+}
+
+main .top-th-book > table {
+  border: black 1px solid;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+main .top-th-book > table th {
+  border: black 1px solid;
+}
+
+main .top-th-book > table td {
+  border: black 1px solid;
+  padding: 8px;
+}
+
+main .top-th-book > table .price {
+  text-align: right;
+}
+
+main .top-th-book > table thead {
+  background-color: #55eecc;
+}
+
+main .top-th-book > table tbody tr:nth-child(even) {
+  background-color: #ccc;
+}
+
+main .top-th-book > table tbody tr:hover {
+  background-color: black;
+  color: white;
+}
+
+main .eg-book-collection .row-books {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+main .eg-book-collection .row-books > article {
+  margin: 2vw;
+}
+
+main .eg-book-collection .row-books > article > h4 {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+main .eg-book-collection .row-books > article .image-book {
+  margin: auto 0;
+}
+
+main .eg-book-collection .row-books > article .image-book img {
+  width: 100%;
+  height: auto;
+}
+
+main .link-video {
+  width: 100vw;
+}
+
+main .link-video video {
+  width: 50vw;
+  height: auto;
+}
+
+main .orders .form-orders {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main .orders .form-orders label {
+  margin-top: 12px;
+}
+
+main .orders .form-orders input {
+  max-width: 340px;
+  margin-left: 12px;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px black solid;
+}
+
+main .orders .form-orders p > a :link {
+  color: red !important;
+}
+
+main .orders .form-orders p > a :hover {
+  color: pink !important;
+}
+
+main .orders .form-orders p > a :visited {
+  color: green !important;
+}
+
+main .orders .form-orders p > a :active {
+  color: blue !important;
+}
+
+main .orders button {
+  width: 100vw;
+  position: absolute !important;
+  left: 0;
+  bottom: 0;
+  height: 48px;
+  background-color: green;
+  color: white;
+  border: none;
+}
+/*# sourceMappingURL=style.css.map */
