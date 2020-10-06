@@ -25,7 +25,6 @@
       var walkTheCat = function () {
         var currTime = new Date().getTime();
         var secondsElapsed = ((currTime - startTime) / 1000) * 50;
-        console.log(screen.width);
         catEl.style.marginLeft = secondsElapsed + "px";
         if (secondsElapsed < screen.width - catEl.width) {
           window.requestAnimationFrame(walkTheCat);

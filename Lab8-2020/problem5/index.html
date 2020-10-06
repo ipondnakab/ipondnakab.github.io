@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem 5</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+  </body>
+  <script>
+    var div = document.querySelector("div");
+    var startTime = new Date().getTime();
+    var moving = function () {
+      var currTime = new Date().getTime();
+      var secondsElapsed = (currTime - startTime) / 1000;
+      var positionOfDiv = (secondsElapsed - 1) * 50; // (secondsElapsed - 1) is start left position at 0 and speed is 50 times
+      secondsElapsed > 1 && (div.style.left = positionOfDiv + "px"); //Delay a second
+      positionOfDiv > 200 && (div.style.backgroundColor = "yellow"); //chang backgrond color to yellow
+      window.requestAnimationFrame(moving);
+    };
+    moving();
+  </script>
+</html>
