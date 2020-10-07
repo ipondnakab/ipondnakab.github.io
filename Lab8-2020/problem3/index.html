@@ -7,6 +7,17 @@
       #cat {
         position: absolute;
         left: 0px;
+        animation-name: run;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+      }
+      @-webkit-keyframes run {
+        from {
+          left: 0;
+        }
+        to {
+          left: 300px;
+        }
       }
     </style>
   </head>
@@ -20,17 +31,18 @@
     </div>
 
     <script>
-      var catEl = document.getElementById("cat");
-      var startTime = new Date().getTime();
-      var walkTheCat = function () {
-        var currTime = new Date().getTime();
-        var secondsElapsed = ((currTime - startTime) / 1000) * 50;
-        catEl.style.marginLeft = secondsElapsed + "px";
-        if (secondsElapsed < screen.width - catEl.width) {
-          window.requestAnimationFrame(walkTheCat);
-        }
-      };
-      walkTheCat();
+      // //---------With script----------// //
+
+      // var catEl = document.getElementById("cat");
+      // var startTime = new Date().getTime();
+      // var walkTheCat = function () {
+      //   var currTime = new Date().getTime();
+      //   var secondsElapsed = (currTime - startTime) / 1000;
+      //   var positionOfDiv = secondsElapsed  * 100; //start left position at 0 and speed is 100 times
+      //   catEl.style.left = positionOfDiv + "px";
+      //   positionOfDiv <  300 && window.requestAnimationFrame(walkTheCat); //chang backgrond color to yellow
+      // };
+      // walkTheCat();
     </script>
   </body>
 </html>

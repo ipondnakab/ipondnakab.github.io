@@ -10,6 +10,21 @@
         height: 100px;
         position: relative;
         background-color: red;
+        animation-name: run;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+        animation-delay: 1s;
+        animation-duration: 1s ;
+        animation-direction: alternate;
+      }
+      @-webkit-keyframes run {
+        from {
+          left: 0;
+        }
+        to {
+          left: 200px;
+          background-color: yellow;
+        }
       }
     </style>
   </head>
@@ -17,16 +32,16 @@
     <div></div>
   </body>
   <script>
-    var div = document.querySelector("div");
-    var startTime = new Date().getTime();
-    var moving = function () {
-      var currTime = new Date().getTime();
-      var secondsElapsed = (currTime - startTime) / 1000;
-      var positionOfDiv = (secondsElapsed - 1) * 50; // (secondsElapsed - 1) is start left position at 0 and speed is 50 times
-      secondsElapsed > 1 && (div.style.left = positionOfDiv + "px"); //Delay a second
-      positionOfDiv > 200 && (div.style.backgroundColor = "yellow"); //chang backgrond color to yellow
-      window.requestAnimationFrame(moving);
-    };
-    moving();
+    // var div = document.querySelector("div");
+    // var startTime = new Date().getTime();
+    // var moving = function () {
+    //   var currTime = new Date().getTime();
+    //   var secondsElapsed = (currTime - startTime) / 1000;
+    //   var positionOfDiv = (secondsElapsed - 1) * 50; // (secondsElapsed - 1) is start left position at 0 and speed is 50 times
+    //   secondsElapsed > 1 && (div.style.left = positionOfDiv + "px"); //Delay a second
+    //   positionOfDiv > 200 && (div.style.backgroundColor = "yellow"); //chang backgrond color to yellow
+    //   window.requestAnimationFrame(moving);
+    // };
+    // moving();
   </script>
 </html>
