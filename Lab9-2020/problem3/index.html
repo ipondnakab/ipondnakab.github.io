@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem 3</title>
+  </head>
+  <body>
+    <h1>Reading Students Information</h1>
+    <ol></ol>
+  </body>
+  <script>
+    const orderList = document.querySelector("ol");
+
+    const url = "../assets/students.json";
+
+    fetch(url)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        updateDidplay(res["wclass"]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    function updateDidplay(obj) {
+      console.log(obj);
+      for (const item of obj) {
+        const student = item["student"];
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `${student["@attributes"]["id"]} <b>${student["name"]}</b> has skills <i>${student["skill"]}</i>`;
+        orderList.appendChild(listItem);
+      }
+    }
+  </script>
+</html>

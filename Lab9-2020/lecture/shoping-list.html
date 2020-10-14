@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Shopping list example</title>
+    <style>
+      li {
+        margin-bottom: 10px;
+      }
+
+      li button {
+        font-size: 8px;
+        margin-left: 20px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My shopping list</h1>
+
+    <div>
+      <label for="item">Enter a new item:</label>
+      <input type="text" name="item" id="item" />
+      <button id="add_bt">Add item</button>
+    </div>
+
+    <ul></ul>
+  </body>
+  <script>
+    const button = document.querySelector("#add_bt");
+    const item = document.querySelector("#item");
+    const unorderlist = document.querySelector("ul");
+    let countList = 0;
+
+    const p = document.createElement("p");
+    document.body.appendChild(p);
+
+    button.addEventListener("click", () => {
+      const li = document.createElement("li");
+      const btDelete = createBtDelete(li);
+      li.textContent = item.value;
+      li.appendChild(btDelete);
+      unorderlist.appendChild(li);
+      countList++;
+      showListNumber();
+    });
+
+    function createBtDelete(root) {
+      const btDelete = document.createElement("button");
+      btDelete.textContent = "Delete";
+      btDelete.addEventListener("click", () => {
+        unorderlist.removeChild(root);
+        countList--;
+        showListNumber();
+      });
+      return btDelete;
+    }
+    function showListNumber() {
+      p.textContent = `The list has is ${countList} item`;
+      countList > 0 ? (p.style.display = "block") : (p.style.display = "none");
+    }
+  </script>
+</html>
