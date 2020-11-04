@@ -1,0 +1,16 @@
+.content {
+  margin: 10vw;
+  margin-bottom: 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 22vw) !important;
+}
+@media (max-width: 600px) {
+  .content {
+    margin: 0;
+    margin-top: 56px;
+    /* margin-bottom: 0; */
+    min-height: calc(100vh - 30vw - 66px) !important;
+  }
+}

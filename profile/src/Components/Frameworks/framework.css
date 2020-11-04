@@ -1,0 +1,26 @@
+.framework {
+  display: "flex";
+  flex-direction: "row";
+  justify-content: "center";
+  align-items: "center";
+}
+
+.framework > .header-framework {
+  background-color: "#69c7fe";
+  width: "100%";
+  margin-bottom: 12px;
+}
+
+.framework > .icons-framework {
+  display: block;
+}
+
+.framework > .icons-framework > div {
+  float: left;
+  width: 72px;
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,29 @@
+.experiences-page {
+    margin-top: -4vw;
+    @media (max-width: 768px) {
+        margin: 0;
+    }
+    @media (max-width: 600px) {
+        margin: 0 24px;
+    }
+
+    .exp-content {
+        > h1 {
+            margin: 16px 0;
+        }
+    }
+
+    .exp-container {
+        margin-bottom: 12px;
+        display: flex;
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+        > ul {
+            margin: 0;
+            > li {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}

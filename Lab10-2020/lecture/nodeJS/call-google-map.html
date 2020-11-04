@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Restaurant in Khon Kaen</h1>
+    <ol></ol>
+  </body>
+  <script>
+    fetch("./call-google-map.js")
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+  </script>
+</html>

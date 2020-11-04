@@ -1,0 +1,40 @@
+.socail-tab {
+  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  width: 5vw;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  height: 94vh;
+  justify-content: end;
+}
+
+.socail-tab > .button-socail {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.socail-tab > .button-socail > svg {
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .socail-tab {
+    position: static;
+    width: 100vw;
+    height: fit-content;
+    padding: 0;
+  }
+  .socail-tab .button-socail {
+    position: static;
+    flex-direction: row;
+  }
+  .socail-tab .button-socail > svg {
+    margin: 20px;
+  }
+}

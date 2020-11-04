@@ -1,0 +1,89 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 96vw;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 2vw;
+  backdrop-filter: blur(10px);
+}
+
+.navbar > .center-navbar > ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar > .center-navbar > ul > li {
+  list-style: none;
+  padding: 0 12px;
+  transition: 0.5s;
+}
+
+@media (max-width: 600px) {
+  .navbar > .center-navbar > ul > li {
+    padding: 0 6px;
+    transition: 0.5s;
+  }
+}
+
+.navbar > .center-navbar > ul > li .icon {
+  display: none;
+  transition: 0.5s;
+}
+
+@media (max-width: 600px) {
+  .navbar > .center-navbar > ul > li .icon {
+    display: block;
+    transition: 0.5s;
+  }
+}
+
+.navbar > .center-navbar > ul > li .text-icon {
+  transition: 0.5s;
+}
+
+@media (max-width: 600px) {
+  .navbar > .center-navbar > ul > li .text-icon {
+    transition: 0.5s;
+    display: none;
+  }
+}
+
+.navbar > .center-navbar > ul > li > a {
+  text-decoration: none;
+}
+
+.navbar > .right-navbar,
+.navbar > .left-navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar > .left-navbar > img {
+  height: 54px;
+  border-radius: 50%;
+}
+
+@media (max-width: 600px) {
+  .navbar > .left-navbar > img {
+    height: 32px;
+  }
+}
+
+.navbar > .right-navbar > img {
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.navbar > .right-navbar > img:hover {
+  opacity: 0.6;
+  transition: 0.5s;
+}

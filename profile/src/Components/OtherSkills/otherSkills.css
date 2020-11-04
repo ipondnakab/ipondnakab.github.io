@@ -1,0 +1,13 @@
+.other-skills {
+  max-width: 780px;
+  padding-top: 32px;
+}
+
+.other-skills > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.other-skills > .header-other-skills {
+  width: fit-content;
+}

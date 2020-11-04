@@ -1,0 +1,12 @@
+.software-skill {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "center";
+  align-items: "center";
+}
+
+.software-skill > .header-skill {
+  background-color: "#69c7fe";
+  width: "100%" !important;
+  margin-bottom: 20px;
+}

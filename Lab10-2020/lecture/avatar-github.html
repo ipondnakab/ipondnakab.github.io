@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar Github</title>
+  </head>
+  <style>
+    #card-profile {
+      margin: auto;
+      width: 400px;
+      height: 500px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    #name {
+      width: fit-content;
+      cursor: pointer;
+    }
+    #profile {
+      width: 50%;
+      height: auto;
+      border-radius: 50%;
+      border: 2px solid tomato;
+    }
+  </style>
+  <body>
+    <div id="card-profile">
+      <h1 id="name">Name</h1>
+      <img id="profile" src="..." alt="profile" />
+    </div>
+  </body>
+  <script>
+    fetch("https://api.github.com/users/ipondnakab")
+      .then((res) => res.json())
+      .then((data) => {
+        const img = document.querySelector("#profile");
+        const name = document.querySelector("#name");
+        img.src = data.avatar_url;
+        name.innerHTML = data.login;
+        name.addEventListener("click", () => {
+          location.href = data.html_url;
+        });
+      });
+  </script>
+</html>

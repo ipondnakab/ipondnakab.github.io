@@ -1,0 +1,73 @@
+$breakpoint: 600px;
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 96vw;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 2vw;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    > .center-navbar > ul {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        > li {
+            list-style: none;
+            padding: 0 12px;
+            transition: 0.5s;
+            @media (max-width: $breakpoint) {
+                padding: 0 6px;
+                transition: 0.5s;
+            }
+            .icon {
+                display: none;
+                transition: 0.5s;
+                @media (max-width: $breakpoint) {
+                    display: block;
+                    transition: 0.5s;
+                }
+            }
+            .text-icon {
+                transition: 0.5s;
+                @media (max-width: $breakpoint) {
+                    transition: 0.5s;
+                    display: none;
+                }
+            }
+        }
+        > li > a {
+            text-decoration: none;
+        }
+    }
+    > .right-navbar,
+    > .left-navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    > .left-navbar > img {
+        height: 54px;
+        border-radius: 50%;
+        @media (max-width: $breakpoint) {
+            height: 32px;
+        }
+    }
+    > .right-navbar > img {
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 8px;
+        transition: 0.5s;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.6;
+            transition: 0.5s;
+        }
+    }
+}

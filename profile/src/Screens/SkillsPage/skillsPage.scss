@@ -1,0 +1,38 @@
+.skill-page {
+    height: fit-content;
+    .main-skills {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: 780px;
+        justify-self: center;
+        align-self: center;
+
+        > .skill-right {
+            margin-left: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+    @media (max-width: 768px) {
+        align-self: flex-start;
+        max-width: 320px;
+        .main-skills {
+            flex-direction: column;
+            > .skill-right {
+                margin-left: 0;
+                margin-top: 32px;
+
+                > :last-child {
+                    margin-top: 32px;
+                }
+            }
+        }
+    }
+    @media (max-width: 600px) {
+        margin: 0 15vw;
+
+    }
+}
