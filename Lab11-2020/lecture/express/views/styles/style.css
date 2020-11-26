@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+
+form {
+  width: 100%;
+}
+
+h1 {
+  margin: auto;
+  width: fit-content;
+}

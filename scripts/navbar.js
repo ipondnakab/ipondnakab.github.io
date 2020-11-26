@@ -4,7 +4,7 @@ nav.innerHTML = `<nav id="navbar">
 <header id="navbar-left">
   <img
     id="profile"
-    src="https://scontent.fbkk12-3.fna.fbcdn.net/v/t1.0-9/118520247_3322103017883628_7802174489436117407_o.jpg?_nc_cat=102&_nc_sid=09cbfe&_nc_eui2=AeHdCge8IFIBSXzkbz6-n_ABx6HMRBuM14THocxEG4zXhLyFzJpIDdxeU8z0KHa3s-DzUdM0X6hj566NC_v5E0IJ&_nc_ohc=usNQBCn_G2QAX_aQQ5u&_nc_ht=scontent.fbkk12-3.fna&oh=d50cfe4a89c99b5fc2a1e9926c7a237e&oe=5FA202AD"
+    src="https://scontent.fbkk2-8.fna.fbcdn.net/v/t1.0-9/118520247_3322103017883628_7802174489436117407_o.jpg?_nc_cat=102&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeHdCge8IFIBSXzkbz6-n_ABx6HMRBuM14THocxEG4zXhLyFzJpIDdxeU8z0KHa3s-DzUdM0X6hj566NC_v5E0IJ&_nc_ohc=r7F9KNRw5yUAX9RlDZw&_nc_ht=scontent.fbkk2-8.fna&oh=1913979f28bd7d99d5c703716d4d2081&oe=5FD961AD"
     alt="Profile"
   />
   <div class="detail">
