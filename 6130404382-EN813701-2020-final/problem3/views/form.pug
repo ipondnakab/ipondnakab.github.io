@@ -1,0 +1,12 @@
+html
+    head
+        title Form Tester
+
+    body
+        h1(style="width: fit-content; margin: auto") Get News
+        form(action="/", method = "POST")
+            div
+                label(for="keyword") Keyword:
+                input(name="keyword" value="covid19")
+            br
+            button(type="submit") Submit

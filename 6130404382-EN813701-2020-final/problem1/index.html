@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Web Programming</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1 class="title">Factorial Quiz</h1>
+    <form action="#" id="form_factorial">
+      <p id="proposition">
+        What is the factorial of <b id="randomNumber"></b>?
+      </p>
+      <div class="ans-content">
+        <label for="ans_input">Answer: </label>
+        <input type="text" id="ans_input" />
+      </div>
+      <div class="check-ans">
+        <p id="ans"></p>
+        <input type="submit" value="Check answer" />
+      </div>
+    </form>
+  </body>
+  <script>
+    const getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    const getFactorial = (number) => {
+      let sum = 1;
+      for (i = 1; i <= number - 1; i++) {
+        sum += sum * i;
+      }
+      return sum;
+    };
+    const randomNumber = getRandomInt(1, 5);
+    const factorialNumber = getFactorial(randomNumber);
+    document.querySelector("#randomNumber").innerHTML = randomNumber;
+    const checkAns = (e) => {
+      const ansOutput = document.querySelector("#ans");
+      e.preventDefault();
+      const ansInput = parseInt(e.target[0].value);
+      console.log(ansInput);
+      factorialNumber == ansInput
+        ? (ansOutput.innerHTML = "Your answer is correct. Congratulation!")
+        : (ansOutput.innerHTML =
+            "Your answer is incorract. the correct answer is " +
+            factorialNumber);
+    };
+    document
+      .querySelector("#form_factorial")
+      .addEventListener("submit", checkAns);
+  </script>
+</html>
