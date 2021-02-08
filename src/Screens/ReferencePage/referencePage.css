@@ -1,0 +1,9 @@
+.reference-page > ul > li {
+  margin: 24px 0;
+}
+
+.reference-page > ul > li p {
+  margin-left: 8px;
+  margin-top: 8px;
+  color: #777;
+}

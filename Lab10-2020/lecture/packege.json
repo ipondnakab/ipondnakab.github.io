@@ -1,6 +1,0 @@
-{
-    "script": {
-        "add": "node add.js 2 3",
-        "subtract": "node subtract.js 2 3"
-    }
-}
