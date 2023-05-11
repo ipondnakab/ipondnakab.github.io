@@ -123,8 +123,6 @@ const ChatBoard: React.FC<ChatBoardType> = ({
       ]);
       formChat.resetFields();
       try {
-        console.log({ messageData });
-
         await addDoc(collectionRef, messageData);
       } catch (error) {
         const err = error as FirebaseError;
@@ -231,8 +229,6 @@ const ChatBoard: React.FC<ChatBoardType> = ({
               ? getColorWithText(data.displayName)
               : "#DDD";
             const timestamp = dayjs(data.timestamp.toDate());
-            console.log({ timestamp, date: data.timestamp.toDate() });
-
             return (
               <ChatItem
                 {...data}
