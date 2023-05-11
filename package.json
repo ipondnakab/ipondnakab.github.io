@@ -1,6 +1,7 @@
 {
   "name": "ipondnakab",
   "version": "0.1.0",
+  "homepage": "https://ipondnakab.github.io/",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
@@ -39,7 +40,9 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "dev": "craco start"
+    "dev": "craco start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -61,5 +64,8 @@
   },
   "resolutions": {
     "styled-components": "^5"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
