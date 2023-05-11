@@ -69,7 +69,8 @@ export const useThemeFeature = () => {
       "dark"
   );
   const [animation, setAnimation] = React.useState(
-    window.localStorage.getItem(LocalStorageKey.ANIMATION) === "true"
+    window.localStorage.getItem(LocalStorageKey.ANIMATION) === "true" ||
+      window.localStorage.getItem(LocalStorageKey.ANIMATION) === null
   );
   const [styleTheme, setStyleTheme] = React.useState<DefaultTheme>(darkTheme);
   const styles = getComputedStyle(document.body);
