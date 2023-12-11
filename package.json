@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
@@ -33,7 +34,7 @@
     "typescript": "^5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "prettier": "^3.1.1",
     "lint-staged": "^15.2.0"
   },
@@ -43,13 +44,11 @@
     }
   },
   "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
+    "*.{js, jsx,ts,tsx}": [
+      "eslint --quiet --fix"
     ],
-    "*.tsx": [
-      "eslint --fix",
-      "prettier --write"
+    "*.{json,js,ts,jsx,tsx,html}": [
+      "prettier --write --ignore-unknown"
     ]
   }
 }
