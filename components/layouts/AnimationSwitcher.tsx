@@ -18,6 +18,10 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   const isShowAnimation = useMemo(() => {
     if (typeof window !== "undefined") {
       const animation = localStorage.getItem("animation");
+      if (animation === null) {
+        localStorage.setItem("animation", "1");
+        return true;
+      }
       return animation === "1";
     }
     return true;

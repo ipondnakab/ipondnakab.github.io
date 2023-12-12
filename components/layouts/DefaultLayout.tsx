@@ -70,7 +70,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             </div>
           </NavbarContent>
 
-          <div className="flex items-center justify-center h-8 gap-2">
+          <div className="flex items-center justify-end h-8 gap-2">
             {SOCIALS.map((socialLink) => (
               <NavbarItem className="hidden md:flex" key={socialLink.name}>
                 <Link
