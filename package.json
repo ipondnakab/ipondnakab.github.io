@@ -14,7 +14,11 @@
     "@nextui-org/react": "^2.2.9",
     "@nextui-org/system": "^2.0.15",
     "@nextui-org/theme": "^2.1.17",
+    "@tsparticles/engine": "^3.0.2",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.0.2",
     "clsx": "^2.0.0",
+    "dayjs": "^1.11.10",
     "framer-motion": "^10.16.16",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
@@ -29,14 +33,14 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
-    "typescript": "^5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
+    "postcss": "^8",
     "prettier": "^3.1.1",
-    "lint-staged": "^15.2.0"
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   },
   "husky": {
     "hooks": {

@@ -1,11 +1,11 @@
 "use client";
 
 import { textToCapital } from "@/functions/text-to-capital";
-import { Skeleton, Switch } from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
-import clsx from "clsx";
+import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
 
 export interface ThemeSwitcherProps {
   disableLabel?: boolean;
@@ -17,16 +17,10 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const [isChecked, setIsChecked] = useState(theme === "dark");
-  const [showText, setShowText] = useState(false);
 
   useEffect(() => {
     setIsChecked(theme === "dark");
   }, [theme]);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("showText", showText);
-  }, [showText]);
 
   useEffect(() => {
     setMounted(true);
@@ -44,28 +38,18 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     );
 
   return (
-    <Switch
-      onMouseOver={() => setShowText(true)}
-      onMouseLeave={() => setShowText(false)}
+    <SwitchAutoLabel
       size="sm"
       color="default"
       startContent={<FaMoon />}
       endContent={<FaSun />}
       value={theme}
-      defaultChecked={isChecked}
       checked={isChecked}
+      defaultSelected={isChecked}
       onChange={onChange}
-    >
-      {!disableLabel && (
-        <div
-          className={clsx(
-            "text-xs line-clamp-1 overflow-hidden w-0 transition-all delay-200",
-            showText && "w-[64px]",
-          )}
-        >
-          {textToCapital(theme || "").concat(" Mode")}
-        </div>
-      )}
-    </Switch>
+      className="group"
+      label={textToCapital(theme || "").concat(" Mode")}
+      disableLabel={disableLabel}
+    />
   );
 };

@@ -1,8 +1,11 @@
+import clsx from "clsx";
 import React from "react";
 
-const CatLogo: React.FC = () => {
+interface CatLogoProps extends React.HTMLAttributes<HTMLSpanElement> {}
+
+const CatLogo: React.FC<CatLogoProps> = (props) => {
   return (
-    <span className="text-lg">
+    <span {...props} className={clsx("text-lg", props.className)}>
       <span className="text-xl">ᄼ</span>- ˕ -マⳊ
     </span>
   );

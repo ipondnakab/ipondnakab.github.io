@@ -2,18 +2,18 @@ import type { Config } from "tailwindcss";
 import { ColorScale, ConfigTheme, nextui } from "@nextui-org/react";
 
 const primaryColors: ColorScale = {
-  "50": "#f2f4ff",
-  "100": "#e6e9ff",
-  "200": "#c1c9ff",
-  "300": "#9baaff",
-  "400": "#4d6fff",
-  "500": "#001433",
-  "600": "#001233",
-  "700": "#001132",
-  "800": "#000f2e",
-  "900": "#000a29",
-  DEFAULT: "#001433",
-  foreground: "#ffffff",
+  "50": "#f3b2c1",
+  "100": "#e76684",
+  "200": "#e34c6f",
+  "300": "#df325a",
+  "400": "#db1946",
+  "500": "#d80032",
+  "600": "#c2002d",
+  "700": "#ac0028",
+  "800": "#970023",
+  "900": "#6c0019",
+  DEFAULT: "#d80032",
+  foreground: "#fbe5ea",
 };
 
 const darkTheme: ConfigTheme = {
