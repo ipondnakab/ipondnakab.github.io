@@ -28,6 +28,13 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const pathname = usePathname();
 
+  const isShowAnimation = React.useMemo(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 640;
+    }
+    return false;
+  }, []);
+
   return (
     <>
       <div>
@@ -85,7 +92,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             ))}
             <Divider orientation="vertical" className="hidden md:flex" />
             <div className="flex items-center justify-center gap-1">
-              <ThemeSwitcher />
+              <ThemeSwitcher disableLabelAnimation={isShowAnimation} />
               <div className="hidden sm:flex">
                 <AnimationSwitcher
                   show={showAnimation}

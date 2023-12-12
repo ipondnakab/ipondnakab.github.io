@@ -1,7 +1,7 @@
 "use client";
 
 import { textToCapital } from "@/functions/text-to-capital";
-import { Skeleton } from "@nextui-org/react";
+import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -9,10 +9,12 @@ import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
 
 export interface ThemeSwitcherProps {
   disableLabel?: boolean;
+  disableLabelAnimation?: boolean;
 }
 
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   disableLabel,
+  disableLabelAnimation,
 }) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -37,17 +39,26 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       </Skeleton>
     );
 
+  const switchProps: SwitchProps = {
+    size: "sm",
+    color: "default",
+    checked: isChecked,
+    defaultSelected: isChecked,
+    onClick: onChange,
+    startContent: <FaMoon />,
+    endContent: <FaSun />,
+  };
+
+  if (disableLabelAnimation)
+    return (
+      <Switch {...switchProps}>
+        {textToCapital(theme || "").concat(" Mode")}
+      </Switch>
+    );
+
   return (
     <SwitchAutoLabel
-      size="sm"
-      color="default"
-      startContent={<FaMoon />}
-      endContent={<FaSun />}
-      value={theme}
-      checked={isChecked}
-      defaultSelected={isChecked}
-      onChange={onChange}
-      className="group"
+      {...switchProps}
       label={textToCapital(theme || "").concat(" Mode")}
       disableLabel={disableLabel}
     />

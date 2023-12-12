@@ -17,7 +17,7 @@ const CatLogo: React.FC<CatLogoProps> = (props) => {
         <path
           d="M1.5 17.5L7.60001 2L11 6.33962"
           stroke="hsl(var(--nextui-foreground))"
-          stroke-width="2"
+          strokeWidth="2"
         />
       </svg>
       - ˕ -マⳊ
