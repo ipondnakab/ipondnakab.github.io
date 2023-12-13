@@ -4,8 +4,8 @@ import InputString from "@/components/inputs/InputString";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button, Card } from "@nextui-org/react";
 import React from "react";
-import { lineNotify } from "../services/line";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export interface ContactProps {}
 
@@ -16,15 +16,11 @@ const Contact: React.FC<ContactProps> = () => {
     email: string;
     content: string;
   }) => {
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(values));
+
     try {
-      await lineNotify({
-        message: `.\n
-        Name: ${values.name}\n
-        Email: ${values.email}\n
-        Content: \n${values.content}`,
-        stickerPackageId: 6359,
-        stickerId: 11069853,
-      });
+      await axios.post("/api/line/notify", values);
       router.push("/contact/success");
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -33,7 +29,7 @@ const Contact: React.FC<ContactProps> = () => {
     }
   };
   return (
-    <Card isBlurred className="m-8 p-8 max-w-xl mx-auto gap-8">
+    <Card isBlurred className="m-12 p-8 max-w-xl mx-auto gap-8">
       <h2 className="text-2xl font-bold">Send me a Message</h2>
       <FormHookWrapper<{ name: string; email: string; content: string }>
         defaultValues={{

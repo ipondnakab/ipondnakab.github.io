@@ -14,7 +14,7 @@ const ContactSendSuccess = () => {
             Message sent successfully.
           </p>
         </div>
-        <Link href="/contact">
+        <Link href="/contact" className="w-full">
           <Button
             color="warning"
             className="px-4 w-full mt-4 items-center justify-center py-2"
