@@ -28,13 +28,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const pathname = usePathname();
 
-  const isShowAnimation = React.useMemo(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 640;
-    }
-    return false;
-  }, []);
-
   return (
     <>
       <div>
@@ -44,15 +37,14 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               className="sm:hidden"
             />
-            <div className="group flex cursor-pointer">
+            <div className="group flex gap-0 sm:gap-2 cursor-pointer">
               <p
                 className={clsx(
-                  "group-hover:w-24 text-lg sm:text-xl text-inherit tracking-[0.15rem] text-primary w-0 line-clamp-1 overflow-hidden transition-all duration-300",
+                  "group-hover:w-24 group-hover:max-w-[96px] text-lg sm:text-xl text-inherit tracking-[0.15rem] text-primary max-w-0 w-0 line-clamp-1 overflow-hidden transition-all duration-300",
                 )}
               >
                 KITTIPAT
               </p>
-              <Divider orientation="vertical" />
               <CatLogo />
             </div>
             <Divider orientation="vertical" className="hidden md:flex" />
@@ -92,7 +84,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             ))}
             <Divider orientation="vertical" className="hidden md:flex" />
             <div className="flex items-center justify-center gap-1">
-              <ThemeSwitcher disableLabelAnimation={isShowAnimation} />
+              <ThemeSwitcher />
               <div className="hidden sm:flex">
                 <AnimationSwitcher
                   show={showAnimation}
@@ -101,7 +93,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               </div>
             </div>
           </div>
-          <NavbarMenu>
+          <NavbarMenu className="gap-4">
             {NAV_MENUS.map((item, index) => (
               <NavbarMenuItem
                 key={`${item.name}-${index}`}
@@ -118,13 +110,26 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               </NavbarMenuItem>
             ))}
             <Divider />
-            <div className="flex items-center pt-4 justify-center">
-              <AnimationSwitcher
-                show={showAnimation}
-                setShow={setShowAnimation}
-                disableLabelAnimation
-              />
+            <div className="flex items-center flex-wrap px-4 gap-8 sm:px-8 max-w-xs self-center justify-around">
+              {SOCIALS.map((socialLink) => (
+                <NavbarItem key={socialLink.name}>
+                  <Link
+                    href={socialLink.url}
+                    color="foreground"
+                    className="hover:text-primary transition-all duration-300"
+                    target="_blank"
+                  >
+                    {socialLink.icon}
+                  </Link>
+                </NavbarItem>
+              ))}
             </div>
+            <Divider />
+            <AnimationSwitcher
+              show={showAnimation}
+              setShow={setShowAnimation}
+              disableLabelAnimation
+            />
           </NavbarMenu>
         </Navbar>
         <div className="z-20">{children}</div>

@@ -7,7 +7,10 @@ export interface WorkExperiencesProps {}
 
 const WorkExperiences: React.FC<WorkExperiencesProps> = () => {
   return (
-    <Card isBlurred className="flex flex-1 items-start justify-start p-8">
+    <Card
+      isBlurred
+      className="flex flex-1 items-start justify-start p-4 sm:p-8"
+    >
       <h2 className="text-xl font-bold">Work Experience</h2>
       {WORK_EXPERIENCES.map((workExperience) => (
         <div key={workExperience.title}>

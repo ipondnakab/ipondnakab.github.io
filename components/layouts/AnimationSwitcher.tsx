@@ -62,7 +62,11 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   if (disableLabelAnimation) return <Switch {...switchProps}>{label}</Switch>;
 
   return (
-    <SwitchAutoLabel {...switchProps} label={label} labelWidth="w-[78px]" />
+    <SwitchAutoLabel
+      {...switchProps}
+      label={label}
+      labelWidth="w-[78px] max-w-[78px]"
+    />
   );
 };
 

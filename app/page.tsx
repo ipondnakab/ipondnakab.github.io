@@ -11,7 +11,7 @@ export interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   return (
-    <div className="flex flex-col gap-8 p-8">
+    <div className="flex flex-col p-2 gap-4 sm:gap-8 sm:p-8">
       <Card
         isBlurred
         className="w-full flex items-center md:flex-row justify-center gap-8  p-8 h-full"
@@ -34,7 +34,7 @@ const Home: React.FC<HomeProps> = () => {
           </span>
         </div>
       </Card>
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
         <Frameworks />
         <CodingLanguages />
       </div>
