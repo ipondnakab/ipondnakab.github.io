@@ -11,25 +11,27 @@ export interface ContactProps {}
 
 const Contact: React.FC<ContactProps> = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
   const onSubmit = async (values: {
     name: string;
     email: string;
     content: string;
   }) => {
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(values));
-
+    setIsLoading(true);
     try {
-      await axios.post("/api/line/notify", values);
+      await axios.post(
+        `https://us-central1-kittipat-resume.cloudfunctions.net/app/contact`,
+        values,
+      );
       router.push("/contact/success");
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
       alert("Send message error please try again");
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
-    <Card isBlurred className="m-12 p-8 max-w-xl mx-auto gap-8">
+    <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
       <h2 className="text-2xl font-bold">Send me a Message</h2>
       <FormHookWrapper<{ name: string; email: string; content: string }>
         defaultValues={{
@@ -70,7 +72,12 @@ const Contact: React.FC<ContactProps> = () => {
               placeholder="Enter Content"
               label="Content"
             />
-            <Button variant="solid" color="warning" type="submit">
+            <Button
+              variant="solid"
+              isLoading={isLoading}
+              color="warning"
+              type="submit"
+            >
               Submit
             </Button>
           </div>

@@ -28,6 +28,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [showAnimation, setShowAnimation] = React.useState(true);
   const pathname = usePathname();
 
+  const comparePathname = (href: string) => {
+    return pathname.split("/")[1] === href.split("/")[1] || pathname === href;
+  };
+
   return (
     <>
       <div>
@@ -52,14 +56,16 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               {NAV_MENUS.map((item, index) => (
                 <NavbarItem
                   key={`${item.name}-${index}`}
-                  isActive={pathname === item.href}
+                  isActive={comparePathname(item.href)}
                 >
                   <Link
                     className={clsx(
                       "border-b-0 hover:border-b-2 transition-all ",
-                      pathname === item.href && "border-primary",
+                      comparePathname(item.href) && "border-primary",
                     )}
-                    color={pathname === item.href ? "primary" : "foreground"}
+                    color={
+                      comparePathname(item.href) ? "primary" : "foreground"
+                    }
                     href={item.href}
                   >
                     {item.title}
@@ -97,10 +103,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             {NAV_MENUS.map((item, index) => (
               <NavbarMenuItem
                 key={`${item.name}-${index}`}
-                isActive={pathname === item.href}
+                isActive={comparePathname(item.href)}
               >
                 <Link
-                  color={pathname === item.href ? "primary" : "foreground"}
+                  color={comparePathname(item.href) ? "primary" : "foreground"}
                   className="w-full"
                   href={item.href}
                   size="lg"
