@@ -6,23 +6,10 @@ import Educations from "./components/Educations";
 import Frameworks from "./components/Frameworks";
 import CodingLanguages from "./components/CodingLanguages";
 import OutsourceProjects from "./components/OutsourceProjects";
-import { lineNotify } from "./services/line";
 
 export interface HomeProps {}
 
-async function sendLineNotify() {
-  await lineNotify({
-    message: "Some One Visit Your Resume",
-  });
-}
-
 const Home: React.FC<HomeProps> = async () => {
-  try {
-    await sendLineNotify();
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log({ error });
-  }
   return (
     <div className="flex flex-col p-2 gap-4 sm:gap-8 sm:p-8">
       <Card
