@@ -76,8 +76,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
           </NavbarContent>
 
           <div className="flex items-center justify-end h-8 gap-2">
-            {SOCIALS.map((socialLink) => (
-              <NavbarItem className="hidden md:flex" key={socialLink.name}>
+            {SOCIALS.map((socialLink, index) => (
+              <NavbarItem
+                className="hidden md:flex"
+                key={socialLink.name + index}
+              >
                 <Link
                   href={socialLink.url}
                   color="foreground"
@@ -117,8 +120,8 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
             ))}
             <Divider />
             <div className="flex items-center flex-wrap px-4 gap-8 sm:px-8 max-w-xs self-center justify-around">
-              {SOCIALS.map((socialLink) => (
-                <NavbarItem key={socialLink.name}>
+              {SOCIALS.map((socialLink, index) => (
+                <NavbarItem key={socialLink.name + index}>
                   <Link
                     href={socialLink.url}
                     color="foreground"

@@ -11,10 +11,8 @@ export interface LineNotifyPayload {
 }
 
 export const lineNotify = (payload: LineNotifyPayload) => {
-  return axios.post("https://notify-api.line.me/api/notify", payload, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_LINE_NOTIFY_TOKEN}`,
-    },
-  });
+  return axios.post(
+    "https://us-central1-kittipat-resume.cloudfunctions.net/app/line/send-notify",
+    payload,
+  );
 };

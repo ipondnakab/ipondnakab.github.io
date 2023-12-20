@@ -6,11 +6,11 @@ export const NAV_MENUS: Menu[] = [
     title: "README",
     href: "/",
   },
-  {
-    name: "demo",
-    title: "DEMO",
-    href: "/demo",
-  },
+  // {
+  //   name: "demo",
+  //   title: "DEMO",
+  //   href: "/demo",
+  // },
   {
     name: "contact",
     title: "CONTACT",
