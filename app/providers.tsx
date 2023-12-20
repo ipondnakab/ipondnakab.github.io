@@ -15,7 +15,7 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
     const viewCount = localStorage.getItem("viewCount") || 0;
     if (nextTimeNotify === null || dayjs().isAfter(dayjs(nextTimeNotify))) {
       lineNotify({
-        message: "Someone is viewing your resume. - " + Number(viewCount) + 1,
+        message: "Someone is viewing your resume. - " + (Number(viewCount) + 1),
       });
       localStorage.setItem(
         "nextTimeNotify",
