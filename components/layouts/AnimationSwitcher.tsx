@@ -18,6 +18,10 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   const isShowAnimation = useMemo(() => {
     if (typeof window !== "undefined") {
       const animation = localStorage.getItem("animation");
+      if (animation === null) {
+        localStorage.setItem("animation", "1");
+        return true;
+      }
       return animation === "1";
     }
     return true;
@@ -58,7 +62,11 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   if (disableLabelAnimation) return <Switch {...switchProps}>{label}</Switch>;
 
   return (
-    <SwitchAutoLabel {...switchProps} label={label} labelWidth="w-[78px]" />
+    <SwitchAutoLabel
+      {...switchProps}
+      label={label}
+      labelWidth="w-[78px] max-w-[78px]"
+    />
   );
 };
 

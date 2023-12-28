@@ -3,17 +3,22 @@ import { Menu } from "@/interfaces/menu";
 export const NAV_MENUS: Menu[] = [
   {
     name: "home",
-    title: "Home",
+    title: "README",
     href: "/",
   },
-  {
-    name: "demo",
-    title: "Demo",
-    href: "/demo",
-  },
+  // {
+  //   name: "demo",
+  //   title: "DEMO",
+  //   href: "/demo",
+  // },
   {
     name: "contact",
-    title: "Contact",
+    title: "CONTACT",
     href: "/contact",
+  },
+  {
+    name: "credit",
+    title: "CREDIT",
+    href: "/credit",
   },
 ];

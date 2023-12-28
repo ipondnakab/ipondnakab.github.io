@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>
         </Providers>

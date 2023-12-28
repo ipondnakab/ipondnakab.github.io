@@ -6,6 +6,9 @@
     "unused-imports/no-unused-imports": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "no-unused-vars": "error"
+    "no-unused-vars": [
+      "error",
+      { "vars": "all", "args": "none", "ignoreRestSiblings": false }
+    ]
   }
 }

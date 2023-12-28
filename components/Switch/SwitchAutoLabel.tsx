@@ -28,8 +28,8 @@ const SwitchAutoLabel: React.FC<SwitchAutoLabelProps> = ({
       {!disableLabel && (
         <p
           className={clsx(
-            "text-xs line-clamp-1 overflow-hidden w-0 transition-all delay-200",
-            showText && (labelWidth || `w-[64px]`),
+            "text-xs line-clamp-1 overflow-hidden w-0 max-w-0 transition-all delay-200",
+            showText && (labelWidth || `w-[64px] max-w-[64px]`),
           )}
         >
           {label}
