@@ -5,24 +5,24 @@ import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button, Card } from "@nextui-org/react";
 import React from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { ContactForm } from "@/interfaces/contact";
+import { createContact } from "../services/contact";
 
 export interface ContactProps {}
+
+const defaultValues: ContactForm = {
+  name: "",
+  email: "",
+  content: "",
+};
 
 const Contact: React.FC<ContactProps> = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
-  const onSubmit = async (values: {
-    name: string;
-    email: string;
-    content: string;
-  }) => {
+  const onSubmit = async (values: ContactForm) => {
     setIsLoading(true);
     try {
-      await axios.post(
-        `https://us-central1-kittipat-resume.cloudfunctions.net/app/contact`,
-        values,
-      );
+      await createContact(values);
       router.push("/contact/success");
     } catch (error) {
       alert("Send message error please try again");
@@ -33,12 +33,8 @@ const Contact: React.FC<ContactProps> = () => {
   return (
     <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
       <h2 className="text-2xl font-bold">Send me a Message</h2>
-      <FormHookWrapper<{ name: string; email: string; content: string }>
-        defaultValues={{
-          name: "",
-          email: "",
-          content: "",
-        }}
+      <FormHookWrapper<ContactForm>
+        defaultValues={defaultValues}
         onSubmit={onSubmit}
       >
         {() => (
