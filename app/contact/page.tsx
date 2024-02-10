@@ -10,12 +10,6 @@ import { createContact } from "../services/contact";
 
 export interface ContactProps {}
 
-const defaultValues: ContactForm = {
-  name: "",
-  email: "",
-  content: "",
-};
-
 const Contact: React.FC<ContactProps> = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -30,6 +24,13 @@ const Contact: React.FC<ContactProps> = () => {
       setIsLoading(false);
     }
   };
+
+  const defaultValues: ContactForm = {
+    name: localStorage.getItem("form.contact.name") || "",
+    email: localStorage.getItem("form.contact.email") || "",
+    content: localStorage.getItem("form.contact.content") || "",
+  };
+
   return (
     <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
       <h2 className="text-2xl font-bold">Send me a Message</h2>
@@ -37,47 +38,65 @@ const Contact: React.FC<ContactProps> = () => {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
       >
-        {() => (
-          <div className="flex flex-col gap-4">
-            <InputString
-              name="name"
-              rules={{
-                required: "Name is required",
-              }}
-              placeholder="Enter Name"
-              label="Name"
-            />
-            <InputString
-              rules={{
-                required: "Email is required",
-                pattern: {
-                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                  message: "Entered value does not match email format",
-                },
-              }}
-              name="email"
-              placeholder="Enter Email"
-              label="Email"
-              type="email"
-            />
-            <InputTextarea
-              rules={{
-                required: "Content is required",
-              }}
-              name="content"
-              placeholder="Enter Content"
-              label="Content"
-            />
-            <Button
-              variant="solid"
-              isLoading={isLoading}
-              color="warning"
-              type="submit"
-            >
-              Submit
-            </Button>
-          </div>
-        )}
+        {({ setValue, trigger }) => {
+          const handleChangeValue =
+            (name: "name" | "email" | "content") =>
+            (e?: React.ChangeEvent<HTMLInputElement>) => {
+              localStorage.setItem(
+                `form.contact.${name}`,
+                e?.target.value || "",
+              );
+              setValue(name, e?.target.value || "");
+              trigger(name);
+            };
+          return (
+            <div className="flex flex-col gap-4">
+              <InputString
+                name="name"
+                rules={{
+                  required: "Name is required",
+                }}
+                placeholder="Enter Name"
+                label="Name"
+                onChange={handleChangeValue("name")}
+                onClear={handleChangeValue("name")}
+              />
+              <InputString
+                rules={{
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                    message: "Entered value does not match email format",
+                  },
+                }}
+                name="email"
+                placeholder="Enter Email"
+                label="Email"
+                type="email"
+                onChange={handleChangeValue("email")}
+                onClear={handleChangeValue("email")}
+              />
+              <InputTextarea
+                rules={{
+                  required: "Content is required",
+                }}
+                name="content"
+                placeholder="Enter Content"
+                label="Content"
+                onChange={handleChangeValue("content")}
+                onClear={handleChangeValue("content")}
+              />
+              <Button
+                variant="solid"
+                isLoading={isLoading}
+                color="warning"
+                type="submit"
+              >
+                Submit
+              </Button>
+            </div>
+          );
+        }}
       </FormHookWrapper>
     </Card>
   );

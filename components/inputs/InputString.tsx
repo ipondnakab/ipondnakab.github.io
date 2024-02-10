@@ -38,7 +38,10 @@ const InputString: React.FC<InputStringProps> = <
           <Input
             {...field}
             {...props}
-            onClear={() => field.onChange("")}
+            onClear={() => {
+              field.onChange("");
+              props.onClear?.();
+            }}
             onFocus={() => setFocusInput(true)}
             onBlur={() => setFocusInput(false)}
             autoComplete="off"

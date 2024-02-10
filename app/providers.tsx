@@ -11,6 +11,7 @@ export interface ProvidersProps {
 
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
   React.useEffect(() => {
+    if (window.location.hostname === "localhost") return;
     const nextTimeNotify = localStorage.getItem("nextTimeNotify");
     if (nextTimeNotify === null || dayjs().isAfter(dayjs(nextTimeNotify))) {
       getCount();
