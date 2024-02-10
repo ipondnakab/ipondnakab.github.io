@@ -3,7 +3,7 @@ import FormHookWrapper from "@/components/form-hook-wrapper/FormHookWrapper";
 import InputString from "@/components/inputs/InputString";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button, Card } from "@nextui-org/react";
-import React from "react";
+import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ContactForm } from "@/interfaces/contact";
 import { createContact } from "../services/contact";
@@ -25,11 +25,14 @@ const Contact: React.FC<ContactProps> = () => {
     }
   };
 
-  const defaultValues: ContactForm = {
-    name: localStorage.getItem("form.contact.name") || "",
-    email: localStorage.getItem("form.contact.email") || "",
-    content: localStorage.getItem("form.contact.content") || "",
-  };
+  const defaultValues: ContactForm = useMemo(
+    () => ({
+      name: localStorage.getItem("form.contact.name") || "",
+      email: localStorage.getItem("form.contact.email") || "",
+      content: localStorage.getItem("form.contact.content") || "",
+    }),
+    [],
+  );
 
   return (
     <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
