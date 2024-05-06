@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
 import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";
@@ -9,36 +9,32 @@ export interface AnimationSwitcherProps {
   disableLabelAnimation?: boolean;
 }
 
+const switchProps: SwitchProps = {
+  size: "sm",
+  color: "default",
+  startContent: <FaPlayCircle />,
+  endContent: <FaStopCircle />,
+};
+
 const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   setShow,
   show,
   disableLabelAnimation,
 }) => {
   const [mounted, setMounted] = useState(false);
-  const isShowAnimation = useMemo(() => {
-    if (typeof window !== "undefined") {
-      const animation = localStorage.getItem("animation");
-      if (animation === null) {
-        localStorage.setItem("animation", "1");
-        return true;
-      }
-      return animation === "1";
-    }
-    return true;
-  }, []);
-
-  useEffect(() => {
-    setShow(isShowAnimation);
-  }, [isShowAnimation, setShow]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const onChangeAnimation = () => {
     localStorage.setItem("animation", show ? "0" : "1");
     setShow(!show);
   };
+
+  useEffect(() => {
+    if (window && window.localStorage) {
+      const animation = window.localStorage.getItem("animation");
+      setShow(animation === null ? true : animation === "1");
+    }
+    setMounted(true);
+  }, [setShow]);
 
   if (!mounted)
     return (
@@ -47,23 +43,20 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
       </Skeleton>
     );
 
-  const switchProps: SwitchProps = {
-    size: "sm",
-    color: "default",
-    checked: show,
-    defaultSelected: isShowAnimation,
-    onClick: onChangeAnimation,
-    startContent: <FaPlayCircle />,
-    endContent: <FaStopCircle />,
-  };
-
   const label = "Animation ".concat(show ? "On" : "Off");
 
-  if (disableLabelAnimation) return <Switch {...switchProps}>{label}</Switch>;
+  if (disableLabelAnimation)
+    return (
+      <Switch {...switchProps} isSelected={show} onChange={onChangeAnimation}>
+        {label}
+      </Switch>
+    );
 
   return (
     <SwitchAutoLabel
       {...switchProps}
+      onChange={onChangeAnimation}
+      isSelected={show}
       label={label}
       labelWidth="w-[78px] max-w-[78px]"
     />

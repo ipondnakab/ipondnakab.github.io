@@ -12,25 +12,34 @@ export interface ThemeSwitcherProps {
   disableLabelAnimation?: boolean;
 }
 
+const switchProps: SwitchProps = {
+  size: "sm",
+  color: "default",
+  startContent: <FaMoon />,
+  endContent: <FaSun />,
+};
+
 export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   disableLabel,
   disableLabelAnimation,
 }) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const [isChecked, setIsChecked] = useState(theme === "dark");
-
-  useEffect(() => {
-    setIsChecked(theme === "dark");
-  }, [theme]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [isDark, setIsDark] = useState(theme === "dark");
 
   const onChange = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const val = theme === "dark" ? "light" : "dark";
+    setTheme(val);
+    setIsDark(val === "dark");
   };
+
+  useEffect(() => {
+    if (window && window.localStorage) {
+      const theme = window.localStorage.getItem("theme");
+      setIsDark(theme === null ? true : theme === "dark");
+    }
+    setMounted(true);
+  }, []);
 
   if (!mounted)
     return (
@@ -39,19 +48,9 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       </Skeleton>
     );
 
-  const switchProps: SwitchProps = {
-    size: "sm",
-    color: "default",
-    checked: isChecked,
-    defaultSelected: isChecked,
-    onClick: onChange,
-    startContent: <FaMoon />,
-    endContent: <FaSun />,
-  };
-
   if (disableLabelAnimation)
     return (
-      <Switch {...switchProps}>
+      <Switch {...switchProps} isSelected={isDark} onChange={onChange}>
         {textToCapital(theme || "").concat(" Mode")}
       </Switch>
     );
@@ -59,6 +58,8 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   return (
     <SwitchAutoLabel
       {...switchProps}
+      isSelected={isDark}
+      onChange={onChange}
       label={textToCapital(theme || "").concat(" Mode")}
       disableLabel={disableLabel}
     />

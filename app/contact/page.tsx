@@ -1,18 +1,29 @@
 "use client";
-import FormHookWrapper from "@/components/form-hook-wrapper/FormHookWrapper";
+import FormHookWrapper, {
+  FormHookWrapperRef,
+} from "@/components/form-hook-wrapper/FormHookWrapper";
 import InputString from "@/components/inputs/InputString";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { Button, Card } from "@nextui-org/react";
-import React, { useMemo } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ContactForm } from "@/interfaces/contact";
 import { createContact } from "../services/contact";
 
 export interface ContactProps {}
 
+const defaultValues: ContactForm = {
+  name: "",
+  email: "",
+  content: "",
+};
+
 const Contact: React.FC<ContactProps> = () => {
   const router = useRouter();
+  const formRef: React.ForwardedRef<FormHookWrapperRef<ContactForm>> =
+    useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
+
   const onSubmit = async (values: ContactForm) => {
     setIsLoading(true);
     try {
@@ -25,14 +36,19 @@ const Contact: React.FC<ContactProps> = () => {
     }
   };
 
-  const defaultValues: ContactForm = useMemo(
-    () => ({
-      name: localStorage.getItem("form.contact.name") || "",
-      email: localStorage.getItem("form.contact.email") || "",
-      content: localStorage.getItem("form.contact.content") || "",
-    }),
-    [],
-  );
+  useEffect(() => {
+    if (formRef.current && window?.localStorage) {
+      const name = window.localStorage.getItem("form.contact.name");
+      const email = window.localStorage.getItem("form.contact.email");
+      const content = window.localStorage.getItem("form.contact.content");
+      formRef.current.setValue("name", name || "");
+      formRef.current.setValue("email", email || "");
+      formRef.current.setValue("content", content || "");
+      if (email) {
+        formRef.current.trigger("email");
+      }
+    }
+  }, []);
 
   return (
     <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
@@ -40,15 +56,17 @@ const Contact: React.FC<ContactProps> = () => {
       <FormHookWrapper<ContactForm>
         defaultValues={defaultValues}
         onSubmit={onSubmit}
+        ref={formRef}
       >
         {({ setValue, trigger }) => {
           const handleChangeValue =
             (name: "name" | "email" | "content") =>
             (e?: React.ChangeEvent<HTMLInputElement>) => {
-              localStorage.setItem(
-                `form.contact.${name}`,
-                e?.target.value || "",
-              );
+              if (window?.localStorage)
+                window.localStorage.setItem(
+                  `form.contact.${name}`,
+                  e?.target.value || "",
+                );
               setValue(name, e?.target.value || "");
               trigger(name);
             };
