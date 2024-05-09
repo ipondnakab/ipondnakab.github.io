@@ -3,13 +3,14 @@ import { environment } from "@/core/environment";
 import { Card, Image, Input } from "@nextui-org/react";
 import clsx from "clsx";
 import { AES } from "crypto-js";
+import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { IoMdCloseCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 
 const KhunKao: React.FC = () => {
-  const [isShow, setIsShow] = React.useState(true);
+  const [isShow, setIsShow] = React.useState(false);
   const [isSavedName, setIsSavedName] = React.useState<boolean>(false);
   const [name, setName] = React.useState("");
   const [loading, setLoading] = React.useState(true);
@@ -51,9 +52,16 @@ const KhunKao: React.FC = () => {
     if (!window.localStorage) return;
     const sName = window.localStorage.getItem("saved-name");
     const name = window.localStorage.getItem("name");
+    const nextTimeNotify = localStorage.getItem("nextTimeNotify");
     if (sName && name) {
       setIsSavedName(sName === "1");
       setName(name || "");
+    }
+    if (
+      (nextTimeNotify === null || dayjs().isAfter(dayjs(nextTimeNotify))) &&
+      !sName
+    ) {
+      setIsShow(true);
     }
     setLoading(false);
   }, []);
