@@ -52,13 +52,13 @@ const KhunKao: React.FC = () => {
     if (!window.localStorage) return;
     const sName = window.localStorage.getItem("saved-name");
     const name = window.localStorage.getItem("name");
-    const nextTimeNotify = localStorage.getItem("nextTimeNotify");
+    const nextTimeKhunkao = localStorage.getItem("nextTimeKhunkao");
     if (sName && name) {
       setIsSavedName(sName === "1");
       setName(name || "");
     }
     if (
-      (nextTimeNotify === null || dayjs().isAfter(dayjs(nextTimeNotify))) &&
+      (nextTimeKhunkao === null || dayjs().isAfter(dayjs(nextTimeKhunkao))) &&
       !sName
     ) {
       setIsShow(true);
@@ -111,7 +111,13 @@ const KhunKao: React.FC = () => {
             {isSavedName && (
               <IoMdCloseCircle
                 className="absolute top-1 right-1 cursor-pointer text-lg"
-                onClick={() => setIsShow(false)}
+                onClick={() => {
+                  setIsShow(false);
+                  window.localStorage.setItem(
+                    "nextTimeKhunkao",
+                    dayjs().add(1, "hour").toString(),
+                  );
+                }}
               />
             )}
           </div>
