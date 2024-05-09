@@ -3,7 +3,14 @@ import axios from "axios";
 
 const baseUrl = environment.baseUrl + "/count";
 
-export const getCount = async () => {
-  const response = await axios.get(baseUrl);
+export const getCount = async (encryptName?: string) => {
+  const response = await axios.get<{ count: number; savedName: boolean }>(
+    baseUrl,
+    {
+      params: {
+        n: encryptName,
+      },
+    },
+  );
   return response.data;
 };
