@@ -13,7 +13,6 @@ const KhunKao: React.FC = () => {
   const [isShow, setIsShow] = React.useState(false);
   const [isSavedName, setIsSavedName] = React.useState<boolean>(false);
   const [name, setName] = React.useState("");
-  const [loading, setLoading] = React.useState(true);
 
   const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
@@ -57,16 +56,14 @@ const KhunKao: React.FC = () => {
       setIsSavedName(sName === "1");
       setName(name || "");
     }
-    if (
-      (nextTimeKhunkao === null || dayjs().isAfter(dayjs(nextTimeKhunkao))) &&
-      !sName
-    ) {
-      setIsShow(true);
-    }
-    setLoading(false);
+    setIsShow(
+      !sName ||
+        nextTimeKhunkao === null ||
+        dayjs().isAfter(dayjs(nextTimeKhunkao)),
+    );
   }, []);
 
-  if (!isShow || loading) return null;
+  if (!isShow) return null;
   return (
     <div className="fixed bottom-4 right-4">
       <div className="relative">
