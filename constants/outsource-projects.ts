@@ -2,7 +2,7 @@ import { ProjectExperience } from "@/interfaces/work-experience";
 
 export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
-    title: "Pa Yai Ha Mor",
+    title: "Pa Yai Ha Mor (NSC 2021)",
     description: `Pa Yai Ha Mor (Took Grandma to see the Doctor): A mobile
         application to assist the elderly in visiting hospitals. Develop
         using ReactNative, NodeJS, and Firebase which got an honorable
@@ -15,11 +15,6 @@ export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
     title: "Pettinee",
     description: `Pettinee: Platform for consulting veterinarians`,
-  },
-  {
-    title: "VMKKU",
-    description: `Veterinarians consultation platform for The Faculty
-        of Veterinary Medicine, Khon Kaen University.`,
   },
   {
     title: "REAL CONTROL TECHNOLOGY",
