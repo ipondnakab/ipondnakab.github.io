@@ -76,7 +76,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "NEXT_PUBLIC_LINE_NOTIFY_TOKEN=${{ secrets.NEXT_PUBLIC_LINE_NOTIFY_TOKEN }}" >> .env
-          echo "NEXT_PUBLIC_API_URL=${{ $NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}" >> .env
           echo "NEXT_PUBLIC_SECRET_KEY=${{ secrets.NEXT_PUBLIC_SECRET_KEY }}" >> .env
           cat .env
 
