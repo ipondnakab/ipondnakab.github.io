@@ -18,7 +18,6 @@ import AnimationSwitcher from "./AnimationSwitcher";
 import { usePathname } from "next/navigation";
 import { SOCIALS } from "@/constants/social";
 import { NAV_MENUS } from "@/constants/nav-menu";
-import KhunKao from "./Khunkao";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -35,7 +34,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <div className="pb-40">
+      <div className="pb-12 md:pb-0">
         <Navbar maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
           <NavbarContent className="gap-2 py-4">
             <NavbarMenuToggle
@@ -145,7 +144,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         <div className="z-20">{children}</div>
       </div>
       {showAnimation && <BackgroundParticles />}
-      <KhunKao />
+      {/* <KhunKao /> */}
     </>
   );
 };

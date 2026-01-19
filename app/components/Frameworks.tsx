@@ -6,7 +6,12 @@ import {
   DiBootstrap,
   DiAngularSimple,
 } from "react-icons/di";
-import { SiNextdotjs, SiTailwindcss, SiVuedotjs } from "react-icons/si";
+import {
+  SiNextdotjs,
+  SiSpringboot,
+  SiTailwindcss,
+  SiVuedotjs,
+} from "react-icons/si";
 
 export interface FrameworksProps {}
 
@@ -25,9 +30,10 @@ const Frameworks: React.FC<FrameworksProps> = () => {
         <DiBootstrap />
         <SiVuedotjs />
         <DiAngularSimple />
+        <SiSpringboot />
       </div>
       <p className="text-center">
-        ReactJS, NodeJS, NextJS, Tailwind, Bootstrap, VueJS, Angular
+        ReactJS, NodeJS, NextJS, Tailwind, Bootstrap, VueJS, Angular, SpringBoot
       </p>
     </Card>
   );

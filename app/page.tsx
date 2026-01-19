@@ -6,6 +6,7 @@ import Educations from "./components/Educations";
 import Frameworks from "./components/Frameworks";
 import CodingLanguages from "./components/CodingLanguages";
 import OutsourceProjects from "./components/OutsourceProjects";
+import OtherSkills from "./components/OtherSkills";
 
 export interface HomeProps {}
 
@@ -38,6 +39,7 @@ const Home: React.FC<HomeProps> = async () => {
         <Frameworks />
         <CodingLanguages />
       </div>
+      <OtherSkills />
       <Educations />
       <WorkExperiences />
       <OutsourceProjects />

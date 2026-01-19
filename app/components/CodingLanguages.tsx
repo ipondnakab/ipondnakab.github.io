@@ -9,6 +9,7 @@ import {
   SiCplusplus,
 } from "react-icons/si";
 import { DiJava } from "react-icons/di";
+import { FaGolang } from "react-icons/fa6";
 
 export interface CodingLanguagesProps {}
 
@@ -27,9 +28,10 @@ const CodingLanguages: React.FC<CodingLanguagesProps> = () => {
         <DiJava />
         <SiPython />
         <SiCplusplus />
+        <FaGolang className="text-6xl" />
       </div>
       <p className="text-center">
-        Typescript, JavaScript, HTML, CSS, JAVA, Python, C++
+        Typescript, JavaScript, HTML, CSS, JAVA, Python, C++, Go
       </p>
     </Card>
   );

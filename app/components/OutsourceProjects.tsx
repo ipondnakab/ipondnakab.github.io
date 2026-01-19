@@ -1,6 +1,7 @@
 import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
 import { Card, Chip } from "@nextui-org/react";
 import React from "react";
+import { IoLinkSharp } from "react-icons/io5";
 
 export interface OutsourceProjectsProps {}
 
@@ -15,10 +16,31 @@ const OutsourceProjects: React.FC<OutsourceProjectsProps> = () => {
       </h2>
       {OUTSOURCE_PROJECTS.map((project, index) => (
         <div key={project.title + index} className="flex flex-col">
-          <Chip className="line-clamp-2">{project.title}</Chip>
-          <p className="ml-4 pl-2 border-l-2 border-default py-2 mb-2">
-            {project.description}
-          </p>
+          <Chip className="line-clamp-2 ">
+            <div className="flex gap-2 items-center">
+              <span>{project.title}</span>
+              {project.projectUrl && (
+                <a
+                  href={project.projectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <IoLinkSharp />
+                </a>
+              )}
+            </div>
+          </Chip>
+          {typeof project.description === "string" ? (
+            <p className="ml-4 pl-2 border-l-2 border-default py-2 mb-2">
+              {project.description}
+            </p>
+          ) : (
+            <ul className="ml-4 border-l-2 border-default py-2 mb-2 list-disc pl-6">
+              {project.description.map((desc, descIndex) => (
+                <li key={descIndex}>{desc}</li>
+              ))}
+            </ul>
+          )}
         </div>
       ))}
     </Card>

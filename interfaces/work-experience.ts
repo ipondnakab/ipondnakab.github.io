@@ -8,7 +8,7 @@ export interface WorkExperience {
 
 export interface ProjectExperience {
   urlImage?: string;
-  description: string;
+  description: string | string[];
   team?: string;
   title: string;
   projectUrl?: string;
