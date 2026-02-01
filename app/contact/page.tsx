@@ -8,7 +8,7 @@ import { Button, Card } from "@nextui-org/react";
 import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ContactForm } from "@/interfaces/contact";
-import { createContact } from "../services/contact";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 export interface ContactProps {}
 
@@ -27,7 +27,12 @@ const Contact: React.FC<ContactProps> = () => {
   const onSubmit = async (values: ContactForm) => {
     setIsLoading(true);
     try {
-      await createContact(values);
+      sendGTMEvent({
+        event: "contact_form_submit",
+        category: "engagement",
+        label: "Contact Form Submitted",
+        value: values,
+      });
       router.push("/contact/success");
     } catch (error) {
       alert("Send message error please try again");

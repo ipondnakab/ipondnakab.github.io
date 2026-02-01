@@ -1,8 +1,5 @@
-import { getCount } from "@/app/services/count";
-import { environment } from "@/core/environment";
 import { Card, Image, Input } from "@nextui-org/react";
 import clsx from "clsx";
-import { AES } from "crypto-js";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { FaCircleChevronRight } from "react-icons/fa6";
@@ -35,16 +32,6 @@ const KhunKao: React.FC = () => {
     }
     window.localStorage.setItem("name", name);
     window.localStorage.setItem("saved-name", "0");
-    const encryptName = AES.encrypt(
-      name || "",
-      environment.secretKey,
-    ).toString();
-    const res = await getCount(encryptName);
-    if (res.savedName) {
-      if (!window.localStorage) return;
-      setIsSavedName(true);
-      window.localStorage.setItem("saved-name", "1");
-    }
   };
 
   useEffect(() => {

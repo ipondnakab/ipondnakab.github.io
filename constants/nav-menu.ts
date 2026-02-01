@@ -11,11 +11,11 @@ export const NAV_MENUS: Menu[] = [
   //   title: "DEMO",
   //   href: "/demo",
   // },
-  // {
-  //   name: "contact",
-  //   title: "CONTACT",
-  //   href: "/contact",
-  // },
+  {
+    name: "contact",
+    title: "CONTACT",
+    href: "/contact",
+  },
   {
     name: "credit",
     title: "CREDIT",
