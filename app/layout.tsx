@@ -3,6 +3,7 @@ import Providers from "./providers";
 import "./globals.css";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import { GoogleTagManager } from "@next/third-parties/google";
+import GAPageView from "@/components/google-analytic/GAPageView";
 
 export interface RootLayoutProps {
   children: React.ReactNode;
@@ -16,8 +17,9 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
-      <GoogleTagManager gtmId="G-KH1DE7Y5FD" />
       <body suppressHydrationWarning>
+        <GoogleTagManager gtmId="G-KH1DE7Y5FD" />
+        <GAPageView />
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>
         </Providers>
