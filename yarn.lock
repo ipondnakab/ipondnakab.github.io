@@ -400,6 +400,13 @@
   dependencies:
     third-party-capital "1.0.20"
 
+"@next/third-parties@^16.1.6":
+  version "16.1.6"
+  resolved "https://registry.yarnpkg.com/@next/third-parties/-/third-parties-16.1.6.tgz#366980adab28f808ce6142af6b474066e2ad49da"
+  integrity sha512-/cLY1egaH529ylSMSK+C8dA3nWDLL4hOFR4fca9OLWWxjcNwzsbuq2pPb/tmdWL9Zj3K1nTjd1pWQoSlaDQ0VA==
+  dependencies:
+    third-party-capital "1.0.20"
+
 "@nextui-org/accordion@2.0.28":
   version "2.0.28"
   resolved "https://registry.yarnpkg.com/@nextui-org/accordion/-/accordion-2.0.28.tgz#4d61d0534d4365a41a9ab0bc02b74bafc5069922"
@@ -2634,9 +2641,9 @@ bplist-parser@^0.2.0:
     big-integer "^1.6.44"
 
 brace-expansion@^1.1.7:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
-  integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.12.tgz#ab9b454466e5a8cc3a187beaad580412a9c5b843"
+  integrity sha512-9T9UjW3r0UW5c1Q7GTwllptXwhvYmEzFhzMfZ9H7FQWt+uZePjZPjBP/W1ZEyZ1twGWom5/56TF4lPcqjnDHcg==
   dependencies:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
