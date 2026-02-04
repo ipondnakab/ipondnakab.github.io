@@ -4,7 +4,7 @@ import ThreeScene from "../components/ThreeScene";
 const ThreeJSPage: React.FC = () => {
   return (
     <Suspense>
-      <ThreeScene />;
+      <ThreeScene />
     </Suspense>
   );
 };

@@ -1,18 +1,19 @@
 "use client";
 
 import { GameState } from "@/interfaces/game-state";
-import { Card } from "@nextui-org/react";
+import { Button, Card, Spinner } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MdRestartAlt } from "react-icons/md";
 
 export default function ThreeScene() {
   const mountRef = useRef<HTMLDivElement>(null);
   const backToIntroRef = useRef<() => void>(() => {});
   const gameStateRef = useRef<GameState>(GameState.INTRO);
   const [gameState, setGameState] = useState<GameState>(GameState.INTRO);
-  const [showHint, setShowHint] = useState(true); // Hint UI State
-
+  const [showHint, setShowHint] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   // Mobile Controls Refs/State
   const mobileJumpRef = useRef<() => void>(() => {});
   const mobileStartRef = useRef<() => void>(() => {});
@@ -32,7 +33,7 @@ export default function ThreeScene() {
     // SCENE
     // =====================
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    scene.background = null;
 
     const camera = new THREE.PerspectiveCamera(
       60,
@@ -41,9 +42,16 @@ export default function ThreeScene() {
       1000,
     );
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isMobile,
+      powerPreference: "high-performance",
+      alpha: true,
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0);
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
     mountNode.appendChild(renderer.domElement);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.7));
@@ -84,7 +92,14 @@ export default function ThreeScene() {
     // =====================
     // CHARACTER / ANIMATION
     // =====================
-    const loader = new GLTFLoader();
+
+    const manager = new THREE.LoadingManager();
+    manager.onLoad = () => {
+      setIsLoading(false);
+    };
+
+    const loader = new GLTFLoader(manager);
+
     let character: THREE.Object3D;
     let mixer: THREE.AnimationMixer;
     let activeAction: THREE.AnimationAction | null = null;
@@ -142,6 +157,10 @@ export default function ThreeScene() {
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
+
+      // Safety check for startBtnSprite
+      if (!startBtnSprite) return;
+
       const intersects = raycaster.intersectObject(startBtnSprite);
       if (intersects.length > 0) autoProgressIntro = true;
     };
@@ -312,8 +331,9 @@ export default function ThreeScene() {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      const delta = clock.getDelta();
+      const delta = Math.min(clock.getDelta(), 0.1); // Cap delta for safety
       mixer?.update(delta);
+
       if (!character) return renderer.render(scene, camera);
 
       if (gameStateRef.current === GameState.INTRO) {
@@ -468,6 +488,8 @@ export default function ThreeScene() {
     };
 
     animate();
+
+    // Cleanup on unmount
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
@@ -497,14 +519,24 @@ export default function ThreeScene() {
   };
 
   return (
-    <div className="relative w-screen h-[calc(100vh-72px)] overflow-hidden font-sans select-none">
+    <Card className="relative w-screen h-[calc(100vh-64px)] bg-background rounded-none overflow-hidden font-sans select-none ">
+      {/* Full screen loading overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-background z-[200] flex flex-col items-center justify-center  ">
+          <Spinner size="lg" color="white" />
+          <p className="mt-4 text-sm font-medium animate-pulse">
+            Loading Model...
+          </p>
+        </div>
+      )}
+
       <div ref={mountRef} className="w-full h-full touch-none" />
 
       {/* Desktop Hint UI */}
-      {!isMobile && gameState === GameState.GAME && showHint && (
+      {!isMobile && gameState === GameState.GAME && showHint && !isLoading && (
         <Card
           isBlurred
-          className="fixed top-[72px] left-5 z-[100] min-w-[240px] p-5 rounded-[15px] border border-white/20"
+          className="fixed top-20 left-5 z-[100] min-w-[240px] p-5 rounded-[15px] border border-white/20"
         >
           <h3 className="m-0 mb-2.5 text-base font-bold">🎮 Controls</h3>
           <ul className="m-0 p-0 list-none text-sm leading-[1.8]">
@@ -524,28 +556,30 @@ export default function ThreeScene() {
               <span className="font-bold">Q, E</span> - Dance Moves
             </li>
           </ul>
-          <button
+          <Button
             onClick={() => setShowHint(false)}
-            className="mt-[15px] w-full p-2 bg-white/20 hover:bg-white/30 text-white font-bold rounded-lg transition-colors cursor-pointer"
+            className="mt-[15px] w-full p-2 bg-white/20 hover:bg-white/30  font-bold rounded-lg transition-colors cursor-pointer"
           >
             Got it!
-          </button>
+          </Button>
         </Card>
       )}
 
-      {gameState === GameState.GAME && (
+      {/* Only show controls if game started AND loading is done */}
+      {gameState === GameState.GAME && !isLoading && (
         <>
-          <button
+          <Button
             onClick={() => backToIntroRef.current()}
-            className="fixed top-[72px] right-10 z-10 px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white font-bold rounded-lg transition-colors cursor-pointer"
+            className="fixed top-20 right-5 z-10 cursor-pointer"
           >
+            <MdRestartAlt className="text-xl" />
             Restart
-          </button>
+          </Button>
 
           {isMobile && (
             <>
               {/* Mobile Dance Buttons */}
-              <button
+              <Card
                 onPointerDown={() =>
                   window.dispatchEvent(
                     new KeyboardEvent("keydown", { code: "KeyQ" }),
@@ -556,11 +590,11 @@ export default function ThreeScene() {
                     new KeyboardEvent("keyup", { code: "KeyQ" }),
                   )
                 }
-                className="fixed bottom-[140px] right-[60px] z-10 w-10 h-10 rounded-full bg-white/20 text-white font-bold flex items-center justify-center"
+                className="fixed bottom-[140px] right-[60px] z-10 !w-10 !h-10 p-0 rounded-full font-bold flex items-center justify-center"
               >
                 Q
-              </button>
-              <button
+              </Card>
+              <Card
                 onPointerDown={() =>
                   window.dispatchEvent(
                     new KeyboardEvent("keydown", { code: "KeyE" }),
@@ -571,17 +605,17 @@ export default function ThreeScene() {
                     new KeyboardEvent("keyup", { code: "KeyE" }),
                   )
                 }
-                className="fixed bottom-[120px] right-[120px] z-10 w-10 h-10 rounded-full bg-white/20 text-white font-bold flex items-center justify-center"
+                className="fixed bottom-[120px] right-[120px] z-10 !w-10 !h-10 p-0 !max-h-10 rounded-full font-bold flex items-center justify-center"
               >
                 E
-              </button>
+              </Card>
               {/* Mobile Jump Button */}
-              <button
+              <Card
                 onPointerDown={() => mobileJumpRef.current()}
-                className="fixed bottom-10 right-10 z-10 w-20 h-20 rounded-full bg-white/20 text-white font-bold flex items-center justify-center"
+                className="fixed bottom-10 right-10 z-10 w-20 h-20 rounded-full font-bold flex items-center justify-center"
               >
                 JUMP
-              </button>
+              </Card>
 
               {/* Joystick */}
               <div
@@ -609,6 +643,6 @@ export default function ThreeScene() {
           )}
         </>
       )}
-    </div>
+    </Card>
   );
 }
