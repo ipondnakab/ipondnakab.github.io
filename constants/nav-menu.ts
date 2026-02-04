@@ -17,6 +17,11 @@ export const NAV_MENUS: Menu[] = [
   //   href: "/contact",
   // },
   {
+    name: "mini-project",
+    title: "MINI-PROJECT",
+    href: "/threejs",
+  },
+  {
     name: "credit",
     title: "CREDIT",
     href: "/credit",

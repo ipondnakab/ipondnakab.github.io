@@ -14,6 +14,7 @@ export default function ThreeScene() {
   const [gameState, setGameState] = useState<GameState>(GameState.INTRO);
   const [showHint, setShowHint] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+
   // Mobile Controls Refs/State
   const mobileJumpRef = useRef<() => void>(() => {});
   const mobileStartRef = useRef<() => void>(() => {});
@@ -42,24 +43,44 @@ export default function ThreeScene() {
       1000,
     );
 
+    // --- RENDERER CONFIG (UPDATED FOR QUALITY) ---
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isMobile,
+      antialias: !isMobile, // Smooth edges (cartoon look needs clean edges)
       powerPreference: "high-performance",
       alpha: true,
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
-
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2; // Slightly brighter
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Soft cartoon shadows
 
     mountNode.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    // =====================
+    // LIGHTING
+    // =====================
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
+    hemiLight.position.set(0, 20, 0);
+    scene.add(hemiLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
     dirLight.position.set(5, 10, 5);
+    dirLight.castShadow = true;
+
+    // Optimize shadow quality
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.height = 1024;
+    dirLight.shadow.bias = -0.0001; // Removes shadow artifacts on character
     scene.add(dirLight);
 
-    scene.add(new THREE.GridHelper(30, 30));
+    // Grid helper (Optional: Receive shadow removed for cleaner look, or keep as visual guide)
+    const grid = new THREE.GridHelper(30, 30);
+    // (Optional: Hide grid to make it look more like a scene, un-comment to keep)
+    scene.add(grid);
 
     // =====================
     // CAMERA TARGET & CONFIG
@@ -206,7 +227,6 @@ export default function ThreeScene() {
     backToIntroRef.current = () => {
       if (gameStateRef.current !== GameState.GAME || !character) return;
       if (introTextGroup) introTextGroup.visible = true;
-      if (startBtnSprite) startBtnSprite.visible = isMobile;
       returningToIntro = true;
       autoProgressIntro = false;
       gameStateRef.current = GameState.INTRO;
@@ -246,6 +266,9 @@ export default function ThreeScene() {
       Object.assign(ctx, options);
       ctx.fillText(text, canvas.width / 2, canvas.height / 2);
       const texture = new THREE.CanvasTexture(canvas);
+
+      texture.colorSpace = THREE.SRGBColorSpace;
+
       const material = new THREE.SpriteMaterial({
         map: texture,
         transparent: true,
@@ -262,6 +285,26 @@ export default function ThreeScene() {
     loader.load("/models/character.glb", (gltf) => {
       character = gltf.scene;
       character.position.set(spawnPosition.x, introStartY, spawnPosition.z);
+
+      // Enable Shadows on the Character
+      character.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh) {
+          o.castShadow = true;
+          o.receiveShadow = true;
+          // Note: This modifies the original material from the GLTF
+          const mesh = o as THREE.Mesh;
+          if (mesh.material instanceof THREE.MeshStandardMaterial) {
+            // Lower roughness makes it a bit shinier (plastic/cartoon toy look)
+            // mesh.material.roughness = 0.6;
+            // Ensure the color map uses correct encoding
+            if (mesh.material.map)
+              mesh.material.map.colorSpace = THREE.SRGBColorSpace;
+          }
+        }
+
+        if ((o as THREE.SkinnedMesh).isSkinnedMesh) o.frustumCulled = false;
+      });
+
       scene.add(character);
 
       introTextGroup = new THREE.Group();
@@ -275,11 +318,11 @@ export default function ThreeScene() {
         font: "28px Arial",
       });
       hintSprite = createTextSprite(
-        isMobile ? "Click START to begin" : "Scroll to begin",
+        isMobile ? "Click START to begin" : "Scroll / Click START to begin",
         { font: "28px Arial" },
       );
       startBtnSprite = createTextSprite(
-        "START GAME",
+        "START",
         { font: "Bold 32px Arial" },
         true,
       );
@@ -294,12 +337,8 @@ export default function ThreeScene() {
       introTextGroup.add(titleSprite);
       introTextGroup.add(descSprite);
       introTextGroup.add(hintSprite);
-      if (isMobile) introTextGroup.add(startBtnSprite);
+      introTextGroup.add(startBtnSprite);
       scene.add(introTextGroup);
-
-      character.traverse((o) => {
-        if ((o as THREE.SkinnedMesh).isSkinnedMesh) o.frustumCulled = false;
-      });
 
       mixer = new THREE.AnimationMixer(character);
       const loadAnim = (name: string, path: string, once = false) => {
@@ -389,7 +428,6 @@ export default function ThreeScene() {
 
         if (introFinished && character.position.y <= 0) {
           if (introTextGroup) introTextGroup.visible = false;
-          if (startBtnSprite) startBtnSprite.visible = false;
           character.position.y = 0;
           gameStateRef.current = GameState.GAME;
           setGameState(GameState.GAME);
