@@ -7,6 +7,10 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MdRestartAlt } from "react-icons/md";
 
+// --- CONFIGURATION ---
+const GRID_SIZE = 30;
+const BOUNDARY_LIMIT = GRID_SIZE / 2; // Limits position to -15 and +15
+
 export default function ThreeScene() {
   const mountRef = useRef<HTMLDivElement>(null);
   const backToIntroRef = useRef<() => void>(() => {});
@@ -43,9 +47,9 @@ export default function ThreeScene() {
       1000,
     );
 
-    // --- RENDERER CONFIG (UPDATED FOR QUALITY) ---
+    // --- RENDERER CONFIG ---
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isMobile, // Smooth edges (cartoon look needs clean edges)
+      antialias: !isMobile,
       powerPreference: "high-performance",
       alpha: true,
     });
@@ -54,9 +58,9 @@ export default function ThreeScene() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2; // Slightly brighter
+    renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Soft cartoon shadows
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     mountNode.appendChild(renderer.domElement);
 
@@ -71,15 +75,12 @@ export default function ThreeScene() {
     dirLight.position.set(5, 10, 5);
     dirLight.castShadow = true;
 
-    // Optimize shadow quality
     dirLight.shadow.mapSize.width = 1024;
     dirLight.shadow.mapSize.height = 1024;
-    dirLight.shadow.bias = -0.0001; // Removes shadow artifacts on character
+    dirLight.shadow.bias = -0.0001;
     scene.add(dirLight);
 
-    // Grid helper (Optional: Receive shadow removed for cleaner look, or keep as visual guide)
-    const grid = new THREE.GridHelper(30, 30);
-    // (Optional: Hide grid to make it look more like a scene, un-comment to keep)
+    const grid = new THREE.GridHelper(GRID_SIZE, GRID_SIZE);
     scene.add(grid);
 
     // =====================
@@ -113,7 +114,6 @@ export default function ThreeScene() {
     // =====================
     // CHARACTER / ANIMATION
     // =====================
-
     const manager = new THREE.LoadingManager();
     manager.onLoad = () => {
       setIsLoading(false);
@@ -179,7 +179,6 @@ export default function ThreeScene() {
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
-      // Safety check for startBtnSprite
       if (!startBtnSprite) return;
 
       const intersects = raycaster.intersectObject(startBtnSprite);
@@ -286,22 +285,16 @@ export default function ThreeScene() {
       character = gltf.scene;
       character.position.set(spawnPosition.x, introStartY, spawnPosition.z);
 
-      // Enable Shadows on the Character
       character.traverse((o) => {
         if ((o as THREE.Mesh).isMesh) {
           o.castShadow = true;
           o.receiveShadow = true;
-          // Note: This modifies the original material from the GLTF
           const mesh = o as THREE.Mesh;
           if (mesh.material instanceof THREE.MeshStandardMaterial) {
-            // Lower roughness makes it a bit shinier (plastic/cartoon toy look)
-            // mesh.material.roughness = 0.6;
-            // Ensure the color map uses correct encoding
             if (mesh.material.map)
               mesh.material.map.colorSpace = THREE.SRGBColorSpace;
           }
         }
-
         if ((o as THREE.SkinnedMesh).isSkinnedMesh) o.frustumCulled = false;
       });
 
@@ -370,7 +363,7 @@ export default function ThreeScene() {
 
     const animate = () => {
       requestAnimationFrame(animate);
-      const delta = Math.min(clock.getDelta(), 0.1); // Cap delta for safety
+      const delta = Math.min(clock.getDelta(), 0.1);
       mixer?.update(delta);
 
       if (!character) return renderer.render(scene, camera);
@@ -506,6 +499,16 @@ export default function ThreeScene() {
             ? speed * Math.abs(joystickData.current.forward)
             : speed;
           character.position.addScaledVector(dir, finalSpeed * delta);
+          character.position.x = THREE.MathUtils.clamp(
+            character.position.x,
+            -BOUNDARY_LIMIT,
+            BOUNDARY_LIMIT,
+          );
+          character.position.z = THREE.MathUtils.clamp(
+            character.position.z,
+            -BOUNDARY_LIMIT,
+            BOUNDARY_LIMIT,
+          );
         }
 
         const camOffset = new THREE.Vector3(0, 1.6, -3);
@@ -527,7 +530,6 @@ export default function ThreeScene() {
 
     animate();
 
-    // Cleanup on unmount
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
@@ -558,7 +560,6 @@ export default function ThreeScene() {
 
   return (
     <Card className="relative w-screen h-[calc(100vh-64px)] bg-background rounded-none overflow-hidden font-sans select-none ">
-      {/* Full screen loading overlay */}
       {isLoading && (
         <div className="absolute inset-0 bg-background z-[200] flex flex-col items-center justify-center  ">
           <Spinner size="lg" color="white" />
@@ -570,7 +571,6 @@ export default function ThreeScene() {
 
       <div ref={mountRef} className="w-full h-full touch-none" />
 
-      {/* Desktop Hint UI */}
       {!isMobile && gameState === GameState.GAME && showHint && !isLoading && (
         <Card
           isBlurred
@@ -603,7 +603,6 @@ export default function ThreeScene() {
         </Card>
       )}
 
-      {/* Only show controls if game started AND loading is done */}
       {gameState === GameState.GAME && !isLoading && (
         <>
           <Button
@@ -616,7 +615,6 @@ export default function ThreeScene() {
 
           {isMobile && (
             <>
-              {/* Mobile Dance Buttons */}
               <Card
                 onPointerDown={() =>
                   window.dispatchEvent(
@@ -647,7 +645,6 @@ export default function ThreeScene() {
               >
                 E
               </Card>
-              {/* Mobile Jump Button */}
               <Card
                 onPointerDown={() => mobileJumpRef.current()}
                 className="fixed bottom-10 right-10 z-10 w-20 h-20 rounded-full font-bold flex items-center justify-center"
@@ -655,7 +652,6 @@ export default function ThreeScene() {
                 JUMP
               </Card>
 
-              {/* Joystick */}
               <div
                 onPointerDown={(e) => {
                   e.currentTarget.setPointerCapture(e.pointerId);
