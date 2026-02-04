@@ -8,7 +8,6 @@ import { Button, Card } from "@nextui-org/react";
 import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ContactForm } from "@/interfaces/contact";
-import { createContact } from "../services/contact";
 
 export interface ContactProps {}
 
@@ -27,7 +26,8 @@ const Contact: React.FC<ContactProps> = () => {
   const onSubmit = async (values: ContactForm) => {
     setIsLoading(true);
     try {
-      await createContact(values);
+      // TODO: Send to API
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       router.push("/contact/success");
     } catch (error) {
       alert("Send message error please try again");
