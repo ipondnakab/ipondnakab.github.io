@@ -559,9 +559,9 @@ export default function ThreeScene() {
   };
 
   return (
-    <Card className="relative w-screen h-[calc(100vh-64px)] bg-background rounded-none overflow-hidden font-sans select-none ">
+    <Card className="relative w-screen h-[calc(100vh-64px)] bg-[#1a1a1a] rounded-none overflow-hidden font-sans select-none ">
       {isLoading && (
-        <div className="absolute inset-0 bg-background z-[200] flex flex-col items-center justify-center  ">
+        <div className="absolute inset-0 bg-[#1a1a1a] z-[200] flex flex-col items-center justify-center  ">
           <Spinner size="lg" color="white" />
           <p className="mt-4 text-sm font-medium animate-pulse">
             Loading Model...
