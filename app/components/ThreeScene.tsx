@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MdRestartAlt } from "react-icons/md";
+import { BsArrowsMove } from "react-icons/bs";
 
 // --- CONFIGURATION ---
 const GRID_SIZE = 30;
@@ -559,7 +560,7 @@ export default function ThreeScene() {
   };
 
   return (
-    <Card className="relative w-screen h-[calc(100vh-64px)] bg-[#1a1a1a] rounded-none overflow-hidden font-sans select-none ">
+    <Card className="fixed top-0 left-0 right-0 bottom-0 bg-[#1a1a1a] rounded-none overflow-hidden font-sans select-none ">
       {isLoading && (
         <div className="absolute inset-0 bg-[#1a1a1a] z-[200] flex flex-col items-center justify-center  ">
           <Spinner size="lg" color="white" />
@@ -571,24 +572,34 @@ export default function ThreeScene() {
 
       <div ref={mountRef} className="w-full h-full touch-none" />
 
-      {!isMobile && gameState === GameState.GAME && showHint && !isLoading && (
+      {gameState === GameState.GAME && showHint && !isLoading && (
         <Card
           isBlurred
-          className="fixed top-20 left-5 z-[100] min-w-[240px] p-5 rounded-[15px] border border-white/20"
+          className="fixed top-20 left-5 z-[100] min-w-52 p-5 rounded-[15px] border border-white/20"
         >
           <h3 className="m-0 mb-2.5 text-base font-bold">🎮 Controls</h3>
           <ul className="m-0 p-0 list-none text-sm leading-[1.8]">
-            <li>
-              <span className="font-bold">← →</span> - Rotate Camera
+            {!isMobile && (
+              <li>
+                <span className="font-bold">← →</span> - Rotate Camera
+              </li>
+            )}
+            <li className="flex flex-row items-center gap-2">
+              {isMobile ? (
+                <BsArrowsMove className="text-xl" />
+              ) : (
+                <span className="font-bold">W, A, S, D</span>
+              )}{" "}
+              - Move Character
             </li>
+            {!isMobile && (
+              <li>
+                <span className="font-bold">Shift</span> - Run
+              </li>
+            )}
             <li>
-              <span className="font-bold">W, A, S, D</span> - Move Character
-            </li>
-            <li>
-              <span className="font-bold">Space</span> - Jump
-            </li>
-            <li>
-              <span className="font-bold">Shift</span> - Run
+              <span className="font-bold">{isMobile ? "Jump" : "Space"}</span> -
+              Jump
             </li>
             <li>
               <span className="font-bold">Q, E</span> - Dance Moves
@@ -596,6 +607,7 @@ export default function ThreeScene() {
           </ul>
           <Button
             onClick={() => setShowHint(false)}
+            onPress={() => setShowHint(false)}
             className="mt-[15px] w-full p-2 bg-white/20 hover:bg-white/30  font-bold rounded-lg transition-colors cursor-pointer"
           >
             Got it!
@@ -607,6 +619,7 @@ export default function ThreeScene() {
         <>
           <Button
             onClick={() => backToIntroRef.current()}
+            onPress={() => backToIntroRef.current()}
             className="fixed top-20 right-5 z-10 cursor-pointer"
           >
             <MdRestartAlt className="text-xl" />
@@ -666,12 +679,14 @@ export default function ThreeScene() {
                 }}
                 className="fixed bottom-5 left-5 z-10 w-[120px] h-[120px] bg-white/10 rounded-full flex items-center justify-center touch-none"
               >
-                <div
-                  className="w-[50px] h-[50px] bg-white rounded-full pointer-events-none transition-transform duration-75"
+                <Card
+                  className="w-[50px] h-[50px] flex items-center justify-center rounded-full pointer-events-none !transition-transform !duration-75"
                   style={{
                     transform: `translate(${visualPos.x}px, ${visualPos.y}px)`,
                   }}
-                />
+                >
+                  <BsArrowsMove className="text-2xl text-white/60 rotate-180" />
+                </Card>
               </div>
             </>
           )}
