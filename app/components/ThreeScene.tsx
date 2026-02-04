@@ -685,7 +685,7 @@ export default function ThreeScene() {
                     transform: `translate(${visualPos.x}px, ${visualPos.y}px)`,
                   }}
                 >
-                  <BsArrowsMove className="text-2xl text-white/60 rotate-180" />
+                  <BsArrowsMove className="text-2xl rotate-180" />
                 </Card>
               </div>
             </>
