@@ -2,8 +2,22 @@ import { WorkExperience } from "@/interfaces/work-experience";
 
 export const WORK_EXPERIENCES: WorkExperience[] = [
   {
+    urlImage: "./images/omise-logo.jpeg",
+    title: "ODDS ( Mar 2026 - Present )",
+    position: "Full Stack Engineer",
+    description: "Responsible for projects",
+    projects: [
+      {
+        title: "Alive (AIA)",
+        urlImage: "./images/aia-alive-logo.png",
+        description:
+          "Alive: a application for AIA’s customers to manage their wellness, and well-being. Built using Expo for Frontend and Spring Boot for Backend.",
+      },
+    ],
+  },
+  {
     urlImage: "./images/odds-logo.jpeg",
-    title: "ODDS ( May 2021 - Present )",
+    title: "ODDS ( May 2021 - Feb 2026 )",
     position: "Software Engineer",
     description: "Responsible for projects",
     projects: [

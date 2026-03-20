@@ -20,18 +20,19 @@ const Home: React.FC<HomeProps> = async () => {
         <div className="w-[180px] h-[180px] sm:w-[240px] sm:h-[240px]">
           <Avatar
             className="w-[180px] h-[180px] sm:w-[240px] sm:h-[240px]"
-            src="./images/profile.jpg"
+            src="./images/profile2.jpg"
           />
         </div>
         <div className="flex flex-col">
           <span className="text-sm">Hello I’m</span>
           <h1 className="text-xl sm:text-4xl font-bold">Kittipat Daengdee</h1>
           <span className="text-sm mt-2 max-w-lg">
-            I’m a software engineer with{" "}
+            I am a software engineer with over{" "}
             {dayjs().diff(dayjs("01-05-2021"), "y").toString()}+ years of
-            experience in full-stack web and application development and
-            automated test. I use a creative approach to problem-solving. I’m
-            good at collaboration and eager to learn new skills.
+            experience in full-stack web and application development, as well as
+            automated testing. I apply a creative approach to problem-solving
+            and excel in collaborative environments. I am also eager to
+            continuously learn and develop new skills.
           </span>
         </div>
       </Card>
