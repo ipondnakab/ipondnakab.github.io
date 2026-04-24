@@ -1,4 +1,5 @@
 import PromptPay from "@/components/prompt-pay/PromptPay";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "PromptPay - by ipondnakab",
@@ -6,5 +7,15 @@ export const metadata = {
 };
 
 export default function PromptPayPage() {
-  return <PromptPay />;
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <PromptPay />
+    </Suspense>
+  );
 }
