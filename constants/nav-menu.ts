@@ -19,11 +19,16 @@ export const NAV_MENUS: Menu[] = [
   {
     name: "mini-project",
     title: "MINI-PROJECT",
-    href: "/threejs",
+    href: "/mini-project",
+  },
+  {
+    name: "planning-poker",
+    title: "POKER",
+    href: "/planning-poker",
   },
   {
     name: "credit",
     title: "CREDIT",
     href: "/credit",
   },
-];
+] as const;

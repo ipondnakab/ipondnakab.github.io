@@ -39,7 +39,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
           <NavbarContent className="gap-2 py-4">
             <NavbarMenuToggle
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className="sm:hidden"
+              className="md:hidden"
             />
             <div className="group flex gap-0 sm:gap-2 cursor-pointer">
               <p
@@ -52,7 +52,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               <CatLogo />
             </div>
             <Divider orientation="vertical" className="hidden md:flex" />
-            <div className="hidden gap-2 sm:flex">
+            <div className="hidden gap-4 md:flex">
               {NAV_MENUS.map((item, index) => (
                 <NavbarItem
                   key={`${item.name}-${index}`}
@@ -60,7 +60,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                 >
                   <Link
                     className={clsx(
-                      "border-b-0 hover:border-b-2 transition-all ",
+                      "border-b-0 hover:border-b-1 transition-all duration-100 ",
                       comparePathname(item.href) && "border-primary",
                     )}
                     color={
@@ -78,7 +78,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
           <div className="flex items-center justify-end h-8 gap-2">
             {SOCIALS.map((socialLink, index) => (
               <NavbarItem
-                className="hidden md:flex"
+                className="hidden sm:flex"
                 key={socialLink.name + index}
               >
                 <Link
@@ -118,27 +118,29 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                 </Link>
               </NavbarMenuItem>
             ))}
-            <Divider />
-            <div className="flex items-center flex-wrap px-4 gap-8 sm:px-8 max-w-xs self-center justify-around">
-              {SOCIALS.map((socialLink, index) => (
-                <NavbarItem key={socialLink.name + index}>
-                  <Link
-                    href={socialLink.url}
-                    color="foreground"
-                    className="hover:text-primary transition-all duration-300"
-                    target="_blank"
-                  >
-                    {socialLink.icon}
-                  </Link>
-                </NavbarItem>
-              ))}
+            <div className="sm:hidden flex flex-col gap-4 mt-4">
+              <Divider />
+              <div className="flex items-center flex-wrap px-4 gap-8 sm:px-8 max-w-xs self-center justify-around">
+                {SOCIALS.map((socialLink, index) => (
+                  <NavbarItem key={socialLink.name + index}>
+                    <Link
+                      href={socialLink.url}
+                      color="foreground"
+                      className="hover:text-primary transition-all duration-300"
+                      target="_blank"
+                    >
+                      {socialLink.icon}
+                    </Link>
+                  </NavbarItem>
+                ))}
+              </div>
+              <Divider />
+              <AnimationSwitcher
+                show={showAnimation}
+                setShow={setShowAnimation}
+                disableLabelAnimation
+              />
             </div>
-            <Divider />
-            <AnimationSwitcher
-              show={showAnimation}
-              setShow={setShowAnimation}
-              disableLabelAnimation
-            />
           </NavbarMenu>
         </Navbar>
         <div className="z-20">{children}</div>
