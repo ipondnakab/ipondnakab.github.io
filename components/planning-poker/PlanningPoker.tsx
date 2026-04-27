@@ -209,9 +209,31 @@ export default function PlanningPoker() {
               Start New Game
             </Button>
             <Divider />
-            <p className="text-center text-sm text-default-500">
-              or join with existing Room ID in URL query: ?room=ROOM_ID
-            </p>
+
+            <form
+              className="flex flex-row items-center gap-4 pl-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const id = formData.get("roomId")?.toString().trim();
+                if (id) {
+                  window.location.search = `?room=${id}`;
+                }
+              }}
+            >
+              <span>Or</span>
+              <Input
+                name="roomId"
+                variant="bordered"
+                placeholder="Enter Room ID to Join"
+                onKeyDown={(e) =>
+                  e.key === "Enter" && e.currentTarget.form?.requestSubmit()
+                }
+              />
+              <Button color="primary" type="submit">
+                Join Game
+              </Button>
+            </form>
           </Card>
         ) : (
           <Card isBlurred className="max-w-sm w-full p-8 gap-4 shadow-xl">
@@ -222,7 +244,7 @@ export default function PlanningPoker() {
               onChange={(e) => setUserName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleJoin()}
             />
-            <Button color="primary" onPress={handleJoin}>
+            <Button color="primary" onPress={() => handleJoin()}>
               Join Table
             </Button>
           </Card>
