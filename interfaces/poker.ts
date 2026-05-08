@@ -3,6 +3,7 @@ export type DeckType = "fibonacci" | "tshirt" | "custom";
 export interface PlayerVote {
   name: string;
   score: string | null;
+  group?: string; // เพิ่มกลุ่มของผู้เล่น
 }
 
 export interface RoomData {
@@ -10,6 +11,7 @@ export interface RoomData {
   revealed: boolean;
   deckType: DeckType;
   customDeck?: string[]; // ใช้เมื่อ deckType เป็น "custom"
+  groups?: string[]; // ใช้สำหรับจัดกลุ่มผู้เล่น
   votes: {
     [userId: string]: PlayerVote;
   };
