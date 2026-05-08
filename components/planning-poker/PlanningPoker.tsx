@@ -25,6 +25,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  cn,
 } from "@nextui-org/react";
 import {
   IoPeople,
@@ -374,9 +375,20 @@ export default function PlanningPoker() {
                         )}
                       </div>
                       <Card className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl border-4 border-primary flex items-center justify-center shadow-xl bg-primary">
-                        <span className="text-3xl font-black">
-                          {data.score || "☕"}
-                        </span>
+                        <div
+                          className={cn({
+                            "w-5 aspect-square rounded-full bg-white overflow-hidden":
+                              !isRevealed,
+                          })}
+                        >
+                          <span
+                            className={cn("text-white text-3xl font-black", {
+                              hidden: !isRevealed,
+                            })}
+                          >
+                            {(isRevealed ? data.score : "ไม่บอกหรอก!") || "☕"}
+                          </span>
+                        </div>
                       </Card>
                     </div>
                   </div>
