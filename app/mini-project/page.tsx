@@ -1,5 +1,4 @@
 import { Card, Divider } from "@nextui-org/react";
-import React from "react";
 
 import { MINI_PROJECTS } from "@/constants/mini-ptoject";
 

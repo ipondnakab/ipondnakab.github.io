@@ -25,8 +25,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import React from "react";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   IoCafeOutline,
   IoEye,

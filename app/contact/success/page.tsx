@@ -1,6 +1,5 @@
 import { Button, Card } from "@nextui-org/react";
 import Link from "next/link";
-import React from "react";
 import { MdDoneAll } from "react-icons/md";
 
 const ContactSendSuccess = () => {
