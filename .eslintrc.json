@@ -10,7 +10,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["@typescript-eslint", "unused-imports", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -44,8 +44,7 @@
     "@typescript-eslint/no-var-requires": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "@typescript-eslint/no-empty-object-type": "off",
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
     "sort-imports": "off"
   }
 }
+
