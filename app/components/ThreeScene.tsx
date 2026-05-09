@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Card, Spinner } from "@nextui-org/react";
-import React from "react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsArrowsMove } from "react-icons/bs";
 import { MdRestartAlt } from "react-icons/md";
 import * as THREE from "three";
