@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, Spinner } from "@nextui-org/react";
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { BsArrowsMove } from "react-icons/bs";
 import { MdRestartAlt } from "react-icons/md";
@@ -13,7 +14,7 @@ import { GameState } from "@/interfaces/game-state";
 const GRID_SIZE = 30;
 const BOUNDARY_LIMIT = GRID_SIZE / 2; // Limits position to -15 and +15
 
-export default function ThreeScene() {
+const ThreeScene: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const backToIntroRef = useRef<() => void>(() => {});
   const gameStateRef = useRef<GameState>(GameState.INTRO);
@@ -695,4 +696,6 @@ export default function ThreeScene() {
       )}
     </Card>
   );
-}
+};
+
+export default ThreeScene;

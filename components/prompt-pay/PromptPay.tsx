@@ -4,9 +4,9 @@ import { Button, Card } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 import generatePayload from "promptpay-qr";
 import QRCode from "qrcode";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function PromptPay() {
+const PromptPay: React.FC = () => {
   const search = useSearchParams();
 
   const target = search.get("target") || "";
@@ -105,4 +105,6 @@ export default function PromptPay() {
       </Button>
     </main>
   );
-}
+};
+
+export default PromptPay;

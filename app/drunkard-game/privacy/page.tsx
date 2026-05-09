@@ -1,9 +1,11 @@
 "use client";
 
 import { Card } from "@nextui-org/react";
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function DrunkardGamePrivacy() {
+export interface DrunkardGamePrivacyProps {}
+
+const DrunkardGamePrivacy: React.FC<DrunkardGamePrivacyProps> = () => {
   const [language, setLanguage] = useState<"th" | "en">("th");
 
   const content = {
@@ -498,7 +500,9 @@ export default function DrunkardGamePrivacy() {
       </div>
     </Card>
   );
-}
+};
+
+export default DrunkardGamePrivacy;
 
 function Section({
   title,

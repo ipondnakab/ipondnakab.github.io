@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Button,
   Card,
@@ -24,6 +25,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
+import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import {
   IoCafeOutline,
@@ -40,7 +42,7 @@ import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
 import { DECKS, DeckType, PlayerVotes, RoomData } from "@/interfaces/poker";
 import { db } from "@/libs/firebase";
 
-export default function PlanningPoker() {
+const PlanningPoker: React.FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isRenameOpen,
@@ -804,4 +806,6 @@ export default function PlanningPoker() {
       `}</style>
     </div>
   );
-}
+};
+
+export default PlanningPoker;

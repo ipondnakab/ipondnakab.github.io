@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 
 import PromptPay from "@/components/prompt-pay/PromptPay";
 
@@ -7,7 +7,7 @@ export const metadata = {
   description: "PromptPay QR Code Generator",
 };
 
-export default function PromptPayPage() {
+const PromptPayPage: React.FC = () => {
   return (
     <Suspense
       fallback={
@@ -19,4 +19,6 @@ export default function PromptPayPage() {
       <PromptPay />
     </Suspense>
   );
-}
+};
+
+export default PromptPayPage;
