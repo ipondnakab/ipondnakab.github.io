@@ -2,12 +2,12 @@ import { Avatar, Card } from "@nextui-org/react";
 import dayjs from "dayjs";
 import React from "react";
 
-import CodingLanguages from "./components/CodingLanguages";
-import Educations from "./components/Educations";
-import Frameworks from "./components/Frameworks";
-import OtherSkills from "./components/OtherSkills";
-import OutsourceProjects from "./components/OutsourceProjects";
-import WorkExperiences from "./components/WorkExperiences";
+import CodingLanguages from "@/components/read.me/CodingLanguages";
+import Educations from "@/components/read.me/Educations";
+import Frameworks from "@/components/read.me/Frameworks";
+import OtherSkills from "@/components/read.me/OtherSkills";
+import OutsourceProjects from "@/components/read.me/OutsourceProjects";
+import WorkExperiences from "@/components/read.me/WorkExperiences";
 
 export interface HomeProps {}
 

@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 
-import ThreeScene from "../components/ThreeScene";
+import ThreeScene from "@/components/three.js/ThreeScene";
 
 const ThreeJSPage: React.FC = () => {
   return (
