@@ -2,7 +2,7 @@ import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";
 
-import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
+import SwitchAutoLabel from "./SwitchAutoLabel";
 
 export interface AnimationSwitcherProps {
   show: boolean;

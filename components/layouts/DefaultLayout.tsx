@@ -17,9 +17,9 @@ import { ThemeSwitcher } from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
 import { SOCIALS } from "@/constants/social";
 
-import CatLogo from "../Logo/CatLogo";
 import AnimationSwitcher from "./AnimationSwitcher";
 import BackgroundParticles from "./BackgroundParticles";
+import CatLogo from "./CatLogo";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;

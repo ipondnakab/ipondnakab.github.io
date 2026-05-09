@@ -7,7 +7,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 
 import { textToCapital } from "@/functions/text-to-capital";
 
-import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
+import SwitchAutoLabel from "./SwitchAutoLabel";
 
 export interface ThemeSwitcherProps {
   disableLabel?: boolean;
