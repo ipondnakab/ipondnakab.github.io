@@ -1,10 +1,11 @@
-import { Social } from "@/interfaces/social";
 import { AiFillMediumCircle } from "react-icons/ai";
 import {
-  TiSocialLinkedinCircular,
   TiSocialFacebookCircular,
+  TiSocialLinkedinCircular,
 } from "react-icons/ti";
 import { VscGithub } from "react-icons/vsc";
+
+import { Social } from "@/interfaces/social";
 
 export const SOCIALS: Social[] = [
   {

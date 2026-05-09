@@ -1,7 +1,8 @@
-import { WORK_EXPERIENCES } from "@/constants/work-experiences";
 import { Avatar, Card, Chip } from "@nextui-org/react";
 import clsx from "clsx";
 import React from "react";
+
+import { WORK_EXPERIENCES } from "@/constants/work-experiences";
 
 export interface WorkExperiencesProps {}
 

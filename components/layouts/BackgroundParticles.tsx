@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useTheme } from "next-themes";
+import React, { useEffect, useMemo, useState } from "react";
 
 const BackgroundParticles: React.FC = () => {
   const [init, setInit] = useState(false);

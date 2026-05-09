@@ -1,7 +1,8 @@
-import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
 import { Card, Chip } from "@nextui-org/react";
 import React from "react";
 import { IoLinkSharp } from "react-icons/io5";
+
+import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
 
 export interface OutsourceProjectsProps {}
 

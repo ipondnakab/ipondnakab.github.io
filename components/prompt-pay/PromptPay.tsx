@@ -1,10 +1,10 @@
 "use client";
 
+import { Button, Card } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import generatePayload from "promptpay-qr";
 import QRCode from "qrcode";
-import { Button, Card } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
 export default function PromptPay() {
   const search = useSearchParams();

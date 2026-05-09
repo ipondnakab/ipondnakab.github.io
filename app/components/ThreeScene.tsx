@@ -1,12 +1,13 @@
 "use client";
 
-import { GameState } from "@/interfaces/game-state";
 import { Button, Card, Spinner } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
+import { BsArrowsMove } from "react-icons/bs";
+import { MdRestartAlt } from "react-icons/md";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { MdRestartAlt } from "react-icons/md";
-import { BsArrowsMove } from "react-icons/bs";
+
+import { GameState } from "@/interfaces/game-state";
 
 // --- CONFIGURATION ---
 const GRID_SIZE = 30;

@@ -1,4 +1,4 @@
-import { FieldValues, FieldPath, RegisterOptions } from "react-hook-form";
+import { FieldPath, FieldValues, RegisterOptions } from "react-hook-form";
 
 export interface FieldController<
   TFieldValues extends FieldValues = FieldValues,

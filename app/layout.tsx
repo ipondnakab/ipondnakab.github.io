@@ -1,7 +1,10 @@
-import type { Metadata } from "next";
-import Providers from "./providers";
 import "./globals.css";
+
+import type { Metadata } from "next";
+
 import DefaultLayout from "@/components/layouts/DefaultLayout";
+
+import Providers from "./providers";
 
 export interface RootLayoutProps {
   children: React.ReactNode;

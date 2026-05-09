@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import React from "react";
 
 export interface ProvidersProps {
   children: React.ReactNode;

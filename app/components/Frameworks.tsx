@@ -1,10 +1,10 @@
 import { Card } from "@nextui-org/react";
 import React from "react";
 import {
+  DiAngularSimple,
+  DiBootstrap,
   DiNodejsSmall,
   DiReact,
-  DiBootstrap,
-  DiAngularSimple,
 } from "react-icons/di";
 import {
   SiNextdotjs,

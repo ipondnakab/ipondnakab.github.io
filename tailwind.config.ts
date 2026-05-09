@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
 import { ColorScale, ConfigTheme, nextui } from "@nextui-org/react";
+import type { Config } from "tailwindcss";
 
 const primaryColors: ColorScale = {
   "50": "#f3b2c1",

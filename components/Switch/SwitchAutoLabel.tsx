@@ -1,7 +1,7 @@
 import { Switch, SwitchProps } from "@nextui-org/react";
 import clsx from "clsx";
-import React, { useState } from "react";
 import { delay } from "framer-motion";
+import React, { useState } from "react";
 
 export interface SwitchAutoLabelProps extends SwitchProps {
   disableLabel?: boolean;

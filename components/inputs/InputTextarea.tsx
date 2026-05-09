@@ -1,3 +1,4 @@
+import { Textarea } from "@nextui-org/react";
 import React from "react";
 import {
   Controller,
@@ -5,7 +6,7 @@ import {
   FieldValues,
   useFormContext,
 } from "react-hook-form";
-import { Textarea } from "@nextui-org/react";
+
 import { FieldController } from "@/interfaces/field-controller";
 
 export type InputTextareaProps<

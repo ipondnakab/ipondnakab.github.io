@@ -1,10 +1,12 @@
 "use client";
 
-import { textToCapital } from "@/functions/text-to-capital";
 import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
+
+import { textToCapital } from "@/functions/text-to-capital";
+
 import SwitchAutoLabel from "../Switch/SwitchAutoLabel";
 
 export interface ThemeSwitcherProps {

@@ -9,15 +9,17 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import React from "react";
-import CatLogo from "../Logo/CatLogo";
-import { ThemeSwitcher } from "@/components/layouts/ThemeSwitcher";
 import clsx from "clsx";
-import BackgroundParticles from "./BackgroundParticles";
-import AnimationSwitcher from "./AnimationSwitcher";
 import { usePathname } from "next/navigation";
-import { SOCIALS } from "@/constants/social";
+import React from "react";
+
+import { ThemeSwitcher } from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
+import { SOCIALS } from "@/constants/social";
+
+import CatLogo from "../Logo/CatLogo";
+import AnimationSwitcher from "./AnimationSwitcher";
+import BackgroundParticles from "./BackgroundParticles";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;

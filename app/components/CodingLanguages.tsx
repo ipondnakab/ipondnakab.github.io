@@ -1,15 +1,15 @@
 import { Card } from "@nextui-org/react";
 import React from "react";
-import {
-  SiJavascript,
-  SiTypescript,
-  SiHtml5,
-  SiCss3,
-  SiPython,
-  SiCplusplus,
-} from "react-icons/si";
 import { DiJava } from "react-icons/di";
 import { FaGolang } from "react-icons/fa6";
+import {
+  SiCplusplus,
+  SiCss3,
+  SiHtml5,
+  SiJavascript,
+  SiPython,
+  SiTypescript,
+} from "react-icons/si";
 
 export interface CodingLanguagesProps {}
 

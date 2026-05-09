@@ -1,5 +1,6 @@
-import PlanningPoker from "@/components/planning-poker/PlanningPoker";
 import React, { Suspense } from "react";
+
+import PlanningPoker from "@/components/planning-poker/PlanningPoker";
 
 export const metadata = {
   title: "Agile Planning Estimation",
