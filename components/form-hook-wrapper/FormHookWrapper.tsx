@@ -92,7 +92,7 @@ function FormHookWrapperInner<
       >
         {children && children(args)}
       </form>
-      {validateInitially && <TriggerFormInitially {...args} />}
+      {validateInitially && <TriggerFormInitially trigger={args.trigger} />}
     </FormProvider>
   );
 }
