@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+public/
+build/
+dist/
+coverage/
+postcss.config.js
