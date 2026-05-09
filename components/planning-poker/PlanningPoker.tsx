@@ -69,6 +69,7 @@ export default function PlanningPoker() {
   const [groupInput, setGroupInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [highlightedGroup, setHighlightedGroup] = useState<string>("");
+  const [tempDeckInput, setTempDeckInput] = useState<DeckType>("fibonacci");
 
   const activeDeck = useMemo(() => {
     if (!roomData) return DECKS.fibonacci;
@@ -116,6 +117,7 @@ export default function PlanningPoker() {
       if (snap.exists()) {
         const data = snap.data();
         setRoomData(data);
+        if (data.deckType) setTempDeckInput(data.deckType);
         if (data.customDeck) setCustomDeckInput(data.customDeck.join(", "));
         if (data.groups) setGroupInput(data.groups.join(", "));
         if (data.votes[userId]) {
@@ -660,10 +662,8 @@ export default function PlanningPoker() {
               <ModalBody>
                 <Tabs
                   fullWidth
-                  selectedKey={roomData?.deckType || "fibonacci"}
-                  onSelectionChange={(key) =>
-                    updateDeckSettings(key as DeckType)
-                  }
+                  selectedKey={tempDeckInput}
+                  onSelectionChange={(key) => setTempDeckInput(key as DeckType)}
                 >
                   <Tab key="fibonacci" title="Fibonacci" />
                   <Tab key="tshirt" title="T-Shirt" />
@@ -674,11 +674,11 @@ export default function PlanningPoker() {
                   placeholder="e.g. 1, 2, 3, 5"
                   variant="bordered"
                   value={
-                    roomData?.deckType === "custom"
+                    tempDeckInput === "custom"
                       ? customDeckInput
-                      : DECKS[roomData?.deckType as DeckType].join(", ")
+                      : DECKS[tempDeckInput as DeckType].join(", ")
                   }
-                  disabled={roomData?.deckType !== "custom"}
+                  disabled={tempDeckInput !== "custom"}
                   onChange={(e) => setCustomDeckInput(e.target.value)}
                   className="mt-4"
                 />
@@ -701,7 +701,7 @@ export default function PlanningPoker() {
                   color="primary"
                   onPress={() => {
                     updateDeckSettings(
-                      roomData?.deckType || "fibonacci",
+                      tempDeckInput || "fibonacci",
                       customDeckInput,
                     );
                     updateGroupSettings(groupInput);
