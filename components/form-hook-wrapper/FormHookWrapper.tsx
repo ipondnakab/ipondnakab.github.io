@@ -14,28 +14,28 @@ import { preventFormSubmit } from "@/functions/prevent-form-submit";
 
 export type SubmitHandler<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 > = (
   data: TFieldValues,
   event?: React.BaseSyntheticEvent,
   args?: UseFormReturn<TFieldValues, TContext>,
-) => any | Promise<any>;
+) => void | Promise<void>;
 
 export type SubmitErrorHandler<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 > = (
   data: FieldErrors<TFieldValues>,
   event?: React.BaseSyntheticEvent,
   args?: UseFormReturn<TFieldValues, TContext>,
-) => any | Promise<any>;
+) => void | Promise<void>;
 
 interface FormHookWrapperProps<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 > extends UseFormProps<TFieldValues, TContext> {
   validateInitially?: boolean;
-  validationSchema?: any | (() => any);
+  validationSchema?: unknown | (() => unknown);
   preventEnterSubmit?: boolean;
   onSubmit: SubmitHandler<TFieldValues, TContext>;
   onError?: SubmitErrorHandler<TFieldValues> | undefined;
@@ -44,12 +44,12 @@ interface FormHookWrapperProps<
 
 export type FormHookWrapperRef<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 > = UseFormReturn<TFieldValues, TContext>;
 
 function FormHookWrapperInner<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 >(
   {
     children,
@@ -99,7 +99,7 @@ function FormHookWrapperInner<
 
 const FormHookWrapper = React.forwardRef(FormHookWrapperInner) as <
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any,
+  TContext = unknown,
 >(
   props: FormHookWrapperProps<TFieldValues, TContext> & {
     ref?: React.ForwardedRef<FormHookWrapperRef<TFieldValues, TContext>>;

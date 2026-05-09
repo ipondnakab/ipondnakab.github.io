@@ -23,13 +23,13 @@ const Contact: React.FC<ContactProps> = () => {
     useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onSubmit = async (values: ContactForm) => {
+  const onSubmit = async () => {
     setIsLoading(true);
     try {
       // TODO: Send to API
       await new Promise((resolve) => setTimeout(resolve, 1000));
       router.push("/contact/success");
-    } catch (error) {
+    } catch {
       alert("Send message error please try again");
     } finally {
       setIsLoading(false);

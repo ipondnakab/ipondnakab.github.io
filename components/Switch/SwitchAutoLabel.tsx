@@ -21,7 +21,7 @@ const SwitchAutoLabel: React.FC<SwitchAutoLabelProps> = ({
       {...props}
       onClick={(e) => {
         if (!disableLabel) setShowText(true);
-        props.onClick && props.onClick(e);
+        if (props?.onClick) props.onClick(e);
       }}
       onMouseLeave={() => !disableLabel && delay(() => setShowText(false), 500)}
     >

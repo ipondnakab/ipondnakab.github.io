@@ -2,6 +2,7 @@
 import React from "react";
 import {
   FieldValues,
+  Path,
   useFieldArray,
   UseFieldArrayProps,
   UseFieldArrayReturn,
@@ -24,7 +25,7 @@ function FieldArrayWrapper<TFieldValues extends FieldValues = FieldValues>({
   const args = useFieldArray<TFieldValues>({ control, ...props });
 
   if (isWatch) {
-    const watchFieldArray = watch(props.name as any);
+    const watchFieldArray = watch(props.name as readonly Path<TFieldValues>[]);
     args.fields = args.fields.map((field, index) => {
       return {
         ...field,
