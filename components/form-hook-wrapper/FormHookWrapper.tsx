@@ -38,7 +38,7 @@ interface FormHookWrapperProps<
   validationSchema?: unknown | (() => unknown);
   preventEnterSubmit?: boolean;
   onSubmit: SubmitHandler<TFieldValues, TContext>;
-  onError?: SubmitErrorHandler<TFieldValues> | undefined;
+  onError?: SubmitErrorHandler<TFieldValues, TContext> | undefined;
   children?: (args: UseFormReturn<TFieldValues, TContext>) => React.ReactNode;
 }
 
@@ -79,7 +79,10 @@ function FormHookWrapperInner<
     data: FieldErrors<TFieldValues>,
     event?: React.BaseSyntheticEvent,
   ) => {
-    return onError && onError(data, event, args);
+    return (
+      onError &&
+      onError(data, event, args as UseFormReturn<TFieldValues, TContext>)
+    );
   };
 
   useImperativeHandle(forwardRef, () => args, [args]);

@@ -6,15 +6,17 @@ export interface PlayerVote {
   group?: string; // เพิ่มกลุ่มของผู้เล่น
 }
 
+export interface PlayerVotes {
+  [userId: string]: PlayerVote;
+}
+
 export interface RoomData {
   adminId: string; // เก็บ ID ของหัวห้อง
   revealed: boolean;
   deckType: DeckType;
   customDeck?: string[]; // ใช้เมื่อ deckType เป็น "custom"
   groups?: string[]; // ใช้สำหรับจัดกลุ่มผู้เล่น
-  votes: {
-    [userId: string]: PlayerVote;
-  };
+  votes: PlayerVotes;
 }
 
 export const DECKS: Record<DeckType, string[]> = {

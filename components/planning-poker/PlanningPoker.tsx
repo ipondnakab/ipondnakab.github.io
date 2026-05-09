@@ -9,7 +9,7 @@ import {
   deleteField,
   getDoc,
 } from "firebase/firestore";
-import { RoomData, DECKS, DeckType } from "@/interfaces/poker";
+import { RoomData, DECKS, DeckType, PlayerVotes } from "@/interfaces/poker";
 import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
 
 import {
@@ -214,7 +214,7 @@ export default function PlanningPoker() {
     );
 
   const resetRound = async () => {
-    const resetVotes: any = {};
+    const resetVotes: PlayerVotes = {};
     Object.keys(roomData!.votes).forEach((id) => {
       resetVotes[id] = { ...roomData!.votes[id], score: null };
     });
