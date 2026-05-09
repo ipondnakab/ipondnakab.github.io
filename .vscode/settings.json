@@ -1,7 +1,9 @@
 {
-  "cSpell.words": [
-    "clsx",
-    "Khun",
-    "Khunkao"
-  ]
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript","javascriptreact","typescript","typescriptreact"],
+  "editor.formatOnSave": false
 }
+
