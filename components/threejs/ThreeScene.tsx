@@ -363,8 +363,10 @@ const ThreeScene: React.FC = () => {
     // =====================
     const clock = new THREE.Clock();
 
+    let rafId: number | null = null;
+
     const animate = () => {
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
       const delta = Math.min(clock.getDelta(), 0.1);
       mixer?.update(delta);
 
@@ -537,8 +539,48 @@ const ThreeScene: React.FC = () => {
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("wheel", onScroll);
       window.removeEventListener("pointerdown", onPointerDown);
+      if (rafId) cancelAnimationFrame(rafId);
+      try {
+        mixer?.stopAllAction?.();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to stop animations on cleanup.", error);
+      }
+
+      type TexMaterial = THREE.Material &
+        Partial<{
+          map: THREE.Texture;
+          lightMap: THREE.Texture;
+          bumpMap: THREE.Texture;
+          normalMap: THREE.Texture;
+          specularMap: THREE.Texture;
+          dispose: () => void;
+        }>;
+
+      scene.traverse((obj) => {
+        const mesh = obj as THREE.Mesh;
+        if (mesh.isMesh) {
+          if (mesh.geometry) mesh.geometry.dispose();
+          const material = mesh.material as TexMaterial | TexMaterial[] | null;
+          if (material) {
+            const disposeMap = (m: TexMaterial) => {
+              if (!m) return;
+              if (m.map) m.map.dispose();
+              if (m.lightMap) m.lightMap.dispose();
+              if (m.bumpMap) m.bumpMap.dispose();
+              if (m.normalMap) m.normalMap.dispose();
+              if (m.specularMap) m.specularMap.dispose();
+              if (typeof m.dispose === "function") m.dispose();
+            };
+            if (Array.isArray(material)) material.forEach(disposeMap);
+            else disposeMap(material as TexMaterial);
+          }
+        }
+      });
+
+      renderer.forceContextLoss();
+      renderer.domElement.parentNode?.removeChild(renderer.domElement);
       renderer.dispose();
-      mountNode.removeChild(renderer.domElement);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -607,7 +649,6 @@ const ThreeScene: React.FC = () => {
             </li>
           </ul>
           <Button
-            onClick={() => setShowHint(false)}
             onPress={() => setShowHint(false)}
             className="mt-[15px] w-full p-2 bg-white/20 hover:bg-white/30  font-bold rounded-lg transition-colors cursor-pointer"
           >
@@ -619,7 +660,6 @@ const ThreeScene: React.FC = () => {
       {gameState === GameState.GAME && !isLoading && (
         <>
           <Button
-            onClick={() => backToIntroRef.current()}
             onPress={() => backToIntroRef.current()}
             className="fixed top-20 right-5 z-10 cursor-pointer"
           >
