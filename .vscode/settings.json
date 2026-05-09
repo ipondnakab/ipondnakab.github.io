@@ -9,5 +9,6 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ]
+  ],
+  "cSpell.words": ["nextui"]
 }
