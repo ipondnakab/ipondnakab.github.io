@@ -21,18 +21,23 @@
     "node_modules/",
     ".next/",
     "out/",
+    "dist/",
+    "build/",
+    "coverage/",
     "public/",
     "postcss.config.js"
   ],
   "rules": {
-    "no-console": "warn",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
-    ],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-var": "error",
+    "prefer-const": "error",
+    "eqeqeq": ["error", "smart"],
+    "no-unneeded-ternary": "error",
+    "object-shorthand": ["error", "properties"],
+    "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
-      "warn",
+      "error",
       {
         "vars": "all",
         "varsIgnorePattern": "^_",
@@ -40,10 +45,22 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-var-requires": "off",
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "@typescript-eslint/no-empty-object-type": "off",
-    "sort-imports": "off"
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "sort-imports": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["../*", "../**"],
+            "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+          }
+        ]
+      }
+    ]
   }
 }
