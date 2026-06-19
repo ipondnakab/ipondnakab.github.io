@@ -21,7 +21,7 @@ const switchProps: SwitchProps = {
   endContent: <FaSun />,
 };
 
-export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
+const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   disableLabel,
   disableLabelAnimation,
 }) => {
@@ -67,3 +67,5 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     />
   );
 };
+
+export default ThemeSwitcher;

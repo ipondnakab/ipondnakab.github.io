@@ -1,3 +1,5 @@
+"use client";
+
 import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";

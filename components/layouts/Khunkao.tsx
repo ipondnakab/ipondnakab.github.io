@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Image, Input } from "@nextui-org/react";
 import clsx from "clsx";
 import dayjs from "dayjs";

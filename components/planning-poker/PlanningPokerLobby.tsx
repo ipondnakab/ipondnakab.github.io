@@ -88,7 +88,7 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
                     variant={userGroup === group ? "solid" : "flat"}
                     color="primary"
                     onClick={() =>
-                      group == userGroup
+                      group === userGroup
                         ? setUserGroup("")
                         : setUserGroup(group)
                     }

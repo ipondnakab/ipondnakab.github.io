@@ -70,7 +70,7 @@ const PlanningPokerSettingUserModal: React.FC<
                         variant={tempGroup === group ? "solid" : "bordered"}
                         color="primary"
                         onClick={() =>
-                          group == tempGroup
+                          group === tempGroup
                             ? setTempGroup("")
                             : setTempGroup(group)
                         }

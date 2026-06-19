@@ -13,7 +13,7 @@ import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import { ThemeSwitcher } from "@/components/layouts/ThemeSwitcher";
+import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
 import { SOCIALS } from "@/constants/social";
 

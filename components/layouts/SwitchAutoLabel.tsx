@@ -1,3 +1,5 @@
+"use client";
+
 import { Switch, SwitchProps } from "@nextui-org/react";
 import clsx from "clsx";
 import { delay } from "framer-motion";

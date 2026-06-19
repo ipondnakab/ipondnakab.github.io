@@ -1,3 +1,5 @@
+"use client";
+
 import { RoomData, RoomStats } from "@/interfaces/poker";
 import { Card, Chip } from "@nextui-org/react";
 import React, { useState } from "react";
