@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card } from "@nextui-org/react";
+import { Button, Card, Image } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 import generatePayload from "promptpay-qr";
 import QRCode from "qrcode";
@@ -22,7 +22,14 @@ const PromptPay: React.FC = () => {
         amount: amount ? parseFloat(amount) : undefined,
       });
 
-      const image = await QRCode.toDataURL(payload);
+      const image = await QRCode.toDataURL(payload, {
+        scale: 10,
+        margin: 2,
+        color: {
+          dark: "#1a1a1a",
+          light: "#FFFFFF",
+        },
+      });
       setQr(image);
     };
 
@@ -46,7 +53,7 @@ const PromptPay: React.FC = () => {
 
   if (!target) {
     return (
-      <main className="flex-1 min-h-[calc(100vh-4rem)] flex sm:items-center sm:justify-center p-6">
+      <main className="flex-1 sm:min-h-[calc(100vh-4rem)] flex items-center sm:justify-center p-6">
         <Card
           isBlurred
           className="flex items-center justify-center p-6 w-full sm:max-w-md"
@@ -87,18 +94,29 @@ const PromptPay: React.FC = () => {
   }
 
   return (
-    <main className="flex-1 min-h-[calc(100vh-4rem)] flex flex-col sm:items-center sm:justify-center p-6">
+    <main className="flex-1 sm:min-h-[calc(100vh-4rem)] gap-4 flex flex-col items-center sm:justify-center p-6">
+      <Image
+        src="/images/promptpay.png"
+        alt="PromptPay Logo"
+        className="w-full sm:max-w-96 object-contain rounded-none border-[12px] border-white bg-[#163C67] p-1 "
+      />
       {qr && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={qr}
-          className="w-full sm:max-w-96 h-full object-contain"
+          className="w-full sm:max-w-96 h-full object-contain rounded-none"
           alt="qr"
         />
       )}
+      <Card className="w-full sm:max-w-96">
+        <div className="text-center p-4">
+          <p>Target: {target}</p>
+          {amount && (
+            <p className="text-sm text-foreground/70">Amount: ${amount}</p>
+          )}
+        </div>
+      </Card>
       <Button
         onPress={() => (window.location.href = "/prompt-pay")}
-        className="mt-4"
         color="primary"
       >
         Generate Another QR
