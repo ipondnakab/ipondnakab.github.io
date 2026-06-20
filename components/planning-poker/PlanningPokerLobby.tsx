@@ -78,25 +78,30 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
             onChange={(e) => setUserName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleJoin()}
           />
-          {roomData?.groups && roomData?.groups?.length > 0 && (
+          {roomData?.groupOptions && roomData?.groupOptions?.length > 0 && (
             <>
               <h2 className="text-xl font-bold">Select Group</h2>
               <div className="flex flex-wrap gap-2">
-                {roomData.groups.map((group) => (
-                  <Chip
-                    key={group}
-                    variant={userGroup === group ? "solid" : "flat"}
-                    color="primary"
-                    onClick={() =>
-                      group === userGroup
-                        ? setUserGroup("")
-                        : setUserGroup(group)
-                    }
-                    className="cursor-pointer select-none"
-                  >
-                    {group}
-                  </Chip>
-                ))}
+                {roomData.groupOptions.map((group) => {
+                  const isSelected = userGroup === group.name;
+                  return (
+                    <Chip
+                      key={group.name}
+                      variant={isSelected ? "solid" : "bordered"}
+                      style={
+                        isSelected
+                          ? { backgroundColor: group.color, color: "#fff" }
+                          : { borderColor: group.color, color: group.color }
+                      }
+                      onClick={() =>
+                        isSelected ? setUserGroup("") : setUserGroup(group.name)
+                      }
+                      className="cursor-pointer select-none"
+                    >
+                      {group.name}
+                    </Chip>
+                  );
+                })}
               </div>
             </>
           )}

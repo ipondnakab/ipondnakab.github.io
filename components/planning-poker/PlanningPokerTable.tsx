@@ -29,11 +29,25 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
     >
       <div className="w-full h-full flex flex-wrap items-center justify-center gap-8">
         {Object.entries(roomData?.votes || {})
-          .sort(([uidA], [uidB]) => uidA.localeCompare(uidB))
+          .sort(([uidA, a], [uidB, b]) => {
+            if (roomData?.sortByGroup) {
+              const groupA = a.group ?? "";
+              const groupB = b.group ?? "";
+              if (groupA !== groupB) {
+                if (!groupA) return 1; // ผู้เล่นที่ไม่มีกลุ่มไปอยู่ท้ายสุด
+                if (!groupB) return -1;
+                return groupA.localeCompare(groupB);
+              }
+            }
+            return uidA.localeCompare(uidB);
+          })
           .map(([uid, data]) => {
             const hasVoted = data.score !== null;
             const isRevealed = roomData?.revealed;
             const isMe = uid === userId;
+            const playerGroup = roomData?.groupOptions?.find(
+              (g) => g.name === data.group,
+            );
 
             return (
               <div
@@ -56,30 +70,32 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                     )}
                   >
                     <div
-                      className={`absolute inset-0 backface-hidden rounded-2xl border-2 flex flex-col items-center justify-center shadow-lg transition-all
-                        ${hasVoted ? "bg-primary border-primary text-white scale-105" : "border-primary text-primary"}
-                      `}
+                      style={{
+                        borderColor: playerGroup?.color || "#d80032",
+                        backgroundColor: hasVoted
+                          ? playerGroup?.color || "#d80032"
+                          : undefined,
+                      }}
+                      className={cn(
+                        "absolute inset-0 backface-hidden rounded-2xl border-2 flex flex-col items-center justify-center shadow-lg transition-all",
+                        hasVoted ? "text-white scale-105" : "text-primary",
+                      )}
                     >
-                      {roomData?.groups &&
-                        roomData.groups.length > 0 &&
-                        data.group &&
-                        roomData.groups.includes(data.group) && (
-                          <Chip
-                            size="sm"
-                            variant="solid"
-                            color="primary"
-                            className={cn(
-                              "absolute top-2  text-white rounded-full",
-                              {
-                                "opacity-0": !data.group,
-                              },
-                            )}
-                          >
-                            <div className="max-w-14 truncate">
-                              {data.group}
-                            </div>
-                          </Chip>
-                        )}
+                      {playerGroup && (
+                        <Chip
+                          size="sm"
+                          variant="solid"
+                          style={{
+                            backgroundColor: playerGroup.color,
+                            color: "#fff",
+                          }}
+                          className="absolute top-2 text-white rounded-full"
+                        >
+                          <div className="max-w-14 truncate">
+                            {playerGroup.name}
+                          </div>
+                        </Chip>
+                      )}
                       {hasVoted ? (
                         <span className="font-black sm:text-[20px] italic">
                           READY
@@ -88,27 +104,27 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                         <IoHelpOutline size={32} />
                       )}
                     </div>
-                    <Card className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl border-4 border-primary flex items-center justify-center shadow-xl bg-primary">
-                      {roomData?.groups &&
-                        roomData.groups.length > 0 &&
-                        data.group &&
-                        roomData.groups.includes(data.group) && (
-                          <Chip
-                            size="sm"
-                            variant="solid"
-                            color="primary"
-                            className={cn(
-                              "absolute top-2  text-white rounded-full",
-                              {
-                                "opacity-0": !data.group,
-                              },
-                            )}
-                          >
-                            <div className="max-w-14 truncate">
-                              {data.group}
-                            </div>
-                          </Chip>
-                        )}
+                    <div
+                      style={{
+                        backgroundColor: playerGroup?.color || "#d80032",
+                      }}
+                      className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl flex items-center justify-center shadow-xl"
+                    >
+                      {playerGroup && (
+                        <Chip
+                          size="sm"
+                          variant="solid"
+                          style={{
+                            backgroundColor: playerGroup.color,
+                            color: "#fff",
+                          }}
+                          className="absolute top-2 text-white rounded-full"
+                        >
+                          <div className="max-w-14 truncate">
+                            {playerGroup.name}
+                          </div>
+                        </Chip>
+                      )}
                       <div
                         className={cn({
                           "w-5 aspect-square rounded-full bg-white overflow-hidden":
@@ -129,11 +145,16 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                           {(isRevealed ? data.score : "ไม่บอกหรอก!") || "☕"}
                         </div>
                       </div>
-                    </Card>
+                    </div>
                   </div>
                 </div>
                 <div
                   className={`flex sm:max-w-24 max-w-16 items-center gap-1 group rounded-lg px-2 py-1 ${isMe ? "bg-primary text-white cursor-pointer" : "bg-default-100 text-default-600"}`}
+                  style={{
+                    backgroundColor: isMe
+                      ? playerGroup?.color || "#d80032"
+                      : undefined,
+                  }}
                   onClick={() => {
                     if (!isMe) return;
                     setTempName(userName);

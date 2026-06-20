@@ -15,6 +15,7 @@ import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
 import {
   DECKS,
   DeckType,
+  GroupObject,
   PlayerVotes,
   RoomData,
   RoomStats,
@@ -42,7 +43,7 @@ const PlanningPoker: React.FC = () => {
   } = useDisclosure();
 
   const [roomId, setRoomId] = useState<string | null>(null);
-  const [userId] = useState<string>(() => {
+  const [userId] = useMemo<string>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("poker_user_id");
       if (saved) return saved;
@@ -50,8 +51,8 @@ const PlanningPoker: React.FC = () => {
       localStorage.setItem("poker_user_id", newId);
       return newId;
     }
-    return "";
-  });
+    return Math.random().toString(36).substring(7);
+  }, []);
   const [userName, setUserName] = useState<string>("");
   const [userGroup, setUserGroup] = useState<string>("");
   const [tempName, setTempName] = useState<string>("");
@@ -59,7 +60,8 @@ const PlanningPoker: React.FC = () => {
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const [roomData, setRoomData] = useState<RoomData | null>(null);
   const [customDeckInput, setCustomDeckInput] = useState("");
-  const [groupInput, setGroupInput] = useState("");
+  const [groupOptionsInput, setGroupOptionsInput] = useState<GroupObject[]>([]);
+  const [sortByGroupInput, setSortByGroupInput] = useState(false);
   const [loading, setLoading] = useState(true);
   const [highlightedGroup, setHighlightedGroup] = useState<string>("");
   const [tempDeckInput, setTempDeckInput] = useState<DeckType>("fibonacci");
@@ -85,9 +87,10 @@ const PlanningPoker: React.FC = () => {
       getDoc(docRef)
         .then((docSnap) => {
           if (docSnap.exists()) {
-            setRoomData(docSnap.data());
-            setUserName(docSnap.data().votes[userId]?.name || userName);
-            setUserGroup(docSnap.data().votes[userId]?.group || userGroup);
+            const data = docSnap.data();
+            setRoomData(data);
+            setUserName((userName) => data.votes[userId]?.name || userName);
+            setUserGroup((userGroup) => data.votes[userId]?.group || userGroup);
           }
         })
         .catch(() => {
@@ -96,8 +99,7 @@ const PlanningPoker: React.FC = () => {
         .finally(() => setLoading(false));
     }
     setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (!roomId || !isJoined) return;
@@ -112,7 +114,8 @@ const PlanningPoker: React.FC = () => {
         setRoomData(data);
         if (data.deckType) setTempDeckInput(data.deckType);
         if (data.customDeck) setCustomDeckInput(data.customDeck.join(", "));
-        if (data.groups) setGroupInput(data.groups.join(", "));
+        setGroupOptionsInput(data.groupOptions ?? []);
+        setSortByGroupInput(data.sortByGroup ?? false);
         if (data.votes[userId]) {
           setUserName((prev) => data.votes[userId].name || prev);
           setUserGroup(data.votes[userId].group || "");
@@ -234,17 +237,34 @@ const PlanningPoker: React.FC = () => {
     );
   };
 
-  const updateGroupSettings = async (groupStr: string) => {
+  const updateSortByGroup = async (value: boolean) => {
     if (!roomId) return;
-    const groups = groupStr
-      .split(",")
-      .map((g) => g.trim())
-      .filter((g) => g !== "");
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
-      { groups },
+      { sortByGroup: value },
       { merge: true },
     );
+  };
+
+  const updateGroupSettings = async (groupOptions: GroupObject[]) => {
+    if (!roomId) return;
+    const cleaned = groupOptions
+      .map((g) => ({ name: g.name.trim(), color: g.color }))
+      .filter((g) => g.name !== "");
+    const groups = new Set(cleaned.map((g) => g.name));
+    await setDoc(
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      { groupOptions: cleaned, groups: Array.from(groups) },
+      { merge: true },
+    );
+  };
+
+  const handleOpenDeckSettings = () => {
+    setTempDeckInput(roomData?.deckType ?? "fibonacci");
+    setCustomDeckInput(roomData?.customDeck?.join(", ") ?? "");
+    setGroupOptionsInput(roomData?.groupOptions ?? []);
+    setSortByGroupInput(roomData?.sortByGroup ?? false);
+    onDeckSettingModalOpen();
   };
 
   if (!roomId || !isJoined) {
@@ -273,11 +293,11 @@ const PlanningPoker: React.FC = () => {
       {/* 2. Stats Section */}
       <PlanningPokerStats roomData={roomData} stats={stats} roomId={roomId} />
 
-      {roomData?.groups && roomData.groups.length > 0 && (
+      {roomData?.groupOptions && roomData.groupOptions.length > 0 && (
         <div className="flex flex-1 items-center flex-wrap justify-center gap-6">
-          {roomData.groups.map((group) => (
+          {roomData.groupOptions.map((group) => (
             <PlanningPokerGroupButton
-              key={group}
+              key={group.name}
               highlightedGroup={highlightedGroup}
               group={group}
               setHighlightedGroup={setHighlightedGroup}
@@ -305,7 +325,7 @@ const PlanningPoker: React.FC = () => {
         roomData={roomData}
         userId={userId}
         handleVote={handleVote}
-        onClickSettings={onDeckSettingModalOpen}
+        onClickSettings={handleOpenDeckSettings}
       />
 
       {/* 5. Deck Settings Modal */}
@@ -316,10 +336,13 @@ const PlanningPoker: React.FC = () => {
         tempDeckInput={tempDeckInput}
         setCustomDeckInput={setCustomDeckInput}
         customDeckInput={customDeckInput}
-        setGroupInput={setGroupInput}
-        groupInput={groupInput}
+        setGroupOptionsInput={setGroupOptionsInput}
+        groupOptionsInput={groupOptionsInput}
+        sortByGroupInput={sortByGroupInput}
+        setSortByGroupInput={setSortByGroupInput}
         updateDeckSettings={updateDeckSettings}
         updateGroupSettings={updateGroupSettings}
+        updateSortByGroup={updateSortByGroup}
       />
 
       {/* 6. Rename User Modal */}

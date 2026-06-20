@@ -59,26 +59,33 @@ const PlanningPokerSettingUserModal: React.FC<
                 }}
               />
             </ModalBody>
-            {roomData?.groups && roomData?.groups.length > 0 && (
+            {roomData?.groupOptions && roomData?.groupOptions.length > 0 && (
               <>
                 <ModalHeader>Change Your Group</ModalHeader>
                 <ModalBody>
                   <div className="flex flex-wrap gap-2">
-                    {roomData?.groups?.map((group) => (
-                      <Chip
-                        key={group}
-                        variant={tempGroup === group ? "solid" : "bordered"}
-                        color="primary"
-                        onClick={() =>
-                          group === tempGroup
-                            ? setTempGroup("")
-                            : setTempGroup(group)
-                        }
-                        className="cursor-pointer select-none"
-                      >
-                        {group}
-                      </Chip>
-                    ))}
+                    {roomData?.groupOptions?.map((group) => {
+                      const isSelected = tempGroup === group.name;
+                      return (
+                        <Chip
+                          key={group.name}
+                          variant={isSelected ? "solid" : "bordered"}
+                          style={
+                            isSelected
+                              ? { backgroundColor: group.color, color: "#fff" }
+                              : { borderColor: group.color, color: group.color }
+                          }
+                          onClick={() =>
+                            isSelected
+                              ? setTempGroup("")
+                              : setTempGroup(group.name)
+                          }
+                          className="cursor-pointer select-none"
+                        >
+                          {group.name}
+                        </Chip>
+                      );
+                    })}
                   </div>
                 </ModalBody>
               </>
