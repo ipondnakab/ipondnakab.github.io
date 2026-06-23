@@ -98,12 +98,12 @@ const PromptPay: React.FC = () => {
       <Image
         src="/images/promptpay.png"
         alt="PromptPay Logo"
-        className="w-full sm:max-w-96 object-contain rounded-none border-[12px] border-white bg-[#163C67] p-1 "
+        className="w-full max-w-[370px] object-contain rounded-none border-[12px] border-white bg-[#163C67] p-1 "
       />
       {qr && (
         <Image
           src={qr}
-          className="w-full sm:max-w-96 h-full object-contain rounded-none"
+          className="w-full max-w-[370px] h-full object-contain rounded-none"
           alt="qr"
         />
       )}
