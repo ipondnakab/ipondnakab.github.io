@@ -36,7 +36,7 @@ const PlanningPokerCardSelection: React.FC<PlanningPokerCardSelectionProps> = ({
           <Divider orientation="vertical" className="h-8" />
           <div className="flex gap-3 py-4 flex-1 justify-center">
             {activeDeck.map((val) => {
-              const isSelected = roomData?.votes[userId]?.score === val;
+              const isSelected = roomData?.votes?.[userId]?.score === val;
               return (
                 <Button
                   key={val}

@@ -89,8 +89,14 @@ const PlanningPoker: React.FC = () => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setRoomData(data);
-            setUserName((userName) => data.votes[userId]?.name || userName);
-            setUserGroup((userGroup) => data.votes[userId]?.group || userGroup);
+            setUserName(
+              (userName) =>
+                (data.votes && data.votes?.[userId]?.name) || userName,
+            );
+            setUserGroup(
+              (userGroup) =>
+                (data.votes && data.votes?.[userId]?.group) || userGroup,
+            );
           }
         })
         .catch(() => {
@@ -128,7 +134,7 @@ const PlanningPoker: React.FC = () => {
             (sortByGroup) => sortByGroup || (data.sortByGroup ?? false),
           );
         }
-        if (data.votes[userId]) {
+        if (data.votes?.[userId]) {
           setUserName((prev) => data.votes[userId].name || prev);
           setUserGroup(data.votes[userId].group || "");
         }
@@ -202,7 +208,7 @@ const PlanningPoker: React.FC = () => {
 
   const handleVote = async (score: string) => {
     if (!roomId || !roomData) return;
-    const current = roomData.votes[userId]?.score;
+    const current = roomData.votes?.[userId]?.score;
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       {
