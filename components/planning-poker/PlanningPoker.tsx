@@ -43,7 +43,7 @@ const PlanningPoker: React.FC = () => {
   } = useDisclosure();
 
   const [roomId, setRoomId] = useState<string | null>(null);
-  const [userId] = useMemo<string>(() => {
+  const userId = useMemo<string>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("poker_user_id");
       if (saved) return saved;
@@ -59,10 +59,10 @@ const PlanningPoker: React.FC = () => {
   const [tempGroup, setTempGroup] = useState<string>("");
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const [roomData, setRoomData] = useState<RoomData | null>(null);
-  const [customDeckInput, setCustomDeckInput] = useState("");
+  const [customDeckInput, setCustomDeckInput] = useState<string>("");
   const [groupOptionsInput, setGroupOptionsInput] = useState<GroupObject[]>([]);
-  const [sortByGroupInput, setSortByGroupInput] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [sortByGroupInput, setSortByGroupInput] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [highlightedGroup, setHighlightedGroup] = useState<string>("");
   const [tempDeckInput, setTempDeckInput] = useState<DeckType>("fibonacci");
 
@@ -112,10 +112,22 @@ const PlanningPoker: React.FC = () => {
       if (snap.exists()) {
         const data = snap.data();
         setRoomData(data);
-        if (data.deckType) setTempDeckInput(data.deckType);
-        if (data.customDeck) setCustomDeckInput(data.customDeck.join(", "));
-        setGroupOptionsInput(data.groupOptions ?? []);
-        setSortByGroupInput(data.sortByGroup ?? false);
+        if (data.deckType)
+          setTempDeckInput((deckType) => deckType || data.deckType);
+        if (data.customDeck)
+          setCustomDeckInput(
+            (customDeck) => customDeck || (data.customDeck || []).join(", "),
+          );
+        if (data.groupOptions) {
+          setGroupOptionsInput((groupOptions) =>
+            groupOptions.length > 0 ? groupOptions : (data.groupOptions ?? []),
+          );
+        }
+        if (data.sortByGroup !== undefined) {
+          setSortByGroupInput(
+            (sortByGroup) => sortByGroup || (data.sortByGroup ?? false),
+          );
+        }
         if (data.votes[userId]) {
           setUserName((prev) => data.votes[userId].name || prev);
           setUserGroup(data.votes[userId].group || "");
