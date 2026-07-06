@@ -18,6 +18,7 @@ export interface PlanningPokerSettingUserModalProps {
   tempGroup: string;
   setTempGroup: React.Dispatch<React.SetStateAction<string>>;
   roomData: RoomData | null;
+  isEditingOther?: boolean;
   handleUpdateVoterData: () => void;
 }
 
@@ -31,6 +32,7 @@ const PlanningPokerSettingUserModal: React.FC<
   tempGroup,
   setTempGroup,
   roomData,
+  isEditingOther = false,
   handleUpdateVoterData,
 }) => {
   return (
@@ -43,7 +45,9 @@ const PlanningPokerSettingUserModal: React.FC<
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>Change Your Name</ModalHeader>
+            <ModalHeader>
+              {isEditingOther ? "Edit Player Name" : "Change Your Name"}
+            </ModalHeader>
             <ModalBody>
               <Input
                 autoFocus
@@ -61,7 +65,9 @@ const PlanningPokerSettingUserModal: React.FC<
             </ModalBody>
             {roomData?.groupOptions && roomData?.groupOptions.length > 0 && (
               <>
-                <ModalHeader>Change Your Group</ModalHeader>
+                <ModalHeader>
+                  {isEditingOther ? "Edit Player Group" : "Change Your Group"}
+                </ModalHeader>
                 <ModalBody>
                   <div className="flex flex-wrap gap-2">
                     {roomData?.groupOptions?.map((group) => {

@@ -1,15 +1,23 @@
 import { RoomData } from "@/interfaces/poker";
 import { Button, Card, Chip } from "@nextui-org/react";
-import { IoEye, IoEyeOff, IoPeople, IoRefresh } from "react-icons/io5";
+import {
+  IoEye,
+  IoEyeOff,
+  IoPeople,
+  IoRefresh,
+  IoShieldCheckmark,
+} from "react-icons/io5";
 
 export interface PlanningPokerHeaderProps {
   roomData: RoomData | null;
+  isAdmin: boolean;
   toggleReveal: () => void;
   resetRound: () => void;
 }
 
 const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
   roomData,
+  isAdmin,
   toggleReveal,
   resetRound,
 }) => {
@@ -27,6 +35,16 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
         >
           {Object.keys(roomData?.votes || {}).length} Players
         </Chip>
+        {isAdmin && (
+          <Chip
+            size="lg"
+            variant="flat"
+            color="warning"
+            startContent={<IoShieldCheckmark className="ml-1" />}
+          >
+            Admin
+          </Chip>
+        )}
         <span className="md:inline hidden text-[12px]">
           Let&apos;s estimate this together 🚀
         </span>

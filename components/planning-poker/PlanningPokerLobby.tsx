@@ -6,6 +6,7 @@ export interface PlanningPokerLobbyProps {
   loading: boolean;
   roomData: RoomData | null;
   userGroup?: string;
+  wasKicked?: boolean;
   setUserGroup: (group: string) => void;
   setUserName: (name: string) => void;
   handleJoin: () => void;
@@ -16,6 +17,7 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
   loading,
   roomData,
   userGroup,
+  wasKicked = false,
   setUserGroup,
   setUserName,
   handleJoin,
@@ -71,6 +73,16 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
         </Card>
       ) : (
         <Card isBlurred className="max-w-sm w-full p-8 gap-4 shadow-xl">
+          {wasKicked && (
+            <Chip
+              variant="flat"
+              color="danger"
+              className="self-center max-w-full h-auto py-2 text-center whitespace-normal"
+            >
+              You were removed from the room by an admin. Enter your name to
+              rejoin.
+            </Chip>
+          )}
           <h2 className="text-xl font-bold">Your Name</h2>
           <Input
             variant="bordered"

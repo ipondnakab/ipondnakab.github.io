@@ -1,5 +1,6 @@
 "use client";
 
+import { PLANNING_POKER_ADMIN_PARAM } from "@/constants/planning-poker";
 import { RoomData, RoomStats } from "@/interfaces/poker";
 import { Card, Chip } from "@nextui-org/react";
 import React, { useState } from "react";
@@ -18,7 +19,10 @@ const PlanningPokerStats: React.FC<PlanningPokerStatsProps> = ({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href);
+    // Strip the admin secret so a shared link can't grant admin to others.
+    const url = new URL(window.location.href);
+    url.searchParams.delete(PLANNING_POKER_ADMIN_PARAM);
+    navigator.clipboard.writeText(url.toString());
     setCopied(true);
     setTimeout(() => setCopied(false), 1000);
   };

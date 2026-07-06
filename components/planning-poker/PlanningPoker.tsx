@@ -12,6 +12,8 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 
 import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
+import { PLANNING_POKER_ADMIN_PARAM } from "@/constants/planning-poker";
+import { environment } from "@/core/environment";
 import {
   DECKS,
   DeckType,
@@ -22,6 +24,7 @@ import {
 } from "@/interfaces/poker";
 import { db } from "@/libs/firebase";
 import PlanningPokerCardSelection from "./PlanningPokerCardSelection";
+import PlanningPokerConfirmKickModal from "./PlanningPokerConfirmKickModal";
 import PlanningPokerDeckSettingsModal from "./PlanningPokerDeckSettingsModal";
 import PlanningPokerGroupButton from "./PlanningPokerGroupButton";
 import PlanningPokerHeader from "./PlanningPokerHeader";
@@ -41,6 +44,11 @@ const PlanningPoker: React.FC = () => {
     onOpen: onSettingUserModalOpen,
     onOpenChange: onSettingUserModalChange,
   } = useDisclosure();
+  const {
+    isOpen: isKickModalOpen,
+    onOpen: onKickModalOpen,
+    onOpenChange: onKickModalChange,
+  } = useDisclosure();
 
   const [roomId, setRoomId] = useState<string | null>(null);
   const userId = useMemo<string>(() => {
@@ -57,7 +65,11 @@ const PlanningPoker: React.FC = () => {
   const [userGroup, setUserGroup] = useState<string>("");
   const [tempName, setTempName] = useState<string>("");
   const [tempGroup, setTempGroup] = useState<string>("");
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [voterToKick, setVoterToKick] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isJoined, setIsJoined] = useState<boolean>(false);
+  const [wasKicked, setWasKicked] = useState<boolean>(false);
   const [roomData, setRoomData] = useState<RoomData | null>(null);
   const [customDeckInput, setCustomDeckInput] = useState<string>("");
   const [groupOptionsInput, setGroupOptionsInput] = useState<GroupObject[]>([]);
@@ -73,6 +85,14 @@ const PlanningPoker: React.FC = () => {
     }
     return DECKS[roomData.deckType as DeckType] || DECKS.fibonacci;
   }, [roomData]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setIsAdmin(
+      params.get(PLANNING_POKER_ADMIN_PARAM) === environment.pokerAdminSecret,
+    );
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -117,6 +137,12 @@ const PlanningPoker: React.FC = () => {
     const unsubscribe = onSnapshot(docRef, (snap) => {
       if (snap.exists()) {
         const data = snap.data();
+        // An admin removed us from the room -> drop back to the lobby.
+        if (!data.votes?.[userId]) {
+          setIsJoined(false);
+          setWasKicked(true);
+          return;
+        }
         setRoomData(data);
         if (data.deckType)
           setTempDeckInput((deckType) => deckType || data.deckType);
@@ -172,6 +198,7 @@ const PlanningPoker: React.FC = () => {
 
   const handleJoin = async () => {
     if (!roomId || !userName) return;
+    setWasKicked(false);
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       {
@@ -188,13 +215,23 @@ const PlanningPoker: React.FC = () => {
     setIsJoined(true);
   };
 
+  const openEditVoter = (targetId: string) => {
+    const voter = roomData?.votes?.[targetId];
+    if (!voter) return;
+    setEditingUserId(targetId);
+    setTempName(voter.name);
+    setTempGroup(voter.group ?? "");
+    onSettingUserModalOpen();
+  };
+
   const handleUpdateVoterData = async () => {
+    const targetId = editingUserId ?? userId;
     if (!roomId || !tempName.trim()) return;
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       {
         votes: {
-          [userId]: {
+          [targetId]: {
             name: tempName.trim(),
             group: tempGroup.trim() || null,
           },
@@ -202,8 +239,26 @@ const PlanningPoker: React.FC = () => {
       },
       { merge: true },
     );
-    setUserName(tempName.trim());
-    setUserGroup(tempGroup.trim());
+    if (targetId === userId) {
+      setUserName(tempName.trim());
+      setUserGroup(tempGroup.trim());
+    }
+  };
+
+  const requestRemoveVoter = (targetId: string) => {
+    if (!isAdmin) return;
+    setVoterToKick(targetId);
+    onKickModalOpen();
+  };
+
+  const confirmRemoveVoter = async () => {
+    if (!roomId || !isAdmin || !voterToKick) return;
+    await setDoc(
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      { votes: { [voterToKick]: deleteField() } },
+      { merge: true },
+    );
+    setVoterToKick(null);
   };
 
   const handleVote = async (score: string) => {
@@ -292,6 +347,7 @@ const PlanningPoker: React.FC = () => {
         roomId={roomId}
         roomData={roomData}
         userGroup={userGroup}
+        wasKicked={wasKicked}
         setUserGroup={setUserGroup}
         setUserName={setUserName}
         handleJoin={handleJoin}
@@ -304,6 +360,7 @@ const PlanningPoker: React.FC = () => {
       {/* 1. Header */}
       <PlanningPokerHeader
         roomData={roomData}
+        isAdmin={isAdmin}
         toggleReveal={toggleReveal}
         resetRound={resetRound}
       />
@@ -329,11 +386,9 @@ const PlanningPoker: React.FC = () => {
       <PlanningPokerTable
         roomData={roomData}
         userId={userId}
-        userName={userName}
-        userGroup={userGroup}
-        setTempName={setTempName}
-        setTempGroup={setTempGroup}
-        onRenameOpen={onSettingUserModalOpen}
+        isAdmin={isAdmin}
+        onEditVoter={openEditVoter}
+        onRemoveVoter={requestRemoveVoter}
         highlightedGroup={highlightedGroup}
       />
 
@@ -372,7 +427,18 @@ const PlanningPoker: React.FC = () => {
         tempGroup={tempGroup}
         setTempGroup={setTempGroup}
         roomData={roomData}
+        isEditingOther={editingUserId !== null && editingUserId !== userId}
         handleUpdateVoterData={handleUpdateVoterData}
+      />
+
+      {/* 7. Confirm Kick Modal */}
+      <PlanningPokerConfirmKickModal
+        isOpen={isKickModalOpen}
+        onOpenChange={onKickModalChange}
+        voterName={
+          voterToKick ? roomData?.votes?.[voterToKick]?.name : undefined
+        }
+        onConfirm={confirmRemoveVoter}
       />
     </div>
   );

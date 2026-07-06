@@ -1,25 +1,23 @@
+"use client";
+
 import { RoomData } from "@/interfaces/poker";
 import { Card, Chip, cn } from "@nextui-org/react";
-import { IoHelpOutline, IoPencil } from "react-icons/io5";
+import { IoHelpOutline, IoPencil, IoTrashOutline } from "react-icons/io5";
 
 export interface PlanningPokerTableProps {
   roomData: RoomData | null;
   userId: string | null;
-  userName: string;
-  userGroup: string;
-  setTempName: React.Dispatch<React.SetStateAction<string>>;
-  setTempGroup: React.Dispatch<React.SetStateAction<string>>;
-  onRenameOpen: () => void;
+  isAdmin: boolean;
+  onEditVoter: (uid: string) => void;
+  onRemoveVoter: (uid: string) => void;
   highlightedGroup: string;
 }
 const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
   roomData,
   userId,
-  userName,
-  userGroup,
-  setTempName,
-  setTempGroup,
-  onRenameOpen,
+  isAdmin,
+  onEditVoter,
+  onRemoveVoter,
   highlightedGroup,
 }) => {
   return (
@@ -149,7 +147,15 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                   </div>
                 </div>
                 <div
-                  className={`flex sm:max-w-24 max-w-16 items-center gap-1 group rounded-lg px-2 py-1 ${isMe ? "bg-primary text-white cursor-pointer" : "bg-default-100 text-default-600"}`}
+                  className={cn(
+                    "flex items-center gap-1 group rounded-lg px-2 py-1",
+                    isMe
+                      ? "bg-primary text-white cursor-pointer"
+                      : "bg-default-100 text-default-600",
+                    isAdmin && !isMe
+                      ? "sm:max-w-32 max-w-24"
+                      : "sm:max-w-24 max-w-16",
+                  )}
                   style={{
                     backgroundColor: isMe
                       ? playerGroup?.color || "#d80032"
@@ -157,9 +163,7 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                   }}
                   onClick={() => {
                     if (!isMe) return;
-                    setTempName(userName);
-                    setTempGroup(userGroup);
-                    onRenameOpen();
+                    onEditVoter(uid);
                   }}
                 >
                   <span
@@ -168,6 +172,27 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                     {data.name.toUpperCase()}
                   </span>
                   {isMe && <IoPencil size={12} />}
+                  {isAdmin && !isMe && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label={`Edit ${data.name}`}
+                        className="shrink-0 transition-colors hover:text-primary"
+                        onClick={() => onEditVoter(uid)}
+                      >
+                        <IoPencil size={12} />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`Remove ${data.name}`}
+                        title="Remove player"
+                        className="shrink-0 transition-colors hover:text-danger"
+                        onClick={() => onRemoveVoter(uid)}
+                      >
+                        <IoTrashOutline size={12} />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             );
