@@ -369,7 +369,7 @@ const PlanningPoker: React.FC = () => {
       <PlanningPokerStats roomData={roomData} stats={stats} roomId={roomId} />
 
       {roomData?.groupOptions && roomData.groupOptions.length > 0 && (
-        <div className="flex flex-1 items-center flex-wrap justify-center gap-6">
+        <div className="flex flex-1 items-center flex-wrap justify-center gap-4">
           {roomData.groupOptions.map((group) => (
             <PlanningPokerGroupButton
               key={group.name}

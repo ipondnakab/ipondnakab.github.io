@@ -3,9 +3,8 @@
 import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaMoon, FaSun } from "react-icons/fa";
-
-import { textToCapital } from "@/functions/text-to-capital";
 
 import SwitchAutoLabel from "./SwitchAutoLabel";
 
@@ -25,9 +24,11 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   disableLabel,
   disableLabelAnimation,
 }) => {
+  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const [isDark, setIsDark] = useState(theme === "dark");
+  const themeLabel = isDark ? t("switches.darkMode") : t("switches.lightMode");
 
   const onChange = () => {
     const val = theme === "dark" ? "light" : "dark";
@@ -53,7 +54,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   if (disableLabelAnimation)
     return (
       <Switch {...switchProps} isSelected={isDark} onChange={onChange}>
-        {textToCapital(theme || "").concat(" Mode")}
+        {themeLabel}
       </Switch>
     );
 
@@ -62,7 +63,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       {...switchProps}
       isSelected={isDark}
       onChange={onChange}
-      label={textToCapital(theme || "").concat(" Mode")}
+      label={themeLabel}
       disableLabel={disableLabel}
     />
   );

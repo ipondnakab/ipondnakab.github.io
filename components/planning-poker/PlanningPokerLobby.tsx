@@ -1,5 +1,8 @@
+"use client";
+
 import { RoomData } from "@/interfaces/poker";
 import { Button, Card, Chip, Divider, Input, Spinner } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 export interface PlanningPokerLobbyProps {
   roomId: string | null;
@@ -22,12 +25,13 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
   setUserName,
   handleJoin,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className=" flex items-center justify-center p-8 py-16 h-[calc(100vh-4rem)]">
       {!roomId ? (
-        <Card isBlurred className="max-w-sm w-full p-8 gap-4 shadow-xl">
+        <Card isBlurred className="max-w-md w-full p-8 gap-4 shadow-xl">
           <h2 className="text-xl font-bold self-center">
-            Welcome to Planning Poker
+            {t("poker.welcome")}
           </h2>
           {loading ? (
             <Spinner size="lg" className="mx-auto" />
@@ -40,7 +44,7 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
                   (window.location.search = `?room=${Math.random().toString(36).substring(7)}`)
                 }
               >
-                Start New Game
+                {t("poker.startNewGame")}
               </Button>
               <Divider />
 
@@ -55,44 +59,43 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
                   }
                 }}
               >
-                <span>Or</span>
+                <span>{t("poker.or")}</span>
                 <Input
                   name="roomId"
                   variant="bordered"
-                  placeholder="Enter Room ID to Join"
+                  placeholder={t("poker.enterRoomId")}
                   onKeyDown={(e) =>
                     e.key === "Enter" && e.currentTarget.form?.requestSubmit()
                   }
                 />
                 <Button color="primary" type="submit">
-                  Join Game
+                  {t("poker.joinGame")}
                 </Button>
               </form>
             </>
           )}
         </Card>
       ) : (
-        <Card isBlurred className="max-w-sm w-full p-8 gap-4 shadow-xl">
+        <Card isBlurred className="max-w-md w-full p-8 gap-4 shadow-xl">
           {wasKicked && (
             <Chip
               variant="flat"
               color="danger"
               className="self-center max-w-full h-auto py-2 text-center whitespace-normal"
             >
-              You were removed from the room by an admin. Enter your name to
-              rejoin.
+              {t("poker.kickedNotice")}
             </Chip>
           )}
-          <h2 className="text-xl font-bold">Your Name</h2>
+          <h2 className="text-xl font-bold">{t("poker.yourName")}</h2>
           <Input
             variant="bordered"
-            placeholder="Enter name..."
+            placeholder={t("poker.enterName")}
             onChange={(e) => setUserName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleJoin()}
           />
           {roomData?.groupOptions && roomData?.groupOptions?.length > 0 && (
             <>
-              <h2 className="text-xl font-bold">Select Group</h2>
+              <h2 className="text-xl font-bold">{t("poker.selectGroup")}</h2>
               <div className="flex flex-wrap gap-2">
                 {roomData.groupOptions.map((group) => {
                   const isSelected = userGroup === group.name;
@@ -118,7 +121,7 @@ const PlanningPokerLobby: React.FC<PlanningPokerLobbyProps> = ({
             </>
           )}
           <Button color="primary" onPress={() => handleJoin()}>
-            Join Table
+            {t("poker.joinTable")}
           </Button>
         </Card>
       )}

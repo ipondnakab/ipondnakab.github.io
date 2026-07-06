@@ -1,6 +1,9 @@
+"use client";
+
 import { Avatar, Card } from "@nextui-org/react";
 import dayjs from "dayjs";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import CodingLanguages from "@/components/readme/CodingLanguages";
 import Educations from "@/components/readme/Educations";
@@ -11,7 +14,8 @@ import WorkExperiences from "@/components/readme/WorkExperiences";
 
 export interface HomeProps {}
 
-const Home: React.FC<HomeProps> = async () => {
+const Home: React.FC<HomeProps> = () => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col p-2 gap-4 sm:gap-8 sm:p-8">
       <Card
@@ -25,15 +29,12 @@ const Home: React.FC<HomeProps> = async () => {
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-sm">Hello I’m</span>
+          <span className="text-sm">{t("home.greeting")}</span>
           <h1 className="text-xl sm:text-4xl font-bold">Kittipat Daengdee</h1>
           <span className="text-sm mt-2 max-w-lg">
-            I am a software engineer with over{" "}
-            {dayjs().diff(dayjs("01-05-2021"), "y").toString()}+ years of
-            experience in full-stack web and application development, as well as
-            automated testing. I apply a creative approach to problem-solving
-            and excel in collaborative environments. I am also eager to
-            continuously learn and develop new skills.
+            {t("home.bio", {
+              years: dayjs().diff(dayjs("01-05-2021"), "y").toString(),
+            })}
           </span>
         </div>
       </Card>

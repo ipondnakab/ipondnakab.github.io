@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DECKS,
   DEFAULT_GROUP_COLOR,
@@ -19,6 +21,7 @@ import {
   Tab,
   Tabs,
 } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import { IoAdd, IoTrashOutline } from "react-icons/io5";
 
 export interface PlanningPokerDeckSettingsModalProps {
@@ -54,6 +57,7 @@ const PlanningPokerDeckSettingsModal: React.FC<
   updateGroupSettings,
   updateSortByGroup,
 }) => {
+  const { t } = useTranslation();
   const handleAddGroup = () => {
     const color =
       GROUP_COLOR_OPTIONS[groupOptionsInput.length % GROUP_COLOR_OPTIONS.length]
@@ -82,20 +86,20 @@ const PlanningPokerDeckSettingsModal: React.FC<
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>Deck Settings</ModalHeader>
+            <ModalHeader>{t("poker.deckSettings")}</ModalHeader>
             <ModalBody>
               <Tabs
                 fullWidth
                 selectedKey={tempDeckInput}
                 onSelectionChange={(key) => setTempDeckInput(key as DeckType)}
               >
-                <Tab key="fibonacci" title="Fibonacci" />
-                <Tab key="tshirt" title="T-Shirt" />
-                <Tab key="custom" title="Custom" />
+                <Tab key="fibonacci" title={t("poker.deckFibonacci")} />
+                <Tab key="tshirt" title={t("poker.deckTshirt")} />
+                <Tab key="custom" title={t("poker.deckCustom")} />
               </Tabs>
               <Input
-                label="Values"
-                placeholder="e.g. 1, 2, 3, 5"
+                label={t("poker.deckValues")}
+                placeholder={t("poker.deckValuesPlaceholder")}
                 variant="bordered"
                 value={
                   tempDeckInput === "custom"
@@ -108,14 +112,14 @@ const PlanningPokerDeckSettingsModal: React.FC<
               />
             </ModalBody>
             <ModalHeader className="justify-between items-center">
-              <span>Group Settings</span>
+              <span>{t("poker.groupSettingsTitle")}</span>
               <div className="flex items-center gap-4 text-xs text-foreground/70 font-light mr-4">
                 <Checkbox
                   size="sm"
                   isSelected={sortByGroupInput}
                   onValueChange={setSortByGroupInput}
                 >
-                  Sorting by group
+                  {t("poker.sortingByGroup")}
                 </Checkbox>
               </div>
             </ModalHeader>
@@ -126,8 +130,12 @@ const PlanningPokerDeckSettingsModal: React.FC<
                     <Input
                       size="sm"
                       variant="bordered"
-                      aria-label={`Group ${index + 1} name`}
-                      placeholder={`Group ${index + 1}`}
+                      aria-label={t("poker.groupNameAria", {
+                        index: index + 1,
+                      })}
+                      placeholder={t("poker.groupNamePlaceholder", {
+                        index: index + 1,
+                      })}
                       value={group.name}
                       onChange={(e) =>
                         handleChangeGroupName(index, e.target.value)
@@ -136,7 +144,9 @@ const PlanningPokerDeckSettingsModal: React.FC<
                     <Select
                       size="sm"
                       variant="bordered"
-                      aria-label={`Group ${index + 1} color`}
+                      aria-label={t("poker.groupColorAria", {
+                        index: index + 1,
+                      })}
                       className="max-w-[9rem]"
                       disallowEmptySelection
                       selectedKeys={[group.color]}
@@ -176,7 +186,9 @@ const PlanningPokerDeckSettingsModal: React.FC<
                       size="sm"
                       variant="light"
                       color="danger"
-                      aria-label={`Remove group ${index + 1}`}
+                      aria-label={t("poker.removeGroupAria", {
+                        index: index + 1,
+                      })}
                       onPress={() => handleRemoveGroup(index)}
                     >
                       <IoTrashOutline size={18} />
@@ -189,13 +201,13 @@ const PlanningPokerDeckSettingsModal: React.FC<
                   startContent={<IoAdd size={18} />}
                   onPress={handleAddGroup}
                 >
-                  Add Group
+                  {t("poker.addGroup")}
                 </Button>
               </div>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Close
+                {t("poker.close")}
               </Button>
               <Button
                 color="primary"
@@ -209,7 +221,7 @@ const PlanningPokerDeckSettingsModal: React.FC<
                   onClose();
                 }}
               >
-                Save Deck
+                {t("poker.saveDeck")}
               </Button>
             </ModalFooter>
           </>

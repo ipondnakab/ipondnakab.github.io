@@ -2,6 +2,7 @@
 
 import { RoomData } from "@/interfaces/poker";
 import { Card, Chip, cn } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import { IoHelpOutline, IoPencil, IoTrashOutline } from "react-icons/io5";
 
 export interface PlanningPokerTableProps {
@@ -20,10 +21,11 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
   onRemoveVoter,
   highlightedGroup,
 }) => {
+  const { t } = useTranslation();
   return (
     <Card
       isBlurred
-      className="flex-1 min-h-[340px] p-4 flex items-center justify-center shadow-sm"
+      className="flex-1 md:min-h-[340px] p-4 flex items-center justify-center shadow-sm"
     >
       <div className="w-full h-full flex flex-wrap items-center justify-center gap-8">
         {Object.entries(roomData?.votes || {})
@@ -96,7 +98,7 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                       )}
                       {hasVoted ? (
                         <span className="font-black sm:text-[20px] italic">
-                          READY
+                          {t("poker.ready")}
                         </span>
                       ) : (
                         <IoHelpOutline size={32} />
@@ -140,7 +142,8 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                             },
                           )}
                         >
-                          {(isRevealed ? data.score : "ไม่บอกหรอก!") || "☕"}
+                          {(isRevealed ? data.score : t("poker.hiddenScore")) ||
+                            "☕"}
                         </div>
                       </div>
                     </div>
@@ -176,7 +179,7 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                     <>
                       <button
                         type="button"
-                        aria-label={`Edit ${data.name}`}
+                        aria-label={t("poker.editPlayer", { name: data.name })}
                         className="shrink-0 transition-colors hover:text-primary"
                         onClick={() => onEditVoter(uid)}
                       >
@@ -184,8 +187,10 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                       </button>
                       <button
                         type="button"
-                        aria-label={`Remove ${data.name}`}
-                        title="Remove player"
+                        aria-label={t("poker.removePlayer", {
+                          name: data.name,
+                        })}
+                        title={t("poker.removePlayerTitle")}
                         className="shrink-0 transition-colors hover:text-danger"
                         onClick={() => onRemoveVoter(uid)}
                       >

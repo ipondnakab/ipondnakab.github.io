@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Button,
   Modal,
@@ -6,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import { IoWarningOutline } from "react-icons/io5";
 
 export interface PlanningPokerConfirmKickModalProps {
@@ -18,6 +21,7 @@ export interface PlanningPokerConfirmKickModalProps {
 const PlanningPokerConfirmKickModal: React.FC<
   PlanningPokerConfirmKickModalProps
 > = ({ isOpen, onOpenChange, voterName, onConfirm }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       isOpen={isOpen}
@@ -30,21 +34,18 @@ const PlanningPokerConfirmKickModal: React.FC<
           <>
             <ModalHeader className="flex items-center gap-2 text-danger">
               <IoWarningOutline size={22} />
-              Remove Player
+              {t("poker.removePlayerHeader")}
             </ModalHeader>
             <ModalBody>
               <p className="text-sm text-default-600">
-                Remove{" "}
-                <span className="font-bold text-foreground">
-                  {voterName || "this player"}
-                </span>{" "}
-                from the room? They will be sent back to the lobby and can
-                rejoin at any time.
+                {t("poker.removeConfirm", {
+                  name: voterName || t("poker.thisPlayer"),
+                })}
               </p>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Cancel
+                {t("poker.cancel")}
               </Button>
               <Button
                 color="danger"
@@ -53,7 +54,7 @@ const PlanningPokerConfirmKickModal: React.FC<
                   onClose();
                 }}
               >
-                Remove
+                {t("poker.remove")}
               </Button>
             </ModalFooter>
           </>

@@ -44,6 +44,21 @@ const lightTheme: ConfigTheme = {
   },
 };
 
+// Prefer Apple's "Sukhumvit Set" (a Thai + Latin system font on iOS/macOS);
+// fall back to each platform's native Thai UI font, then a generic sans.
+const fontSans = [
+  '"Sukhumvit Set"',
+  "-apple-system",
+  "BlinkMacSystemFont",
+  '"Segoe UI"',
+  "Roboto",
+  '"Helvetica Neue"',
+  "Arial",
+  '"Leelawadee UI"', // Windows Thai
+  '"Noto Sans Thai"', // Android / Linux Thai
+  "sans-serif",
+];
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -54,6 +69,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: fontSans,
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

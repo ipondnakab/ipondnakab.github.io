@@ -8,6 +8,7 @@ import {
   FieldValues,
   useFormContext,
 } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { FieldController } from "@/interfaces/field-controller";
 
@@ -29,6 +30,7 @@ const InputString: React.FC<InputStringProps> = <
   disableAutoPlaceholder,
   ...props
 }: InputStringProps<TFieldValues, TName>): React.ReactElement => {
+  const { t } = useTranslation();
   const { control } = useFormContext<TFieldValues>();
   const [focusInput, setFocusInput] = React.useState(false);
   return (
@@ -51,9 +53,9 @@ const InputString: React.FC<InputStringProps> = <
             errorMessage={error?.message as string}
             placeholder={
               disableAutoPlaceholder
-                ? placeholder || "please_enter"
+                ? placeholder || t("common.pleaseEnter")
                 : focusInput
-                  ? placeholder || "please_enter"
+                  ? placeholder || t("common.pleaseEnter")
                   : undefined
             }
             isInvalid={error ? true : undefined}

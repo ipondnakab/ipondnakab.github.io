@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Thai font: prefer Apple's "Sukhumvit Set", fall back to native Thai UI fonts. */
+@layer base {
+  :root {
+    --font-sukhumvit:
+      "Sukhumvit Set", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Leelawadee UI", "Noto Sans Thai", sans-serif;
+    /* Override NextUI's default sans stack so its components use it too. */
+    --nextui-font-sans: var(--font-sukhumvit);
+  }
+
+  html,
+  body {
+    font-family: var(--font-sukhumvit);
+  }
+}

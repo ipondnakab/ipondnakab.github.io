@@ -12,6 +12,7 @@ import {
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
@@ -20,6 +21,7 @@ import { SOCIALS } from "@/constants/social";
 import AnimationSwitcher from "./AnimationSwitcher";
 import BackgroundParticles from "./BackgroundParticles";
 import CatLogo from "./CatLogo";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -29,6 +31,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showAnimation, setShowAnimation] = React.useState(true);
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   const comparePathname = (href: string) => {
     return pathname.split("/")[1] === href.split("/")[1] || pathname === href;
@@ -40,10 +43,10 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         <Navbar maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
           <NavbarContent className="gap-2 py-4">
             <NavbarMenuToggle
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
               className="md:hidden"
             />
-            <div className="group flex gap-0 sm:gap-2 cursor-pointer">
+            <div className="group flex cursor-pointer">
               <p
                 className={clsx(
                   "group-hover:w-24 group-hover:max-w-[96px] text-lg sm:text-xl text-inherit tracking-[0.15rem] text-primary max-w-0 w-0 line-clamp-1 overflow-hidden transition-all duration-300",
@@ -59,6 +62,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                 <NavbarItem
                   key={`${item.name}-${index}`}
                   isActive={comparePathname(item.href)}
+                  className={index > 2 ? "hidden lg:flex" : ""}
                 >
                   <Link
                     className={clsx(
@@ -70,7 +74,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                     }
                     href={item.href}
                   >
-                    {item.title}
+                    {t(`nav.${item.name}`, item.title)}
                   </Link>
                 </NavbarItem>
               ))}
@@ -94,6 +98,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               </NavbarItem>
             ))}
             <Divider orientation="vertical" className="hidden md:flex" />
+            <LanguageSwitcher />
             <div className="flex items-center justify-center gap-1">
               <ThemeSwitcher />
               <div className="hidden sm:flex">
@@ -116,7 +121,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                   href={item.href}
                   size="lg"
                 >
-                  {item.title}
+                  {t(`nav.${item.name}`, item.title)}
                 </Link>
               </NavbarMenuItem>
             ))}

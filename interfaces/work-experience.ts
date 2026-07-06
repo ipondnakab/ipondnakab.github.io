@@ -1,14 +1,16 @@
+import { LocalizedText } from "@/interfaces/localized-text";
+
 export interface WorkExperience {
   urlImage: string;
-  title: string;
+  title: LocalizedText;
   position: string;
-  description: string;
+  description: LocalizedText;
   projects?: ProjectExperience[];
 }
 
 export interface ProjectExperience {
   urlImage?: string;
-  description: string | string[];
+  description: LocalizedText | LocalizedText[];
   team?: string;
   title: string;
   projectUrl?: string;

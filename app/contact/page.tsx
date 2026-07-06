@@ -2,6 +2,7 @@
 import { Button, Card } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import FormHookWrapper, {
   FormHookWrapperRef,
@@ -19,6 +20,7 @@ const defaultValues: ContactForm = {
 };
 
 const Contact: React.FC<ContactProps> = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const formRef: React.ForwardedRef<FormHookWrapperRef<ContactForm>> =
     useRef(null);
@@ -31,7 +33,7 @@ const Contact: React.FC<ContactProps> = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       router.push("/contact/success");
     } catch {
-      alert("Send message error please try again");
+      alert(t("contact.sendError"));
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +55,7 @@ const Contact: React.FC<ContactProps> = () => {
 
   return (
     <Card isBlurred className="m-12 relative p-8 max-w-xl mx-auto gap-8">
-      <h2 className="text-2xl font-bold">Send me a Message</h2>
+      <h2 className="text-2xl font-bold">{t("contact.title")}</h2>
       <FormHookWrapper<ContactForm>
         defaultValues={defaultValues}
         onSubmit={onSubmit}
@@ -76,35 +78,35 @@ const Contact: React.FC<ContactProps> = () => {
               <InputString
                 name="name"
                 rules={{
-                  required: "Name is required",
+                  required: t("contact.nameRequired"),
                 }}
-                placeholder="Enter Name"
-                label="Name"
+                placeholder={t("contact.enterName")}
+                label={t("contact.name")}
                 onChange={handleChangeValue("name")}
                 onClear={handleChangeValue("name")}
               />
               <InputString
                 rules={{
-                  required: "Email is required",
+                  required: t("contact.emailRequired"),
                   pattern: {
                     value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                    message: "Entered value does not match email format",
+                    message: t("contact.emailInvalid"),
                   },
                 }}
                 name="email"
-                placeholder="Enter Email"
-                label="Email"
+                placeholder={t("contact.enterEmail")}
+                label={t("contact.email")}
                 type="email"
                 onChange={handleChangeValue("email")}
                 onClear={handleChangeValue("email")}
               />
               <InputTextarea
                 rules={{
-                  required: "Content is required",
+                  required: t("contact.contentRequired"),
                 }}
                 name="content"
-                placeholder="Enter Content"
-                label="Content"
+                placeholder={t("contact.enterContent")}
+                label={t("contact.content")}
                 onChange={handleChangeValue("content")}
                 onClear={handleChangeValue("content")}
               />
@@ -114,7 +116,7 @@ const Contact: React.FC<ContactProps> = () => {
                 color="warning"
                 type="submit"
               >
-                Submit
+                {t("contact.submit")}
               </Button>
             </div>
           );

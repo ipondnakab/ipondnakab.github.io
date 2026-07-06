@@ -5,8 +5,10 @@ import { useSearchParams } from "next/navigation";
 import generatePayload from "promptpay-qr";
 import QRCode from "qrcode";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const PromptPay: React.FC = () => {
+  const { t } = useTranslation();
   const search = useSearchParams();
 
   const target = search.get("target") || "";
@@ -59,11 +61,11 @@ const PromptPay: React.FC = () => {
           className="flex items-center justify-center p-6 w-full sm:max-w-md"
         >
           <div className="text-center flex flex-col items-center justify-center gap-4 w-full">
-            <h2 className="text-2xl font-bold mb-4">Generate PromptPay QR</h2>
+            <h2 className="text-2xl font-bold mb-4">{t("promptPay.title")}</h2>
             <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
               <div>
                 <label className="text-left block text-sm font-medium mb-2">
-                  PromptPay (Phone/ID)
+                  {t("promptPay.phoneLabel")}
                 </label>
                 <input
                   type="text"
@@ -74,7 +76,7 @@ const PromptPay: React.FC = () => {
               </div>
               <div>
                 <label className="text-left block text-sm font-medium mb-2">
-                  Amount (optional)
+                  {t("promptPay.amountLabel")}
                 </label>
                 <input
                   type="number"
@@ -84,7 +86,7 @@ const PromptPay: React.FC = () => {
                 />
               </div>
               <Button color="primary" type="submit">
-                Generate QR
+                {t("promptPay.generate")}
               </Button>
             </form>
           </div>
@@ -109,9 +111,13 @@ const PromptPay: React.FC = () => {
       )}
       <Card className="w-full sm:max-w-96">
         <div className="text-center p-4">
-          <p>Target: {target}</p>
+          <p>
+            {t("promptPay.target")}: {target}
+          </p>
           {amount && (
-            <p className="text-sm text-foreground/70">Amount: ${amount}</p>
+            <p className="text-sm text-foreground/70">
+              {t("promptPay.amount")}: ${amount}
+            </p>
           )}
         </div>
       </Card>
@@ -119,7 +125,7 @@ const PromptPay: React.FC = () => {
         onPress={() => (window.location.href = "/prompt-pay")}
         color="primary"
       >
-        Generate Another QR
+        {t("promptPay.generateAnother")}
       </Button>
     </main>
   );

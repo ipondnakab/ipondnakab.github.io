@@ -1,3 +1,5 @@
+"use client";
+
 import { RoomData } from "@/interfaces/poker";
 import {
   Button,
@@ -9,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 export interface PlanningPokerSettingUserModalProps {
   isOpen: boolean;
@@ -35,6 +38,7 @@ const PlanningPokerSettingUserModal: React.FC<
   isEditingOther = false,
   handleUpdateVoterData,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       isOpen={isOpen}
@@ -46,12 +50,14 @@ const PlanningPokerSettingUserModal: React.FC<
         {(onClose) => (
           <>
             <ModalHeader>
-              {isEditingOther ? "Edit Player Name" : "Change Your Name"}
+              {isEditingOther
+                ? t("poker.editPlayerName")
+                : t("poker.changeYourName")}
             </ModalHeader>
             <ModalBody>
               <Input
                 autoFocus
-                label="New Name"
+                label={t("poker.newName")}
                 variant="bordered"
                 value={tempName}
                 onChange={(e) => setTempName(e.target.value)}
@@ -66,7 +72,9 @@ const PlanningPokerSettingUserModal: React.FC<
             {roomData?.groupOptions && roomData?.groupOptions.length > 0 && (
               <>
                 <ModalHeader>
-                  {isEditingOther ? "Edit Player Group" : "Change Your Group"}
+                  {isEditingOther
+                    ? t("poker.editPlayerGroup")
+                    : t("poker.changeYourGroup")}
                 </ModalHeader>
                 <ModalBody>
                   <div className="flex flex-wrap gap-2">
@@ -98,7 +106,7 @@ const PlanningPokerSettingUserModal: React.FC<
             )}
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Cancel
+                {t("poker.cancel")}
               </Button>
               <Button
                 color="primary"
@@ -107,7 +115,7 @@ const PlanningPokerSettingUserModal: React.FC<
                   onClose();
                 }}
               >
-                Update
+                {t("poker.update")}
               </Button>
             </ModalFooter>
           </>

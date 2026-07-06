@@ -1,14 +1,20 @@
+"use client";
+
 import { Card, Divider } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 import { MINI_PROJECTS } from "@/constants/mini-ptoject";
+import { localize } from "@/functions/localize";
 
 const MiniProjectPage = () => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   return (
     <div className="p-8 flex flex-col mx-auto gap-8">
       <Card isBlurred className="flex flex-col gap-4 p-8">
-        <h1 className="text-4xl font-bold">Mini Projects</h1>
+        <h1 className="text-4xl font-bold">{t("miniProject.title")}</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
-          A collection of mini projects showcasing my skills and creativity.
+          {t("miniProject.subtitle")}
         </p>
         <Divider className="w-full" />
         {MINI_PROJECTS.map((project, index) => [
@@ -19,7 +25,7 @@ const MiniProjectPage = () => {
             rel="noopener noreferrer"
           >
             <h2 className="text-2xl font-bold">{project.title}</h2>
-            <p className="">{project.description}</p>
+            <p className="">{localize(project.description, lang)}</p>
           </a>,
           index < MINI_PROJECTS.length - 1 && (
             <Divider key={"divider-" + index} className="w-full" />

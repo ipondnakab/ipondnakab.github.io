@@ -1,5 +1,8 @@
+"use client";
+
 import { RoomData } from "@/interfaces/poker";
 import { Button, Card, Chip } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 import {
   IoEye,
   IoEyeOff,
@@ -21,6 +24,7 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
   toggleReveal,
   resetRound,
 }) => {
+  const { t } = useTranslation();
   return (
     <Card
       isBlurred
@@ -33,7 +37,9 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
           color="primary"
           startContent={<IoPeople className="ml-1" />}
         >
-          {Object.keys(roomData?.votes || {}).length} Players
+          {t("poker.players", {
+            num: Object.keys(roomData?.votes || {}).length,
+          })}
         </Chip>
         {isAdmin && (
           <Chip
@@ -42,11 +48,11 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
             color="warning"
             startContent={<IoShieldCheckmark className="ml-1" />}
           >
-            Admin
+            {t("poker.admin")}
           </Chip>
         )}
         <span className="md:inline hidden text-[12px]">
-          Let&apos;s estimate this together 🚀
+          {t("poker.estimateTogether")}
         </span>
       </div>
       <div className="flex gap-2">
@@ -56,7 +62,7 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
           onPress={resetRound}
           startContent={<IoRefresh />}
         >
-          Reset
+          {t("poker.reset")}
         </Button>
         <Button
           size="sm"
@@ -65,7 +71,7 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
           onPress={toggleReveal}
           startContent={roomData?.revealed ? <IoEyeOff /> : <IoEye />}
         >
-          {roomData?.revealed ? "Hide" : "Reveal"}
+          {roomData?.revealed ? t("poker.hide") : t("poker.reveal")}
         </Button>
       </div>
     </Card>

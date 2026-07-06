@@ -2,6 +2,7 @@
 
 import { Skeleton, Switch, SwitchProps } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";
 
 import SwitchAutoLabel from "./SwitchAutoLabel";
@@ -24,6 +25,7 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   show,
   disableLabelAnimation,
 }) => {
+  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
 
   const onChangeAnimation = () => {
@@ -46,7 +48,7 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
       </Skeleton>
     );
 
-  const label = "Animation ".concat(show ? "On" : "Off");
+  const label = show ? t("switches.animationOn") : t("switches.animationOff");
 
   if (disableLabelAnimation)
     return (
@@ -58,6 +60,7 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   return (
     <SwitchAutoLabel
       {...switchProps}
+      size="sm"
       onChange={onChangeAnimation}
       isSelected={show}
       label={label}
