@@ -33,7 +33,7 @@ const Home: React.FC<HomeProps> = () => {
           <h1 className="text-xl sm:text-4xl font-bold">Kittipat Daengdee</h1>
           <span className="text-sm mt-2 max-w-lg">
             {t("home.bio", {
-              years: dayjs().diff(dayjs("01-05-2021"), "y").toString(),
+              years: dayjs().diff(dayjs("2021-05-01"), "year").toString(),
             })}
           </span>
         </div>

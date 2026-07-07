@@ -152,7 +152,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         </Navbar>
         <div className="z-20">{children}</div>
       </div>
-      {showAnimation && <BackgroundParticles />}
+      <BackgroundParticles isPlaying={showAnimation} />
       {/* <KhunKao /> */}
     </>
   );

@@ -1,153 +1,134 @@
 "use client";
 
+import type { ISourceOptions } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useTheme } from "next-themes";
 import React, { useEffect, useMemo, useState } from "react";
 
-const BackgroundParticles: React.FC = () => {
+export interface BackgroundParticlesProps {
+  isPlaying?: boolean;
+}
+
+// <Particles> reloads whenever it re-renders (its internal load effect depends
+// on the whole props object). Memoise it and feed it only stable props so it
+// loads exactly once. Visibility/opacity is controlled on the wrapper below,
+// never on <Particles> itself, so the engine is never reloaded.
+const MemoizedParticles = React.memo(Particles);
+
+const getMaxMin = () => {
+  // The memo below runs during SSR/prerender too (hooks run before the `init`
+  // gate), so guard window — the value is only used once mounted on the client.
+  if (typeof window === "undefined") {
+    return { max: 100, min: 15 };
+  }
+  const wScreen = window.innerWidth;
+  const hScreen = window.innerHeight;
+  const max = Math.round(Math.min(wScreen, hScreen) * 0.4);
+  return {
+    max,
+    min: Math.round(max * 0.15),
+  };
+};
+
+const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({
+  isPlaying = true,
+}) => {
   const [init, setInit] = useState(false);
   const { theme } = useTheme();
-
-  const isDark = useMemo(() => theme === "dark", [theme]);
+  const isDark = theme === "dark";
 
   // this should be run only once per application lifetime
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-      // starting from v2 you can add only the features you need reducing the bundle size
-      //await loadAll(engine);
-      //await loadFull(engine);
+      // this loads the tsparticles slim bundle, the easiest way to get everything ready
       await loadSlim(engine);
-      //await loadBasic(engine);
     }).then(() => {
       setInit(true);
     });
   }, []);
 
-  const getMaxMin = () => {
-    const wScreen = window.innerWidth;
-    const hScreen = window.innerHeight;
-    const max = Math.round(Math.min(wScreen, hScreen) * 0.4);
-    return {
-      max,
-      min: Math.round(max * 0.15),
-    };
-  };
+  // Not fullScreen: the canvas renders inside the wrapper <div> below, so we can
+  // fade that wrapper to hide/show without touching <Particles> props.
+  const options = useMemo<ISourceOptions>(
+    () => ({
+      fpsLimit: 60,
+      fullScreen: {
+        enable: false,
+      },
+      pauseOnOutsideViewport: true,
+      detectRetina: true,
+      particles: {
+        number: {
+          value: 6,
+        },
+        color: {
+          value: "#d80032",
+        },
+        shape: {
+          type: "circle",
+          options: {
+            stroke: {
+              width: 0,
+              color: "#000000",
+            },
+            polygon: {
+              nb_sides: 5,
+            },
+          },
+        },
+        opacity: {
+          value: {
+            max: 1,
+            min: 0.5,
+          },
+        },
+        size: {
+          value: getMaxMin(),
+        },
+        move: {
+          enable: true,
+          speed: {
+            max: 1,
+            min: 0.1,
+          },
+          direction: "none",
+          random: true,
+          straight: false,
+          outModes: {
+            default: "bounce",
+          },
+          angle: {
+            value: 90,
+            offset: {
+              max: 45,
+              min: -45,
+            },
+          },
+        },
+      },
+    }),
+    [],
+  );
 
   if (!init) return null;
 
-  return (
-    <Particles
-      id="tsparticles"
-      // particlesLoaded={particlesLoaded}
-      options={{
-        fpsLimit: 60,
-        fullScreen: {
-          enable: true,
-          zIndex: -10,
-        },
-        pauseOnOutsideViewport: true,
-        detectRetina: true,
-        particles: {
-          number: {
-            value: 6,
-          },
-          color: {
-            // value: ["#c311e7", "#b8e986", "#4dc9ff", "#ffd300", "#ff7e79"],
-            value: "#d80032",
-          },
-          shape: {
-            type: "circle",
-            // stroke: {
-            //   width: 0,
-            //   color: "#000000",
-            // },
-            options: {
-              stroke: {
-                width: 0,
-                color: "#000000",
-              },
-              polygon: {
-                nb_sides: 5,
-              },
-            },
-            // polygon: {
-            //   nb_sides: 5,
-            // },
-            // image: {
-            //   src: "img/github.svg",
-            //   width: 100,
-            //   height: 100,
-            // },
-          },
-          opacity: {
-            value: isDark
-              ? {
-                  max: 0.7,
-                  min: 0.1,
-                }
-              : {
-                  max: 1,
-                  min: 0.6,
-                },
-            // random: false,
-            // anim: {
-            //   enable: false,
-            //   speed: 1,
-            //   opacity_min: 0.5,
-            //   sync: false,
-            // },
-            // animation: {
-            //   enable: true,
-            //   speed: 1,
-            //   sync: false,
-            // },
-          },
-          size: {
-            value: getMaxMin(),
-            // animation: {
-            //   enable: true,
-            //   speed: 30,
-            //   mode: "random",
-            // },
-          },
+  // Hide by fading the wrapper (the animation keeps running underneath); dim a
+  // little in dark mode. This is plain CSS on our own element — no reload.
+  const opacity = isPlaying ? (isDark ? 0.7 : 1) : 0;
 
-          //   line_linked: {
-          //     enable: true,
-          //     distance: 200,
-          //     color: isDark ? "#ffffff" : "#000000",
-          //     opacity: 0.4,
-          //     width: 1,
-          //   },
-          move: {
-            enable: true,
-            speed: {
-              max: 1,
-              min: 0.1,
-            },
-            direction: "none",
-            random: true,
-            straight: false,
-            outModes: {
-              default: "bounce",
-            },
-            // warp: true,
-            // vibrate: true,
-            angle: {
-              value: 90,
-              offset: {
-                max: 45,
-                min: -45,
-              },
-            },
-          },
-        },
-        retina_detect: true,
-      }}
-    />
+  return (
+    <div
+      className="fixed inset-0 -z-10 pointer-events-none"
+      style={{ opacity, transition: "opacity 0.4s ease" }}
+    >
+      <MemoizedParticles
+        id="tsparticles"
+        className="w-full h-full"
+        options={options}
+      />
+    </div>
   );
 };
 
-export default BackgroundParticles;
+export default React.memo(BackgroundParticles);
