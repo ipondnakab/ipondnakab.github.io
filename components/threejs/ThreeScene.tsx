@@ -336,26 +336,29 @@ const ThreeScene: React.FC = () => {
       scene.add(introTextGroup);
 
       mixer = new THREE.AnimationMixer(character);
-      const loadAnim = (name: string, path: string, once = false) => {
-        loader.load(path, (g) => {
-          const action = mixer.clipAction(g.animations[0]);
-          if (once) {
-            action.setLoop(THREE.LoopOnce, 1);
-            action.clampWhenFinished = true;
-          }
-          actions[name] = action;
-        });
-      };
-
-      loadAnim("idle", "/models/idle.glb");
-      loadAnim("walk", "/models/walk.glb");
-      loadAnim("run", "/models/run.glb");
-      loadAnim("walkBack", "/models/walk-back.glb");
-      loadAnim("spainDancing", "/models/spain-dancing.glb");
-      loadAnim("hiphopDancing", "/models/hiphop-dancing.glb");
-      loadAnim("jump", "/models/jump.glb", true);
-      loadAnim("jumpBack", "/models/jump-back.glb", true);
-      loadAnim("idleJump", "/models/idle-jump.glb", true);
+      // All animation clips are bundled into character.glb and named to match
+      // these keys (see scripts/merge-character.mjs).
+      const onceActions = new Set(["jump", "jumpBack", "idleJump"]);
+      const knownActions = new Set([
+        "idle",
+        "walk",
+        "run",
+        "walkBack",
+        "spainDancing",
+        "hiphopDancing",
+        "jump",
+        "jumpBack",
+        "idleJump",
+      ]);
+      gltf.animations.forEach((clip) => {
+        if (!knownActions.has(clip.name)) return;
+        const action = mixer.clipAction(clip);
+        if (onceActions.has(clip.name)) {
+          action.setLoop(THREE.LoopOnce, 1);
+          action.clampWhenFinished = true;
+        }
+        actions[clip.name] = action;
+      });
     });
 
     // =====================

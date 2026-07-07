@@ -4,7 +4,8 @@ import PlanningPoker from "@/components/planning-poker/PlanningPoker";
 
 export const metadata = {
   title: "Agile Planning Estimation",
-  description: "Agile Planning Estimation with Planning Poker",
+  description:
+    "Real-time Planning Poker for agile teams to estimate story points together.",
 };
 
 const PlanningPokerPage = () => {

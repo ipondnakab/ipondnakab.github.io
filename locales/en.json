@@ -16,9 +16,7 @@
     "lightMode": "Light Mode",
     "animationOn": "Animation On",
     "animationOff": "Animation Off",
-    "language": "Language",
-    "english": "English",
-    "thai": "ไทย"
+    "language": "Language"
   },
   "home": {
     "greeting": "Hello I'm",

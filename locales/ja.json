@@ -16,9 +16,7 @@
     "lightMode": "ライトモード",
     "animationOn": "Animation ON",
     "animationOff": "Animation OFF",
-    "language": "言語",
-    "english": "English",
-    "thai": "ไทย"
+    "language": "言語"
   },
   "home": {
     "greeting": "こんにちは、",

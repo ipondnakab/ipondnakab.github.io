@@ -16,9 +16,7 @@
     "lightMode": "โหมดสว่าง",
     "animationOn": "เปิด Animation",
     "animationOff": "ปิด Animation",
-    "language": "ภาษา",
-    "english": "English",
-    "thai": "ไทย"
+    "language": "ภาษา"
   },
   "home": {
     "greeting": "สวัสดีครับ ผมชื่อ",

@@ -16,9 +16,7 @@
     "lightMode": "Ljust läge",
     "animationOn": "Animation på",
     "animationOff": "Animation av",
-    "language": "Språk",
-    "english": "English",
-    "thai": "ไทย"
+    "language": "Språk"
   },
   "home": {
     "greeting": "Hej, jag heter",

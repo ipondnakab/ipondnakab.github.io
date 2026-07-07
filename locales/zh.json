@@ -16,9 +16,7 @@
     "lightMode": "浅色模式",
     "animationOn": "开启动画",
     "animationOff": "关闭动画",
-    "language": "语言",
-    "english": "English",
-    "thai": "ไทย"
+    "language": "语言"
   },
   "home": {
     "greeting": "你好，我是",

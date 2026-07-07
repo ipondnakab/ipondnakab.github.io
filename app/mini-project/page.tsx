@@ -3,7 +3,7 @@
 import { Card, Divider } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 
-import { MINI_PROJECTS } from "@/constants/mini-ptoject";
+import { MINI_PROJECTS } from "@/constants/mini-project";
 import { localize } from "@/functions/localize";
 
 const MiniProjectPage = () => {

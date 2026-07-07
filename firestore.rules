@@ -1,0 +1,46 @@
+rules_version = '2';
+
+// Firestore security rules for ipondnakab.github.io.
+//
+// Deploy from the Firebase Console (Firestore → Rules → paste + Publish) or via
+// the Firebase CLI: `firebase deploy --only firestore:rules`.
+//
+// Planning Poker is anonymous (no Firebase Auth), so this collection is
+// intentionally open — but ONLY this collection, and with lightweight guards.
+// Everything else is denied so the database can't be used as free storage or
+// have unrelated data read/tampered with. For stronger protection add Firebase
+// App Check (blocks requests that don't come from your app).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Planning Poker rooms ------------------------------------------------
+    match /planning-poker/{roomId} {
+      // Only allow reasonably-shaped room ids.
+      allow read: if roomId.size() > 0 && roomId.size() <= 64;
+
+      // Allow create/update of a room document, with basic shape guards to make
+      // abuse harder. `votes` is a user-keyed map that must stay a map; the doc
+      // must not grow an unbounded number of top-level fields.
+      allow write: if roomId.size() > 0
+                   && roomId.size() <= 64
+                   && request.resource.data.size() <= 20
+                   && (
+                     !('votes' in request.resource.data)
+                     || request.resource.data.votes is map
+                   )
+                   && (
+                     !('revealed' in request.resource.data)
+                     || request.resource.data.revealed is bool
+                   );
+
+      // No deleting whole rooms from the client.
+      allow delete: if false;
+    }
+
+    // --- Everything else: locked --------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
