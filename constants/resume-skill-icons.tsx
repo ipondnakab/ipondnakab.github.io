@@ -1,5 +1,8 @@
 import { IconType } from "react-icons";
 import {
+  FaAws,
+  FaBrain,
+  FaClipboardCheck,
   FaCode,
   FaDatabase,
   FaJava,
@@ -25,6 +28,7 @@ import {
   SiPlaywright,
   SiPython,
   SiReact,
+  SiRedis,
   SiSpringboot,
   SiTailwindcss,
   SiTypescript,
@@ -48,6 +52,7 @@ export const SKILL_ICONS: Record<string, IconType> = {
   Firebase: SiFirebase,
   Firestore: SiFirebase,
   SQL: FaDatabase,
+  Redis: SiRedis,
   "LINE API": SiLine,
   TypeScript: SiTypescript,
   JavaScript: SiJavascript,
@@ -60,6 +65,9 @@ export const SKILL_ICONS: Record<string, IconType> = {
   Jenkins: SiJenkins,
   Playwright: SiPlaywright,
   "GitHub Pages": SiGithub,
+  AWS: FaAws,
+  Claude: FaBrain,
+  "Spec-Kit": FaClipboardCheck,
   "AI-Powered Apps": FaRobot,
   "Audio Workflows": FaMicrophone,
 };

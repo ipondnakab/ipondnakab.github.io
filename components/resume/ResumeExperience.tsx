@@ -128,7 +128,6 @@ const ResumeExperience: React.FC<ResumeExperienceProps> = () => {
           moodRef={moodRef}
           isDark={isDark}
           highDpr={!lowPower}
-          enableIcons={!lowPower}
         />
         <HudLayer activeIndex={activeIndex} />
         <ChapterNav

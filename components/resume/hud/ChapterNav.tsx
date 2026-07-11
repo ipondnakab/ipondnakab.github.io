@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { HiArrowLeft, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 import LanguageSwitcher from "@/components/layouts/LanguageSwitcher";
-import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { ResumeChapter } from "@/interfaces/resume";
 
 export interface ChapterNavProps {
@@ -111,7 +110,6 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
       </Card>
 
       <div className="pointer-events-auto flex items-center gap-2">
-        <ThemeSwitcher disableLabel />
         <LanguageSwitcher />
       </div>
     </div>

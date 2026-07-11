@@ -27,8 +27,10 @@ const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
   highDpr = true,
   enableIcons = true,
 }) => {
-  const maxDpr = highDpr ? 1.75 : 1.25;
-  const [dpr, setDpr] = useState(highDpr ? 1.5 : 1);
+  // Cap at 2x — sharp on phones without paying for native 3x — and let
+  // PerformanceMonitor scale it down only on devices that can't keep up.
+  const MAX_DPR = 2;
+  const [dpr, setDpr] = useState(1.5);
 
   return (
     <Canvas
@@ -49,9 +51,9 @@ const ResumeCanvas: React.FC<ResumeCanvasProps> = ({
     >
       <PerformanceMonitor
         flipflops={3}
-        onFallback={() => setDpr(1)}
+        onFallback={() => setDpr(1.25)}
         onChange={({ factor }) =>
-          setDpr(Math.round((1 + factor * (maxDpr - 1)) * 4) / 4)
+          setDpr(Math.round((1 + factor * (MAX_DPR - 1)) * 4) / 4)
         }
       />
       <ResumeScene

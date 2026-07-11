@@ -44,6 +44,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
       "Deno.js",
       "Firebase",
       "SQL",
+      "Redis",
       "LINE API",
     ],
   },
@@ -75,7 +76,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     height: 0.7,
     tilt: 0.08,
     speed: 0.11,
-    skills: ["Firebase", "Firestore", "GitHub Pages"],
+    skills: ["AWS", "Firebase", "Firestore", "GitHub Pages"],
   },
   {
     id: "ai",
@@ -85,6 +86,6 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     height: 2.75,
     tilt: 0.3,
     speed: -0.15,
-    skills: ["AI-Powered Apps", "Audio Workflows"],
+    skills: ["Claude", "Spec-Kit", "AI-Powered Apps", "Audio Workflows"],
   },
 ];
