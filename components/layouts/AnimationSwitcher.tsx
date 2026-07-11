@@ -20,6 +20,10 @@ const switchProps: SwitchProps = {
   endContent: <FaStopCircle />,
 };
 
+// See SwitchAutoLabel: alias collapses NextUI's huge <Switch> prop union so the
+// spread below stays within TypeScript's complexity budget (TS2590).
+const BaseSwitch = Switch as unknown as React.FC<SwitchProps>;
+
 const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   setShow,
   show,
@@ -52,9 +56,13 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
 
   if (disableLabelAnimation)
     return (
-      <Switch {...switchProps} isSelected={show} onChange={onChangeAnimation}>
+      <BaseSwitch
+        {...switchProps}
+        isSelected={show}
+        onChange={onChangeAnimation}
+      >
         {label}
-      </Switch>
+      </BaseSwitch>
     );
 
   return (

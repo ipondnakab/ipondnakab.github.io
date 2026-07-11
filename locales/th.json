@@ -1,6 +1,37 @@
 {
+  "resume": {
+    "title": "วิศวกรซอฟต์แวร์ฟูลสแตก",
+    "loading": "กำลังโหลด",
+    "scrollHint": "เลื่อนเพื่อสำรวจ",
+    "nav": { "home": "หน้าแรก", "chapters": "บท" },
+    "chapter": {
+      "intro": "แนะนำตัว",
+      "about": "ข้อมูลส่วนตัว",
+      "experience": "การทำงาน",
+      "skills": "ทักษะ",
+      "projects": "ผลงาน",
+      "contact": "ติดต่อ"
+    },
+    "heading": {
+      "experience": "ประสบการณ์",
+      "skills": "ความสามารถ",
+      "projects": "โปรเจกต์",
+      "contact": "ติดต่อฉัน"
+    },
+    "skillCategory": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "languages": "Languages",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "ai": "AI"
+    },
+    "action": { "view": "ดู", "visit": "เยี่ยมชม", "close": "ปิด" },
+    "contact": { "emailAria": "อีเมล" }
+  },
   "nav": {
     "home": "หน้าแรก",
+    "resume": "ประวัติย่อ",
     "mini-project": "โปรเจกต์",
     "planning-poker": "Poker",
     "credit": "เครดิต",

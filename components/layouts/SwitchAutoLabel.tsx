@@ -11,6 +11,13 @@ export interface SwitchAutoLabelProps extends SwitchProps {
   labelWidth?: string;
 }
 
+// NextUI's <Switch> prop type is a very large union. Spreading `props` into the
+// JSX element makes TypeScript try to represent that union in full, which now
+// exceeds its complexity budget (TS2590) given the extra type surface pulled in
+// by the 3D stack. Referencing the component through a plain FC<SwitchProps>
+// alias keeps the runtime identical while collapsing the union for the checker.
+const BaseSwitch = Switch as unknown as React.FC<SwitchProps>;
+
 const SwitchAutoLabel: React.FC<SwitchAutoLabelProps> = ({
   disableLabel,
   label,
@@ -19,7 +26,7 @@ const SwitchAutoLabel: React.FC<SwitchAutoLabelProps> = ({
 }) => {
   const [showText, setShowText] = useState(false);
   return (
-    <Switch
+    <BaseSwitch
       {...props}
       onClick={(e) => {
         if (!disableLabel) setShowText(true);
@@ -37,7 +44,7 @@ const SwitchAutoLabel: React.FC<SwitchAutoLabelProps> = ({
           {label}
         </p>
       )}
-    </Switch>
+    </BaseSwitch>
   );
 };
 

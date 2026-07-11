@@ -1,6 +1,37 @@
 {
+  "resume": {
+    "title": "フルスタックソフトウェアエンジニア",
+    "loading": "読み込み中",
+    "scrollHint": "スクロールして探索",
+    "nav": { "home": "ホーム", "chapters": "チャプター" },
+    "chapter": {
+      "intro": "イントロ",
+      "about": "概要",
+      "experience": "経歴",
+      "skills": "スキル",
+      "projects": "実績",
+      "contact": "連絡先"
+    },
+    "heading": {
+      "experience": "経歴",
+      "skills": "能力",
+      "projects": "プロジェクト",
+      "contact": "お問い合わせ"
+    },
+    "skillCategory": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "languages": "Languages",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "ai": "AI"
+    },
+    "action": { "view": "見る", "visit": "アクセス", "close": "閉じる" },
+    "contact": { "emailAria": "メール" }
+  },
   "nav": {
     "home": "ホーム",
+    "resume": "履歴書",
     "mini-project": "プロジェクト",
     "planning-poker": "Poker",
     "credit": "クレジット",

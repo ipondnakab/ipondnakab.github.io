@@ -1,0 +1,67 @@
+import { IconType } from "react-icons";
+import {
+  FaCode,
+  FaDatabase,
+  FaJava,
+  FaMicrophone,
+  FaRobot,
+} from "react-icons/fa";
+import {
+  SiAngular,
+  SiBootstrap,
+  SiCplusplus,
+  SiDeno,
+  SiDocker,
+  SiExpo,
+  SiFirebase,
+  SiGit,
+  SiGithub,
+  SiGo,
+  SiJavascript,
+  SiJenkins,
+  SiLine,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPlaywright,
+  SiPython,
+  SiReact,
+  SiSpringboot,
+  SiTailwindcss,
+  SiTypescript,
+  SiVuedotjs,
+} from "react-icons/si";
+
+// Brand icon for each skill on the orbiting rings. Keys match the skill strings
+// in constants/resume-skills.ts; anything unmapped uses FALLBACK_SKILL_ICON.
+export const SKILL_ICONS: Record<string, IconType> = {
+  "React.js": SiReact,
+  "Next.js": SiNextdotjs,
+  "Vue.js": SiVuedotjs,
+  Angular: SiAngular,
+  "React Native": SiReact,
+  Expo: SiExpo,
+  "Tailwind CSS": SiTailwindcss,
+  Bootstrap: SiBootstrap,
+  "Node.js": SiNodedotjs,
+  "Spring Boot": SiSpringboot,
+  "Deno.js": SiDeno,
+  Firebase: SiFirebase,
+  Firestore: SiFirebase,
+  SQL: FaDatabase,
+  "LINE API": SiLine,
+  TypeScript: SiTypescript,
+  JavaScript: SiJavascript,
+  Java: FaJava,
+  Python: SiPython,
+  "C++": SiCplusplus,
+  Go: SiGo,
+  Git: SiGit,
+  Docker: SiDocker,
+  Jenkins: SiJenkins,
+  Playwright: SiPlaywright,
+  "GitHub Pages": SiGithub,
+  "AI-Powered Apps": FaRobot,
+  "Audio Workflows": FaMicrophone,
+};
+
+export const FALLBACK_SKILL_ICON: IconType = FaCode;

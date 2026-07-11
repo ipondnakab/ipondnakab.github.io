@@ -12,6 +12,12 @@ import { useTranslation } from "react-i18next";
 
 import { FieldController } from "@/interfaces/field-controller";
 
+// See components/inputs/InputString: alias collapses NextUI's huge <Textarea>
+// prop union so the spread below stays within TS's complexity budget (TS2590).
+const BaseTextarea = Textarea as unknown as React.FC<
+  React.ComponentProps<typeof Textarea>
+>;
+
 export type InputTextareaProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -40,7 +46,7 @@ const InputTextarea: React.FC<InputTextareaProps> = <
       control={control}
       render={({ field, fieldState: { error } }) => {
         return (
-          <Textarea
+          <BaseTextarea
             {...field}
             {...props}
             onClear={() => field.onChange("")}

@@ -1,6 +1,10 @@
 "use client";
 import {
   Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
   Navbar,
   NavbarContent,
@@ -18,6 +22,7 @@ import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
 import { SOCIALS } from "@/constants/social";
 
+import { HiDotsHorizontal } from "react-icons/hi";
 import AnimationSwitcher from "./AnimationSwitcher";
 import BackgroundParticles from "./BackgroundParticles";
 import CatLogo from "./CatLogo";
@@ -78,6 +83,50 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                   </Link>
                 </NavbarItem>
               ))}
+              <div className="flex lg:hidden">
+                <Dropdown placement="bottom-end">
+                  <DropdownTrigger>
+                    <Link
+                      color="foreground"
+                      className={clsx(
+                        "border-b-0 hover:border-b-1 transition-all duration-100 ",
+                        NAV_MENUS.slice(3).some((item) =>
+                          comparePathname(item.href),
+                        ) && "border-primary",
+                      )}
+                      href="#"
+                    >
+                      <HiDotsHorizontal />
+                    </Link>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    aria-label={t("nav.more")}
+                    selectionMode="single"
+                  >
+                    {NAV_MENUS.map((item, index) => (
+                      <DropdownItem
+                        key={`${item.name}-${index}`}
+                        className={clsx(
+                          index <= 2 && "hidden",
+                          comparePathname(item.href) && "bg-primary/10",
+                        )}
+                      >
+                        <Link
+                          color={
+                            comparePathname(item.href)
+                              ? "primary"
+                              : "foreground"
+                          }
+                          className="w-full"
+                          href={item.href}
+                        >
+                          {t(`nav.${item.name}`, item.title)}
+                        </Link>
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
             </div>
           </NavbarContent>
 
@@ -98,7 +147,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
               </NavbarItem>
             ))}
             <Divider orientation="vertical" className="hidden md:flex" />
-            <LanguageSwitcher />
+            <LanguageSwitcher buttonClassName="min-w-6 w-6 h-6 p-0 text-[10px] font-bold" />
             <div className="flex items-center justify-center gap-1">
               <ThemeSwitcher />
               <div className="hidden sm:flex">

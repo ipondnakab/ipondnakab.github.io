@@ -1,6 +1,37 @@
 {
+  "resume": {
+    "title": "Full-Stack Software Engineer",
+    "loading": "Loading",
+    "scrollHint": "Scroll to explore",
+    "nav": { "home": "Home", "chapters": "Chapters" },
+    "chapter": {
+      "intro": "Intro",
+      "about": "About",
+      "experience": "Journey",
+      "skills": "Skills",
+      "projects": "Work",
+      "contact": "Contact"
+    },
+    "heading": {
+      "experience": "Experience",
+      "skills": "Capabilities",
+      "projects": "Projects",
+      "contact": "Get in touch"
+    },
+    "skillCategory": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "languages": "Languages",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "ai": "AI"
+    },
+    "action": { "view": "View", "visit": "Visit", "close": "Close" },
+    "contact": { "emailAria": "Email" }
+  },
   "nav": {
     "home": "README",
+    "resume": "RESUME",
     "mini-project": "MINI-PROJECT",
     "planning-poker": "POKER",
     "credit": "CREDIT",

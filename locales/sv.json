@@ -1,6 +1,37 @@
 {
+  "resume": {
+    "title": "Fullstack-mjukvaruingenjör",
+    "loading": "Laddar",
+    "scrollHint": "Skrolla för att utforska",
+    "nav": { "home": "Hem", "chapters": "Kapitel" },
+    "chapter": {
+      "intro": "Intro",
+      "about": "Om",
+      "experience": "Resa",
+      "skills": "Färdigheter",
+      "projects": "Arbete",
+      "contact": "Kontakt"
+    },
+    "heading": {
+      "experience": "Erfarenhet",
+      "skills": "Kompetenser",
+      "projects": "Projekt",
+      "contact": "Kom i kontakt"
+    },
+    "skillCategory": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "languages": "Languages",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "ai": "AI"
+    },
+    "action": { "view": "Visa", "visit": "Besök", "close": "Stäng" },
+    "contact": { "emailAria": "E-post" }
+  },
   "nav": {
     "home": "Hem",
+    "resume": "CV",
     "mini-project": "Projekt",
     "planning-poker": "Poker",
     "credit": "Tack",

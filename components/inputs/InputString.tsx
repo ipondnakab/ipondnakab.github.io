@@ -12,6 +12,14 @@ import { useTranslation } from "react-i18next";
 
 import { FieldController } from "@/interfaces/field-controller";
 
+// NextUI's <Input> prop type is a very large union; spreading into the JSX
+// element exceeds TypeScript's complexity budget (TS2590) now that the 3D stack
+// adds type surface. This alias keeps the runtime identical while collapsing the
+// union for the checker (same technique as components/layouts/SwitchAutoLabel).
+const BaseInput = Input as unknown as React.FC<
+  React.ComponentProps<typeof Input>
+>;
+
 export type InputStringProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -40,7 +48,7 @@ const InputString: React.FC<InputStringProps> = <
       control={control}
       render={({ field, fieldState: { error } }) => {
         return (
-          <Input
+          <BaseInput
             {...field}
             {...props}
             onClear={() => {

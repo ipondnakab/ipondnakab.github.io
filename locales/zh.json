@@ -1,6 +1,37 @@
 {
+  "resume": {
+    "title": "全栈软件工程师",
+    "loading": "加载中",
+    "scrollHint": "滚动以浏览",
+    "nav": { "home": "首页", "chapters": "章节" },
+    "chapter": {
+      "intro": "简介",
+      "about": "关于",
+      "experience": "历程",
+      "skills": "技能",
+      "projects": "作品",
+      "contact": "联系"
+    },
+    "heading": {
+      "experience": "工作经验",
+      "skills": "能力",
+      "projects": "项目",
+      "contact": "联系我"
+    },
+    "skillCategory": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "languages": "Languages",
+      "devops": "DevOps",
+      "cloud": "Cloud",
+      "ai": "AI"
+    },
+    "action": { "view": "查看", "visit": "访问", "close": "关闭" },
+    "contact": { "emailAria": "电子邮件" }
+  },
   "nav": {
     "home": "首页",
+    "resume": "简历",
     "mini-project": "项目",
     "planning-poker": "Poker",
     "credit": "鸣谢",
