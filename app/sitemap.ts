@@ -5,7 +5,7 @@ const SITE_URL = "https://ipondnakab.github.io";
 const ROUTES = [
   "",
   "/mini-project",
-  "/planning-poker",
+  "/planning",
   "/prompt-pay",
   "/threejs",
   "/credit",

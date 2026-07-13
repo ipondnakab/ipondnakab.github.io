@@ -29,7 +29,7 @@ export const NAV_MENUS: Menu[] = [
   {
     name: "planning-poker",
     title: "POKER",
-    href: "/planning-poker",
+    href: "/planning",
   },
   {
     name: "credit",

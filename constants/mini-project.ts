@@ -21,7 +21,7 @@ export const MINI_PROJECTS: {
   {
     name: "planning-poker",
     title: "PLANNING POKER",
-    href: "/planning-poker",
+    href: "/planning",
     description: {
       en: "A web-based Planning Poker app for Agile teams to estimate task complexity collaboratively.",
       th: "แอปพลิเคชัน Planning Poker บนเว็บ สำหรับทีม Agile ใช้ประเมินความซับซ้อนของงานร่วมกัน",
