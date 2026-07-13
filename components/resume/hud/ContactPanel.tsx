@@ -33,18 +33,22 @@ const ContactPanel: React.FC<ContactPanelProps> = () => {
           <h2 className="mb-1 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             {t("resume.heading.contact", "Get in touch")}
           </h2>
-          <p className="mb-6 text-sm text-foreground/55">
-            {environment.contactEmail}
-          </p>
+          {environment.contactEmail && (
+            <p className="mb-6 text-sm text-foreground/55">
+              {environment.contactEmail}
+            </p>
+          )}
 
           <div className="flex items-center justify-center gap-3">
-            <Link
-              href={`mailto:${environment.contactEmail}`}
-              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-lg text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
-              aria-label={t("resume.contact.emailAria", "Email")}
-            >
-              <HiOutlineMail />
-            </Link>
+            {environment.contactEmail && (
+              <Link
+                href={`mailto:${environment.contactEmail}`}
+                className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-lg text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
+                aria-label={t("resume.contact.emailAria", "Email")}
+              >
+                <HiOutlineMail />
+              </Link>
+            )}
             {SOCIALS.map((social) => (
               <Link
                 key={social.name}

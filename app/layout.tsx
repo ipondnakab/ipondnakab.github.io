@@ -4,15 +4,16 @@ import type { Metadata } from "next";
 
 import Providers from "@/app/providers";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
+import StructuredData from "@/components/seo/StructuredData";
 
 export interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 const SITE_URL = "https://ipondnakab.github.io";
-const SITE_TITLE = "Kittipat Daengdee | Software Engineer";
+const SITE_TITLE = "Kittipat Daengdee — Full-Stack Software Engineer";
 const SITE_DESCRIPTION =
-  "Portfolio and playground of Kittipat Daengdee — a full-stack software engineer. Résumé, mini projects, and experiments built with Next.js, React and TypeScript.";
+  "Kittipat Daengdee (ipondnakab) is a full-stack software engineer specializing in React, Next.js, TypeScript, Node.js and Spring Boot. Explore the résumé, projects and experiments.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -23,19 +24,35 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: "Kittipat Daengdee",
   keywords: [
+    "Kittipat",
     "Kittipat Daengdee",
     "ipondnakab",
     "software engineer",
+    "full stack engineer",
     "full stack developer",
+    "full-stack software engineer",
+    "frontend engineer",
     "frontend developer",
+    "software developer",
+    "React developer",
+    "Next.js developer",
+    "web developer",
     "portfolio",
     "resume",
-    "Next.js",
     "React",
+    "Next.js",
     "TypeScript",
+    "Node.js",
   ],
   authors: [{ name: "Kittipat Daengdee", url: SITE_URL }],
   creator: "Kittipat Daengdee",
+  publisher: "Kittipat Daengdee",
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   alternates: {
     canonical: "/",
   },
@@ -69,6 +86,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <StructuredData />
         <Providers>
           <DefaultLayout>{children}</DefaultLayout>
         </Providers>
