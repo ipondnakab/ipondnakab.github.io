@@ -9,20 +9,25 @@ import {
   IoPeople,
   IoRefresh,
   IoShieldCheckmark,
+  IoTimeOutline,
 } from "react-icons/io5";
 
 export interface PlanningPokerHeaderProps {
   roomData: RoomData | null;
   isAdmin: boolean;
+  historyCount: number;
   toggleReveal: () => void;
   resetRound: () => void;
+  onOpenHistory: () => void;
 }
 
 const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
   roomData,
   isAdmin,
+  historyCount,
   toggleReveal,
   resetRound,
+  onOpenHistory,
 }) => {
   const { t } = useTranslation();
   return (
@@ -56,6 +61,15 @@ const PlanningPokerHeader: React.FC<PlanningPokerHeaderProps> = ({
         </span>
       </div>
       <div className="flex gap-2">
+        <Button
+          size="sm"
+          variant="flat"
+          onPress={onOpenHistory}
+          startContent={<IoTimeOutline />}
+        >
+          {t("poker.history")}
+          {historyCount > 0 ? ` (${historyCount})` : ""}
+        </Button>
         <Button
           size="sm"
           variant="flat"

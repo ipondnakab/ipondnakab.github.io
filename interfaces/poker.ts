@@ -15,6 +15,26 @@ export interface GroupObject {
   color: string; // สีของกลุ่ม (สามารถใช้เป็นรหัสสี HEX หรือชื่อสี)
 }
 
+// A single player's vote as captured in a completed round. `group` is
+// normalised to `null` (never `undefined`) because Firestore rejects
+// `undefined` values.
+export interface RoundHistoryVote {
+  name: string;
+  score: string | null;
+  group?: string | null;
+}
+
+// A snapshot of one completed (revealed) round, saved when the round is reset.
+export interface RoundHistoryEntry {
+  id: string; // unique id for React keys / dedupe
+  endedAt: number; // epoch ms when the round was recorded
+  avg: string; // average of numeric votes, "-" when none
+  total: number; // number of cast votes
+  playerCount: number; // players present when the round ended
+  deckType: DeckType;
+  votes: RoundHistoryVote[];
+}
+
 export interface RoomData {
   revealed: boolean;
   deckType: DeckType;
@@ -22,6 +42,7 @@ export interface RoomData {
   groupOptions?: GroupObject[]; // กลุ่มผู้เล่นพร้อมสี (ชื่อและสี) สำหรับการแสดงผล
   sortByGroup?: boolean; // เรียงการ์ดผู้เล่นตามกลุ่มให้ทุกคนเห็นเหมือนกัน
   votes: PlayerVotes;
+  history?: RoundHistoryEntry[]; // most-recent-first log of completed rounds
 }
 
 export interface RoomStats {

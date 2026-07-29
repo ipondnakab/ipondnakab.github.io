@@ -172,6 +172,14 @@
     "removePlayerHeader": "Remove Player",
     "removeConfirm": "Remove {{name}} from the room? They will be sent back to the lobby and can rejoin at any time.",
     "thisPlayer": "this player",
-    "remove": "Remove"
+    "remove": "Remove",
+    "history": "History",
+    "historyTitle": "Round History",
+    "historyEmpty": "No rounds saved yet. Reveal a round, then reset it to save the result here.",
+    "historyDeck": "Deck",
+    "clearHistory": "Clear history",
+    "clearHistoryConfirm": "Tap again to clear all",
+    "resetConfirmHeader": "Reset round?",
+    "resetConfirmBody": "Votes haven't been revealed yet. Resetting will clear everyone's votes and start a new round."
   }
 }

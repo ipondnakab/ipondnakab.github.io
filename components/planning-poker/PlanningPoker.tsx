@@ -12,8 +12,12 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 
 import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
-import { PLANNING_POKER_ADMIN_PARAM } from "@/constants/planning-poker";
+import {
+  PLANNING_POKER_ADMIN_PARAM,
+  PLANNING_POKER_HISTORY_LIMIT,
+} from "@/constants/planning-poker";
 import { environment } from "@/core/environment";
+import { buildRoundHistoryEntry } from "@/functions/build-round-history-entry";
 import {
   DECKS,
   DeckType,
@@ -25,9 +29,11 @@ import {
 import { db } from "@/libs/firebase";
 import PlanningPokerCardSelection from "./PlanningPokerCardSelection";
 import PlanningPokerConfirmKickModal from "./PlanningPokerConfirmKickModal";
+import PlanningPokerConfirmResetModal from "./PlanningPokerConfirmResetModal";
 import PlanningPokerDeckSettingsModal from "./PlanningPokerDeckSettingsModal";
 import PlanningPokerGroupButton from "./PlanningPokerGroupButton";
 import PlanningPokerHeader from "./PlanningPokerHeader";
+import PlanningPokerHistoryModal from "./PlanningPokerHistoryModal";
 import PlanningPokerLobby from "./PlanningPokerLobby";
 import PlanningPokerSettingUserModal from "./PlanningPokerSettingUserModal";
 import PlanningPokerStats from "./PlanningPokerStats";
@@ -48,6 +54,16 @@ const PlanningPoker: React.FC = () => {
     isOpen: isKickModalOpen,
     onOpen: onKickModalOpen,
     onOpenChange: onKickModalChange,
+  } = useDisclosure();
+  const {
+    isOpen: isHistoryModalOpen,
+    onOpen: onHistoryModalOpen,
+    onOpenChange: onHistoryModalChange,
+  } = useDisclosure();
+  const {
+    isOpen: isResetModalOpen,
+    onOpen: onResetModalOpen,
+    onOpenChange: onResetModalChange,
   } = useDisclosure();
 
   const [roomId, setRoomId] = useState<string | null>(null);
@@ -283,14 +299,50 @@ const PlanningPoker: React.FC = () => {
     );
 
   const resetRound = async () => {
+    if (!roomId || !roomData) return;
     const resetVotes: PlayerVotes = {};
-    Object.keys(roomData!.votes).forEach((id) => {
-      resetVotes[id] = { ...roomData!.votes[id], score: null };
+    Object.keys(roomData.votes).forEach((id) => {
+      resetVotes[id] = { ...roomData.votes[id], score: null };
     });
     setHighlightedGroup("");
+
+    // Snapshot a revealed round that had at least one cast vote into the shared
+    // history before clearing it, keeping only the most recent entries.
+    const history =
+      roomData.revealed && stats && stats.total > 0
+        ? [
+            buildRoundHistoryEntry(roomData, stats),
+            ...(roomData.history ?? []),
+          ].slice(0, PLANNING_POKER_HISTORY_LIMIT)
+        : undefined;
+
     await setDoc(
-      doc(db, PLANNING_POKER_DB_NAME, roomId!),
-      { revealed: false, votes: resetVotes },
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      {
+        revealed: false,
+        votes: resetVotes,
+        ...(history ? { history } : {}),
+      },
+      { merge: true },
+    );
+  };
+
+  // Guard against accidentally wiping in-progress hidden votes: while a round
+  // is still hidden, ask for confirmation before resetting. Once revealed the
+  // votes are already public, so reset proceeds immediately.
+  const requestReset = () => {
+    if (roomData && !roomData.revealed) {
+      onResetModalOpen();
+    } else {
+      resetRound();
+    }
+  };
+
+  const clearHistory = async () => {
+    if (!roomId || !isAdmin) return;
+    await setDoc(
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      { history: [] },
       { merge: true },
     );
   };
@@ -361,8 +413,10 @@ const PlanningPoker: React.FC = () => {
       <PlanningPokerHeader
         roomData={roomData}
         isAdmin={isAdmin}
+        historyCount={roomData?.history?.length ?? 0}
         toggleReveal={toggleReveal}
-        resetRound={resetRound}
+        resetRound={requestReset}
+        onOpenHistory={onHistoryModalOpen}
       />
 
       {/* 2. Stats Section */}
@@ -439,6 +493,23 @@ const PlanningPoker: React.FC = () => {
           voterToKick ? roomData?.votes?.[voterToKick]?.name : undefined
         }
         onConfirm={confirmRemoveVoter}
+      />
+
+      {/* 8. Round History Modal */}
+      <PlanningPokerHistoryModal
+        isOpen={isHistoryModalOpen}
+        onOpenChange={onHistoryModalChange}
+        history={roomData?.history ?? []}
+        groupOptions={roomData?.groupOptions ?? []}
+        isAdmin={isAdmin}
+        onClearHistory={clearHistory}
+      />
+
+      {/* 9. Confirm Reset Modal (only shown while votes are still hidden) */}
+      <PlanningPokerConfirmResetModal
+        isOpen={isResetModalOpen}
+        onOpenChange={onResetModalChange}
+        onConfirm={resetRound}
       />
     </div>
   );

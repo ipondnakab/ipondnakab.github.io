@@ -172,6 +172,14 @@
     "removePlayerHeader": "プレイヤーを削除",
     "removeConfirm": "{{name}}をルームから削除しますか？ ロビーに戻されますが、いつでも再参加できます。",
     "thisPlayer": "このプレイヤー",
-    "remove": "削除"
+    "remove": "削除",
+    "history": "履歴",
+    "historyTitle": "ラウンド履歴",
+    "historyEmpty": "保存されたラウンドはまだありません。公開してからリセットすると結果がここに保存されます。",
+    "historyDeck": "デッキ",
+    "clearHistory": "履歴を消去",
+    "clearHistoryConfirm": "もう一度タップで全消去",
+    "resetConfirmHeader": "ラウンドをリセットしますか？",
+    "resetConfirmBody": "まだ投票が公開されていません。リセットすると全員の投票が消去され、新しいラウンドが始まります。"
   }
 }

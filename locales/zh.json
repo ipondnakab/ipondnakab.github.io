@@ -172,6 +172,14 @@
     "removePlayerHeader": "移除玩家",
     "removeConfirm": "确定将 {{name}} 移出房间吗？Ta 将返回大厅，并可随时重新加入。",
     "thisPlayer": "该玩家",
-    "remove": "移除"
+    "remove": "移除",
+    "history": "历史",
+    "historyTitle": "轮次历史",
+    "historyEmpty": "尚未保存任何轮次。公开后重置即可将结果保存到此处。",
+    "historyDeck": "牌组",
+    "clearHistory": "清除历史",
+    "clearHistoryConfirm": "再次点击以全部清除",
+    "resetConfirmHeader": "重置本轮？",
+    "resetConfirmBody": "投票尚未公开。重置将清除所有人的投票并开始新的一轮。"
   }
 }

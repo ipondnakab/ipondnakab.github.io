@@ -172,6 +172,14 @@
     "removePlayerHeader": "Ta bort spelare",
     "removeConfirm": "Vill du ta bort {{name}} från rummet? Spelaren skickas tillbaka till lobbyn och kan gå med igen när som helst.",
     "thisPlayer": "den här spelaren",
-    "remove": "Ta bort"
+    "remove": "Ta bort",
+    "history": "Historik",
+    "historyTitle": "Rundhistorik",
+    "historyEmpty": "Inga rundor sparade än. Visa en runda och återställ den för att spara resultatet här.",
+    "historyDeck": "Kortlek",
+    "clearHistory": "Rensa historik",
+    "clearHistoryConfirm": "Tryck igen för att rensa allt",
+    "resetConfirmHeader": "Återställa rundan?",
+    "resetConfirmBody": "Rösterna har inte visats än. Att återställa rensar allas röster och startar en ny runda."
   }
 }

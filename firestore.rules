@@ -32,6 +32,13 @@ service cloud.firestore {
                    && (
                      !('revealed' in request.resource.data)
                      || request.resource.data.revealed is bool
+                   )
+                   // `history` is a bounded log of past rounds; keep it a
+                   // reasonably-sized list so it can't be used as free storage.
+                   && (
+                     !('history' in request.resource.data)
+                     || (request.resource.data.history is list
+                         && request.resource.data.history.size() <= 50)
                    );
 
       // No deleting whole rooms from the client.
