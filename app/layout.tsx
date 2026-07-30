@@ -10,7 +10,7 @@ export interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-const SITE_URL = "https://ipondnakab.github.io";
+import { SITE_URL } from "@/constants/site";
 const SITE_TITLE = "Kittipat Daengdee — Full-Stack Software Engineer";
 const SITE_DESCRIPTION =
   "Kittipat Daengdee (ipondnakab) is a full-stack software engineer specializing in React, Next.js, TypeScript, Node.js and Spring Boot. Explore the résumé, projects and experiments.";
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/images/profile2.jpg",
+        url: "/images/avatar-profile-square.png",
         width: 800,
         height: 800,
         alt: "Kittipat Daengdee",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/images/profile2.jpg"],
+    images: ["/images/avatar-profile-square.png"],
   },
   icons: {
     icon: "/favicon.ico",

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://ipondnakab.github.io";
+import { SITE_URL } from "@/constants/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {

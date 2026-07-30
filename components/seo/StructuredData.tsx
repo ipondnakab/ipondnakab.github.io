@@ -1,8 +1,7 @@
 import React from "react";
 
+import { SITE_URL } from "@/constants/site";
 import { SOCIALS } from "@/constants/social";
-
-const SITE_URL = "https://ipondnakab.github.io";
 
 // schema.org JSON-LD so search engines resolve "Kittipat Daengdee" to a single
 // Person entity (name, role, socials, education, employer) and can surface a
@@ -20,7 +19,7 @@ const StructuredData: React.FC = () => {
         description:
           "Kittipat Daengdee is a full-stack software engineer specializing in React, Next.js, TypeScript, Node.js and Spring Boot.",
         url: SITE_URL,
-        image: `${SITE_URL}/images/profile2.jpg`,
+        image: `${SITE_URL}/images/avatar-profile-square.png`,
         sameAs: SOCIALS.map((social) => social.url),
         worksFor: { "@type": "Organization", name: "ODDS" },
         alumniOf: {

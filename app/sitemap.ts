@@ -1,9 +1,13 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://ipondnakab.github.io";
+import { SITE_URL } from "@/constants/site";
+
+// Higher-priority, more frequently-crawled routes we actively promote.
+const PROMOTED_ROUTES = new Set(["/planning", "/resume"]);
 
 const ROUTES = [
   "",
+  "/resume",
   "/mini-project",
   "/planning",
   "/prompt-pay",
@@ -17,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return ROUTES.map((route) => ({
     url: `${SITE_URL}${route}`,
     lastModified,
-    changeFrequency: "monthly",
-    priority: route === "" ? 1 : 0.7,
+    changeFrequency: PROMOTED_ROUTES.has(route) ? "weekly" : "monthly",
+    priority: route === "" ? 1 : PROMOTED_ROUTES.has(route) ? 0.9 : 0.7,
   }));
 }

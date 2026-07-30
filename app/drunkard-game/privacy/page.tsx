@@ -453,12 +453,12 @@ const DrunkardGamePrivacy: React.FC<DrunkardGamePrivacyProps> = () => {
                       {t.contact.website}:
                     </strong>{" "}
                     <a
-                      href="https://ipondnakab.github.io"
+                      href="https://kittipat.dev"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-purple-600 dark:text-purple-400 hover:underline"
                     >
-                      https://ipondnakab.github.io
+                      https://kittipat.dev
                     </a>
                   </div>
                 </div>

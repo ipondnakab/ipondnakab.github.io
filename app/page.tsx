@@ -25,7 +25,7 @@ const Home: React.FC<HomeProps> = () => {
         <div className="w-[180px] h-[180px] sm:w-[240px] sm:h-[240px]">
           <Avatar
             className="w-[180px] h-[180px] sm:w-[240px] sm:h-[240px]"
-            src="./images/profile2.jpg"
+            src="./images/avatar-profile-square.png"
           />
         </div>
         <div className="flex flex-col">
