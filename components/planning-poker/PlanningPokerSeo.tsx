@@ -1,4 +1,5 @@
 import React from "react";
+import { HiChevronDown } from "react-icons/hi";
 
 import { SITE_URL } from "@/constants/site";
 
@@ -7,6 +8,11 @@ import { SITE_URL } from "@/constants/site";
 // nothing into the static HTML, so this section is what search engines actually
 // index. Kept as a pure server component (no "use client", no i18n) so all the
 // copy ships in the prerendered HTML in the site's default (English) language.
+//
+// The detail sits inside native <details> accordions: collapsed by default so
+// the page stays clean, but present in the DOM and user-expandable — which is
+// the search-guideline-compliant way to keep content (indexed at full weight,
+// never hidden from users the way display:none / off-screen text would be).
 
 const PAGE_URL = `${SITE_URL}/planning`;
 
@@ -157,18 +163,37 @@ const jsonLd = {
   ],
 };
 
+// A collapsed-by-default, user-expandable section built on native <details>.
+// The heading stays visible while collapsed; the body is in the DOM (indexed)
+// and revealed on click — compliant, accessible, and JS-free.
+const Section: React.FC<{
+  title: string;
+  children: React.ReactNode;
+}> = ({ title, children }) => (
+  <details className="group overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.02] transition-colors hover:border-foreground/20">
+    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-foreground/[0.03] [&::-webkit-details-marker]:hidden">
+      <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-foreground/10 text-foreground/60 transition-transform duration-200 group-[[open]]:rotate-180">
+        <HiChevronDown size={18} />
+      </span>
+    </summary>
+    <div className="px-5 pb-6 pt-1">{children}</div>
+  </details>
+);
+
 const PlanningPokerSeo: React.FC = () => {
   return (
     <section
       aria-label="About Planning Poker"
-      className="mx-auto max-w-6xl px-4 py-16 text-foreground md:px-8"
+      className="mx-auto max-w-5xl px-4 py-16 text-foreground md:px-8"
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <header className="max-w-3xl">
+      {/* Always-visible hero — keeps the primary keyword and context on-page. */}
+      <header>
         <h1 className="text-3xl font-bold md:text-4xl">
           Free Online Planning Poker
         </h1>
@@ -178,112 +203,123 @@ const PlanningPokerSeo: React.FC = () => {
           sign-up and nothing to install. Create a room, share the link, and
           start your sprint planning in seconds.
         </p>
+        <p className="mt-3 text-sm text-foreground/45">
+          New to Planning Poker? Expand a section below to learn more.
+        </p>
       </header>
 
-      <h2 className="mt-14 text-2xl font-semibold">What is Planning Poker?</h2>
-      <div className="mt-4 max-w-3xl space-y-4 text-foreground/70">
-        <p>
-          Planning Poker — also called Scrum Poker or pointing poker — is a
-          consensus-based estimation technique used by agile and Scrum teams to
-          size the relative effort of product backlog items. Instead of one
-          person guessing, every team member privately picks a card representing
-          their estimate, and all cards are revealed at the same time. Because
-          votes stay hidden until the reveal, no one is anchored by the loudest
-          voice in the room and each estimate stays independent.
-        </p>
-        <p>
-          When estimates differ, the gap sparks a short discussion: the highest
-          and lowest voters explain their reasoning, the team surfaces hidden
-          assumptions and edge cases, and then re-votes. A round or two usually
-          converges on a shared story-point estimate the whole team stands
-          behind — turning estimation into a fast, collaborative conversation
-          rather than a guessing game.
-        </p>
-      </div>
-
-      <h2 className="mt-14 text-2xl font-semibold">Why use Planning Poker?</h2>
-      <ul className="mt-4 max-w-3xl space-y-2 text-foreground/70">
-        {BENEFITS.map((benefit) => (
-          <li key={benefit} className="flex gap-2.5">
-            <span aria-hidden className="mt-0.5 text-primary">
-              ▹
-            </span>
-            <span>{benefit}</span>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 text-2xl font-semibold">Features</h2>
-      <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((feature) => (
-          <li
-            key={feature.title}
-            className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
-          >
-            <h3 className="font-semibold">{feature.title}</h3>
-            <p className="mt-1.5 text-sm text-foreground/60">{feature.body}</p>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 text-2xl font-semibold">Estimation decks</h2>
-      <p className="mt-4 max-w-3xl text-foreground/70">
-        Pick the scale that fits your team — and switch decks at any time
-        without leaving the room.
-      </p>
-      <ul className="mt-4 grid gap-4 sm:grid-cols-3">
-        {DECKS_INFO.map((deck) => (
-          <li
-            key={deck.title}
-            className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
-          >
-            <h3 className="font-semibold">{deck.title}</h3>
-            <p className="mt-1.5 text-sm text-foreground/60">{deck.body}</p>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 text-2xl font-semibold">How it works</h2>
-      <ol className="mt-4 grid gap-4 sm:grid-cols-3">
-        {STEPS.map((step, index) => (
-          <li
-            key={step.title}
-            className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
-          >
-            <span className="text-sm font-bold text-primary">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="mt-1 font-semibold">{step.title}</h3>
-            <p className="mt-1.5 text-sm text-foreground/60">{step.body}</p>
-          </li>
-        ))}
-      </ol>
-
-      <h2 className="mt-14 text-2xl font-semibold">
-        Tips for accurate estimates
-      </h2>
-      <ul className="mt-4 max-w-3xl space-y-2 text-foreground/70">
-        {TIPS.map((tip) => (
-          <li key={tip} className="flex gap-2.5">
-            <span aria-hidden className="mt-0.5 text-primary">
-              ▹
-            </span>
-            <span>{tip}</span>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 text-2xl font-semibold">
-        Frequently asked questions
-      </h2>
-      <dl className="mt-4 max-w-3xl divide-y divide-foreground/10">
-        {FAQS.map((item) => (
-          <div key={item.q} className="py-4">
-            <dt className="font-medium text-foreground">{item.q}</dt>
-            <dd className="mt-1.5 text-sm text-foreground/60">{item.a}</dd>
+      <div className="mt-8 space-y-3">
+        <Section title="What is Planning Poker?">
+          <div className=" space-y-4 text-foreground/70">
+            <p>
+              Planning Poker — also called Scrum Poker or pointing poker — is a
+              consensus-based estimation technique used by agile and Scrum teams
+              to size the relative effort of product backlog items. Instead of
+              one person guessing, every team member privately picks a card
+              representing their estimate, and all cards are revealed at the
+              same time. Because votes stay hidden until the reveal, no one is
+              anchored by the loudest voice in the room and each estimate stays
+              independent.
+            </p>
+            <p>
+              When estimates differ, the gap sparks a short discussion: the
+              highest and lowest voters explain their reasoning, the team
+              surfaces hidden assumptions and edge cases, and then re-votes. A
+              round or two usually converges on a shared story-point estimate
+              the whole team stands behind — turning estimation into a fast,
+              collaborative conversation rather than a guessing game.
+            </p>
           </div>
-        ))}
-      </dl>
+        </Section>
+
+        <Section title="Why use Planning Poker?">
+          <ul className=" space-y-2 text-foreground/70">
+            {BENEFITS.map((benefit) => (
+              <li key={benefit} className="flex gap-2.5">
+                <span aria-hidden className="mt-0.5 text-primary">
+                  ▹
+                </span>
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section title="Features">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((feature) => (
+              <li
+                key={feature.title}
+                className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
+              >
+                <h3 className="font-semibold">{feature.title}</h3>
+                <p className="mt-1.5 text-sm text-foreground/60">
+                  {feature.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section title="Estimation decks">
+          <p className="mb-4  text-foreground/70">
+            Pick the scale that fits your team — and switch decks at any time
+            without leaving the room.
+          </p>
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {DECKS_INFO.map((deck) => (
+              <li
+                key={deck.title}
+                className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
+              >
+                <h3 className="font-semibold">{deck.title}</h3>
+                <p className="mt-1.5 text-sm text-foreground/60">{deck.body}</p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section title="How it works">
+          <ol className="grid gap-4 sm:grid-cols-3">
+            {STEPS.map((step, index) => (
+              <li
+                key={step.title}
+                className="rounded-xl border border-foreground/10 bg-foreground/[0.03] p-5"
+              >
+                <span className="text-sm font-bold text-primary">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-1 font-semibold">{step.title}</h3>
+                <p className="mt-1.5 text-sm text-foreground/60">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </Section>
+
+        <Section title="Tips for accurate estimates">
+          <ul className=" space-y-2 text-foreground/70">
+            {TIPS.map((tip) => (
+              <li key={tip} className="flex gap-2.5">
+                <span aria-hidden className="mt-0.5 text-primary">
+                  ▹
+                </span>
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section title="Frequently asked questions">
+          <dl className=" divide-y divide-foreground/10">
+            {FAQS.map((item) => (
+              <div key={item.q} className="py-4 first:pt-0">
+                <dt className="font-medium text-foreground">{item.q}</dt>
+                <dd className="mt-1.5 text-sm text-foreground/60">{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+      </div>
     </section>
   );
 };

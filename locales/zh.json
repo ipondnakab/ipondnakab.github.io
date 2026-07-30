@@ -51,6 +51,8 @@
   },
   "home": {
     "greeting": "你好，我是",
+    "avatarHint": "点击旋转切换",
+    "avatarAria": "更换头像",
     "bio": "我是一名拥有 {{years}} 年以上经验的 Software Engineer，专注于 Full-stack Web 与应用程序开发，以及 Automated Testing。我喜欢用创新的方式解决问题，擅长团队协作，并始终保持学习新技术的热情。",
     "frameworksTitle": "Framework & Library",
     "codingTitle": "编程语言",

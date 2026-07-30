@@ -51,6 +51,8 @@
   },
   "home": {
     "greeting": "Hej, jag heter",
+    "avatarHint": "Klicka för att snurra",
+    "avatarAria": "Byt profilbild",
     "bio": "Jag är en Software Engineer med över {{years}} års erfarenhet av Full-stack webbutveckling, applikationsutveckling och Automated Testing. Jag gillar att lösa problem på kreativa sätt, trivs med teamwork och tycker om att ständigt lära mig nya tekniker.",
     "frameworksTitle": "Framework & Library",
     "codingTitle": "Programmeringsspråk",

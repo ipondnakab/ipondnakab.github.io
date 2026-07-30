@@ -51,6 +51,8 @@
   },
   "home": {
     "greeting": "こんにちは、",
+    "avatarHint": "クリックで回転",
+    "avatarAria": "プロフィール画像を変更",
     "bio": "私は{{years}}年以上の経験を持つSoftware Engineerです。Full-stackのWeb・アプリケーション開発やAutomated Testingに携わってきました。創造的な問題解決を得意とし、チームでの開発を大切にしています。また、新しい技術を学び続けることを楽しんでいます。",
     "frameworksTitle": "Framework & Library",
     "codingTitle": "プログラミング言語",

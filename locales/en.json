@@ -51,6 +51,8 @@
   },
   "home": {
     "greeting": "Hello I'm",
+    "avatarHint": "Click to spin",
+    "avatarAria": "Change profile picture",
     "bio": "I am a software engineer with over {{years}}+ years of experience in full-stack web and application development, as well as automated testing. I apply a creative approach to problem-solving and excel in collaborative environments. I am also eager to continuously learn and develop new skills.",
     "frameworksTitle": "Frameworks & libraries",
     "codingTitle": "Coding & Languages",

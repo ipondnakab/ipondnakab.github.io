@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import PlanningPoker from "@/components/planning-poker/PlanningPoker";
 import PlanningPokerSeo from "@/components/planning-poker/PlanningPokerSeo";
+import PlanningPokerSeoGate from "@/components/planning-poker/PlanningPokerSeoGate";
 
 const TITLE = "Free Online Planning Poker — Scrum Poker for Agile Teams";
 const DESCRIPTION =
@@ -52,7 +53,9 @@ const PlanningPokerPage = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <PlanningPoker />
       </Suspense>
-      <PlanningPokerSeo />
+      <PlanningPokerSeoGate>
+        <PlanningPokerSeo />
+      </PlanningPokerSeoGate>
     </>
   );
 };
