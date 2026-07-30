@@ -26,6 +26,7 @@ import {
   RoomData,
   RoomStats,
 } from "@/interfaces/poker";
+import { trackEvent } from "@/libs/analytics";
 import { db } from "@/libs/firebase";
 import PlanningPokerCardSelection from "./PlanningPokerCardSelection";
 import PlanningPokerConfirmKickModal from "./PlanningPokerConfirmKickModal";
@@ -215,6 +216,18 @@ const PlanningPoker: React.FC = () => {
   const handleJoin = async () => {
     if (!roomId || !userName) return;
     setWasKicked(false);
+    // No prior room doc (or no players yet) means this user is effectively
+    // creating the room rather than joining an existing one.
+    const existingPlayers = roomData
+      ? Object.keys(roomData.votes ?? {}).length
+      : 0;
+    void trackEvent(
+      existingPlayers === 0 ? "poker_create_room" : "poker_join_room",
+      {
+        player_count: existingPlayers,
+        has_group: Boolean(userGroup?.trim()),
+      },
+    );
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       {
@@ -280,23 +293,34 @@ const PlanningPoker: React.FC = () => {
   const handleVote = async (score: string) => {
     if (!roomId || !roomData) return;
     const current = roomData.votes?.[userId]?.score;
+    const nextScore = current === score ? null : score;
+    // Only a cast vote is interesting; toggling the same card off is a no-op.
+    if (nextScore !== null) {
+      void trackEvent("poker_vote", {
+        card: nextScore,
+        deck_type: roomData.deckType ?? "fibonacci",
+      });
+    }
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       {
         votes: {
-          [userId]: { name: userName, score: current === score ? null : score },
+          [userId]: { name: userName, score: nextScore },
         },
       },
       { merge: true },
     );
   };
 
-  const toggleReveal = async () =>
-    setDoc(
+  const toggleReveal = async () => {
+    const nextRevealed = !roomData?.revealed;
+    void trackEvent("poker_reveal", { revealed: nextRevealed });
+    await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId!),
-      { revealed: !roomData?.revealed },
+      { revealed: nextRevealed },
       { merge: true },
     );
+  };
 
   const resetRound = async () => {
     if (!roomId || !roomData) return;
@@ -315,6 +339,11 @@ const PlanningPoker: React.FC = () => {
             ...(roomData.history ?? []),
           ].slice(0, PLANNING_POKER_HISTORY_LIMIT)
         : undefined;
+
+    void trackEvent("poker_reset_round", {
+      recorded: Boolean(history),
+      player_count: Object.keys(roomData.votes).length,
+    });
 
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
@@ -340,11 +369,21 @@ const PlanningPoker: React.FC = () => {
 
   const clearHistory = async () => {
     if (!roomId || !isAdmin) return;
+    void trackEvent("poker_clear_history", {
+      entries: roomData?.history?.length ?? 0,
+    });
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       { history: [] },
       { merge: true },
     );
+  };
+
+  const openHistory = () => {
+    void trackEvent("poker_view_history", {
+      entries: roomData?.history?.length ?? 0,
+    });
+    onHistoryModalOpen();
   };
 
   const updateDeckSettings = async (type: DeckType, customStr?: string) => {
@@ -416,7 +455,7 @@ const PlanningPoker: React.FC = () => {
         historyCount={roomData?.history?.length ?? 0}
         toggleReveal={toggleReveal}
         resetRound={requestReset}
-        onOpenHistory={onHistoryModalOpen}
+        onOpenHistory={openHistory}
       />
 
       {/* 2. Stats Section */}

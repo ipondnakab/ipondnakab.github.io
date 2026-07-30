@@ -19,6 +19,7 @@ import { HiArrowUpRight } from "react-icons/hi2";
 import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
 import { localize } from "@/functions/localize";
 import { ProjectExperience } from "@/interfaces/work-experience";
+import { trackEvent } from "@/libs/analytics";
 
 import MotionCard from "./MotionCard";
 import { slideIn, staggerParent } from "./motion";
@@ -44,6 +45,7 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = () => {
   const [active, setActive] = useState<ProjectExperience | null>(null);
 
   const openProject = (project: ProjectExperience) => {
+    trackEvent("resume_project_open", { project: project.title });
     setActive(project);
     onOpen();
   };
@@ -134,6 +136,11 @@ const ProjectsPanel: React.FC<ProjectsPanelProps> = () => {
                     color="primary"
                     variant="flat"
                     endContent={<HiArrowUpRight />}
+                    onPress={() =>
+                      trackEvent("resume_project_visit", {
+                        project: active.title,
+                      })
+                    }
                   >
                     {t("resume.action.visit", "Visit")}
                   </Button>

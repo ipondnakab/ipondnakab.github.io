@@ -7,6 +7,7 @@ import { IoLinkSharp } from "react-icons/io5";
 
 import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
 import { localize } from "@/functions/localize";
+import { trackEvent } from "@/libs/analytics";
 
 export interface OutsourceProjectsProps {}
 
@@ -29,6 +30,12 @@ const OutsourceProjects: React.FC<OutsourceProjectsProps> = () => {
                   href={project.projectUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("outsource_project_click", {
+                      project: project.title,
+                      location: "home",
+                    })
+                  }
                 >
                   <IoLinkSharp />
                 </a>

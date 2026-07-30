@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaMoon, FaSun } from "react-icons/fa";
 
+import { trackEvent } from "@/libs/analytics";
+
 import SwitchAutoLabel from "./SwitchAutoLabel";
 
 export interface ThemeSwitcherProps {
@@ -36,6 +38,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
 
   const onChange = () => {
     const val = theme === "dark" ? "light" : "dark";
+    trackEvent("theme_change", { theme: val });
     setTheme(val);
     setIsDark(val === "dark");
   };

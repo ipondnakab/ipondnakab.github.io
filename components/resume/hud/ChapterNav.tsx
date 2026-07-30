@@ -9,6 +9,7 @@ import { HiArrowLeft, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 import LanguageSwitcher from "@/components/layouts/LanguageSwitcher";
 import { ResumeChapter } from "@/interfaces/resume";
+import { trackEvent } from "@/libs/analytics";
 
 export interface ChapterNavProps {
   chapters: ResumeChapter[];
@@ -29,6 +30,13 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
   const activeChapter = chapters[activeIndex] ?? chapters[0];
   const chapterLabel = (chapter: ResumeChapter) =>
     t(`resume.chapter.${chapter.id}`, chapter.label);
+
+  const handleSelect = (index: number) => {
+    trackEvent("resume_chapter_select", {
+      chapter: chapters[index]?.id ?? String(index),
+    });
+    onSelect(index);
+  };
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] flex items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-6">
@@ -60,7 +68,7 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
               <button
                 key={chapter.id}
                 type="button"
-                onClick={() => onSelect(chapter.index)}
+                onClick={() => handleSelect(chapter.index)}
                 className={clsx(
                   "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium tracking-wide transition-colors text-foreground-500 hover:text-foreground-800 hover:font-semibold",
                   active ? "text-primary" : undefined,
@@ -88,7 +96,7 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
       >
         <button
           type="button"
-          onClick={() => onSelect(Math.max(0, activeIndex - 1))}
+          onClick={() => handleSelect(Math.max(0, activeIndex - 1))}
           disabled={activeIndex === 0}
           aria-label="Previous section"
           className="flex h-7 w-7 items-center justify-center rounded-full transition-colors hover:text-foreground disabled:opacity-25"
@@ -100,7 +108,7 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
         </span>
         <button
           type="button"
-          onClick={() => onSelect(Math.min(lastIndex, activeIndex + 1))}
+          onClick={() => handleSelect(Math.min(lastIndex, activeIndex + 1))}
           disabled={activeIndex === lastIndex}
           aria-label="Next section"
           className="flex h-7 w-7 items-center justify-center rounded-full text-foreground/75 transition-colors hover:text-foreground disabled:opacity-25"

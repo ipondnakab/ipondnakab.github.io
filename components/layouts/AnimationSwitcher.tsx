@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";
 
+import { trackEvent } from "@/libs/analytics";
+
 import SwitchAutoLabel from "./SwitchAutoLabel";
 
 export interface AnimationSwitcherProps {
@@ -33,6 +35,7 @@ const AnimationSwitcher: React.FC<AnimationSwitcherProps> = ({
   const [mounted, setMounted] = useState(false);
 
   const onChangeAnimation = () => {
+    trackEvent("animation_toggle", { enabled: !show });
     localStorage.setItem("animation", show ? "0" : "1");
     setShow(!show);
   };

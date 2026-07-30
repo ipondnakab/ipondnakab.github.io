@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { MINI_PROJECTS } from "@/constants/mini-project";
 import { localize } from "@/functions/localize";
+import { trackEvent } from "@/libs/analytics";
 
 const MiniProjectPage = () => {
   const { t, i18n } = useTranslation();
@@ -23,6 +24,12 @@ const MiniProjectPage = () => {
             href={project.href}
             className="hover:bg-primary rounded-md px-0 hover:px-4 transition-all duration-300 py-2 cursor-pointer"
             rel="noopener noreferrer"
+            onClick={() =>
+              trackEvent("mini_project_click", {
+                project: project.title,
+                href: project.href,
+              })
+            }
           >
             <h2 className="text-2xl font-bold">{project.title}</h2>
             <p className="">{localize(project.description, lang)}</p>

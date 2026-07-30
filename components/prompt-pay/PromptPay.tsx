@@ -7,6 +7,8 @@ import QRCode from "qrcode";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { trackEvent } from "@/libs/analytics";
+
 const PromptPay: React.FC = () => {
   const { t } = useTranslation();
   const search = useSearchParams();
@@ -33,6 +35,9 @@ const PromptPay: React.FC = () => {
         },
       });
       setQr(image);
+      trackEvent("promptpay_qr_shown", {
+        has_amount: Boolean(amount) && amount !== "0",
+      });
     };
 
     run();
@@ -44,6 +49,9 @@ const PromptPay: React.FC = () => {
     const target = formData.get("target")?.toString() || "";
     const amount = formData.get("amount")?.toString() || "0";
     if (target) {
+      trackEvent("promptpay_generate", {
+        has_amount: Boolean(amount) && amount !== "0",
+      });
       const params = new URLSearchParams();
       params.set("target", target);
       if (amount) {

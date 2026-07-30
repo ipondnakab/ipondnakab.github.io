@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
 import { SOCIALS } from "@/constants/social";
+import { trackEvent } from "@/libs/analytics";
 
 import { HiDotsHorizontal } from "react-icons/hi";
 import AnimationSwitcher from "./AnimationSwitcher";
@@ -41,6 +42,11 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   const comparePathname = (href: string) => {
     return pathname.split("/")[1] === href.split("/")[1] || pathname === href;
   };
+
+  const handleNavClick = (name: string) =>
+    trackEvent("nav_click", { menu: name });
+  const handleSocialClick = (name: string, location: string) =>
+    trackEvent("social_click", { network: name, location });
 
   return (
     <>
@@ -78,6 +84,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                       comparePathname(item.href) ? "primary" : "foreground"
                     }
                     href={item.href}
+                    onPress={() => handleNavClick(item.name)}
                   >
                     {t(`nav.${item.name}`, item.title)}
                   </Link>
@@ -119,6 +126,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                           }
                           className="w-full"
                           href={item.href}
+                          onPress={() => handleNavClick(item.name)}
                         >
                           {t(`nav.${item.name}`, item.title)}
                         </Link>
@@ -141,6 +149,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                   color="foreground"
                   className="hover:text-primary transition-all duration-300"
                   target="_blank"
+                  onPress={() => handleSocialClick(socialLink.name, "navbar")}
                 >
                   {socialLink.icon}
                 </Link>
@@ -169,6 +178,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                   className="w-full"
                   href={item.href}
                   size="lg"
+                  onPress={() => handleNavClick(item.name)}
                 >
                   {t(`nav.${item.name}`, item.title)}
                 </Link>
@@ -184,6 +194,9 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
                       color="foreground"
                       className="hover:text-primary transition-all duration-300"
                       target="_blank"
+                      onPress={() =>
+                        handleSocialClick(socialLink.name, "navbar_mobile")
+                      }
                     >
                       {socialLink.icon}
                     </Link>

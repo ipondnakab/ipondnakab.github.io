@@ -8,6 +8,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { SOCIALS } from "@/constants/social";
 
 import { environment } from "@/core/environment";
+import { trackEvent } from "@/libs/analytics";
 import MotionCard from "./MotionCard";
 import { slideIn } from "./motion";
 
@@ -45,6 +46,9 @@ const ContactPanel: React.FC<ContactPanelProps> = () => {
                 href={`mailto:${environment.contactEmail}`}
                 className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-lg text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
                 aria-label={t("resume.contact.emailAria", "Email")}
+                onPress={() =>
+                  trackEvent("resume_contact_click", { method: "email" })
+                }
               >
                 <HiOutlineMail />
               </Link>
@@ -56,6 +60,9 @@ const ContactPanel: React.FC<ContactPanelProps> = () => {
                 target="_blank"
                 className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-foreground/80 transition-colors hover:border-foreground/40 hover:text-foreground"
                 aria-label={social.name}
+                onPress={() =>
+                  trackEvent("resume_contact_click", { method: social.name })
+                }
               >
                 {social.icon}
               </Link>

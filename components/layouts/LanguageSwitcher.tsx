@@ -1,6 +1,7 @@
 "use client";
 
 import { LANGUAGE_OPTIONS } from "@/constants/languages";
+import { trackEvent } from "@/libs/analytics";
 import {
   Button,
   Dropdown,
@@ -47,7 +48,10 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         selectionMode="single"
         disallowEmptySelection
         selectedKeys={[current.code]}
-        onAction={(key) => i18n.changeLanguage(String(key))}
+        onAction={(key) => {
+          trackEvent("language_change", { language: String(key) });
+          i18n.changeLanguage(String(key));
+        }}
       >
         {LANGUAGE_OPTIONS.map((option) => (
           <DropdownItem

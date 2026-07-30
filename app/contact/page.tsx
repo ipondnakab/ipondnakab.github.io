@@ -10,6 +10,7 @@ import FormHookWrapper, {
 import InputString from "@/components/inputs/InputString";
 import InputTextarea from "@/components/inputs/InputTextarea";
 import { ContactForm } from "@/interfaces/contact";
+import { trackEvent } from "@/libs/analytics";
 
 export interface ContactProps {}
 
@@ -28,11 +29,14 @@ const Contact: React.FC<ContactProps> = () => {
 
   const onSubmit = async () => {
     setIsLoading(true);
+    trackEvent("contact_submit", { status: "attempt" });
     try {
       // TODO: Send to API
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      trackEvent("contact_submit", { status: "success" });
       router.push("/contact/success");
     } catch {
+      trackEvent("contact_submit", { status: "error" });
       alert(t("contact.sendError"));
     } finally {
       setIsLoading(false);
