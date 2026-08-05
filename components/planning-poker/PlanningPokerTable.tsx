@@ -91,7 +91,7 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                           }}
                           className="absolute top-2 text-white rounded-full"
                         >
-                          <div className="max-w-14 truncate">
+                          <div className="max-w-10 sm:max-w-14 truncate">
                             {playerGroup.name}
                           </div>
                         </Chip>
@@ -120,7 +120,7 @@ const PlanningPokerTable: React.FC<PlanningPokerTableProps> = ({
                           }}
                           className="absolute top-2 text-white rounded-full"
                         >
-                          <div className="max-w-14 truncate">
+                          <div className="max-w-10 sm:max-w-14 truncate">
                             {playerGroup.name}
                           </div>
                         </Chip>

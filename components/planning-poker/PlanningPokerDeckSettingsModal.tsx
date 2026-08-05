@@ -1,5 +1,6 @@
 "use client";
 
+import { PLANNING_POKER_MAX_GROUPS_LENGTH } from "@/constants/planning-poker";
 import {
   DECKS,
   DEFAULT_GROUP_COLOR,
@@ -82,12 +83,18 @@ const PlanningPokerDeckSettingsModal: React.FC<
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      backdrop="blur"
+      size="lg"
+      placement="center"
+    >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader>{t("poker.deckSettings")}</ModalHeader>
-            <ModalBody>
+            <ModalBody className="max-h-[65vh] overflow-y-auto">
               <Tabs
                 fullWidth
                 selectedKey={tempDeckInput}
@@ -110,26 +117,27 @@ const PlanningPokerDeckSettingsModal: React.FC<
                 onChange={(e) => setCustomDeckInput(e.target.value)}
                 className="mt-4"
               />
-            </ModalBody>
-            <ModalHeader className="justify-between items-center">
-              <span>{t("poker.groupSettingsTitle")}</span>
-              <div className="flex items-center gap-4 text-xs text-foreground/70 font-light mr-4">
-                <Checkbox
-                  size="sm"
-                  isSelected={sortByGroupInput}
-                  onValueChange={setSortByGroupInput}
-                >
-                  {t("poker.sortingByGroup")}
-                </Checkbox>
+              <div className="justify-between items-center">
+                <span>{t("poker.groupSettingsTitle")}</span>
+                <div className="flex items-center gap-4 text-xs text-foreground/70 font-light mr-4">
+                  <Checkbox
+                    size="sm"
+                    isSelected={sortByGroupInput}
+                    onValueChange={setSortByGroupInput}
+                  >
+                    {t("poker.sortingByGroup")}
+                  </Checkbox>
+                </div>
               </div>
-            </ModalHeader>
-            <ModalBody>
               <div className="flex flex-col gap-2">
                 {groupOptionsInput.map((group, index) => (
-                  <div key={index} className="flex flex-row items-center gap-2">
+                  <div key={index} className="flex flex-row items-start gap-2">
                     <Input
                       size="sm"
                       variant="bordered"
+                      minLength={1}
+                      maxLength={PLANNING_POKER_MAX_GROUPS_LENGTH}
+                      description={`${group.name?.length ?? 0}/${PLANNING_POKER_MAX_GROUPS_LENGTH}`}
                       aria-label={t("poker.groupNameAria", {
                         index: index + 1,
                       })}
@@ -205,6 +213,7 @@ const PlanningPokerDeckSettingsModal: React.FC<
                 </Button>
               </div>
             </ModalBody>
+
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
                 {t("poker.close")}

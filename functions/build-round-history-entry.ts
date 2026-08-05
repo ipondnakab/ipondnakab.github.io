@@ -19,4 +19,7 @@ export const buildRoundHistoryEntry = (
     score: vote.score,
     group: vote.group ?? null,
   })),
+  // Spread conditionally: an absent note must leave the key off entirely, not
+  // set it to `undefined`.
+  ...(roomData.note ? { note: roomData.note } : {}),
 });

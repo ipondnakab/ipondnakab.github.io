@@ -1,3 +1,4 @@
+import { buildGroupAverage } from "@/functions/group-vote-averages";
 import { GroupObject, RoomData } from "@/interfaces/poker";
 import { Button, cn } from "@nextui-org/react";
 
@@ -34,13 +35,7 @@ const PlanningPokerGroupButton: React.FC<PlanningPokerGroupButtonProps> = ({
       </span>
       <span className="font-bold text-xl text-center">
         {roomData.revealed
-          ? Object.values(roomData.votes)
-              .filter((v) => v.group === group.name)
-              .map((v) => v.score)
-              .filter((s): s is string => s !== null && !isNaN(Number(s)))
-              .map(Number)
-              .reduce((a, b, _, arr) => a + b / arr.length, 0)
-              .toFixed(1)
+          ? buildGroupAverage(roomData.votes, group.name)
           : "?"}
       </span>
     </Button>

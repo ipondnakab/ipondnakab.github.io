@@ -33,6 +33,8 @@ export interface RoundHistoryEntry {
   playerCount: number; // players present when the round ended
   deckType: DeckType;
   votes: RoundHistoryVote[];
+  note?: string; // short label for the round ("PROJ-123 login page"); the key
+  // is dropped entirely when the note is cleared, so it is never "" or null
 }
 
 export interface RoomData {
@@ -42,6 +44,8 @@ export interface RoomData {
   groupOptions?: GroupObject[]; // กลุ่มผู้เล่นพร้อมสี (ชื่อและสี) สำหรับการแสดงผล
   sortByGroup?: boolean; // เรียงการ์ดผู้เล่นตามกลุ่มให้ทุกคนเห็นเหมือนกัน
   votes: PlayerVotes;
+  note?: string; // what the room is estimating right now; copied into the
+  // history entry on reset, then cleared for the next round
   history?: RoundHistoryEntry[]; // most-recent-first log of completed rounds
 }
 

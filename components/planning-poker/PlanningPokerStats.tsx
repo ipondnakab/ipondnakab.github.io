@@ -34,7 +34,7 @@ const PlanningPokerStats: React.FC<PlanningPokerStatsProps> = ({
       isBlurred
       className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 shadow-sm"
     >
-      <div className="flex flex-col items-center border-r border-default-100">
+      <div className="hidden sm:flex flex-col items-center border-r border-default-100">
         <span className="font-bold uppercase tracking-widest text-default-400">
           {t("poker.average")}
         </span>
@@ -62,7 +62,7 @@ const PlanningPokerStats: React.FC<PlanningPokerStatsProps> = ({
           })}
         </span>
       </div>
-      <div className="flex flex-col items-center border-r border-default-100">
+      <div className="hidden sm:flex flex-col items-center border-r border-default-100">
         <span className="font-bold uppercase tracking-widest text-default-400">
           {t("poker.status")}
         </span>

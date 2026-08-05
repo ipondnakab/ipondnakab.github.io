@@ -1,4 +1,4 @@
-import { RoundHistoryVote } from "@/interfaces/poker";
+import { PlayerVotes, RoundHistoryVote } from "@/interfaces/poker";
 
 // One group's slice of a completed round.
 export interface GroupAverage {
@@ -10,6 +10,23 @@ export interface GroupAverage {
 
 const isNumericScore = (score: string | null): score is string =>
   score !== null && score.trim() !== "" && !isNaN(Number(score));
+
+const average = (scores: number[]): string =>
+  scores.length > 0
+    ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1)
+    : "-";
+
+// The live average for a single group in the room, formatted like every other
+// average in the app. Same rules as buildGroupAverages below — numeric cards
+// only, "-" when there is nothing to average.
+export const buildGroupAverage = (votes: PlayerVotes, group: string): string =>
+  average(
+    Object.values(votes)
+      .filter((vote) => vote.group === group)
+      .map((vote) => vote.score)
+      .filter(isNumericScore)
+      .map(Number),
+  );
 
 // Break a round down per group, mirroring how the room-level average is
 // computed: non-numeric cards ("?", "☕", t-shirt sizes) are skipped and a

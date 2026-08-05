@@ -15,6 +15,7 @@ import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
 import {
   PLANNING_POKER_ADMIN_PARAM,
   PLANNING_POKER_HISTORY_LIMIT,
+  PLANNING_POKER_NOTE_MAX_LENGTH,
 } from "@/constants/planning-poker";
 import { environment } from "@/core/environment";
 import { buildRoundHistoryEntry } from "@/functions/build-round-history-entry";
@@ -32,10 +33,11 @@ import PlanningPokerCardSelection from "./PlanningPokerCardSelection";
 import PlanningPokerConfirmKickModal from "./PlanningPokerConfirmKickModal";
 import PlanningPokerConfirmResetModal from "./PlanningPokerConfirmResetModal";
 import PlanningPokerDeckSettingsModal from "./PlanningPokerDeckSettingsModal";
-import PlanningPokerGroupButton from "./PlanningPokerGroupButton";
+import PlanningPokerGroups from "./PlanningPokerGroups";
 import PlanningPokerHeader from "./PlanningPokerHeader";
 import PlanningPokerHistoryModal from "./PlanningPokerHistoryModal";
 import PlanningPokerLobby from "./PlanningPokerLobby";
+import PlanningPokerRoundNote from "./PlanningPokerRoundNote";
 import PlanningPokerSettingUserModal from "./PlanningPokerSettingUserModal";
 import PlanningPokerStats from "./PlanningPokerStats";
 import PlanningPokerTable from "./PlanningPokerTable";
@@ -350,6 +352,9 @@ const PlanningPoker: React.FC = () => {
       {
         revealed: false,
         votes: resetVotes,
+        // The note describes the round that just ended — it rides along into
+        // the history entry above, so the next round starts without one.
+        note: deleteField(),
         ...(history ? { history } : {}),
       },
       { merge: true },
@@ -375,6 +380,43 @@ const PlanningPoker: React.FC = () => {
     await setDoc(
       doc(db, PLANNING_POKER_DB_NAME, roomId),
       { history: [] },
+      { merge: true },
+    );
+  };
+
+  // The note for the round in play. It is shared room state, so anyone can set
+  // it, and `buildRoundHistoryEntry` copies it into the history snapshot when
+  // the round is reset.
+  const updateRoundNote = async (note: string) => {
+    if (!roomId) return;
+    const trimmed = note.trim().slice(0, PLANNING_POKER_NOTE_MAX_LENGTH);
+    void trackEvent("poker_round_note", {
+      action: trimmed ? "save" : "clear",
+    });
+    await setDoc(
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      { note: trimmed ? trimmed : deleteField() },
+      { merge: true },
+    );
+  };
+
+  // Notes live inside the history array, and Firestore can't patch a single
+  // array element — so the whole array is rewritten on every edit. Clearing a
+  // note drops the key rather than storing "", keeping entries uniform.
+  const updateHistoryNote = async (entryId: string, note: string) => {
+    if (!roomId || !roomData?.history) return;
+    const trimmed = note.trim().slice(0, PLANNING_POKER_NOTE_MAX_LENGTH);
+    const history = roomData.history.map((entry) => {
+      if (entry.id !== entryId) return entry;
+      const { note: _previous, ...rest } = entry;
+      return trimmed ? { ...rest, note: trimmed } : rest;
+    });
+    void trackEvent("poker_history_note", {
+      action: trimmed ? "save" : "clear",
+    });
+    await setDoc(
+      doc(db, PLANNING_POKER_DB_NAME, roomId),
+      { history },
       { merge: true },
     );
   };
@@ -447,7 +489,7 @@ const PlanningPoker: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4 max-w-6xl mx-auto px-4 md:px-8 py-2">
+    <div className="flex flex-1 flex-col gap-2 sm:gap-3 max-w-6xl mx-auto px-4 md:px-8 py-2">
       {/* 1. Header */}
       <PlanningPokerHeader
         roomData={roomData}
@@ -461,19 +503,22 @@ const PlanningPoker: React.FC = () => {
       {/* 2. Stats Section */}
       <PlanningPokerStats roomData={roomData} stats={stats} roomId={roomId} />
 
-      {roomData?.groupOptions && roomData.groupOptions.length > 0 && (
-        <div className="flex flex-1 items-center flex-wrap justify-center gap-4">
-          {roomData.groupOptions.map((group) => (
-            <PlanningPokerGroupButton
-              key={group.name}
-              highlightedGroup={highlightedGroup}
-              group={group}
-              setHighlightedGroup={setHighlightedGroup}
-              roomData={roomData}
-            />
-          ))}
-        </div>
+      {roomData && (
+        <PlanningPokerGroups
+          roomData={roomData}
+          highlightedGroup={highlightedGroup}
+          setHighlightedGroup={setHighlightedGroup}
+          stats={stats}
+        />
       )}
+
+      {/* 2b. What this round is estimating */}
+      <div className="flex items-center justify-center flex-col gap-2">
+        <PlanningPokerRoundNote
+          note={roomData?.note}
+          onUpdateNote={updateRoundNote}
+        />
+      </div>
 
       {/* 3. Main Card Table */}
       <PlanningPokerTable
@@ -542,6 +587,7 @@ const PlanningPoker: React.FC = () => {
         groupOptions={roomData?.groupOptions ?? []}
         isAdmin={isAdmin}
         onClearHistory={clearHistory}
+        onUpdateNote={updateHistoryNote}
       />
 
       {/* 9. Confirm Reset Modal (only shown while votes are still hidden) */}
