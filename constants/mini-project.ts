@@ -31,6 +31,18 @@ export const MINI_PROJECTS: {
     },
   },
   {
+    name: "pokdeng",
+    title: "POKDENG CREDIT",
+    href: "/pokdeng",
+    description: {
+      en: "A Pok Deng credit tracker: the host settles each turn against every player, with deng multipliers and zero-sum balances.",
+      th: "ตัวช่วยนับเครดิตป๊อกเด้ง เจ้ามือจบตากับผู้เล่นทีละคน รองรับเด้งคูณและยอดรวมที่หักลบกันเป็นศูนย์",
+      sv: "En Pok Deng-krediträknare där värden avslutar varje tur mot spelarna, med deng-multiplikatorer och nollsummesaldon.",
+      ja: "ポークデンのクレジット管理ツール。親が各ターンをプレイヤーごとに精算し、デン倍率とゼロサムの収支に対応します。",
+      zh: "Pok Deng 积分记录工具：庄家逐轮与玩家结算，支持倍数与零和积分。",
+    },
+  },
+  {
     name: "prompt-pay",
     title: "PROMPTPAY",
     href: "/prompt-pay",

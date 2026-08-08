@@ -10,6 +10,7 @@ const ROUTES = [
   "/resume",
   "/mini-project",
   "/planning",
+  "/pokdeng",
   "/prompt-pay",
   "/threejs",
   "/credit",
