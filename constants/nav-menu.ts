@@ -27,8 +27,8 @@ export const NAV_MENUS: Menu[] = [
     href: "/mini-project",
   },
   {
-    name: "planning-poker",
-    title: "POKER",
+    name: "planning",
+    title: "PLANNING",
     href: "/planning",
   },
   {

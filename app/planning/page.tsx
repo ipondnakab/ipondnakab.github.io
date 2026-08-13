@@ -5,29 +5,30 @@ import PlanningPoker from "@/components/planning-poker/PlanningPoker";
 import PlanningPokerSeo from "@/components/planning-poker/PlanningPokerSeo";
 import PlanningPokerSeoGate from "@/components/planning-poker/PlanningPokerSeoGate";
 
-const TITLE = "Free Online Planning Poker — Scrum Poker for Agile Teams";
+const TITLE =
+  "Free Online Planning Point Estimation — Scrum estimation point for Agile Teams";
 const DESCRIPTION =
-  "Free online Planning Poker (Scrum Poker) for agile teams. Estimate story points in real time with custom decks, team groups and shared round history — no sign-up, no install.";
+  "Free online Planning Point Estimation (Scrum estimation point) for agile teams. Estimate story points in real time with custom decks, team groups and shared round history — no sign-up, no install.";
 const OG_IMAGE = {
   url: "/images/og-planning.png",
   width: 1672,
   height: 941,
-  alt: "Planning Poker — free real-time Scrum Poker for agile teams",
+  alt: "Planning Point Estimation — free real-time Scrum estimation point for agile teams",
 };
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: [
-    "planning poker",
+    "planning point Estimation",
     "scrum poker",
-    "online planning poker",
-    "free planning poker",
-    "planning poker online free",
+    "online planning point Estimation",
+    "free planning point Estimation",
+    "planning point Estimation online free",
     "story point estimation",
     "agile estimation tool",
     "pointing poker",
-    "sprint planning poker",
+    "sprint planning point Estimation",
     "fibonacci estimation",
     "scrum estimation tool",
   ],

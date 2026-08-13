@@ -20,14 +20,14 @@ export const MINI_PROJECTS: {
   },
   {
     name: "planning-poker",
-    title: "PLANNING POKER",
+    title: "PLANNING POINT ESTIMATION",
     href: "/planning",
     description: {
-      en: "A web-based Planning Poker app for Agile teams to estimate task complexity collaboratively.",
-      th: "แอปพลิเคชัน Planning Poker บนเว็บ สำหรับทีม Agile ใช้ประเมินความซับซ้อนของงานร่วมกัน",
-      sv: "En webbaserad Planning Poker-app för Agile-team som tillsammans uppskattar uppgifters komplexitet.",
-      ja: "Agileチームがタスクの複雑さを共同で見積もるためのWebベースのPlanning Pokerアプリ。",
-      zh: "一款基于 Web 的 Planning Poker 应用，帮助 Agile 团队协作估算任务复杂度。",
+      en: "A web-based Planning Point estimation app for Agile teams to estimate task complexity collaboratively.",
+      th: "แอปพลิเคชัน Planning Point estimation บนเว็บ สำหรับทีม Agile ใช้ประเมินความซับซ้อนของงานร่วมกัน",
+      sv: "En webbaserad Planning Point estimation-app för Agile-team som tillsammans uppskattar uppgifters komplexitet.",
+      ja: "Agileチームがタスクの複雑さを共同で見積もるためのWebベースのPlanning Point estimationアプリ。",
+      zh: "一款基于 Web 的 Planning Point estimation 应用，帮助 Agile 团队协作估算任务复杂度。",
     },
   },
   {
