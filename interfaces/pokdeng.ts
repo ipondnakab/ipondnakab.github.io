@@ -14,10 +14,18 @@ export interface PokdengMultiplierOption {
   labelKey: string;
 }
 
+// A seat's participation in the session. "paused" sits a turn (or several) out
+// and can come back; "left" is a player who has cashed out and is done. Neither
+// can be picked for a turn, and both keep their balance on the board — the host
+// still owes (or is owed) it, so the table stays zero-sum either way.
+export type PokdengPlayerStatus = "active" | "paused" | "left";
+
 export interface PokdengPlayer {
   id: string;
   name: string;
   credit: number; // running balance, from the player's point of view
+  // Absent on games saved before statuses existed; those seats read as active.
+  status?: PokdengPlayerStatus;
 }
 
 // What the host has picked for one player in the turn being settled. Players

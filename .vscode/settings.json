@@ -10,7 +10,7 @@
     "typescript",
     "typescriptreact"
   ],
-  "cSpell.words": ["i18next", "nextui", "POKDENG", "threejs"],
+  "cSpell.words": ["i18next", "nextui", "nums", "POKDENG", "threejs"],
   "i18n-ally.localesPaths": ["locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "en",

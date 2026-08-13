@@ -4,6 +4,7 @@ import {
   PokdengOutcome,
   PokdengPicks,
   PokdengPlayer,
+  PokdengPlayerStatus,
   PokdengTurn,
   PokdengTurnResult,
 } from "@/interfaces/pokdeng";
@@ -17,6 +18,23 @@ export const createPokdengPlayer = (name: string): PokdengPlayer => ({
   id: createId(),
   name,
   credit: 0,
+  status: "active",
+});
+
+// Only active seats take part in a turn. A missing status means the game was
+// saved before statuses existed, which reads as active.
+export const isPokdengPlayerActive = (player: PokdengPlayer): boolean =>
+  (player.status ?? "active") === "active";
+
+export const setPokdengPlayerStatus = (
+  game: PokdengGame,
+  playerId: string,
+  status: PokdengPlayerStatus,
+): PokdengGame => ({
+  ...game,
+  players: game.players.map((player) =>
+    player.id === playerId ? { ...player, status } : player,
+  ),
 });
 
 export const createPokdengGame = (
@@ -69,7 +87,9 @@ export const settlePokdengTurn = (
   picks: PokdengPicks,
 ): PokdengGame => {
   const results: PokdengTurnResult[] = game.players
-    .filter((player) => picks[player.id])
+    // Status wins over the pick: a seat that paused or left cannot be settled,
+    // even if a pick for them lingered from before they stepped out.
+    .filter((player) => isPokdengPlayerActive(player) && picks[player.id])
     .map((player) => {
       const { outcome, multiplier } = picks[player.id];
       return {

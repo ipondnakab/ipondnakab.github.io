@@ -12,9 +12,11 @@ import {
 import {
   createPokdengGame,
   createPokdengPlayer,
+  isPokdengPlayerActive,
   pokdengHostCredit,
   pokdengPickAmount,
   resetPokdengCredits,
+  setPokdengPlayerStatus,
   settlePokdengTurn,
   undoPokdengTurn,
 } from "@/functions/pokdeng-credit";
@@ -27,6 +29,7 @@ import {
   PokdengGame,
   PokdengOutcome,
   PokdengPicks,
+  PokdengPlayerStatus,
 } from "@/interfaces/pokdeng";
 import { trackEvent } from "@/libs/analytics";
 import PokdengHeader from "./PokdengHeader";
@@ -118,6 +121,10 @@ const PokdengCredit: React.FC = () => {
   }, [game, picks]);
 
   const pickCount = Object.keys(outcomes).length;
+  // Seats still in play. Paused and departed players stay on the board with
+  // their balance, but they are not who the turn is being dealt to.
+  const activePlayerCount =
+    game?.players.filter(isPokdengPlayerActive).length ?? 0;
 
   const clearPicks = () => {
     setOutcomes({});
@@ -153,11 +160,30 @@ const PokdengCredit: React.FC = () => {
   const pickMultiplier = (playerId: string, multiplier: number) =>
     setMultipliers((current) => ({ ...current, [playerId]: multiplier }));
 
+  // Sweeps only reach the seats still in play — a paused or departed player is
+  // not "all" of anything.
   const pickAll = (outcome: PokdengOutcome) => {
     if (!game) return;
     setOutcomes(
-      Object.fromEntries(game.players.map((player) => [player.id, outcome])),
+      Object.fromEntries(
+        game.players
+          .filter(isPokdengPlayerActive)
+          .map((player) => [player.id, outcome]),
+      ),
     );
+  };
+
+  // Stepping out of play drops any pick the player was carrying, so they can
+  // never be settled on a side they are no longer taking part in.
+  const setPlayerStatus = (playerId: string, status: PokdengPlayerStatus) => {
+    setGame((current) =>
+      current ? setPokdengPlayerStatus(current, playerId, status) : current,
+    );
+    if (status === "active") return;
+    setOutcomes((current) => {
+      const { [playerId]: _cleared, ...rest } = current;
+      return rest;
+    });
   };
 
   const settleTurn = () => {
@@ -254,7 +280,7 @@ const PokdengCredit: React.FC = () => {
       <PokdengHeader
         bet={game.bet}
         turnCount={game.turnCount}
-        playerCount={game.players.length}
+        playerCount={activePlayerCount}
         historyCount={game.turns.length}
         canUndo={game.turns.length > 0}
         onUndo={undoTurn}
@@ -287,13 +313,15 @@ const PokdengCredit: React.FC = () => {
               multiplier={multipliers[player.id] ?? POKDENG_DEFAULT_MULTIPLIER}
               onPickOutcome={pickOutcome}
               onPickMultiplier={pickMultiplier}
+              onSetStatus={setPlayerStatus}
               onEdit={onPlayersOpen}
             />
           ))}
         </div>
       )}
 
-      {game.players.length > 0 && (
+      {/* Nothing to settle when every seat is paused or has cashed out. */}
+      {activePlayerCount > 0 && (
         <PokdengSettleBar
           pickCount={pickCount}
           pendingHostAmount={pendingHostAmount}

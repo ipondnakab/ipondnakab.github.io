@@ -27,7 +27,14 @@ const isPokdengGame = (value: unknown): value is PokdengGame => {
       isRecord(player) &&
       typeof player.id === "string" &&
       typeof player.name === "string" &&
-      typeof player.credit === "number",
+      typeof player.credit === "number" &&
+      // `status` is optional (older saves predate it), but a value that is
+      // present must be one we recognise — an unknown string would read as
+      // "not active" and silently lock the seat out of every turn.
+      (player.status === undefined ||
+        player.status === "active" ||
+        player.status === "paused" ||
+        player.status === "left"),
   );
 };
 
