@@ -3,7 +3,10 @@
     "title": "Full-Stack Software Engineer",
     "loading": "Loading",
     "scrollHint": "Scroll to explore",
-    "nav": { "home": "Home", "chapters": "Chapters" },
+    "nav": {
+      "home": "Home",
+      "chapters": "Chapters"
+    },
     "chapter": {
       "intro": "Intro",
       "about": "About",
@@ -26,8 +29,14 @@
       "cloud": "Cloud",
       "ai": "AI"
     },
-    "action": { "view": "View", "visit": "Visit", "close": "Close" },
-    "contact": { "emailAria": "Email" }
+    "action": {
+      "view": "View",
+      "visit": "Visit",
+      "close": "Close"
+    },
+    "contact": {
+      "emailAria": "Email"
+    }
   },
   "nav": {
     "home": "README",
@@ -256,5 +265,77 @@
     "save": "Save",
     "done": "Done",
     "close": "Close"
+  },
+  "micLink": {
+    "room": "Room",
+    "status": {
+      "idle": "Not connected",
+      "waiting": "Waiting for a phone",
+      "connecting": "Connecting",
+      "live": "Live",
+      "closed": "Ended",
+      "error": "Error"
+    },
+    "quality": {
+      "voice": "Voice",
+      "hifi": "High quality",
+      "voiceHint": "Echo cancellation, noise suppression and auto gain are on. Best for meetings and voice notes.",
+      "hifiHint": "Stereo with no processing. Best for music and room sound, but it picks up more background noise."
+    },
+    "errors": {
+      "insecureContext": "Microphone access needs a secure connection. Open this page over HTTPS.",
+      "roomNotFound": "This room no longer exists. Ask for a fresh QR code.",
+      "permissionDenied": "Microphone permission was denied. Allow it in your browser settings and try again.",
+      "noMicrophone": "No microphone was found on this device.",
+      "micBusy": "The microphone is already in use by another app.",
+      "negotiation": "The connection could not be established. Check that both devices are on the same network.",
+      "roomCreate": "Could not open a room. Check your connection and reload the page.",
+      "clipboard": "Could not copy the link. Copy it from the address bar instead.",
+      "recordingUnsupported": "Recording is not supported in this browser.",
+      "generic": "Something went wrong. Try connecting again."
+    },
+    "lobby": {
+      "title": "Mic Link",
+      "description": "Use your phone as a wireless microphone for this device. The audio streams straight between the two over your local network.",
+      "step1": "Start a session on the device that should receive the audio.",
+      "step2": "Scan the QR code with your phone and allow microphone access.",
+      "step3": "Speak. Watch the level, listen on headphones, or record it to a file.",
+      "start": "Start a session",
+      "privacy": "The audio goes peer-to-peer and is never uploaded — only the connection handshake passes through the server."
+    },
+    "sender": {
+      "title": "This phone is the microphone",
+      "inputLevel": "Input level",
+      "microphone": "Microphone",
+      "systemDefault": "System default",
+      "unnamedMic": "Microphone {{index}}",
+      "profile": "Audio profile",
+      "connect": "Connect microphone",
+      "disconnect": "Disconnect",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "defaultLabel": "Phone microphone",
+      "wakeLockOn": "The screen is kept awake while connected — locking it would cut the audio.",
+      "wakeLockOff": "Keep this screen on. Locking the phone will cut the audio."
+    },
+    "receiver": {
+      "title": "This device receives the audio",
+      "scanPrompt": "Scan this with the phone you want to use as the microphone.",
+      "qrAlt": "QR code that opens Mic Link on your phone",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "sameNetworkHint": "Both devices should be on the same wifi. If they are not, the audio still works but takes a longer route.",
+      "incomingLevel": "Incoming level",
+      "monitor": "Play through this device",
+      "monitorHint": "Use headphones — speakers will feed back into the phone's microphone.",
+      "volume": "Volume",
+      "direct": "Direct on your network",
+      "relayed": "Indirect route",
+      "latency": "{{ms}} ms round trip",
+      "bitrate": "{{kbps}} kbps",
+      "startRecording": "Record",
+      "stopRecording": "Stop and save",
+      "end": "End session"
+    }
   }
 }

@@ -11,6 +11,7 @@ const ROUTES = [
   "/mini-project",
   "/planning",
   "/pokdeng",
+  "/mic-link",
   "/prompt-pay",
   "/threejs",
   "/credit",

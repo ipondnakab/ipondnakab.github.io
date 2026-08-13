@@ -3,7 +3,10 @@
     "title": "Fullstack-mjukvaruingenjör",
     "loading": "Laddar",
     "scrollHint": "Skrolla för att utforska",
-    "nav": { "home": "Hem", "chapters": "Kapitel" },
+    "nav": {
+      "home": "Hem",
+      "chapters": "Kapitel"
+    },
     "chapter": {
       "intro": "Intro",
       "about": "Om",
@@ -26,8 +29,14 @@
       "cloud": "Cloud",
       "ai": "AI"
     },
-    "action": { "view": "Visa", "visit": "Besök", "close": "Stäng" },
-    "contact": { "emailAria": "E-post" }
+    "action": {
+      "view": "Visa",
+      "visit": "Besök",
+      "close": "Stäng"
+    },
+    "contact": {
+      "emailAria": "E-post"
+    }
   },
   "nav": {
     "home": "Hem",
@@ -256,5 +265,77 @@
     "save": "Spara",
     "done": "Klar",
     "close": "Stäng"
+  },
+  "micLink": {
+    "room": "Rum",
+    "status": {
+      "idle": "Inte ansluten",
+      "waiting": "Väntar på en telefon",
+      "connecting": "Ansluter",
+      "live": "Sänder",
+      "closed": "Avslutad",
+      "error": "Fel"
+    },
+    "quality": {
+      "voice": "Röst",
+      "hifi": "Hög kvalitet",
+      "voiceHint": "Ekosläckning, brusreducering och automatisk nivå är på. Bäst för möten och röstanteckningar.",
+      "hifiHint": "Stereo utan bearbetning. Bäst för musik och rumsljud, men fångar mer bakgrundsljud."
+    },
+    "errors": {
+      "insecureContext": "Mikrofonåtkomst kräver en säker anslutning. Öppna sidan via HTTPS.",
+      "roomNotFound": "Rummet finns inte längre. Be om en ny QR-kod.",
+      "permissionDenied": "Mikrofonbehörighet nekades. Tillåt den i webbläsarens inställningar och försök igen.",
+      "noMicrophone": "Ingen mikrofon hittades på den här enheten.",
+      "micBusy": "Mikrofonen används redan av en annan app.",
+      "negotiation": "Anslutningen kunde inte upprättas. Kontrollera att båda enheterna är på samma nätverk.",
+      "roomCreate": "Kunde inte öppna ett rum. Kontrollera anslutningen och ladda om sidan.",
+      "clipboard": "Kunde inte kopiera länken. Kopiera den från adressfältet i stället.",
+      "recordingUnsupported": "Inspelning stöds inte i den här webbläsaren.",
+      "generic": "Något gick fel. Försök ansluta igen."
+    },
+    "lobby": {
+      "title": "Mic Link",
+      "description": "Använd telefonen som trådlös mikrofon för den här enheten. Ljudet strömmas direkt mellan dem över ditt lokala nätverk.",
+      "step1": "Starta en session på enheten som ska ta emot ljudet.",
+      "step2": "Skanna QR-koden med telefonen och tillåt mikrofonåtkomst.",
+      "step3": "Prata. Följ nivån, lyssna i hörlurar eller spela in till en fil.",
+      "start": "Starta en session",
+      "privacy": "Ljudet går direkt mellan enheterna och laddas aldrig upp — bara anslutningens handskakning passerar servern."
+    },
+    "sender": {
+      "title": "Den här telefonen är mikrofonen",
+      "inputLevel": "Ingångsnivå",
+      "microphone": "Mikrofon",
+      "systemDefault": "Systemets standard",
+      "unnamedMic": "Mikrofon {{index}}",
+      "profile": "Ljudprofil",
+      "connect": "Anslut mikrofonen",
+      "disconnect": "Koppla från",
+      "mute": "Tysta",
+      "unmute": "Slå på ljudet",
+      "defaultLabel": "Telefonens mikrofon",
+      "wakeLockOn": "Skärmen hålls vaken under anslutningen — att låsa den skulle bryta ljudet.",
+      "wakeLockOff": "Låt skärmen vara på. Om telefonen låses bryts ljudet."
+    },
+    "receiver": {
+      "title": "Den här enheten tar emot ljudet",
+      "scanPrompt": "Skanna med telefonen du vill använda som mikrofon.",
+      "qrAlt": "QR-kod som öppnar Mic Link på telefonen",
+      "copy": "Kopiera länk",
+      "copied": "Länk kopierad",
+      "sameNetworkHint": "Båda enheterna bör vara på samma wifi. Annars fungerar ljudet ändå, men tar en längre väg.",
+      "incomingLevel": "Inkommande nivå",
+      "monitor": "Spela upp på den här enheten",
+      "monitorHint": "Använd hörlurar — högtalare läcker tillbaka in i telefonens mikrofon.",
+      "volume": "Volym",
+      "direct": "Direkt på ditt nätverk",
+      "relayed": "Omväg",
+      "latency": "{{ms}} ms tur och retur",
+      "bitrate": "{{kbps}} kbit/s",
+      "startRecording": "Spela in",
+      "stopRecording": "Stoppa och spara",
+      "end": "Avsluta session"
+    }
   }
 }

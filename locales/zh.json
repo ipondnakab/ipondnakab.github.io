@@ -3,7 +3,10 @@
     "title": "全栈软件工程师",
     "loading": "加载中",
     "scrollHint": "滚动以浏览",
-    "nav": { "home": "首页", "chapters": "章节" },
+    "nav": {
+      "home": "首页",
+      "chapters": "章节"
+    },
     "chapter": {
       "intro": "简介",
       "about": "关于",
@@ -26,8 +29,14 @@
       "cloud": "Cloud",
       "ai": "AI"
     },
-    "action": { "view": "查看", "visit": "访问", "close": "关闭" },
-    "contact": { "emailAria": "电子邮件" }
+    "action": {
+      "view": "查看",
+      "visit": "访问",
+      "close": "关闭"
+    },
+    "contact": {
+      "emailAria": "电子邮件"
+    }
   },
   "nav": {
     "home": "首页",
@@ -256,5 +265,77 @@
     "save": "保存",
     "done": "完成",
     "close": "关闭"
+  },
+  "micLink": {
+    "room": "房间",
+    "status": {
+      "idle": "未连接",
+      "waiting": "等待手机接入",
+      "connecting": "连接中",
+      "live": "传输中",
+      "closed": "已结束",
+      "error": "出错"
+    },
+    "quality": {
+      "voice": "语音",
+      "hifi": "高音质",
+      "voiceHint": "已开启回声消除、降噪和自动增益，适合会议和语音记录。",
+      "hifiHint": "无处理的立体声，适合音乐和环境声，但会拾取更多背景噪音。"
+    },
+    "errors": {
+      "insecureContext": "使用麦克风需要安全连接，请通过 HTTPS 打开本页面。",
+      "roomNotFound": "该房间已不存在，请重新获取二维码。",
+      "permissionDenied": "麦克风权限被拒绝，请在浏览器设置中允许后重试。",
+      "noMicrophone": "未在此设备上找到麦克风。",
+      "micBusy": "麦克风已被其他应用占用。",
+      "negotiation": "无法建立连接，请确认两台设备处于同一网络。",
+      "roomCreate": "无法创建房间，请检查网络后重新加载页面。",
+      "clipboard": "无法复制链接，请从地址栏手动复制。",
+      "recordingUnsupported": "此浏览器不支持录音。",
+      "generic": "出现问题，请重新连接。"
+    },
+    "lobby": {
+      "title": "Mic Link",
+      "description": "把手机当作这台设备的无线麦克风，音频通过本地网络在两者之间直接传输。",
+      "step1": "在需要接收音频的设备上开始一个会话。",
+      "step2": "用手机扫描二维码，并允许使用麦克风。",
+      "step3": "开始说话。查看音量电平、用耳机监听，或录制成文件。",
+      "start": "开始会话",
+      "privacy": "音频点对点传输，不会上传；只有建立连接的握手信息会经过服务器。"
+    },
+    "sender": {
+      "title": "这台手机就是麦克风",
+      "inputLevel": "输入电平",
+      "microphone": "麦克风",
+      "systemDefault": "系统默认",
+      "unnamedMic": "麦克风 {{index}}",
+      "profile": "音频模式",
+      "connect": "连接麦克风",
+      "disconnect": "断开连接",
+      "mute": "静音",
+      "unmute": "取消静音",
+      "defaultLabel": "手机麦克风",
+      "wakeLockOn": "连接期间屏幕将保持常亮——锁屏会中断音频。",
+      "wakeLockOff": "请保持屏幕常亮，锁屏会中断音频。"
+    },
+    "receiver": {
+      "title": "这台设备负责接收音频",
+      "scanPrompt": "请用想当作麦克风的手机扫描。",
+      "qrAlt": "在手机上打开 Mic Link 的二维码",
+      "copy": "复制链接",
+      "copied": "已复制",
+      "sameNetworkHint": "两台设备最好连接同一个 Wi-Fi。若不在同一网络仍可使用，但传输路径会更绕。",
+      "incomingLevel": "接收电平",
+      "monitor": "在本设备播放",
+      "monitorHint": "请使用耳机——外放会被手机麦克风重新拾取造成啸叫。",
+      "volume": "音量",
+      "direct": "网络内直连",
+      "relayed": "间接路径",
+      "latency": "往返 {{ms}} 毫秒",
+      "bitrate": "{{kbps}} kbps",
+      "startRecording": "录音",
+      "stopRecording": "停止并保存",
+      "end": "结束会话"
+    }
   }
 }

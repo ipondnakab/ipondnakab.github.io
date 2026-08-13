@@ -45,6 +45,49 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // --- Mic Link signalling rooms -------------------------------------------
+    // Short-lived WebRTC handshake mailboxes. Nothing here is audio: the media
+    // goes peer-to-peer. A room only holds an SDP offer/answer pair plus ICE
+    // candidates, and the receiver deletes the whole room when it hangs up.
+    match /mic-link/{roomId} {
+      allow read: if roomId.size() > 0 && roomId.size() <= 64;
+
+      // SDP blobs are a few KB in practice; the cap stops the room being used
+      // as free storage while leaving plenty of headroom.
+      allow create, update: if roomId.size() > 0
+                            && roomId.size() <= 64
+                            && request.resource.data.size() <= 12
+                            && (
+                              !('offer' in request.resource.data)
+                              || (request.resource.data.offer is map
+                                  && request.resource.data.offer.sdp is string
+                                  && request.resource.data.offer.sdp.size() <= 20000)
+                            )
+                            && (
+                              !('answer' in request.resource.data)
+                              || (request.resource.data.answer is map
+                                  && request.resource.data.answer.sdp is string
+                                  && request.resource.data.answer.sdp.size() <= 20000)
+                            );
+
+      // Deleting the room is how ending a session invalidates its QR code, so
+      // unlike Planning Poker this must be allowed from the client.
+      allow delete: if roomId.size() > 0 && roomId.size() <= 64;
+
+      // Trickle-ICE candidates, one document each, cleaned up on reconnect and
+      // on hang-up.
+      match /{side}/{candidateId} {
+        allow read, delete: if side == 'senderCandidates'
+                            || side == 'receiverCandidates';
+
+        allow create: if (side == 'senderCandidates'
+                          || side == 'receiverCandidates')
+                      && request.resource.data.size() <= 6
+                      && request.resource.data.candidate is string
+                      && request.resource.data.candidate.size() <= 1000;
+      }
+    }
+
     // --- Everything else: locked --------------------------------------------
     match /{document=**} {
       allow read, write: if false;

@@ -43,6 +43,18 @@ export const MINI_PROJECTS: {
     },
   },
   {
+    name: "mic-link",
+    title: "MIC LINK",
+    href: "/mic-link",
+    description: {
+      en: "Turn your phone into a wireless microphone for any device on the same network — scan a QR code and the audio streams peer-to-peer in the browser.",
+      th: "เปลี่ยนมือถือให้เป็นไมโครโฟนไร้สายสำหรับอุปกรณ์ในเครือข่ายเดียวกัน เพียงสแกน QR Code เสียงก็ส่งตรงถึงกันในเบราว์เซอร์",
+      sv: "Förvandla telefonen till en trådlös mikrofon för valfri enhet i samma nätverk — skanna en QR-kod så strömmas ljudet direkt mellan enheterna i webbläsaren.",
+      ja: "スマートフォンを同じネットワーク上の端末向けワイヤレスマイクに変えるツール。QRコードを読み取るだけで、ブラウザ間で音声を直接ストリーミングします。",
+      zh: "把手机变成同一网络下任意设备的无线麦克风——扫描二维码，音频即可在浏览器之间点对点传输。",
+    },
+  },
+  {
     name: "prompt-pay",
     title: "PROMPTPAY",
     href: "/prompt-pay",
