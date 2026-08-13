@@ -294,7 +294,8 @@
       "recordingUnsupported": "Inspelning stöds inte i den här webbläsaren.",
       "generic": "Något gick fel. Försök ansluta igen.",
       "roomFull": "Sessionen är redan full. Be värden koppla från en mikrofon först.",
-      "reconnectFailed": "Kunde inte återansluta. Kontrollera ditt wifi och tryck på Anslut igen."
+      "reconnectFailed": "Kunde inte återansluta. Kontrollera ditt wifi och tryck på Anslut igen.",
+      "databaseDenied": "Signaleringsdatabasen nekade anslutningen. Firestore-reglerna för mic-link är förmodligen inte publicerade än."
     },
     "lobby": {
       "title": "Mic Link",

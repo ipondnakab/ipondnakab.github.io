@@ -90,6 +90,18 @@ const clearCollection = async (ref: CollectionReference): Promise<void> => {
   await Promise.all(snapshot.docs.map((entry) => deleteDoc(entry.ref)));
 };
 
+// A Firestore listener that is rejected simply stops delivering, with no
+// exception anywhere the caller can see it. Without this every rules problem
+// looks identical to "the other device never joined", which is a miserable
+// thing to debug — so listener failures are reported by their error code.
+const onSnapshotError =
+  (report: (message: string) => void, scope: string) =>
+  (error: Error): void => {
+    const code = (error as { code?: string }).code ?? error.message;
+    console.warn(`[mic-link] the ${scope} listener failed`, error);
+    report(code);
+  };
+
 const statusFromConnectionState = (
   state: RTCPeerConnectionState,
 ): MicLinkStatus => {
@@ -519,6 +531,7 @@ export const openReceiverSession = async (
           ledger.add(change.doc.id, change.doc.data() as MicLinkCandidate);
         });
       },
+      onSnapshotError(handlers.onError, "sender candidates"),
     );
 
     const slot: ReceiverSlot = {
@@ -536,47 +549,51 @@ export const openReceiverSession = async (
     return slot;
   };
 
-  const unsubscribeSenders = onSnapshot(sendersRef(roomId), (snapshot) => {
-    if (isClosed) return;
+  const unsubscribeSenders = onSnapshot(
+    sendersRef(roomId),
+    (snapshot) => {
+      if (isClosed) return;
 
-    snapshot.docChanges().forEach((change) => {
-      const senderId = change.doc.id;
+      snapshot.docChanges().forEach((change) => {
+        const senderId = change.doc.id;
 
-      if (change.type === "removed") {
-        slots.get(senderId)?.dispose();
-        slots.delete(senderId);
-        handlers.onSenderLeft(senderId);
-        return;
-      }
+        if (change.type === "removed") {
+          slots.get(senderId)?.dispose();
+          slots.delete(senderId);
+          handlers.onSenderLeft(senderId);
+          return;
+        }
 
-      const data = change.doc.data() as MicLinkSenderDoc;
-      let slot = slots.get(senderId);
+        const data = change.doc.data() as MicLinkSenderDoc;
+        let slot = slots.get(senderId);
 
-      if (!slot) {
-        // Refuse phone number N+1 rather than degrading the whole room.
-        if (slots.size >= MIC_LINK_MAX_SENDERS) return;
-        slot = createSlot(senderId);
-        slots.set(senderId, slot);
-      }
-      // Fired for updates too, not just the first sighting: a phone writes its
-      // label and quality before its offer, and rewrites them whenever the user
-      // switches microphone. The consumer upserts.
-      handlers.onSenderJoined(senderId, data);
+        if (!slot) {
+          // Refuse phone number N+1 rather than degrading the whole room.
+          if (slots.size >= MIC_LINK_MAX_SENDERS) return;
+          slot = createSlot(senderId);
+          slots.set(senderId, slot);
+        }
+        // Fired for updates too, not just the first sighting: a phone writes its
+        // label and quality before its offer, and rewrites them whenever the user
+        // switches microphone. The consumer upserts.
+        handlers.onSenderJoined(senderId, data);
 
-      if (!data.offer) return;
-      // Every negotiation produces a fresh SDP, so an unchanged one means this
-      // is an echo of a write we already handled (our own answer, for example).
-      if (data.offer.sdp === slot.handledOfferSdp) return;
-      slot.handledOfferSdp = data.offer.sdp;
+        if (!data.offer) return;
+        // Every negotiation produces a fresh SDP, so an unchanged one means this
+        // is an echo of a write we already handled (our own answer, for example).
+        if (data.offer.sdp === slot.handledOfferSdp) return;
+        slot.handledOfferSdp = data.offer.sdp;
 
-      answerOffer(senderId, slot, data.offer.sdp, data.quality).catch(
-        (error: Error) => {
-          handlers.onError(error.message);
-          handlers.onSenderStatus(senderId, "error");
-        },
-      );
-    });
-  });
+        answerOffer(senderId, slot, data.offer.sdp, data.quality).catch(
+          (error: Error) => {
+            handlers.onError(error.message);
+            handlers.onSenderStatus(senderId, "error");
+          },
+        );
+      });
+    },
+    onSnapshotError(handlers.onError, "senders"),
+  );
 
   return {
     getConnectionInfo: async (senderId) => {
@@ -698,28 +715,32 @@ export const openSenderSession = async (
     }
   };
 
-  const unsubscribeSelf = onSnapshot(self, (snapshot) => {
-    const data = snapshot.data() as MicLinkSenderDoc | undefined;
-    if (isClosed || !data?.answer || hasRemoteAnswer) return;
-    // Only an answer that arrives while we are actually waiting for one can be
-    // ours. This listener is attached before the offer is published, so its
-    // first callback can carry an answer left over from a previous negotiation
-    // on this same document — applying that would throw (the peer is still
-    // "stable", with no local offer) *and* latch the flag, permanently
-    // discarding the real answer that follows a moment later.
-    if (peer.signalingState !== "have-local-offer") return;
-    hasRemoteAnswer = true;
+  const unsubscribeSelf = onSnapshot(
+    self,
+    (snapshot) => {
+      const data = snapshot.data() as MicLinkSenderDoc | undefined;
+      if (isClosed || !data?.answer || hasRemoteAnswer) return;
+      // Only an answer that arrives while we are actually waiting for one can be
+      // ours. This listener is attached before the offer is published, so its
+      // first callback can carry an answer left over from a previous negotiation
+      // on this same document — applying that would throw (the peer is still
+      // "stable", with no local offer) *and* latch the flag, permanently
+      // discarding the real answer that follows a moment later.
+      if (peer.signalingState !== "have-local-offer") return;
+      hasRemoteAnswer = true;
 
-    peer
-      .setRemoteDescription(
-        new RTCSessionDescription({ type: "answer", sdp: data.answer.sdp }),
-      )
-      .then(() => ledger.bindTo(peer))
-      .catch((error: Error) => {
-        handlers.onError(error.message);
-        handlers.onStatus("error");
-      });
-  });
+      peer
+        .setRemoteDescription(
+          new RTCSessionDescription({ type: "answer", sdp: data.answer.sdp }),
+        )
+        .then(() => ledger.bindTo(peer))
+        .catch((error: Error) => {
+          handlers.onError(error.message);
+          handlers.onStatus("error");
+        });
+    },
+    onSnapshotError(handlers.onError, "own sender document"),
+  );
 
   const unsubscribeCandidates = onSnapshot(
     receiverCandidatesRef(roomId, senderId),
@@ -733,6 +754,7 @@ export const openSenderSession = async (
         ledger.add(change.doc.id, change.doc.data() as MicLinkCandidate);
       });
     },
+    onSnapshotError(handlers.onError, "receiver candidates"),
   );
 
   handlers.onStatus("connecting");

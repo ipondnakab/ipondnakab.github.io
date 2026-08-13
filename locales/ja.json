@@ -294,7 +294,8 @@
       "recordingUnsupported": "このブラウザは録音に対応していません。",
       "generic": "問題が発生しました。もう一度接続してください。",
       "roomFull": "このセッションは満員です。ホストにマイクを1つ切断してもらってください。",
-      "reconnectFailed": "再接続できませんでした。Wi-Fiを確認して、「マイクを接続」をもう一度タップしてください。"
+      "reconnectFailed": "再接続できませんでした。Wi-Fiを確認して、「マイクを接続」をもう一度タップしてください。",
+      "databaseDenied": "シグナリング用データベースに拒否されました。mic-link 用の Firestore ルールがまだ反映されていない可能性があります。"
     },
     "lobby": {
       "title": "Mic Link",

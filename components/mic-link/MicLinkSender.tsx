@@ -256,7 +256,12 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
                 setReconnectAttempt(0);
               }
             },
-            onError: () => setErrorKey("negotiation"),
+            onError: (message) =>
+              setErrorKey(
+                message === "permission-denied"
+                  ? "databaseDenied"
+                  : "negotiation",
+              ),
           },
         );
         if (isStale()) {
@@ -279,7 +284,9 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
         setStatus("error");
         const name = error instanceof Error ? error.message : "";
         const domName = error instanceof DOMException ? error.name : "";
-        if (name === "INSECURE_CONTEXT") setErrorKey("insecureContext");
+        const code = (error as { code?: string })?.code;
+        if (code === "permission-denied") setErrorKey("databaseDenied");
+        else if (name === "INSECURE_CONTEXT") setErrorKey("insecureContext");
         else if (name === "ROOM_NOT_FOUND") setErrorKey("roomNotFound");
         else if (name === "ROOM_FULL") setErrorKey("roomFull");
         else if (domName === "NotAllowedError") setErrorKey("permissionDenied");

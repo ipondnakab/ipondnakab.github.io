@@ -62,8 +62,15 @@ service cloud.firestore {
       allow delete: if roomId.size() > 0 && roomId.size() <= 64;
 
       // One document per connected phone.
+      //
+      // Guarded on roomId, NOT senderId. The receiver watches this collection
+      // with onSnapshot, which is a `list`, and during a list the document-id
+      // wildcard of the collection being queried is not bound to anything — so
+      // a condition like `senderId.size() > 0` evaluates false and silently
+      // denies the listener. roomId is a parent path segment and is always
+      // bound, for gets and lists alike.
       match /senders/{senderId} {
-        allow read, delete: if senderId.size() > 0 && senderId.size() <= 64;
+        allow read, delete: if roomId.size() > 0 && roomId.size() <= 64;
 
         // SDP blobs are a few KB in practice; the cap stops a room being used
         // as free storage while leaving plenty of headroom.

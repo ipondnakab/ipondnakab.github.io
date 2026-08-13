@@ -294,7 +294,8 @@
       "recordingUnsupported": "Recording is not supported in this browser.",
       "generic": "Something went wrong. Try connecting again.",
       "roomFull": "This session is already full. Ask the host to disconnect a microphone first.",
-      "reconnectFailed": "Could not reconnect. Check your wifi, then tap Connect to try again."
+      "reconnectFailed": "Could not reconnect. Check your wifi, then tap Connect to try again.",
+      "databaseDenied": "The signalling database refused the connection. The Firestore rules for mic-link are probably not deployed yet."
     },
     "lobby": {
       "title": "Mic Link",

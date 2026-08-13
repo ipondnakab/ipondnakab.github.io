@@ -148,7 +148,10 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
 
     openReceiverSession(roomId, {
       onStatus: setRoomStatus,
-      onError: () => setErrorKey("negotiation"),
+      onError: (message) =>
+        setErrorKey(
+          message === "permission-denied" ? "databaseDenied" : "negotiation",
+        ),
       onSenderJoined: (senderId, sender) => {
         setInputs((previous) => {
           const existing = previous.find(
@@ -211,9 +214,11 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
         sessionRef.current = opened;
         trackEvent("mic_link_room_opened", {});
       })
-      .catch(() => {
+      .catch((error: { code?: string }) => {
         setRoomStatus("error");
-        setErrorKey("roomCreate");
+        setErrorKey(
+          error?.code === "permission-denied" ? "databaseDenied" : "roomCreate",
+        );
       });
 
     return () => {

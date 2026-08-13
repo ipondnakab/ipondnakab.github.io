@@ -294,7 +294,8 @@
       "recordingUnsupported": "此浏览器不支持录音。",
       "generic": "出现问题，请重新连接。",
       "roomFull": "本次会话已满，请让主持人先断开一支麦克风。",
-      "reconnectFailed": "重连失败。请检查 Wi-Fi 后再次点击连接麦克风。"
+      "reconnectFailed": "重连失败。请检查 Wi-Fi 后再次点击连接麦克风。",
+      "databaseDenied": "信令数据库拒绝了连接。mic-link 的 Firestore 安全规则可能尚未部署。"
     },
     "lobby": {
       "title": "Mic Link",
