@@ -292,14 +292,16 @@
       "roomCreate": "Kunde inte öppna ett rum. Kontrollera anslutningen och ladda om sidan.",
       "clipboard": "Kunde inte kopiera länken. Kopiera den från adressfältet i stället.",
       "recordingUnsupported": "Inspelning stöds inte i den här webbläsaren.",
-      "generic": "Något gick fel. Försök ansluta igen."
+      "generic": "Något gick fel. Försök ansluta igen.",
+      "roomFull": "Sessionen är redan full. Be värden koppla från en mikrofon först.",
+      "reconnectFailed": "Kunde inte återansluta. Kontrollera ditt wifi och tryck på Anslut igen."
     },
     "lobby": {
       "title": "Mic Link",
-      "description": "Använd telefonen som trådlös mikrofon för den här enheten. Ljudet strömmas direkt mellan dem över ditt lokala nätverk.",
+      "description": "Använd en eller flera telefoner som trådlösa mikrofoner för den här enheten. Ljudet strömmas direkt hit över ditt lokala nätverk.",
       "step1": "Starta en session på enheten som ska ta emot ljudet.",
-      "step2": "Skanna QR-koden med telefonen och tillåt mikrofonåtkomst.",
-      "step3": "Prata. Följ nivån, lyssna i hörlurar eller spela in till en fil.",
+      "step2": "Skanna QR-koden med varje telefon och tillåt mikrofonåtkomst.",
+      "step3": "Balansera mikrofonerna, lyssna i hörlurar eller spela in mixen till en fil.",
       "start": "Starta en session",
       "privacy": "Ljudet går direkt mellan enheterna och laddas aldrig upp — bara anslutningens handskakning passerar servern."
     },
@@ -316,18 +318,22 @@
       "unmute": "Slå på ljudet",
       "defaultLabel": "Telefonens mikrofon",
       "wakeLockOn": "Skärmen hålls vaken under anslutningen — att låsa den skulle bryta ljudet.",
-      "wakeLockOff": "Låt skärmen vara på. Om telefonen låses bryts ljudet."
+      "wakeLockOff": "Låt skärmen vara på. Om telefonen låses bryts ljudet.",
+      "reconnecting": "Anslutningen bröts — återansluter ({{attempt}}/{{max}})…",
+      "selfMonitor": "Hör mig själv i hörlurar",
+      "selfMonitorHint": "Spelar upp mikrofonen direkt i den här telefonen, utan att gå via nätverket. Endast trådbundna hörlurar — högtalare tjuter och Bluetooth lägger till mer fördröjning än det tar bort.",
+      "selfMonitorVolume": "Hörlursvolym"
     },
     "receiver": {
       "title": "Den här enheten tar emot ljudet",
-      "scanPrompt": "Skanna med telefonen du vill använda som mikrofon.",
+      "scanPrompt": "Skanna med varje telefon du vill använda som mikrofon.",
       "qrAlt": "QR-kod som öppnar Mic Link på telefonen",
       "copy": "Kopiera länk",
       "copied": "Länk kopierad",
       "sameNetworkHint": "Båda enheterna bör vara på samma wifi. Annars fungerar ljudet ändå, men tar en längre väg.",
       "incomingLevel": "Inkommande nivå",
       "monitor": "Spela upp på den här enheten",
-      "monitorHint": "Använd hörlurar — högtalare läcker tillbaka in i telefonens mikrofon.",
+      "monitorHint": "Använd hörlurar — högtalare läcker tillbaka in i telefonernas mikrofoner.",
       "volume": "Volym",
       "direct": "Direkt på ditt nätverk",
       "relayed": "Omväg",
@@ -335,7 +341,25 @@
       "bitrate": "{{kbps}} kbit/s",
       "startRecording": "Spela in",
       "stopRecording": "Stoppa och spara",
-      "end": "Avsluta session"
+      "end": "Avsluta session",
+      "connectedCount": "{{current}} av {{max}} mikrofoner",
+      "hideQr": "Dölj QR",
+      "addAnother": "Lägg till en mikrofon",
+      "roomFull": "Alla mikrofonplatser används",
+      "noInputs": "Inga mikrofoner än. Skanna QR-koden med en telefon för att lägga till en.",
+      "lowLatency": "Låg latens (karaoke)",
+      "lowLatencyHint": "Krymper mottagningsbufferten. Mycket mindre fördröjning när man sjunger, men känsligare för ett belastat nätverk.",
+      "latencyTotal": "Uppskattad fördröjning",
+      "latencyBreakdown": "buffert {{jitter}}ms · nätverk {{network}}ms · utgång {{output}}ms",
+      "latencyCaveat": "Exklusive telefonens egen inspelningsbuffert, vanligtvis ytterligare 10–20ms."
+    },
+    "mixer": {
+      "gain": "Förstärkning",
+      "gainValue": "förstärkning {{value}}x",
+      "mute": "Tysta den här mikrofonen",
+      "muteShort": "M",
+      "solo": "Lyssna bara på den här mikrofonen",
+      "soloShort": "S"
     }
   }
 }

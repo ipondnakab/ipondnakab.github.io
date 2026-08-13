@@ -7,17 +7,26 @@ import {
   Divider,
   Select,
   SelectItem,
+  Slider,
+  Switch,
   Tab,
   Tabs,
 } from "@nextui-org/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { MIC_LINK_AUDIO_CONSTRAINTS } from "@/constants/mic-link";
+import {
+  MIC_LINK_AUDIO_CONSTRAINTS,
+  MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME,
+} from "@/constants/mic-link";
 import {
   AudioLevelMonitor,
   createAudioLevelMonitor,
 } from "@/functions/audio-level";
+import {
+  createLocalAudioMonitor,
+  LocalAudioMonitor,
+} from "@/functions/local-audio-monitor";
 import {
   isWakeLockSupported,
   requestScreenWakeLock,
@@ -25,13 +34,23 @@ import {
 } from "@/functions/screen-wake-lock";
 import { MicLinkQuality, MicLinkStatus } from "@/interfaces/mic-link";
 import { trackEvent } from "@/libs/analytics";
-import { MicLinkSession, openSenderSession } from "@/libs/mic-link-signaling";
+import {
+  MicLinkSenderSession,
+  openSenderSession,
+} from "@/libs/mic-link-signaling";
 import MicLinkLevelMeter from "./MicLinkLevelMeter";
 import MicLinkStatusChip from "./MicLinkStatusChip";
 
 // Sentinel for "let the browser pick". Chrome really does expose a device whose
 // deviceId is the literal string "default", so it cannot be used as the marker.
 const SYSTEM_DEFAULT_DEVICE = "__system_default__";
+
+// ICE reaching "failed" is terminal — the connection never recovers by itself,
+// so the phone has to publish a fresh offer. Backoff keeps a genuinely dead
+// network (receiver closed, wifi gone) from hammering Firestore.
+const MAX_RECONNECT_ATTEMPTS = 5;
+const RECONNECT_BASE_DELAY_MS = 1000;
+const RECONNECT_MAX_DELAY_MS = 8000;
 
 export interface MicLinkSenderProps {
   roomId: string;
@@ -47,14 +66,51 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
   const [quality, setQuality] = useState<MicLinkQuality>("voice");
   const [deviceId, setDeviceId] = useState(SYSTEM_DEFAULT_DEVICE);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [reconnectAttempt, setReconnectAttempt] = useState(0);
+  const [isSelfMonitoring, setIsSelfMonitoring] = useState(false);
+  const [selfMonitorVolume, setSelfMonitorVolume] = useState(
+    MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME,
+  );
 
-  const sessionRef = useRef<MicLinkSession | null>(null);
+  const sessionRef = useRef<MicLinkSenderSession | null>(null);
+  // Identifies this phone within the room for as long as the page is open, so a
+  // reconnect (after a screen lock, or a microphone change) reuses the same
+  // mixer strip on the receiver instead of appearing as a second phone.
+  const senderIdRef = useRef<string>(
+    crypto.randomUUID?.() ?? Math.random().toString(36).slice(2),
+  );
   const streamRef = useRef<MediaStream | null>(null);
   const monitorRef = useRef<AudioLevelMonitor | null>(null);
+  const selfMonitorRef = useRef<LocalAudioMonitor | null>(null);
+  const selfMonitorVolumeRef = useRef(MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME);
   const wakeLockRef = useRef<ScreenWakeLock | null>(null);
 
+  // True between tapping Connect and tapping Disconnect. Auto-reconnect only
+  // runs while the user actually wants to be connected, so a deliberate
+  // disconnect is never undone by a retry already in flight.
+  const wantsConnectionRef = useRef(false);
+  const attemptsRef = useRef(0);
+  const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Bumped by every connect, disconnect and unmount. `connect` awaits several
+  // slow things (getUserMedia, Firestore), and without this a connect still in
+  // flight when the user hits Disconnect — or when a second connect starts —
+  // would happily finish and install a session nobody asked for.
+  const generationRef = useRef(0);
+  const settingsRef = useRef({
+    quality: "voice" as MicLinkQuality,
+    deviceId: SYSTEM_DEFAULT_DEVICE,
+  });
+  // Lets the retry timer call the latest `connect` without the two of them
+  // forming a circular useCallback dependency.
+  const connectRef = useRef<
+    | ((quality: MicLinkQuality, deviceId: string, isRetry: boolean) => void)
+    | null
+  >(null);
+
   const isBusy = status === "connecting";
-  const isConnected = status === "live" || status === "connecting";
+  const isReconnecting = reconnectAttempt > 0 && wantsConnectionRef.current;
+  const isConnected =
+    status === "live" || status === "connecting" || isReconnecting;
 
   const refreshDevices = useCallback(async () => {
     if (!navigator.mediaDevices?.enumerateDevices) return;
@@ -71,22 +127,84 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
     return () => media.removeEventListener("devicechange", handleChange);
   }, [refreshDevices]);
 
-  const teardown = useCallback(async () => {
-    monitorRef.current?.stop();
-    monitorRef.current = null;
-    wakeLockRef.current?.release();
-    wakeLockRef.current = null;
-    await sessionRef.current?.close();
-    sessionRef.current = null;
-    streamRef.current?.getTracks().forEach((track) => track.stop());
-    streamRef.current = null;
-    setLevel(0);
-    setIsMuted(false);
+  const teardown = useCallback(
+    async (options?: { keepRegistration?: boolean }) => {
+      monitorRef.current?.stop();
+      monitorRef.current = null;
+      selfMonitorRef.current?.stop();
+      selfMonitorRef.current = null;
+      wakeLockRef.current?.release();
+      wakeLockRef.current = null;
+      await sessionRef.current?.close(options);
+      sessionRef.current = null;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+      setLevel(0);
+      setIsMuted(false);
+    },
+    [],
+  );
+
+  const cancelReconnect = useCallback(() => {
+    if (retryTimerRef.current !== null) {
+      clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
+    attemptsRef.current = 0;
+    setReconnectAttempt(0);
+  }, []);
+
+  // Called only from the session's own status handler, i.e. when the peer
+  // connection itself fails. Setup failures (permission denied, no microphone,
+  // room gone) set the status directly and deliberately do not land here —
+  // retrying those would just fail the same way.
+  const scheduleReconnect = useCallback(() => {
+    if (!wantsConnectionRef.current) return;
+    if (retryTimerRef.current !== null) return;
+    if (attemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
+      // Give up and hand the UI back to the Connect button, otherwise the card
+      // would keep showing "Disconnect" for a session that is never coming back.
+      wantsConnectionRef.current = false;
+      setErrorKey("reconnectFailed");
+      setStatus("error");
+      return;
+    }
+
+    const attempt = attemptsRef.current + 1;
+    attemptsRef.current = attempt;
+    setReconnectAttempt(attempt);
+    const delay = Math.min(
+      RECONNECT_BASE_DELAY_MS * Math.pow(2, attempt - 1),
+      RECONNECT_MAX_DELAY_MS,
+    );
+
+    retryTimerRef.current = setTimeout(() => {
+      retryTimerRef.current = null;
+      const { quality: retryQuality, deviceId: retryDeviceId } =
+        settingsRef.current;
+      void connectRef.current?.(retryQuality, retryDeviceId, true);
+    }, delay);
   }, []);
 
   const connect = useCallback(
-    async (nextQuality: MicLinkQuality, nextDeviceId: string) => {
-      await teardown();
+    async (
+      nextQuality: MicLinkQuality,
+      nextDeviceId: string,
+      isRetry = false,
+    ) => {
+      if (!isRetry) cancelReconnect();
+      wantsConnectionRef.current = true;
+      settingsRef.current = { quality: nextQuality, deviceId: nextDeviceId };
+
+      const generation = generationRef.current + 1;
+      generationRef.current = generation;
+      const isStale = () => generationRef.current !== generation;
+
+      // A retry keeps our registration on the receiver, so the renegotiation
+      // reuses the existing mixer strip instead of removing it and adding a new
+      // one — which would reset its gain, mute and solo.
+      await teardown({ keepRegistration: isRetry });
+      if (isStale()) return;
       setErrorKey(null);
       setStatus("connecting");
 
@@ -106,6 +224,12 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
           },
           video: false,
         });
+        // The permission prompt can sit open for a long time; by the time it is
+        // answered the user may have navigated away or disconnected.
+        if (isStale()) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
         streamRef.current = stream;
 
         // Device labels stay blank until the user has granted permission, so
@@ -115,36 +239,71 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
         const label =
           stream.getAudioTracks()[0]?.label || t("micLink.sender.defaultLabel");
 
-        sessionRef.current = await openSenderSession(
+        const session = await openSenderSession(
           roomId,
+          senderIdRef.current,
           stream,
           nextQuality,
           label,
-          { onStatus: setStatus, onError: () => setErrorKey("negotiation") },
+          {
+            onStatus: (next) => {
+              setStatus(next);
+              // Reaching "error" here means the peer connection failed, which
+              // ICE never recovers from on its own.
+              if (next === "error") scheduleReconnect();
+              if (next === "live") {
+                attemptsRef.current = 0;
+                setReconnectAttempt(0);
+              }
+            },
+            onError: () => setErrorKey("negotiation"),
+          },
         );
+        if (isStale()) {
+          await session.close();
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        sessionRef.current = session;
         monitorRef.current = createAudioLevelMonitor(stream, setLevel);
         wakeLockRef.current = requestScreenWakeLock();
         trackEvent("mic_link_sender_connected", { quality: nextQuality });
       } catch (error) {
+        // Everything reaching here is a setup failure that needs the user to do
+        // something (grant permission, free the mic, get a fresh QR code), so
+        // the retry loop stops and hands control back to the Connect button.
+        wantsConnectionRef.current = false;
+        cancelReconnect();
         await teardown();
         setStatus("error");
         const name = error instanceof Error ? error.message : "";
         const domName = error instanceof DOMException ? error.name : "";
         if (name === "INSECURE_CONTEXT") setErrorKey("insecureContext");
         else if (name === "ROOM_NOT_FOUND") setErrorKey("roomNotFound");
+        else if (name === "ROOM_FULL") setErrorKey("roomFull");
         else if (domName === "NotAllowedError") setErrorKey("permissionDenied");
         else if (domName === "NotFoundError") setErrorKey("noMicrophone");
         else if (domName === "NotReadableError") setErrorKey("micBusy");
         else setErrorKey("generic");
       }
     },
-    [refreshDevices, roomId, t, teardown],
+    [cancelReconnect, refreshDevices, roomId, scheduleReconnect, t, teardown],
   );
 
+  useEffect(() => {
+    connectRef.current = (retryQuality, retryDeviceId, isRetry) => {
+      void connect(retryQuality, retryDeviceId, isRetry);
+    };
+  }, [connect]);
+
   const disconnect = useCallback(async () => {
+    wantsConnectionRef.current = false;
+    generationRef.current += 1;
+    cancelReconnect();
     await teardown();
     setStatus("idle");
-  }, [teardown]);
+  }, [cancelReconnect, teardown]);
 
   // Changing the mic or the quality profile means a new MediaStream, so the
   // session is renegotiated from scratch. The receiver handles a fresh offer.
@@ -152,7 +311,10 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
     (nextQuality: MicLinkQuality, nextDeviceId: string) => {
       setQuality(nextQuality);
       setDeviceId(nextDeviceId);
-      if (sessionRef.current) void connect(nextQuality, nextDeviceId);
+      // Also applies mid-reconnect, when there is no live session to check.
+      if (sessionRef.current || wantsConnectionRef.current) {
+        void connect(nextQuality, nextDeviceId);
+      }
     },
     [connect],
   );
@@ -167,8 +329,37 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
     setIsMuted(nextMuted);
   }, [isMuted]);
 
+  // Local monitoring is attached to whatever stream is live right now, so it is
+  // rebuilt after a reconnect or a microphone change rather than left pointing
+  // at a stopped track.
   useEffect(() => {
-    return () => void teardown();
+    const stream = streamRef.current;
+    selfMonitorRef.current?.stop();
+    selfMonitorRef.current = null;
+    if (!isSelfMonitoring || !stream || status !== "live") return;
+    // Read through a ref so a volume change adjusts the running gain node
+    // instead of tearing down and rebuilding the whole AudioContext.
+    selfMonitorRef.current = createLocalAudioMonitor(
+      stream,
+      selfMonitorVolumeRef.current,
+    );
+  }, [isSelfMonitoring, status]);
+
+  useEffect(() => {
+    selfMonitorVolumeRef.current = selfMonitorVolume;
+    selfMonitorRef.current?.setVolume(selfMonitorVolume);
+  }, [selfMonitorVolume]);
+
+  useEffect(() => {
+    return () => {
+      // Stop any retry already scheduled before tearing down, or it would fire
+      // against an unmounted component and reopen a session nobody is watching.
+      wantsConnectionRef.current = false;
+      generationRef.current += 1;
+      if (retryTimerRef.current !== null) clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+      void teardown();
+    };
   }, [teardown]);
 
   return (
@@ -199,6 +390,19 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
             className="max-w-full h-auto py-2 text-center whitespace-normal"
           >
             {t(`micLink.errors.${errorKey}`)}
+          </Chip>
+        )}
+
+        {isReconnecting && !errorKey && (
+          <Chip
+            variant="flat"
+            color="warning"
+            className="max-w-full h-auto py-2 text-center whitespace-normal"
+          >
+            {t("micLink.sender.reconnecting", {
+              attempt: reconnectAttempt,
+              max: MAX_RECONNECT_ATTEMPTS,
+            })}
           </Chip>
         )}
 
@@ -246,6 +450,38 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
           <span className="text-tiny text-default-500">
             {t(`micLink.quality.${quality}Hint`)}
           </span>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Switch
+            isSelected={isSelfMonitoring}
+            onValueChange={setIsSelfMonitoring}
+            isDisabled={status !== "live"}
+          >
+            <div className="flex flex-col">
+              <span className="text-small">
+                {t("micLink.sender.selfMonitor")}
+              </span>
+              <span className="text-tiny text-default-500">
+                {t("micLink.sender.selfMonitorHint")}
+              </span>
+            </div>
+          </Switch>
+          {isSelfMonitoring && (
+            <Slider
+              size="sm"
+              label={t("micLink.sender.selfMonitorVolume")}
+              value={selfMonitorVolume}
+              onChange={(next) =>
+                setSelfMonitorVolume(
+                  Array.isArray(next) ? next[0] : (next as number),
+                )
+              }
+              minValue={0}
+              maxValue={1}
+              step={0.01}
+            />
+          )}
         </div>
 
         {isConnected ? (

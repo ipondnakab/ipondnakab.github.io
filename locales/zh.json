@@ -292,14 +292,16 @@
       "roomCreate": "无法创建房间，请检查网络后重新加载页面。",
       "clipboard": "无法复制链接，请从地址栏手动复制。",
       "recordingUnsupported": "此浏览器不支持录音。",
-      "generic": "出现问题，请重新连接。"
+      "generic": "出现问题，请重新连接。",
+      "roomFull": "本次会话已满，请让主持人先断开一支麦克风。",
+      "reconnectFailed": "重连失败。请检查 Wi-Fi 后再次点击连接麦克风。"
     },
     "lobby": {
       "title": "Mic Link",
-      "description": "把手机当作这台设备的无线麦克风，音频通过本地网络在两者之间直接传输。",
+      "description": "把一台或多台手机当作这台设备的无线麦克风，音频通过本地网络直接传输过来。",
       "step1": "在需要接收音频的设备上开始一个会话。",
-      "step2": "用手机扫描二维码，并允许使用麦克风。",
-      "step3": "开始说话。查看音量电平、用耳机监听，或录制成文件。",
+      "step2": "用每台手机扫描二维码，并允许使用麦克风。",
+      "step3": "调整各支麦克风的音量、用耳机监听，或把混音录制成文件。",
       "start": "开始会话",
       "privacy": "音频点对点传输，不会上传；只有建立连接的握手信息会经过服务器。"
     },
@@ -316,11 +318,15 @@
       "unmute": "取消静音",
       "defaultLabel": "手机麦克风",
       "wakeLockOn": "连接期间屏幕将保持常亮——锁屏会中断音频。",
-      "wakeLockOff": "请保持屏幕常亮，锁屏会中断音频。"
+      "wakeLockOff": "请保持屏幕常亮，锁屏会中断音频。",
+      "reconnecting": "连接已断开，正在重连 ({{attempt}}/{{max}})…",
+      "selfMonitor": "用耳机听自己的声音",
+      "selfMonitorHint": "在本机直接回放麦克风，不经过网络。仅限有线耳机——外放会啸叫，蓝牙增加的延迟比省下的还多。",
+      "selfMonitorVolume": "耳机音量"
     },
     "receiver": {
       "title": "这台设备负责接收音频",
-      "scanPrompt": "请用想当作麦克风的手机扫描。",
+      "scanPrompt": "请用每一台想当作麦克风的手机扫描。",
       "qrAlt": "在手机上打开 Mic Link 的二维码",
       "copy": "复制链接",
       "copied": "已复制",
@@ -335,7 +341,25 @@
       "bitrate": "{{kbps}} kbps",
       "startRecording": "录音",
       "stopRecording": "停止并保存",
-      "end": "结束会话"
+      "end": "结束会话",
+      "connectedCount": "{{current}} / {{max}} 支麦克风",
+      "hideQr": "隐藏二维码",
+      "addAnother": "添加麦克风",
+      "roomFull": "麦克风名额已满",
+      "noInputs": "还没有麦克风。用手机扫描二维码即可添加。",
+      "lowLatency": "低延迟（卡拉OK）",
+      "lowLatencyHint": "缩小接收缓冲区。唱歌时延迟大幅降低，但对网络拥堵更敏感。",
+      "latencyTotal": "估计延迟",
+      "latencyBreakdown": "缓冲 {{jitter}}ms · 网络 {{network}}ms · 输出 {{output}}ms",
+      "latencyCaveat": "未含手机自身的采集缓冲，通常还有 10–20ms。"
+    },
+    "mixer": {
+      "gain": "增益",
+      "gainValue": "增益 {{value}} 倍",
+      "mute": "静音此麦克风",
+      "muteShort": "M",
+      "solo": "只听此麦克风",
+      "soloShort": "S"
     }
   }
 }

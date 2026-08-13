@@ -292,14 +292,16 @@
       "roomCreate": "Could not open a room. Check your connection and reload the page.",
       "clipboard": "Could not copy the link. Copy it from the address bar instead.",
       "recordingUnsupported": "Recording is not supported in this browser.",
-      "generic": "Something went wrong. Try connecting again."
+      "generic": "Something went wrong. Try connecting again.",
+      "roomFull": "This session is already full. Ask the host to disconnect a microphone first.",
+      "reconnectFailed": "Could not reconnect. Check your wifi, then tap Connect to try again."
     },
     "lobby": {
       "title": "Mic Link",
-      "description": "Use your phone as a wireless microphone for this device. The audio streams straight between the two over your local network.",
+      "description": "Use one or more phones as wireless microphones for this device. The audio streams straight to it over your local network.",
       "step1": "Start a session on the device that should receive the audio.",
-      "step2": "Scan the QR code with your phone and allow microphone access.",
-      "step3": "Speak. Watch the level, listen on headphones, or record it to a file.",
+      "step2": "Scan the QR code with each phone and allow microphone access.",
+      "step3": "Balance the mics, listen on headphones, or record the mix to a file.",
       "start": "Start a session",
       "privacy": "The audio goes peer-to-peer and is never uploaded — only the connection handshake passes through the server."
     },
@@ -316,18 +318,22 @@
       "unmute": "Unmute",
       "defaultLabel": "Phone microphone",
       "wakeLockOn": "The screen is kept awake while connected — locking it would cut the audio.",
-      "wakeLockOff": "Keep this screen on. Locking the phone will cut the audio."
+      "wakeLockOff": "Keep this screen on. Locking the phone will cut the audio.",
+      "reconnecting": "Connection lost — reconnecting ({{attempt}}/{{max}})…",
+      "selfMonitor": "Hear myself in headphones",
+      "selfMonitorHint": "Plays your mic straight back on this phone, skipping the network. Wired headphones only — speakers will howl, and Bluetooth adds more delay than it saves.",
+      "selfMonitorVolume": "Headphone volume"
     },
     "receiver": {
       "title": "This device receives the audio",
-      "scanPrompt": "Scan this with the phone you want to use as the microphone.",
+      "scanPrompt": "Scan this with each phone you want to use as a microphone.",
       "qrAlt": "QR code that opens Mic Link on your phone",
       "copy": "Copy link",
       "copied": "Link copied",
       "sameNetworkHint": "Both devices should be on the same wifi. If they are not, the audio still works but takes a longer route.",
       "incomingLevel": "Incoming level",
       "monitor": "Play through this device",
-      "monitorHint": "Use headphones — speakers will feed back into the phone's microphone.",
+      "monitorHint": "Use headphones — speakers will feed back into the phones' microphones.",
       "volume": "Volume",
       "direct": "Direct on your network",
       "relayed": "Indirect route",
@@ -335,7 +341,25 @@
       "bitrate": "{{kbps}} kbps",
       "startRecording": "Record",
       "stopRecording": "Stop and save",
-      "end": "End session"
+      "end": "End session",
+      "connectedCount": "{{current}} of {{max}} mics",
+      "hideQr": "Hide QR",
+      "addAnother": "Add another microphone",
+      "roomFull": "All microphone slots are in use",
+      "noInputs": "No microphones yet. Scan the QR code with a phone to add one.",
+      "lowLatency": "Low latency (karaoke)",
+      "lowLatencyHint": "Shrinks the receive buffer. Much less delay for singing, but more sensitive to a busy network.",
+      "latencyTotal": "Estimated delay",
+      "latencyBreakdown": "buffer {{jitter}}ms · network {{network}}ms · output {{output}}ms",
+      "latencyCaveat": "Excludes the phone's own capture buffer, usually another 10–20ms."
+    },
+    "mixer": {
+      "gain": "Gain",
+      "gainValue": "gain {{value}}x",
+      "mute": "Mute this microphone",
+      "muteShort": "M",
+      "solo": "Solo this microphone",
+      "soloShort": "S"
     }
   }
 }

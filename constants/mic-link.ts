@@ -41,3 +41,24 @@ export const MIC_LINK_MAX_BITRATE_KBPS: Record<MicLinkQuality, number> = {
 
 // How often the receiver refreshes its connection telemetry.
 export const MIC_LINK_STATS_INTERVAL_MS = 2000;
+
+// How many phones may join one room. Each one costs a peer connection and an
+// Opus decode, and the mixer strips stop being readable well before the CPU
+// becomes the problem — so this is a UI limit as much as a resource one.
+export const MIC_LINK_MAX_SENDERS = 6;
+
+// Linear gain bounds for a mixer channel. 1 is unity; the headroom above it is
+// there to lift a phone that is further from the speaker than the others.
+export const MIC_LINK_MIN_GAIN = 0;
+export const MIC_LINK_MAX_GAIN = 2;
+export const MIC_LINK_DEFAULT_GAIN = 1;
+
+// Opus packetises at 20ms by default. Halving it costs a little bandwidth
+// overhead and buys back ~10ms of the round trip, which matters when someone is
+// listening to their own voice.
+export const MIC_LINK_LOW_LATENCY_PTIME_MS = 10;
+
+// Volume for the phone monitoring its own microphone locally. Deliberately
+// below unity: this only ever goes to headphones, and starting loud with a mic
+// live next to them is a bad idea.
+export const MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME = 0.6;
