@@ -349,7 +349,7 @@
       "roomFull": "麦克风名额已满",
       "noInputs": "还没有麦克风。用手机扫描二维码即可添加。",
       "lowLatency": "低延迟（卡拉OK）",
-      "lowLatencyHint": "缩小接收缓冲区。唱歌时延迟大幅降低，但对网络拥堵更敏感。",
+      "lowLatencyHint": "直接播放而不经过混音器，并缩小接收缓冲区。延迟大幅降低，但对网络拥堵更敏感，且通道增益上限为 1 倍。",
       "latencyTotal": "估计延迟",
       "latencyBreakdown": "缓冲 {{jitter}}ms · 网络 {{network}}ms · 输出 {{output}}ms",
       "latencyCaveat": "未含手机自身的采集缓冲，通常还有 10–20ms。"

@@ -349,7 +349,7 @@
       "roomFull": "Alla mikrofonplatser används",
       "noInputs": "Inga mikrofoner än. Skanna QR-koden med en telefon för att lägga till en.",
       "lowLatency": "Låg latens (karaoke)",
-      "lowLatencyHint": "Krymper mottagningsbufferten. Mycket mindre fördröjning när man sjunger, men känsligare för ett belastat nätverk.",
+      "lowLatencyHint": "Spelar direkt i stället för via mixern och krymper mottagningsbufferten. Mycket mindre fördröjning, men känsligare för ett belastat nätverk, och kanalförstärkningen taknivå blir 1x.",
       "latencyTotal": "Uppskattad fördröjning",
       "latencyBreakdown": "buffert {{jitter}}ms · nätverk {{network}}ms · utgång {{output}}ms",
       "latencyCaveat": "Exklusive telefonens egen inspelningsbuffert, vanligtvis ytterligare 10–20ms."

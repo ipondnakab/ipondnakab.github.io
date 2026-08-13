@@ -267,7 +267,11 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
   }, [channels, inputs, anySolo]);
 
   useEffect(() => {
-    mixerRef.current?.setMonitoring(isMonitoring, volume);
+    // In low-latency mode the <audio> elements do the playing and the mixer's
+    // monitor output is silenced, so the audio never passes through Web Audio
+    // on its way to the speakers. The mixer keeps running for meters and for
+    // recording, which still want the summed bus.
+    mixerRef.current?.setMonitoring(isMonitoring && !isLowLatency, volume);
     // An AudioContext starts suspended unless it was created during a gesture;
     // toggling monitoring is a gesture, so this is the right moment to resume.
     if (isMonitoring) {
@@ -275,7 +279,7 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
       // Only meaningful once the context is actually running.
       setOutputLatencyMs(mixerRef.current?.getOutputLatencyMs() ?? 0);
     }
-  }, [isMonitoring, volume]);
+  }, [isMonitoring, volume, isLowLatency]);
 
   useEffect(() => {
     sessionRef.current?.setLowLatency(isLowLatency);
@@ -653,12 +657,23 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
           </Button>
         </div>
 
-        {/* Required for Chrome to pump each remote stream into Web Audio. */}
-        {inputs.map((input) =>
-          input.stream ? (
-            <MicLinkStreamSink key={input.senderId} stream={input.stream} />
-          ) : null,
-        )}
+        {/* Always mounted so Chrome keeps pumping each remote stream into Web
+            Audio for the meters. In low-latency mode these also become the
+            playback path, which is why they carry the fader state. */}
+        {inputs.map((input) => {
+          if (!input.stream) return null;
+          const channel = channels[input.senderId] ?? DEFAULT_CHANNEL;
+          const isSilenced =
+            channel.isMuted || (anySolo && !channel.isSoloed) || !isMonitoring;
+          return (
+            <MicLinkStreamSink
+              key={input.senderId}
+              stream={input.stream}
+              muted={!isLowLatency || isSilenced}
+              volume={channel.gain * volume}
+            />
+          );
+        })}
       </Card>
     </div>
   );

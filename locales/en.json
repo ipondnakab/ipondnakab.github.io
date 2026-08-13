@@ -349,7 +349,7 @@
       "roomFull": "All microphone slots are in use",
       "noInputs": "No microphones yet. Scan the QR code with a phone to add one.",
       "lowLatency": "Low latency (karaoke)",
-      "lowLatencyHint": "Shrinks the receive buffer. Much less delay for singing, but more sensitive to a busy network.",
+      "lowLatencyHint": "Plays direct instead of through the mixer and shrinks the receive buffer. Much less delay, but more sensitive to a busy network, and channel gain caps at 1x.",
       "latencyTotal": "Estimated delay",
       "latencyBreakdown": "buffer {{jitter}}ms · network {{network}}ms · output {{output}}ms",
       "latencyCaveat": "Excludes the phone's own capture buffer, usually another 10–20ms."
