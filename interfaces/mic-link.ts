@@ -57,6 +57,11 @@ export interface MicLinkSenderDoc {
   joinedAt: number;
   offer?: MicLinkSessionDescription;
   answer?: MicLinkSessionDescription;
+  // The phone's own audio stack cost, published so the receiver can show why a
+  // session feels slow without anyone having to walk over and read the phone.
+  platform?: string;
+  captureLatencyMs?: number;
+  deviceOutputLatencyMs?: number;
 }
 
 // Receiver-side view of one connected phone.
@@ -66,6 +71,9 @@ export interface MicLinkInput {
   quality: MicLinkQuality;
   status: MicLinkStatus;
   stream: MediaStream | null;
+  platform?: string;
+  captureLatencyMs?: number;
+  deviceOutputLatencyMs?: number;
 }
 
 // Mixer settings for one input. `gain` is a linear multiplier, so 1 is unity.
@@ -85,6 +93,10 @@ export interface MicLinkConnectionInfo {
   // is normally the single largest contributor to the delay a singer hears,
   // which is why it is surfaced separately rather than folded into a total.
   jitterBufferMs?: number;
+  // What the browser is aiming for, as opposed to what it achieved. Low-latency
+  // mode asks for 0; if this stays high anyway, the browser is ignoring the
+  // request and the remaining delay is not reachable from here.
+  jitterBufferTargetMs?: number;
   // True when both ends picked "host" candidates, i.e. the audio is going
   // straight across the LAN and never leaves the network.
   isDirect: boolean;

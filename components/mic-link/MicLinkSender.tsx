@@ -24,6 +24,11 @@ import {
   createAudioLevelMonitor,
 } from "@/functions/audio-level";
 import {
+  describePlatform,
+  DeviceAudioProfile,
+  readCaptureLatencyMs,
+} from "@/functions/device-audio-profile";
+import {
   createLocalAudioMonitor,
   LocalAudioMonitor,
 } from "@/functions/local-audio-monitor";
@@ -67,6 +72,9 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
   const [deviceId, setDeviceId] = useState(SYSTEM_DEFAULT_DEVICE);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [reconnectAttempt, setReconnectAttempt] = useState(0);
+  const [deviceProfile, setDeviceProfile] = useState<DeviceAudioProfile | null>(
+    null,
+  );
   const [isSelfMonitoring, setIsSelfMonitoring] = useState(false);
   const [selfMonitorVolume, setSelfMonitorVolume] = useState(
     MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME,
@@ -273,6 +281,23 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
         sessionRef.current = session;
         monitorRef.current = createAudioLevelMonitor(stream, setLevel);
         wakeLockRef.current = requestScreenWakeLock();
+
+        // Measured after a beat: `outputLatency` reads 0 until the AudioContext
+        // has actually rendered. This is the number that decides whether a
+        // latency complaint is worth chasing in our code or is just the phone.
+        const platform = describePlatform();
+        const captureLatencyMs = readCaptureLatencyMs(stream);
+        window.setTimeout(() => {
+          if (isStale()) return;
+          const outputLatencyMs = monitorRef.current?.getOutputLatencyMs();
+          setDeviceProfile({ platform, captureLatencyMs, outputLatencyMs });
+          void sessionRef.current?.publishDeviceProfile({
+            platform,
+            captureLatencyMs,
+            deviceOutputLatencyMs: outputLatencyMs,
+          });
+        }, 1500);
+
         trackEvent("mic_link_sender_connected", { quality: nextQuality });
       } catch (error) {
         // Everything reaching here is a setup failure that needs the user to do
@@ -519,6 +544,27 @@ const MicLinkSender: React.FC<MicLinkSenderProps> = ({ roomId }) => {
           >
             {t("micLink.sender.connect")}
           </Button>
+        )}
+
+        {deviceProfile && (
+          <div className="flex flex-col gap-1 rounded-medium bg-default-100 p-3">
+            <span className="text-tiny text-default-600">
+              {t("micLink.sender.deviceAudio", {
+                platform: t(`micLink.platform.${deviceProfile.platform}`),
+              })}
+            </span>
+            <span className="text-tiny text-default-500 tabular-nums">
+              {t("micLink.sender.deviceLatency", {
+                capture: deviceProfile.captureLatencyMs ?? "?",
+                output: deviceProfile.outputLatencyMs ?? "?",
+              })}
+            </span>
+            {deviceProfile.platform === "android" && (
+              <span className="text-tiny text-warning">
+                {t("micLink.sender.androidWarning")}
+              </span>
+            )}
+          </div>
         )}
 
         <p className="text-tiny text-default-500 text-center">

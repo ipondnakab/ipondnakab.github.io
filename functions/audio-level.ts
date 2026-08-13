@@ -1,4 +1,8 @@
 export interface AudioLevelMonitor {
+  // Round-trip cost of this device's own audio hardware and OS stack, in
+  // milliseconds. Only meaningful once the context has actually rendered, so
+  // read it a moment after starting rather than immediately.
+  getOutputLatencyMs: () => number;
   stop: () => void;
 }
 
@@ -47,6 +51,12 @@ export const createAudioLevelMonitor = (
   frame = requestAnimationFrame(tick);
 
   return {
+    getOutputLatencyMs: () => {
+      // `outputLatency` is absent in Safari, where baseLatency alone is the
+      // best available answer.
+      const output = (context as { outputLatency?: number }).outputLatency ?? 0;
+      return Math.round((context.baseLatency + output) * 1000);
+    },
     stop: () => {
       if (stopped) return;
       stopped = true;

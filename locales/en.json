@@ -323,7 +323,10 @@
       "reconnecting": "Connection lost — reconnecting ({{attempt}}/{{max}})…",
       "selfMonitor": "Hear myself in headphones",
       "selfMonitorHint": "Plays your mic straight back on this phone, skipping the network. Wired headphones only — speakers will howl, and Bluetooth adds more delay than it saves.",
-      "selfMonitorVolume": "Headphone volume"
+      "selfMonitorVolume": "Headphone volume",
+      "deviceAudio": "This device's audio stack ({{platform}})",
+      "deviceLatency": "capture {{capture}}ms · output {{output}}ms",
+      "androidWarning": "Android audio typically adds 100–300ms of its own. No network setting can remove that — an iPhone, or a mic plugged straight into the computer, will be far faster."
     },
     "receiver": {
       "title": "This device receives the audio",
@@ -352,7 +355,9 @@
       "lowLatencyHint": "Plays direct instead of through the mixer and shrinks the receive buffer. Much less delay, but more sensitive to a busy network, and channel gain caps at 1x.",
       "latencyTotal": "Estimated delay",
       "latencyBreakdown": "buffer {{jitter}}ms · network {{network}}ms · output {{output}}ms",
-      "latencyCaveat": "Excludes the phone's own capture buffer, usually another 10–20ms."
+      "latencyCaveat": "Excludes the phone's own capture buffer, usually another 10–20ms.",
+      "latencyTarget": "browser is targeting {{target}}ms of buffer",
+      "latencyTargetIgnored": "the low-latency request is being ignored by this browser"
     },
     "mixer": {
       "gain": "Gain",
@@ -360,7 +365,13 @@
       "mute": "Mute this microphone",
       "muteShort": "M",
       "solo": "Solo this microphone",
-      "soloShort": "S"
+      "soloShort": "S",
+      "deviceLatency": "phone: capture {{capture}}ms · output {{output}}ms"
+    },
+    "platform": {
+      "ios": "iPhone / iPad",
+      "android": "Android",
+      "desktop": "Desktop"
     }
   }
 }

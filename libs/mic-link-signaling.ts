@@ -268,10 +268,19 @@ export const applyOpusPreferences = (
     );
   }
   if (preferences.lowLatency) {
+    // maxptime is the one that matters. `minptime` only sets a floor, and the
+    // 20ms default already satisfies a floor of 10 — so asking for minptime
+    // alone changes nothing at all. maxptime is the ceiling that actually
+    // forces smaller packets.
+    //
     // usedtx=0 because discontinuous transmission saves bandwidth during
     // silence at the cost of a ramp-up on every new phrase — audible, and
     // exactly wrong for singing.
-    params.push(`minptime=${MIC_LINK_LOW_LATENCY_PTIME_MS}`, "usedtx=0");
+    params.push(
+      `minptime=${MIC_LINK_LOW_LATENCY_PTIME_MS}`,
+      `maxptime=${MIC_LINK_LOW_LATENCY_PTIME_MS}`,
+      "usedtx=0",
+    );
   }
   if (params.length === 0) return sdp;
 
@@ -336,10 +345,14 @@ interface MicLinkRawStat {
   currentRoundTripTime?: number;
   bytesReceived?: number;
   candidateType?: string;
-  // Both are cumulative totals: the average delay right now is the ratio of
-  // their deltas between two samples, not the lifetime ratio.
+  // All cumulative totals: the average right now is the ratio of their deltas
+  // between two samples, not the lifetime ratio.
   jitterBufferDelay?: number;
   jitterBufferEmittedCount?: number;
+  // What the browser is *aiming* for, as opposed to what it achieved. If this
+  // stays high after low-latency mode is on, the jitterBufferTarget hint is
+  // being ignored and no amount of further tuning here will help.
+  jitterBufferTargetDelay?: number;
 }
 
 interface StatsCursor {
@@ -347,6 +360,7 @@ interface StatsCursor {
   at: number;
   jitterDelay: number;
   jitterCount: number;
+  jitterTargetDelay: number;
 }
 
 const readConnectionInfo = async (
@@ -371,6 +385,7 @@ const readConnectionInfo = async (
     at: Date.now(),
     jitterDelay: inbound?.jitterBufferDelay ?? 0,
     jitterCount: inbound?.jitterBufferEmittedCount ?? 0,
+    jitterTargetDelay: inbound?.jitterBufferTargetDelay ?? 0,
   };
 
   const elapsedSeconds = previous ? (cursor.at - previous.at) / 1000 : 0;
@@ -394,6 +409,13 @@ const readConnectionInfo = async (
           ((cursor.jitterDelay - previous.jitterDelay) / emitted) * 1000,
         )
       : undefined;
+  const jitterBufferTargetMs =
+    previous && emitted > 0
+      ? Math.round(
+          ((cursor.jitterTargetDelay - previous.jitterTargetDelay) / emitted) *
+            1000,
+        )
+      : undefined;
 
   return {
     cursor,
@@ -406,6 +428,7 @@ const readConnectionInfo = async (
           : Math.round(pair.currentRoundTripTime * 1000),
       bitrateKbps,
       jitterBufferMs,
+      jitterBufferTargetMs,
       isDirect:
         local?.candidateType === "host" && remote?.candidateType === "host",
     },
@@ -666,6 +689,13 @@ export interface MicLinkSenderCloseOptions {
 
 export interface MicLinkSenderSession {
   getConnectionInfo: () => Promise<MicLinkConnectionInfo | null>;
+  // Publishes this phone's measured audio-stack cost. Called after the context
+  // has rendered for a moment, since `outputLatency` reads 0 before then.
+  publishDeviceProfile: (profile: {
+    platform: string;
+    captureLatencyMs?: number;
+    deviceOutputLatencyMs?: number;
+  }) => Promise<void>;
   close: (options?: MicLinkSenderCloseOptions) => Promise<void>;
 }
 
@@ -794,6 +824,21 @@ export const openSenderSession = async (
       if (!result) return null;
       cursor = result.cursor;
       return result.info;
+    },
+    publishDeviceProfile: async (profile) => {
+      if (isClosed) return;
+      // Undefined is rejected by Firestore, so unavailable measurements are
+      // simply left out rather than written as null.
+      const payload: Record<string, string | number> = {
+        platform: profile.platform,
+      };
+      if (profile.captureLatencyMs !== undefined) {
+        payload.captureLatencyMs = profile.captureLatencyMs;
+      }
+      if (profile.deviceOutputLatencyMs !== undefined) {
+        payload.deviceOutputLatencyMs = profile.deviceOutputLatencyMs;
+      }
+      await updateDoc(self, payload).catch(() => undefined);
     },
     close: async (options) => {
       if (isClosed) return;

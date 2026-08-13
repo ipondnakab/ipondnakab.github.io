@@ -12,6 +12,12 @@ import MicLinkStatusChip from "./MicLinkStatusChip";
 
 export interface MicLinkMixerStripProps {
   label: string;
+  // Measured on the phone and published with its registration. Shown here
+  // because a phone whose own audio stack costs 200ms explains a slow session
+  // far better than anything the connection stats can say.
+  platform?: string;
+  captureLatencyMs?: number;
+  deviceOutputLatencyMs?: number;
   status: MicLinkStatus;
   level: number;
   gain: number;
@@ -27,6 +33,9 @@ export interface MicLinkMixerStripProps {
 
 const MicLinkMixerStrip: React.FC<MicLinkMixerStripProps> = ({
   label,
+  platform,
+  captureLatencyMs,
+  deviceOutputLatencyMs,
   status,
   level,
   gain,
@@ -54,7 +63,24 @@ const MicLinkMixerStrip: React.FC<MicLinkMixerStripProps> = ({
           </span>
           <span className="text-tiny text-default-500">
             {t("micLink.mixer.gainValue", { value: gain.toFixed(2) })}
+            {platform ? ` · ${t(`micLink.platform.${platform}`)}` : ""}
           </span>
+          {(captureLatencyMs !== undefined ||
+            deviceOutputLatencyMs !== undefined) && (
+            <span
+              className={clsx(
+                "text-tiny tabular-nums",
+                (captureLatencyMs ?? 0) + (deviceOutputLatencyMs ?? 0) > 60
+                  ? "text-warning"
+                  : "text-default-400",
+              )}
+            >
+              {t("micLink.mixer.deviceLatency", {
+                capture: captureLatencyMs ?? "?",
+                output: deviceOutputLatencyMs ?? "?",
+              })}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-1 flex-none">
           <MicLinkStatusChip status={status} />

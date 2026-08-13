@@ -157,10 +157,20 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
           const existing = previous.find(
             (input) => input.senderId === senderId,
           );
+          const measurements = {
+            platform: sender.platform,
+            captureLatencyMs: sender.captureLatencyMs,
+            deviceOutputLatencyMs: sender.deviceOutputLatencyMs,
+          };
           if (existing) {
             return previous.map((input) =>
               input.senderId === senderId
-                ? { ...input, label: sender.label, quality: sender.quality }
+                ? {
+                    ...input,
+                    label: sender.label,
+                    quality: sender.quality,
+                    ...measurements,
+                  }
                 : input,
             );
           }
@@ -172,6 +182,7 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
               quality: sender.quality,
               status: "connecting" as MicLinkStatus,
               stream: null,
+              ...measurements,
             },
           ];
         });
@@ -505,6 +516,9 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
                 <MicLinkMixerStrip
                   key={input.senderId}
                   label={input.label}
+                  platform={input.platform}
+                  captureLatencyMs={input.captureLatencyMs}
+                  deviceOutputLatencyMs={input.deviceOutputLatencyMs}
                   status={input.status}
                   level={levels[input.senderId] ?? 0}
                   gain={channel.gain}
@@ -627,6 +641,16 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
                 output: latency.outputMs,
               })}
             </span>
+            {info?.jitterBufferTargetMs !== undefined && (
+              <span className="text-tiny text-default-500">
+                {t("micLink.receiver.latencyTarget", {
+                  target: info.jitterBufferTargetMs,
+                })}
+                {isLowLatency && info.jitterBufferTargetMs > 30
+                  ? ` — ${t("micLink.receiver.latencyTargetIgnored")}`
+                  : ""}
+              </span>
+            )}
             <span className="text-tiny text-default-500">
               {t("micLink.receiver.latencyCaveat")}
             </span>

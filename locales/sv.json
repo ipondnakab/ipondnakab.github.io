@@ -323,7 +323,10 @@
       "reconnecting": "Anslutningen bröts — återansluter ({{attempt}}/{{max}})…",
       "selfMonitor": "Hör mig själv i hörlurar",
       "selfMonitorHint": "Spelar upp mikrofonen direkt i den här telefonen, utan att gå via nätverket. Endast trådbundna hörlurar — högtalare tjuter och Bluetooth lägger till mer fördröjning än det tar bort.",
-      "selfMonitorVolume": "Hörlursvolym"
+      "selfMonitorVolume": "Hörlursvolym",
+      "deviceAudio": "Den här enhetens ljudkedja ({{platform}})",
+      "deviceLatency": "inspelning {{capture}}ms · utgång {{output}}ms",
+      "androidWarning": "Androids ljudkedja lägger vanligtvis till 100–300ms på egen hand. Ingen nätverksinställning tar bort det — en iPhone, eller en mikrofon direkt i datorn, blir betydligt snabbare."
     },
     "receiver": {
       "title": "Den här enheten tar emot ljudet",
@@ -352,7 +355,9 @@
       "lowLatencyHint": "Spelar direkt i stället för via mixern och krymper mottagningsbufferten. Mycket mindre fördröjning, men känsligare för ett belastat nätverk, och kanalförstärkningen taknivå blir 1x.",
       "latencyTotal": "Uppskattad fördröjning",
       "latencyBreakdown": "buffert {{jitter}}ms · nätverk {{network}}ms · utgång {{output}}ms",
-      "latencyCaveat": "Exklusive telefonens egen inspelningsbuffert, vanligtvis ytterligare 10–20ms."
+      "latencyCaveat": "Exklusive telefonens egen inspelningsbuffert, vanligtvis ytterligare 10–20ms.",
+      "latencyTarget": "webbläsaren siktar på {{target}}ms buffert",
+      "latencyTargetIgnored": "den här webbläsaren ignorerar begäran om låg latens"
     },
     "mixer": {
       "gain": "Förstärkning",
@@ -360,7 +365,13 @@
       "mute": "Tysta den här mikrofonen",
       "muteShort": "M",
       "solo": "Lyssna bara på den här mikrofonen",
-      "soloShort": "S"
+      "soloShort": "S",
+      "deviceLatency": "telefon: inspelning {{capture}}ms · utgång {{output}}ms"
+    },
+    "platform": {
+      "ios": "iPhone / iPad",
+      "android": "Android",
+      "desktop": "Dator"
     }
   }
 }
