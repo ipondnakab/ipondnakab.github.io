@@ -392,5 +392,8 @@
     },
     "tooltip": "点击开始聊天",
     "hide": "隐藏聊天"
+  },
+  "kittipat": {
+    "dangdee": "Kittipat Daengdee"
   }
 }

@@ -18,7 +18,7 @@ export interface ContactPanelProps {}
 const ContactPanel: React.FC<ContactPanelProps> = () => {
   const { t } = useTranslation();
   return (
-    <div className="absolute inset-x-0 bottom-16 flex flex-col items-center px-6">
+    <div className="absolute inset-x-0 bottom-20 flex flex-col items-center px-6">
       <MotionCard
         isBlurred
         variants={slideIn(0, 26)}
@@ -27,8 +27,8 @@ const ContactPanel: React.FC<ContactPanelProps> = () => {
         exit="exit"
         className="border border-foreground/10"
       >
-        <CardBody className="px-8 py-7 text-center sm:px-12">
-          <div className="mb-2 text-[11px] uppercase tracking-[0.5em] text-foreground/40">
+        <CardBody className="p-6 text-center sm:px-12">
+          <div className="mb-2 text-xs uppercase tracking-[0.5em] text-foreground/40">
             {t("resume.chapter.contact", "Contact")}
           </div>
           <h2 className="mb-1 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">

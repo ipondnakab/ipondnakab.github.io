@@ -20,9 +20,9 @@ const ScrollHint: React.FC<ScrollHintProps> = ({ visible }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex flex-col items-center text-foreground/60"
+          className="pointer-events-none fixed inset-x-0 top-32 z-20 flex flex-col items-center text-foreground/60"
         >
-          <span className="text-[10px] uppercase tracking-[0.4em]">
+          <span className="text-sm uppercase tracking-[0.5em]">
             {t("resume.scrollHint", "Scroll to explore")}
           </span>
           <motion.div

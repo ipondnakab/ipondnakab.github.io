@@ -1,13 +1,11 @@
 "use client";
 
-import { Button, Card } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HiArrowLeft, HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
-import LanguageSwitcher from "@/components/layouts/LanguageSwitcher";
 import { ResumeChapter } from "@/interfaces/resume";
 import { trackEvent } from "@/libs/analytics";
 
@@ -39,20 +37,7 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
   };
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] flex items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-6">
-      <Button
-        as={Link}
-        href="/"
-        isIconOnly
-        radius="full"
-        size="sm"
-        variant="flat"
-        aria-label={t("resume.nav.home", "Home")}
-        className="pointer-events-auto"
-      >
-        <HiArrowLeft />
-      </Button>
-
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] flex items-center justify-center gap-2 px-3 py-3 sm:gap-3 sm:px-6">
       {/* Desktop: chapter pills */}
       <Card
         isBlurred
@@ -116,10 +101,6 @@ const ChapterNav: React.FC<ChapterNavProps> = ({
           <HiChevronRight />
         </button>
       </Card>
-
-      <div className="pointer-events-auto flex items-center gap-2">
-        <LanguageSwitcher />
-      </div>
     </div>
   );
 };

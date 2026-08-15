@@ -42,7 +42,7 @@ const SceneLoader: React.FC = () => {
   if (done) return null;
 
   return (
-    <div className="resume-backdrop absolute inset-0 z-[60] flex flex-col items-center justify-center gap-4">
+    <div className="absolute inset-0 z-[60] flex flex-col items-center justify-center gap-4">
       <div className="text-[11px] uppercase tracking-[0.5em] text-foreground/50">
         {t("resume.loading", "Loading")}
       </div>
@@ -122,7 +122,7 @@ const ResumeExperience: React.FC<ResumeExperienceProps> = () => {
 
   return (
     <>
-      <div className="resume-backdrop fixed inset-0 z-50 overflow-hidden">
+      <div className="backdrop-blur-3xl bg-background/50 fixed inset-0 overflow-hidden">
         <ResumeCanvas
           progressRef={progressRef}
           moodRef={moodRef}
