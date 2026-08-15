@@ -401,7 +401,8 @@
       "offline": "无法连接助手，请检查网络后重试。"
     },
     "tooltip": "点击开始聊天",
-    "hide": "隐藏聊天"
+    "hide": "隐藏聊天",
+    "savedNotice": "对话会被保存，以便 Kittipat 了解大家常问的问题。"
   },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"

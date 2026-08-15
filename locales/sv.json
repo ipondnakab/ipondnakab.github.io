@@ -401,7 +401,8 @@
       "offline": "Kunde inte nå assistenten. Kontrollera din anslutning och försök igen."
     },
     "tooltip": "Klicka för att chatta",
-    "hide": "Dölj chatten"
+    "hide": "Dölj chatten",
+    "savedNotice": "Konversationer sparas så att Kittipat kan se vad folk frågar om."
   },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"

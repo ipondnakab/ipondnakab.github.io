@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/images/avatar-profile-square.png",
+        url: "/images/og-web.png",
         width: 800,
         height: 800,
         alt: "Kittipat Daengdee",

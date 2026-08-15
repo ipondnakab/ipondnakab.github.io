@@ -16,6 +16,7 @@ import { IoClose, IoSend } from "react-icons/io5";
 import { environment } from "@/core/environment";
 import { ChatMessage } from "@/interfaces/chat";
 import { trackEvent } from "@/libs/analytics";
+import { saveChatTranscript } from "@/libs/chat-history";
 import { cn } from "@nextui-org/theme";
 
 export interface ChatWidgetProps {
@@ -54,7 +55,7 @@ const TOOLTIP_INTRO_DURATION_MS = 5000;
 const DISMISSED_STORAGE_KEY = "chat.dismissed";
 
 const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -147,10 +148,15 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
         return;
       }
 
-      setMessages((current) => [
-        ...current,
-        { role: "assistant", content: payload.reply as string },
-      ]);
+      const withReply: ChatMessage[] = [
+        ...nextMessages,
+        { role: "assistant", content: payload.reply },
+      ];
+      setMessages(withReply);
+      // Fire-and-forget: recording is a side benefit, so it must not delay the
+      // reply appearing or fail the turn. saveChatTranscript swallows its own
+      // errors.
+      void saveChatTranscript(withReply, i18n.language);
     } catch {
       // Network failure, DNS, CORS rejection — nothing actionable to show the
       // visitor beyond "try again".
@@ -158,7 +164,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
     } finally {
       setIsSending(false);
     }
-  }, [draft, isSending, messages, t]);
+  }, [draft, isSending, messages, t, i18n]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -178,12 +184,12 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   return (
     <div
       className={clsx(
-        "fixed bottom-20 right-4 z-50 flex flex-col items-end gap-3 md:bottom-6 md:right-6",
+        "fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3",
         className,
       )}
     >
       {isOpen && (
-        <Card className="flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden p-0 shadow-xl">
+        <Card className="flex h-[28rem] w-[min(22rem,calc(100vw-3rem))] flex-col overflow-hidden p-0 shadow-xl">
           <div className="flex items-center justify-between border-b border-default-200 px-4 py-3">
             <div className="flex items-center gap-2">
               {/* Decorative: the name sits directly beside it, so alt is empty
@@ -193,7 +199,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
                 disableSkeleton
                 src={KHUNKAO_AVATAR}
                 alt=""
-                className="h-8 w-8 shrink-0 rounded-full bg-default-100 object-cover object-top"
+                className="h-8 w-8 shrink-0 scale-x-[-1] rounded-full bg-default-100 object-cover object-top"
               />
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">{t("chat.title")}</span>
@@ -218,9 +224,17 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
             className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3"
           >
             {messages.length === 0 && (
-              <p className="text-small text-default-500">
-                {t("chat.greeting")}
-              </p>
+              <div className="flex flex-col gap-3">
+                <p className="text-small text-default-500">
+                  {t("chat.greeting")}
+                </p>
+                {/* Conversations are stored in Firestore (libs/chat-history.ts),
+                    so say so. Shown once, before anything is typed — the point
+                    is to inform before the visitor commits, not to nag. */}
+                <p className="text-tiny text-default-400">
+                  {t("chat.savedNotice")}
+                </p>
+              </div>
             )}
             {messages.map((message, index) => (
               <div
@@ -296,8 +310,10 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
             radius="full"
             size="lg"
             className={cn(
-              "h-14 w-14 overflow-visible min-w-14 p-0 shadow-lg",
-              isOpen ? "bg-default-100" : "bg-transparent",
+              "overflow-visible p-0 shadow-lg",
+              isOpen
+                ? "bg-default-100 h-12 w-12"
+                : "bg-transparent min-w-16 h-28 w-16",
             )}
             aria-label={isOpen ? t("chat.close") : t("chat.open")}
             onPress={handleToggle}

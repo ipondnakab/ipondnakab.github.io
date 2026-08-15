@@ -6,7 +6,7 @@ const TITLE = "Pok Deng Credit Tracker — Host vs Players Scoreboard";
 const DESCRIPTION =
   "A free Pok Deng credit tracker. Add the host and players, set a base bet, then settle each turn with win/lose and the deng multiplier — balances stay zero-sum and are saved on your device.";
 const OG_IMAGE = {
-  url: "/images/avatar-profile-square.png",
+  url: "/images/og-web.png",
   width: 800,
   height: 800,
   alt: "Pok Deng credit tracker",

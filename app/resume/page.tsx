@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     url: "/resume",
     title: "Kittipat Daengdee — Interactive 3D Résumé",
     description: DESCRIPTION,
-    images: ["/images/avatar-profile-square.png"],
+    images: ["/images/og-web.png"],
   },
 };
 

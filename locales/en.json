@@ -401,7 +401,8 @@
       "offline": "Couldn't reach the assistant. Check your connection and try again."
     },
     "tooltip": "Click to chat",
-    "hide": "Hide chat"
+    "hide": "Hide chat",
+    "savedNotice": "Chats are saved so Kittipat can see what people ask."
   },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"

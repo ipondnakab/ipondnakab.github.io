@@ -401,7 +401,8 @@
       "offline": "アシスタントに接続できませんでした。接続を確認して再度お試しください。"
     },
     "tooltip": "クリックしてチャット",
-    "hide": "チャットを非表示"
+    "hide": "チャットを非表示",
+    "savedNotice": "会話は、どんな質問が多いかをKittipatが把握するために保存されます。"
   },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"
