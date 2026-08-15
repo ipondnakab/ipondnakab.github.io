@@ -18,6 +18,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+import ChatWidget from "@/components/chat/ChatWidget";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import { NAV_MENUS } from "@/constants/nav-menu";
 import { SOCIALS } from "@/constants/social";
@@ -215,6 +216,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         <div className="z-20">{children}</div>
       </div>
       <BackgroundParticles isPlaying={showAnimation} />
+      <ChatWidget />
       {/* <KhunKao /> */}
     </>
   );

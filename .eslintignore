@@ -7,3 +7,6 @@ dist/
 coverage/
 postcss.config.js
 next.config.js
+# Standalone Vercel project with its own package.json, tsconfig and no `@/`
+# alias — it is type-checked by `yarn --cwd portfolio-api typecheck` instead.
+portfolio-api/

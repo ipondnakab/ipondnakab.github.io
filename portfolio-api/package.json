@@ -1,0 +1,18 @@
+{
+  "name": "ipondnakab-portfolio-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Serverless endpoints for the portfolio site (assistant chat, contact form). Deployed to Vercel as its own project, separate from the statically-exported site.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env.local --env-file-if-exists=.env --import tsx dev-server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5"
+  }
+}

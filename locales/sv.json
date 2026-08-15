@@ -41,6 +41,7 @@
   "nav": {
     "home": "Hem",
     "resume": "CV",
+    "contact": "Kontakt",
     "mini-project": "Projekt",
     "planning-poker": "Planning",
     "credit": "Tack",
@@ -105,7 +106,8 @@
     "sendError": "Kunde inte skicka meddelandet. Försök igen.",
     "successTitle": "Klart!",
     "successMessage": "Meddelandet har skickats.",
-    "sendAgain": "Skicka igen"
+    "sendAgain": "Skicka igen",
+    "sendRateLimited": "Du har redan skickat flera meddelanden. Försök igen senare."
   },
   "notFound": {
     "title": "404",
@@ -373,5 +375,22 @@
       "android": "Android",
       "desktop": "Dator"
     }
+  },
+  "chat": {
+    "title": "KhunKao",
+    "subtitle": "Kittipats assistent",
+    "greeting": "Hej, jag är KhunKao — Kittipats katt. Fråga mig vad som helst om hans erfarenhet, projekt eller kompetenser.",
+    "placeholder": "Skriv din fråga…",
+    "inputLabel": "Din fråga",
+    "send": "Skicka",
+    "open": "Chatta med KhunKao",
+    "close": "Stäng chatten",
+    "errors": {
+      "rateLimited": "För många meddelanden. Vänta en stund och försök igen.",
+      "generic": "Något gick fel. Försök igen.",
+      "offline": "Kunde inte nå assistenten. Kontrollera din anslutning och försök igen."
+    },
+    "tooltip": "Klicka för att chatta",
+    "hide": "Dölj chatten"
   }
 }

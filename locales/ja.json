@@ -41,6 +41,7 @@
   "nav": {
     "home": "ホーム",
     "resume": "履歴書",
+    "contact": "連絡先",
     "mini-project": "プロジェクト",
     "planning-poker": "Planning",
     "credit": "クレジット",
@@ -105,7 +106,8 @@
     "sendError": "送信に失敗しました。もう一度お試しください。",
     "successTitle": "完了！",
     "successMessage": "メッセージを送信しました。",
-    "sendAgain": "もう一度送信"
+    "sendAgain": "もう一度送信",
+    "sendRateLimited": "すでに複数のメッセージを送信しています。しばらくしてからもう一度お試しください。"
   },
   "notFound": {
     "title": "404",
@@ -373,5 +375,22 @@
       "android": "Android",
       "desktop": "デスクトップ"
     }
+  },
+  "chat": {
+    "title": "KhunKao",
+    "subtitle": "Kittipatのアシスタント",
+    "greeting": "こんにちは、KhunKaoです。Kittipatの猫です。彼の経歴、プロジェクト、スキルについて何でも聞いてください。",
+    "placeholder": "質問を入力…",
+    "inputLabel": "ご質問",
+    "send": "送信",
+    "open": "KhunKaoとチャット",
+    "close": "チャットを閉じる",
+    "errors": {
+      "rateLimited": "メッセージが多すぎます。少し待ってから再度お試しください。",
+      "generic": "エラーが発生しました。もう一度お試しください。",
+      "offline": "アシスタントに接続できませんでした。接続を確認して再度お試しください。"
+    },
+    "tooltip": "クリックしてチャット",
+    "hide": "チャットを非表示"
   }
 }

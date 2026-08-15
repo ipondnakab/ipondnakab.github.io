@@ -9,6 +9,7 @@ import FormHookWrapper, {
 } from "@/components/form-hook-wrapper/FormHookWrapper";
 import InputString from "@/components/inputs/InputString";
 import InputTextarea from "@/components/inputs/InputTextarea";
+import { environment } from "@/core/environment";
 import { ContactForm } from "@/interfaces/contact";
 import { trackEvent } from "@/libs/analytics";
 
@@ -26,14 +27,50 @@ const Contact: React.FC<ContactProps> = () => {
   const formRef: React.ForwardedRef<FormHookWrapperRef<ContactForm>> =
     useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  // Kept outside react-hook-form so the value never reaches ContactForm, which
+  // describes what a real visitor submits.
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: ContactForm) => {
+    if (!environment.contactApiUrl) {
+      // Nothing is configured to receive this. Say so rather than showing the
+      // success page for a message that was never sent.
+      trackEvent("contact_submit", { status: "unconfigured" });
+      alert(t("contact.sendError"));
+      return;
+    }
+
     setIsLoading(true);
     trackEvent("contact_submit", { status: "attempt" });
     try {
-      // TODO: Send to API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(environment.contactApiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          content: data.content,
+          // Honeypot — see the hidden field below.
+          website: honeypotRef.current?.value ?? "",
+        }),
+      });
+
+      if (!response.ok) {
+        trackEvent("contact_submit", { status: "error" });
+        alert(
+          response.status === 429
+            ? t("contact.sendRateLimited")
+            : t("contact.sendError"),
+        );
+        return;
+      }
+
       trackEvent("contact_submit", { status: "success" });
+      // The draft is only kept so a half-written message survives a reload;
+      // once it is delivered, leaving it behind just repopulates the form.
+      window.localStorage?.removeItem("form.contact.name");
+      window.localStorage?.removeItem("form.contact.email");
+      window.localStorage?.removeItem("form.contact.content");
       router.push("/contact/success");
     } catch {
       trackEvent("contact_submit", { status: "error" });
@@ -113,6 +150,19 @@ const Contact: React.FC<ContactProps> = () => {
                 label={t("contact.content")}
                 onChange={handleChangeValue("content")}
                 onClear={handleChangeValue("content")}
+              />
+              {/* Honeypot. Hidden from people and from assistive tech, but a
+                  form-filling bot sees an input named "website" and completes
+                  it — which is how the API recognises the submission as spam.
+                  Not display:none, which some bots skip. */}
+              <input
+                ref={honeypotRef}
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute left-[-9999px] h-0 w-0 opacity-0"
               />
               <Button
                 variant="solid"

@@ -41,6 +41,7 @@
   "nav": {
     "home": "首页",
     "resume": "简历",
+    "contact": "联系",
     "mini-project": "项目",
     "planning-poker": "Planning",
     "credit": "鸣谢",
@@ -105,7 +106,8 @@
     "sendError": "发送失败，请稍后重试",
     "successTitle": "完成！",
     "successMessage": "消息发送成功。",
-    "sendAgain": "再次发送"
+    "sendAgain": "再次发送",
+    "sendRateLimited": "您已发送多条消息，请稍后再试。"
   },
   "notFound": {
     "title": "404",
@@ -373,5 +375,22 @@
       "android": "Android",
       "desktop": "桌面设备"
     }
+  },
+  "chat": {
+    "title": "KhunKao",
+    "subtitle": "Kittipat 的助理",
+    "greeting": "你好，我是 KhunKao，Kittipat 的猫。欢迎询问他的工作经历、项目或技能。",
+    "placeholder": "输入你的问题…",
+    "inputLabel": "你的问题",
+    "send": "发送",
+    "open": "与 KhunKao 聊天",
+    "close": "关闭聊天",
+    "errors": {
+      "rateLimited": "消息发送过于频繁，请稍候再试。",
+      "generic": "出现错误，请重试。",
+      "offline": "无法连接助手，请检查网络后重试。"
+    },
+    "tooltip": "点击开始聊天",
+    "hide": "隐藏聊天"
   }
 }

@@ -426,7 +426,7 @@ const MicLinkReceiver: React.FC<MicLinkReceiverProps> = ({ roomId, onEnd }) => {
               {t("micLink.room")}: <code className="font-mono">{roomId}</code>
               {inputs.length > 0 &&
                 ` · ${t("micLink.receiver.connectedCount", {
-                  count: inputs.length,
+                  count: inputs?.length,
                   max: MIC_LINK_MAX_SENDERS,
                 })}`}
             </span>

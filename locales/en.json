@@ -41,8 +41,9 @@
   "nav": {
     "home": "README",
     "resume": "RESUME",
+    "contact": "CONTACT",
     "mini-project": "MINI-PROJECT",
-    "planning-poker": "Planning",
+    "planning-poker": "PLANNING",
     "credit": "CREDIT",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
@@ -105,7 +106,8 @@
     "sendError": "Send message error please try again",
     "successTitle": "DONE!",
     "successMessage": "Message sent successfully.",
-    "sendAgain": "Send Again!"
+    "sendAgain": "Send Again!",
+    "sendRateLimited": "You've sent several messages already. Please try again later."
   },
   "notFound": {
     "title": "404",
@@ -373,5 +375,22 @@
       "android": "Android",
       "desktop": "Desktop"
     }
+  },
+  "chat": {
+    "title": "KhunKao",
+    "subtitle": "Kittipat's assistant",
+    "greeting": "Hi, I'm KhunKao — Kittipat's cat. Ask me anything about his experience, projects or skills.",
+    "placeholder": "Type your question…",
+    "inputLabel": "Your question",
+    "send": "Send",
+    "open": "Chat with KhunKao",
+    "close": "Close chat",
+    "errors": {
+      "rateLimited": "Too many messages. Please wait a moment and try again.",
+      "generic": "Something went wrong. Please try again.",
+      "offline": "Couldn't reach the assistant. Check your connection and try again."
+    },
+    "tooltip": "Click to chat",
+    "hide": "Hide chat"
   }
 }
