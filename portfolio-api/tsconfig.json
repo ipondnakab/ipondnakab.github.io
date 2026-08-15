@@ -2,8 +2,16 @@
   "compilerOptions": {
     "target": "es2022",
     "lib": ["esnext"],
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    // node16 derives the module system from package.json's "type" field. There
+    // isn't one here, so this emits CommonJS — which is what Vercel needs:
+    // it compiles api/*.ts to api/*.js and runs them under plain Node, where
+    // ESM output fails with "Cannot use import statement outside a module".
+    //
+    // Emitting require() also keeps extensionless relative imports
+    // ("../lib/cors") resolvable. Going ESM instead would mean adding "type":
+    // "module" *and* a .js extension to every relative import in the project.
+    "module": "node16",
+    "moduleResolution": "node16",
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,

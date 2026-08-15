@@ -10,7 +10,6 @@ export const ALLOWED_ORIGINS = [
   "https://kittipat.dev",
   "https://www.kittipat.dev",
   "https://ipondnakab.github.io",
-  "http://localhost:3000",
 ];
 
 export const applyCors = (
