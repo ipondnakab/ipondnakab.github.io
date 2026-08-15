@@ -217,7 +217,6 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       </div>
       <BackgroundParticles isPlaying={showAnimation} />
       <ChatWidget />
-      {/* <KhunKao /> */}
     </>
   );
 };

@@ -107,7 +107,17 @@
     "successTitle": "DONE!",
     "successMessage": "Message sent successfully.",
     "sendAgain": "Send Again!",
-    "sendRateLimited": "You've sent several messages already. Please try again later."
+    "sendRateLimited": "You've sent several messages already. Please try again later.",
+    "contentTooLong": "Message is too long (max 2,000 characters)",
+    "intro": "A project, a role, or a question about something on this site — it all reaches me the same way.",
+    "openToTitle": "Happy to talk about",
+    "openToWork": "Freelance and contract work",
+    "openToRoles": "Full-stack engineering roles",
+    "openToQuestions": "Anything you found on this site",
+    "responseNote": "Your message lands on my phone. I read every one.",
+    "orReachMe": "Or find me on",
+    "charactersLeft": "{{count}} characters left",
+    "backHome": "Back to home"
   },
   "notFound": {
     "title": "404",

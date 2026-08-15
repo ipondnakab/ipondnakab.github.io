@@ -107,7 +107,17 @@
     "successTitle": "完成！",
     "successMessage": "消息发送成功。",
     "sendAgain": "再次发送",
-    "sendRateLimited": "您已发送多条消息，请稍后再试。"
+    "sendRateLimited": "您已发送多条消息，请稍后再试。",
+    "contentTooLong": "消息过长（最多 2,000 个字符）",
+    "intro": "无论是项目、职位，还是关于本站的任何问题，都可以通过这里找到我。",
+    "openToTitle": "欢迎聊聊",
+    "openToWork": "自由职业与外包合作",
+    "openToRoles": "全栈工程师职位",
+    "openToQuestions": "本站上的任何内容",
+    "responseNote": "消息会直接发送到我的手机，我会认真阅读每一条。",
+    "orReachMe": "也可以在这些平台找到我",
+    "charactersLeft": "还可输入 {{count}} 个字符",
+    "backHome": "返回首页"
   },
   "notFound": {
     "title": "404",

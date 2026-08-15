@@ -49,7 +49,19 @@ const InputTextarea: React.FC<InputTextareaProps> = <
           <BaseTextarea
             {...field}
             {...props}
-            onClear={() => field.onChange("")}
+            // NextUI infers clearability from the handler being present —
+            // `const isClearable = !!onClear || originalProps.isClearable` — so
+            // wiring onClear unconditionally floats a ✕ in the corner of every
+            // textarea, even an empty one, and no `isClearable={false}` can
+            // override it. Opt in via `isClearable` instead.
+            onClear={
+              props.isClearable
+                ? () => {
+                    field.onChange("");
+                    props.onClear?.();
+                  }
+                : undefined
+            }
             onFocus={() => setFocusInput(true)}
             onBlur={() => setFocusInput(false)}
             autoComplete="off"

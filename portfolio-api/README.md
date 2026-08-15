@@ -2,10 +2,10 @@
 
 The serverless endpoints behind the portfolio site's two interactive features.
 
-| Endpoint            | Serves                                                                                               | Needs                             |
-| ------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `POST /api/chat`    | The KhunKao assistant widget. Injects the résumé as a system prompt and proxies the completion back. | `GROQ_API_KEY`                    |
-| `POST /api/contact` | The contact form at `/contact`. Emails each submission to Kittipat.                                  | `RESEND_API_KEY`, `CONTACT_EMAIL` |
+| Endpoint            | Serves                                                                                               | Needs                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `POST /api/chat`    | The KhunKao assistant widget. Injects the résumé as a system prompt and proxies the completion back. | `GROQ_API_KEY`                              |
+| `POST /api/contact` | The contact form at `/contact`. Sends each submission to Kittipat over LINE.                         | `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_USER_ID` |
 
 Both share `lib/cors.ts` (origin allowlist, method and preflight handling) and
 `lib/rate-limit.ts`, and each keeps its own credentials server-side so nothing
@@ -30,18 +30,35 @@ file about keeping the two in sync.
 Sign up at [console.groq.com](https://console.groq.com) (no credit card) and
 create an API key. The free tier comfortably covers portfolio traffic.
 
-**1b. Get a Resend API key** (for the contact form)
+**1b. Set up a LINE Messaging API channel** (for the contact form)
 
-Sign up at [resend.com](https://resend.com) and create an API key. The free tier
-is 3,000 emails/month, far beyond what a portfolio contact form sends.
+Contact-form submissions arrive as a LINE message. Roughly ten minutes, no
+business verification and no message templates.
 
-**You do not need to verify a domain.** The endpoint sends from Resend's shared
-`onboarding@resend.dev` sender, which will only deliver to the address that owns
-the Resend account — and the only recipient here is Kittipat. So sign up with
-the same address you set as `CONTACT_EMAIL`.
+1. Go to [developers.line.biz](https://developers.line.biz/console/) and log in
+   with your LINE account.
+2. **Create a new provider** (any name — e.g. `kittipat.dev`).
+3. Inside it, **Create a Messaging API channel**. Fill in the name, description,
+   category and region.
+4. Open the channel's **Messaging API** tab → issue a **Channel access token
+   (long-lived)** → `LINE_CHANNEL_ACCESS_TOKEN`.
+5. On the same tab, scan the **QR code** with your phone to add the bot as a
+   friend. A bot cannot push to someone who has not added it.
+6. Open the channel's **Basic settings** tab and copy **Your user ID** (starts
+   with `U`) → `LINE_USER_ID`.
 
-To send from `contact@kittipat.dev` instead, verify the domain in Resend and set
-`CONTACT_FROM` to e.g. `Portfolio <contact@kittipat.dev>`.
+   That field is the LINE user ID of whoever owns the developer account — you —
+   which is exactly the recipient we want. No webhook needed to discover it.
+
+**Optional but recommended:** in the **Messaging API** tab, disable _Auto-reply
+messages_ and _Greeting messages_, otherwise the bot answers your own pushes
+with canned replies.
+
+**Why LINE rather than WhatsApp.** Meta's Cloud API needs a Business account, a
+separate WhatsApp Business number and a pre-approved message template whose
+parameters cannot contain newlines — so a contact message had to be flattened
+and capped at 700 characters. LINE pushes free-form text up to 5,000 characters
+with no approval step, which is why the limit here is a comfortable 2,000.
 
 **2. Create the Vercel project**
 
@@ -60,15 +77,18 @@ build the Next.js site instead of this function.
 
 In Project Settings → Environment Variables:
 
-| Name             | Value                                  | Required                                |
-| ---------------- | -------------------------------------- | --------------------------------------- |
-| `GROQ_API_KEY`   | key from step 1                        | yes — `/api/chat`                       |
-| `RESEND_API_KEY` | key from step 1b                       | yes — `/api/contact`                    |
-| `CONTACT_EMAIL`  | where form submissions are sent        | yes — `/api/contact`                    |
-| `CONTACT_FROM`   | custom sender, needs a verified domain | no — defaults to Resend's shared sender |
+| Name                        | Value                               | Required             |
+| --------------------------- | ----------------------------------- | -------------------- |
+| `GROQ_API_KEY`              | key from step 1                     | yes — `/api/chat`    |
+| `LINE_CHANNEL_ACCESS_TOKEN` | long-lived channel access token     | yes — `/api/contact` |
+| `LINE_USER_ID`              | your LINE user ID (starts with `U`) | yes — `/api/contact` |
+| `CONTACT_RATE_LIMIT`        | submissions per hour per visitor    | no — `3`             |
+
+Leave `CONTACT_RATE_LIMIT` unset in Vercel. It exists so local testing isn't
+throttled after three submissions — see Local development below.
 
 Set them for Production, Preview and Development. Each endpoint only checks its
-own variables, so the chat widget keeps working if the Resend key is missing,
+own variables, so the chat widget keeps working if the LINE ones are missing,
 and vice versa — it returns `500 server_misconfigured` for that endpoint alone.
 
 Deploy. The endpoint is then at `https://<project>.vercel.app/api/chat`.
@@ -118,8 +138,9 @@ cd portfolio-api
 yarn install
 cat > .env.local <<'EOF'
 GROQ_API_KEY=gsk_your_key
-RESEND_API_KEY=re_your_key
-CONTACT_EMAIL=you@example.com
+LINE_CHANNEL_ACCESS_TOKEN=your_long_lived_token
+LINE_USER_ID=U1234567890abcdef...
+CONTACT_RATE_LIMIT=100
 EOF
 yarn dev          # serves /api/chat and /api/contact on :3001
 yarn typecheck    # tsc --noEmit
@@ -175,16 +196,25 @@ first and answer **No** to "link to existing project" — that writes a
 
 ### `/api/contact`
 
-- **Provider:** Resend, 3,000 emails/month on the free tier.
-- **Per visitor:** 3 submissions/hour. Counted _after_ validation, so a typo
-  doesn't burn quota — only genuine send attempts do.
-- **Validation:** name ≤ 100, email ≤ 200, content ≤ 5,000 characters, and the
-  email must parse.
+- **Provider:** LINE Messaging API, pushing to a single user (`LINE_USER_ID`).
+  Free-form text, no templates, no approval step.
+- **Push quota.** LINE Official Account free plans include a monthly push-message
+  allowance that varies by region; a portfolio contact form uses a negligible
+  share of it. Exhausting it returns 429, which this endpoint forwards as a
+  retryable error so the form shows its "try again later" copy.
+- **Per visitor:** 3 submissions/hour by default, overridable with
+  `CONTACT_RATE_LIMIT`. Counted _after_ validation, so a typo doesn't burn quota
+  — only genuine send attempts do. The counter lives in the serverless
+  instance's memory, so restarting `yarn dev` also clears it locally.
+- **Validation:** name ≤ 100, email ≤ 200, content ≤ 2,000 characters, and the
+  email must parse. The content cap comes from LINE's 5,000-character text
+  message and is enforced in the form too, so a visitor is told before
+  submitting rather than losing the end of a long message.
 - **Spam:** a hidden `website` honeypot field. When a bot fills it the endpoint
   logs and returns `200 {ok:true}` without sending — telling a bot it was caught
   just invites a retry with the field left blank.
-- **Header injection:** newlines are stripped from the name before it goes into
-  the subject line.
+- **Formatting:** the submission is sent as JSON in the request body, so
+  newlines survive and nothing needs escaping or flattening.
 
 Both endpoints are best-effort rate limited — see the comment in
 `lib/rate-limit.ts` on why serverless in-memory counting isn't airtight and what

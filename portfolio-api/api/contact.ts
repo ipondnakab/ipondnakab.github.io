@@ -3,23 +3,32 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { clientKey, guardRequest } from "../lib/cors";
 import { createRateLimiter } from "../lib/rate-limit";
 
-const RESEND_ENDPOINT = "https://api.resend.com/emails";
-
-// Resend's shared sender. It requires no DNS setup, but will only deliver to the
-// address that owns the Resend account — which is exactly this use case, since
-// the only recipient is Kittipat himself. To send from contact@kittipat.dev
-// instead, verify the domain in Resend and set CONTACT_FROM.
-const DEFAULT_FROM = "Portfolio <onboarding@resend.dev>";
+const LINE_PUSH_ENDPOINT = "https://api.line.me/v2/bot/message/push";
 
 const MAX_NAME_CHARS = 100;
 const MAX_EMAIL_CHARS = 200;
-const MAX_CONTENT_CHARS = 5_000;
 
-// Far stricter than the chat endpoint: a human sends one message and leaves,
-// so anything beyond a few per hour is a bot or a mistake.
+// A LINE text message holds up to 5,000 characters, and the whole submission
+// travels in one. 2,000 leaves ample headroom for the header lines while still
+// accepting a genuinely long enquiry — unlike the WhatsApp template route this
+// replaced, which capped out at 700.
+const MAX_CONTENT_CHARS = 2_000;
+
+// Far stricter than the chat endpoint: a human sends one message and leaves, so
+// anything beyond a few per hour is a bot or a mistake.
+//
+// Overridable because testing the form naturally means more than three
+// submissions — set CONTACT_RATE_LIMIT=100 in .env.local and leave it unset in
+// Vercel, so production keeps the strict default. A missing, non-numeric or
+// non-positive value falls back to 3 rather than accidentally disabling the
+// limit on a typo.
+const configuredLimit = Number(process.env.CONTACT_RATE_LIMIT);
+const RATE_LIMIT_PER_HOUR =
+  Number.isFinite(configuredLimit) && configuredLimit > 0 ? configuredLimit : 3;
+
 const checkRateLimit = createRateLimiter({
   windowMs: 60 * 60 * 1000,
-  max: 3,
+  max: RATE_LIMIT_PER_HOUR,
 });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,10 +68,16 @@ const isBot = (body: unknown): boolean => {
   return typeof website === "string" && website.trim().length > 0;
 };
 
-// Header values cannot contain newlines — otherwise a crafted name could inject
-// extra headers (Bcc, Reply-To) into the outgoing message.
-const singleLine = (value: string): string =>
-  value.replace(/[\r\n]+/g, " ").trim();
+// LINE accepts newlines in message text, so the submission keeps its shape —
+// no flattening needed, unlike WhatsApp's template parameters.
+const buildMessage = ({ name, email, content }: ContactSubmission): string =>
+  [
+    "📮 New portfolio message",
+    `From: ${name}`,
+    `Email: ${email}`,
+    "",
+    content,
+  ].join("\n");
 
 const handler = async (
   request: VercelRequest,
@@ -70,11 +85,11 @@ const handler = async (
 ): Promise<void> => {
   if (!guardRequest(request, response)) return;
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const recipient = process.env.CONTACT_EMAIL;
-  if (!apiKey || !recipient) {
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  const userId = process.env.LINE_USER_ID;
+  if (!token || !userId) {
     console.error(
-      "Contact endpoint is missing RESEND_API_KEY and/or CONTACT_EMAIL",
+      "Contact endpoint is missing LINE_CHANNEL_ACCESS_TOKEN and/or LINE_USER_ID",
     );
     response.status(500).json({ error: "server_misconfigured" });
     return;
@@ -94,7 +109,7 @@ const handler = async (
     return;
   }
 
-  // Deliberately after validation: the budget exists to cap emails actually
+  // Deliberately after validation: the budget exists to cap messages actually
   // sent, and a rejected payload sends nothing. Counting malformed requests
   // would let three typos lock a real visitor out for an hour.
   const { allowed, retryAfterSeconds } = checkRateLimit(clientKey(request));
@@ -105,36 +120,29 @@ const handler = async (
   }
 
   try {
-    const resendResponse = await fetch(RESEND_ENDPOINT, {
+    const lineResponse = await fetch(LINE_PUSH_ENDPOINT, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.CONTACT_FROM || DEFAULT_FROM,
-        to: [recipient],
-        // Lets Kittipat hit reply in his mail client and answer the visitor
-        // directly, rather than copying the address out of the body.
-        reply_to: submission.email,
-        subject: `Portfolio message from ${singleLine(submission.name)}`,
-        text: [
-          `Name:  ${submission.name}`,
-          `Email: ${submission.email}`,
-          "",
-          submission.content,
-        ].join("\n"),
+        to: userId,
+        messages: [{ type: "text", text: buildMessage(submission) }],
       }),
     });
 
-    if (!resendResponse.ok) {
+    if (!lineResponse.ok) {
       // Log the provider's reason server-side; never forward it to the browser,
       // since provider errors can echo back request details.
       console.error(
-        `Resend request failed (${resendResponse.status}):`,
-        await resendResponse.text(),
+        `LINE push failed (${lineResponse.status}):`,
+        (await lineResponse.text()).slice(0, 800),
       );
-      response.status(502).json({ error: "upstream_error" });
+      // 429 from LINE means the monthly push quota is exhausted — surface it as
+      // a retryable condition rather than a generic failure.
+      const status = lineResponse.status === 429 ? 429 : 502;
+      response.status(status).json({ error: "upstream_error" });
       return;
     }
 

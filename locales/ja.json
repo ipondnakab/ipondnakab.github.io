@@ -107,7 +107,17 @@
     "successTitle": "完了！",
     "successMessage": "メッセージを送信しました。",
     "sendAgain": "もう一度送信",
-    "sendRateLimited": "すでに複数のメッセージを送信しています。しばらくしてからもう一度お試しください。"
+    "sendRateLimited": "すでに複数のメッセージを送信しています。しばらくしてからもう一度お試しください。",
+    "contentTooLong": "メッセージが長すぎます（最大2,000文字）",
+    "intro": "プロジェクト、採用のご相談、このサイトについての質問——どれもここから届きます。",
+    "openToTitle": "お話しできること",
+    "openToWork": "フリーランス・業務委託",
+    "openToRoles": "フルスタックエンジニアの求人",
+    "openToQuestions": "このサイトについて何でも",
+    "responseNote": "メッセージは私のスマートフォンに直接届きます。すべて目を通しています。",
+    "orReachMe": "その他のリンク",
+    "charactersLeft": "残り {{count}} 文字",
+    "backHome": "ホームに戻る"
   },
   "notFound": {
     "title": "404",

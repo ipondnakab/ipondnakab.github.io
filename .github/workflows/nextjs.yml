@@ -75,9 +75,6 @@ jobs:
       # Add your environment variables here
       - name: Create .env file
         run: |
-          echo "NEXT_PUBLIC_LINE_NOTIFY_TOKEN=${{ secrets.NEXT_PUBLIC_LINE_NOTIFY_TOKEN }}" >> .env
-          echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}" >> .env
-          echo "NEXT_PUBLIC_SECRET_KEY=${{ secrets.NEXT_PUBLIC_SECRET_KEY }}" >> .env
           echo "NEXT_PUBLIC_PLANNING_POKER_ADMIN_SECRET=${{ secrets.NEXT_PUBLIC_PLANNING_POKER_ADMIN_SECRET }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> .env
           echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env

@@ -107,7 +107,17 @@
     "successTitle": "Klart!",
     "successMessage": "Meddelandet har skickats.",
     "sendAgain": "Skicka igen",
-    "sendRateLimited": "Du har redan skickat flera meddelanden. Försök igen senare."
+    "sendRateLimited": "Du har redan skickat flera meddelanden. Försök igen senare.",
+    "contentTooLong": "Meddelandet är för långt (max 2 000 tecken)",
+    "intro": "Ett projekt, en tjänst, eller en fråga om något på den här sidan — allt når mig på samma sätt.",
+    "openToTitle": "Gärna prata om",
+    "openToWork": "Frilans- och konsultuppdrag",
+    "openToRoles": "Roller inom fullstackutveckling",
+    "openToQuestions": "Vad som helst du hittat här",
+    "responseNote": "Ditt meddelande hamnar direkt i min telefon. Jag läser alla.",
+    "orReachMe": "Eller hitta mig på",
+    "charactersLeft": "{{count}} tecken kvar",
+    "backHome": "Tillbaka till startsidan"
   },
   "notFound": {
     "title": "404",

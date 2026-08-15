@@ -111,7 +111,7 @@ server.listen(PORT, () => {
   for (const path of Object.keys(ROUTES)) console.log(`  ${path}`);
   console.log(
     `GROQ_API_KEY: ${state("GROQ_API_KEY")}  ` +
-      `RESEND_API_KEY: ${state("RESEND_API_KEY")}  ` +
-      `CONTACT_EMAIL: ${state("CONTACT_EMAIL")}`,
+      `LINE_CHANNEL_ACCESS_TOKEN: ${state("LINE_CHANNEL_ACCESS_TOKEN")}  ` +
+      `LINE_USER_ID: ${state("LINE_USER_ID")}`,
   );
 });
