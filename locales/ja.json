@@ -75,7 +75,8 @@
   },
   "miniProject": {
     "title": "Mini Projects",
-    "subtitle": "スキルと創造性を紹介するミニプロジェクト集です。"
+    "subtitle": "スキルと創造性を紹介するミニプロジェクト集です。",
+    "open": "開く"
   },
   "credit": {
     "title": "Credits & Acknowledgments",

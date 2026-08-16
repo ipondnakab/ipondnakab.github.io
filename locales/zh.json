@@ -75,7 +75,8 @@
   },
   "miniProject": {
     "title": "Mini Projects",
-    "subtitle": "展示我的技能与创意的一系列小项目。"
+    "subtitle": "展示我的技能与创意的一系列小项目。",
+    "open": "打开"
   },
   "credit": {
     "title": "Credits & Acknowledgments",
