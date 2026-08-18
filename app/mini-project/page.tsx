@@ -5,14 +5,12 @@ import { localize } from "@/functions/localize";
 import { trackEvent } from "@/libs/analytics";
 import { Button, Card, Link } from "@nextui-org/react";
 import { clsx } from "clsx";
-import { useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { HiArrowRight } from "react-icons/hi";
 
 const MiniProjectPage = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-  const reduceMotion = useReducedMotion();
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 p-4 sm:p-8">
