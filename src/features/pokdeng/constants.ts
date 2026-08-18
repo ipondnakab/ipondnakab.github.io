@@ -1,4 +1,4 @@
-import { PokdengMultiplierOption } from "@/interfaces/pokdeng";
+import { PokdengMultiplierOption } from "@/features/pokdeng/model/pokdeng";
 
 // localStorage key holding the whole game. Versioned so a future shape change
 // can be detected and discarded instead of crashing on stale data.

@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoRibbon } from "react-icons/io5";
 
-import { formatPokdengCredit } from "@/functions/pokdeng-credit";
+import { formatPokdengCredit } from "@/features/pokdeng/lib/credit";
 
 export interface PokdengHostCardProps {
   hostName: string;

@@ -1,7 +1,11 @@
 "use client";
 
-import { buildGroupAverages } from "@/functions/group-vote-averages";
-import { DeckType, GroupObject, RoundHistoryEntry } from "@/interfaces/poker";
+import { buildGroupAverages } from "@/features/planning-poker/lib/group-vote-averages";
+import {
+  DeckType,
+  GroupObject,
+  RoundHistoryEntry,
+} from "@/features/planning-poker/model/poker";
 import {
   Accordion,
   AccordionItem,

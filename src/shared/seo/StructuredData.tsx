@@ -1,7 +1,7 @@
 import React from "react";
 
-import { SITE_URL } from "@/constants/site";
-import { SOCIALS } from "@/constants/social";
+import { SITE_URL } from "@/shared/config/site";
+import { SOCIALS } from "@/shared/config/social";
 
 // schema.org JSON-LD so search engines resolve "Kittipat Daengdee" to a single
 // Person entity (name, role, socials, education, employer) and can surface a

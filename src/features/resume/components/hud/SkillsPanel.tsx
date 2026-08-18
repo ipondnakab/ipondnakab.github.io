@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { SKILL_CATEGORIES } from "@/constants/resume-skills";
+import { SKILL_CATEGORIES } from "@/features/resume/constants/skills";
 
 import MotionCard from "./MotionCard";
 import { slideIn, staggerParent } from "./motion";

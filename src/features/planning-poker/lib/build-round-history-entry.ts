@@ -1,4 +1,8 @@
-import { RoomData, RoomStats, RoundHistoryEntry } from "@/interfaces/poker";
+import {
+  RoomData,
+  RoomStats,
+  RoundHistoryEntry,
+} from "@/features/planning-poker/model/poker";
 
 // Snapshot a revealed round into a history entry. Pure — the caller is
 // responsible for persisting the result. `group` is normalised to `null` and

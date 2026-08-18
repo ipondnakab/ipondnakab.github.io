@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import ResumeExperience from "@/components/resume/ResumeExperience";
+import ResumeExperience from "@/features/resume/components/ResumeExperience";
 
 const DESCRIPTION =
   "Explore Kittipat Daengdee — a full-stack software engineer — through an interactive 3D résumé: experience, skills and projects in a cinematic hologram.";

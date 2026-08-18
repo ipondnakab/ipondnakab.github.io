@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 
-import PromptPay from "@/components/prompt-pay/PromptPay";
+import PromptPay from "@/features/prompt-pay/components/PromptPay";
 
 export const metadata = {
   title: "PromptPay",

@@ -1,4 +1,4 @@
-import { ProfileAvatarImage } from "@/interfaces/profile";
+import { ProfileAvatarImage } from "@/features/profile/model/profile";
 
 // Cycled through in order, one step per click on the home-page avatar. The
 // first entry is what renders on load.

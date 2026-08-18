@@ -1,7 +1,11 @@
 # CLAUDE.md
 
 Guidance for Claude Code (and other AI assistants) working in this repository.
-See [docs/CODING_GUIDE.md](docs/CODING_GUIDE.md) for copy-paste templates and detailed rules.
+
+- [.specify/memory/constitution.md](.specify/memory/constitution.md) — the rules. When anything here disagrees with it, it wins.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — the layering and why it is shaped that way.
+- [docs/CODING_GUIDE.md](docs/CODING_GUIDE.md) — copy-paste templates and detailed rules.
+- [docs/SPEC_DRIVEN_DEVELOPMENT.md](docs/SPEC_DRIVEN_DEVELOPMENT.md) — the Spec Kit workflow.
 
 ## Project overview
 
@@ -10,11 +14,13 @@ Personal portfolio + playground site for Kittipat Daengdee, deployed as a **stat
 - **Framework:** Next.js 14 (App Router) with `output: "export"` — static HTML only, no server runtime.
 - **Language:** TypeScript (`strict: true`).
 - **UI:** NextUI + Tailwind CSS, `framer-motion`, `next-themes` (default theme `dark`).
-- **Data/realtime:** Firebase Firestore (used by the Planning Poker feature).
-- **3D:** Three.js (`components/threejs/ThreeScene.tsx`).
+- **i18n:** `react-i18next`, five locales (`en`, `th`, `ja`, `sv`, `zh`), bundled not fetched.
+- **Data/realtime:** Firebase Firestore (Planning Poker, Mic Link signalling).
+- **3D:** Three.js + react-three-fiber.
+- **Tests:** Vitest + Testing Library (jsdom).
 - **Package manager:** **yarn** (a `yarn.lock` is committed — never introduce `package-lock.json`).
 
-Because the site is statically exported, there is **no server**: no API routes, no server actions, no server-only secrets at runtime. All data calls (Firebase, axios) run in the browser.
+Because the site is statically exported, there is **no server**: no API routes, no server actions, no server-only secrets at runtime. All data calls run in the browser. Anything needing a real backend lives in the separate `portfolio-api/` Vercel project, reached over `NEXT_PUBLIC_API_BASE_URL`.
 
 ## Commands
 
@@ -22,53 +28,70 @@ Because the site is statically exported, there is **no server**: no API routes, 
 yarn dev              # local dev server (http://localhost:3000)
 yarn build            # production static export -> ./dist
 yarn start            # serve the production build
+yarn test             # vitest run
+yarn test:watch       # vitest in watch mode
+yarn test:coverage    # v8 coverage
+yarn typecheck        # tsc --noEmit
 yarn lint             # eslint over .js/.ts/.tsx
 yarn lint:fix         # eslint --fix
 yarn format           # prettier --write across the repo
-npx tsc --noEmit      # type-check only (no test runner exists)
 ```
 
-There are **no tests** configured. Validate changes with `npx tsc --noEmit` + `yarn lint`, then by running `yarn dev`/`yarn build`.
+**Definition of done** — all four, in order, with real results reported:
+
+```bash
+yarn typecheck && yarn lint && yarn test && yarn build
+```
 
 ## Directory map
 
-| Path          | Purpose                                                                      |
-| ------------- | ---------------------------------------------------------------------------- |
-| `app/`        | App Router routes (`page.tsx`), `layout.tsx`, `providers.tsx`, `globals.css` |
-| `components/` | Reusable components, grouped by feature/domain folder                        |
-| `interfaces/` | Shared TypeScript types & interfaces (the source of truth for data shapes)   |
-| `constants/`  | Static data tables and config (nav menu, projects, social, db names)         |
-| `functions/`  | Small pure client utilities                                                  |
-| `libs/`       | Third-party SDK wrappers (`firebase.ts`)                                     |
-| `core/`       | App-level config (`environment.ts`)                                          |
-| `public/`     | Static assets (`images/`, `models/` for GLTF)                                |
-| `dist/`       | Build output (git-ignored, set by `distDir` in `next.config.js`)             |
+| Path                   | Purpose                                                                 |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `src/app/`             | App Router routes — thin pages, `layout.tsx`, `providers.tsx`           |
+| `src/features/<name>/` | One folder per feature: `components/ lib/ model/ constants index.ts`    |
+| `src/shared/`          | Cross-cutting: `ui/ layouts/ providers/ seo/ lib/ config/ i18n/ types/` |
+| `specs/`               | One folder per feature spec (Spec Kit)                                  |
+| `.specify/`            | Constitution, templates and scripts for the spec workflow               |
+| `docs/`                | Architecture, coding guide, spec-driven workflow                        |
+| `public/`              | Static assets (`images/`, `models/` for GLTF)                           |
+| `portfolio-api/`       | Separate Vercel project — the only place with a server                  |
+| `dist/`                | Build output (git-ignored, set by `distDir` in `next.config.js`)        |
+
+Features today: `planning-poker`, `pokdeng`, `mic-link`, `resume`, `chat`, `contact`, `prompt-pay`, `profile`, `mini-project`, `threejs`.
 
 ## Core conventions (must follow)
 
-- **Imports use the `@/` alias** for repo-local modules (`@/components/...`, `@/interfaces/...`). Relative imports are only for same-folder siblings (e.g. `./PlanningPokerHeader`).
-- **Components are arrow functions typed with `React.FC`**, each with an exported `XxxProps` interface and a `export default`. See the template in [docs/CODING_GUIDE.md](docs/CODING_GUIDE.md).
-- **`"use client"`** goes at the very top of any file using hooks, browser APIs, or event handlers. Pages that only render a client component can stay server components (see `app/planning-poker/page.tsx`).
-- **Types live in `interfaces/`**; static data lives in `constants/`. Don't inline large data tables in components.
+- **Imports use the `@/` alias**, which maps to `./src/`. Relative imports are only for same-folder siblings (`./PlanningPokerHeader`).
+- **Dependency direction is one-way and lint-enforced.** `app/` → `features/` → `shared/`. `shared/` must **never** import `features/` or `app/`; invert with a slot instead (see `DefaultLayout`'s `overlay` prop). A feature's `lib/`, `model/` and `constants` are private — reach other features through `@/features/<name>` or `@/features/<name>/components/<Component>`.
+- **Barrels (`index.ts`) export types, constants and pure helpers — never client components.** Re-exporting a client component puts it in the client-reference manifest of every route that touches the barrel and inflates the bundle. Import components by path.
+- **Components are arrow functions typed with `React.FC`**, each with an exported `XxxProps` interface and a `export default`.
+- **`"use client"`** goes at the very top of any file using hooks, browser APIs, or event handlers. Route pages stay server components that set `metadata` and render one feature component.
+- **Types live in `model/`** (feature) or `src/shared/types/` (cross-cutting). Static data lives in `constants`. Don't inline either in a component.
 - **No `any`** (ESLint error). Prefer explicit interfaces or `unknown`. Prefix intentionally-unused vars/args with `_`.
 - **No stray `console.*`** (ESLint error; only `console.warn`/`console.error` are allowed).
-- **Styling is Tailwind utility classes.** Use the NextUI theme tokens (`primary`, `background`) defined in `tailwind.config.ts` rather than hard-coded hex.
-- **Forms** go through `components/form-hook-wrapper/FormHookWrapper` (React Hook Form) with the `components/inputs/*` field components. Validation is declarative via the `rules` prop (`FieldController`); an optional zod `validationSchema` is supported.
+- **Styling is Tailwind utility classes.** Use the NextUI theme tokens (`primary`, `background`) defined in `tailwind.config.ts` rather than hard-coded hex. Check dark (default) and light.
+- **All user-facing copy goes in every locale** under `src/shared/i18n/locales/`. A missing key is a bug.
+- **Forms** go through `src/shared/ui/form/FormHookWrapper` (React Hook Form) with the `src/shared/ui/inputs/*` field components. Validation is declarative via the `rules` prop.
+
+## Tests
+
+Vitest + Testing Library, jsdom, `globals: false` — import `describe`/`it`/`expect` from `vitest` explicitly. Tests live beside the code as `<name>.test.ts` and import through `@/` like production code.
+
+Pure logic in `lib/` is the priority; that is where the real invariants are. Write the test before the implementation and see it fail first.
 
 ## Formatting & hooks
 
 - Prettier: `printWidth: 80`, 2-space tabs, semicolons, `trailingComma: "all"`, imports auto-organized by `prettier-plugin-organize-imports`.
-- Husky + lint-staged run ESLint `--fix` and Prettier on staged files at commit time. Don't fight the auto-formatter — run `yarn lint:fix && yarn format` before committing.
-- Run `npx tsc --noEmit` and `yarn lint` before considering a change done.
+- Husky + lint-staged run ESLint `--fix` and Prettier on staged files at commit time. Run `yarn lint:fix && yarn format` before committing.
 
 ## Enforced lint rules (errors — the build fails on these)
 
-The conventions above are not just guidance; `.eslintrc.json` enforces them as **errors**:
+`.eslintrc.json` enforces these as **errors**:
 
 - `@typescript-eslint/no-explicit-any` — no `any`.
 - `no-console` — no `console.*` except `console.warn` / `console.error`.
-- `unused-imports/no-unused-imports` + `unused-imports/no-unused-vars` — no unused imports/vars (prefix intentional ones with `_`).
-- `no-restricted-imports` — bans `../` parent-relative imports; use the `@/` alias for anything outside the current folder.
+- `unused-imports/*` — no unused imports/vars (prefix intentional ones with `_`).
+- `no-restricted-imports` — bans `../` parent imports, **and** enforces the layering above via per-folder overrides.
 - `@typescript-eslint/consistent-type-definitions` — object shapes are `interface`, not `type`.
 - `eqeqeq` (smart), `no-var`, `prefer-const`, `no-unneeded-ternary`, `object-shorthand`.
 
@@ -76,17 +99,41 @@ The conventions above are not just guidance; `.eslintrc.json` enforces them as *
 
 ## Environment & secrets
 
-- All runtime config is `NEXT_PUBLIC_*` (firebase, API URL, secret key) and read via `process.env` — these end up in the **client bundle**, so treat them as public. See `libs/firebase.ts` and `core/environment.ts`.
+- All runtime config is `NEXT_PUBLIC_*` and read via `src/shared/config/environment.ts` — these end up in the **client bundle**, so treat them as public.
 - In CI, `.env` is generated from GitHub Actions secrets/vars (see `.github/workflows/nextjs.yml`).
 - **Never** commit real secrets or read/print `.env` contents. There is no server tier to hide secrets in — don't add code that assumes one.
 
+## Bundle size
+
+`yarn build` prints First Load JS per route. Treat it as a user-facing number: if a change grows a route materially, say so and justify it. `package.json` declares `"sideEffects": ["**/*.css"]` — only `globals.css` is side-effectful, and that is what lets webpack tree-shake through the barrels.
+
 ## Feature-specific notes
 
-- **Planning Poker** (`components/planning-poker/`): Firestore-backed. Room state is one doc keyed by the `?room=` query param under `PLANNING_POKER_DB_NAME`; `votes` is a `userId -> PlayerVote` map. Shapes are in `interfaces/poker.ts`. Use `setDoc(..., { merge: true })` for partial updates and `deleteField()` to remove a vote — preserve unrelated keys.
-- **ThreeScene** (`components/threejs/ThreeScene.tsx`): must fully clean up on unmount — `cancelAnimationFrame`, dispose geometries/materials/textures, stop the animation mixer. Follow the existing disposal pattern; don't reintroduce leaks.
+- **Planning Poker** (`src/features/planning-poker/`): Firestore-backed. Room state is one doc keyed by the `?room=` query param under `PLANNING_POKER_DB_NAME`; `votes` is a `userId -> PlayerVote` map. Shapes are in `model/poker.ts`. Use `setDoc(..., { merge: true })` for partial updates and `deleteField()` to remove a vote — preserve unrelated keys.
+- **Mic Link** (`src/features/mic-link/`): WebRTC peer-to-peer audio with Firestore signalling. Close peer connections and release the wake lock on unmount.
+- **Pok Deng** (`src/features/pokdeng/`): the host balance is _derived_ (`pokdengHostCredit`), never stored — that is what keeps the game zero-sum. Covered by `lib/credit.test.ts`.
+- **ThreeScene / resume scene**: must fully clean up on unmount — `cancelAnimationFrame`, dispose geometries/materials/textures, stop the animation mixer. Follow the existing disposal pattern; don't reintroduce leaks.
+
+## Spec-driven development
+
+Features are specified before they are built. See [docs/SPEC_DRIVEN_DEVELOPMENT.md](docs/SPEC_DRIVEN_DEVELOPMENT.md).
+
+```
+/speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.analyze → /speckit.implement
+```
+
+Every plan is checked against [the constitution](.specify/memory/constitution.md). Read it before proposing an approach.
 
 ## Git & PRs
 
 - Conventional, present-tense commit subjects: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`.
 - Keep commits small and focused. Only commit/push when the user asks.
 - Pushing to `master` triggers the GitHub Pages deploy workflow — be deliberate about what lands there.
+
+<!-- SPECIFY:BEGIN active-feature -->
+<!-- Managed by .specify/scripts/bash/update-agent-context.sh. Do not edit by hand. -->
+
+## Active feature context
+
+_No active feature. Run `/speckit.specify` to start one._
+<!-- SPECIFY:END active-feature -->

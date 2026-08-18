@@ -16,7 +16,7 @@ import {
   POKDENG_MAX_BET,
   POKDENG_MIN_BET,
   POKDENG_NAME_MAX_LENGTH,
-} from "@/constants/pokdeng";
+} from "@/features/pokdeng/constants";
 
 export interface PokdengSettingsModalProps {
   isOpen: boolean;

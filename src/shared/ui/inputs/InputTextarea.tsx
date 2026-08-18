@@ -10,7 +10,7 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { FieldController } from "@/interfaces/field-controller";
+import { FieldController } from "@/shared/types/field-controller";
 
 // See components/inputs/InputString: alias collapses NextUI's huge <Textarea>
 // prop union so the spread below stays within TS's complexity budget (TS2590).

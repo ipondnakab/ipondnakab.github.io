@@ -1,4 +1,4 @@
-import { LocalizedText } from "@/interfaces/localized-text";
+import { LocalizedText } from "@/shared/types/localized-text";
 import { IconType } from "react-icons";
 import { GiPokerHand } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";

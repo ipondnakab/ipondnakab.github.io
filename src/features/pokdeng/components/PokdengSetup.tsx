@@ -11,7 +11,7 @@ import {
   POKDENG_MAX_PLAYERS,
   POKDENG_MIN_BET,
   POKDENG_NAME_MAX_LENGTH,
-} from "@/constants/pokdeng";
+} from "@/features/pokdeng/constants";
 
 export interface PokdengSetupProps {
   onStart: (hostName: string, bet: number, playerNames: string[]) => void;

@@ -1,4 +1,4 @@
-import { MicLinkQuality } from "@/interfaces/mic-link";
+import { MicLinkQuality } from "@/features/mic-link/model/mic-link";
 
 export const MIC_LINK_ROOM_PARAM = "room";
 // Presence of this query param is what makes a device the microphone (sender).

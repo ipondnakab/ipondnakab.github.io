@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaPlayCircle, FaStopCircle } from "react-icons/fa";
 
-import { trackEvent } from "@/libs/analytics";
+import { trackEvent } from "@/shared/lib/analytics";
 
 import SwitchAutoLabel from "./SwitchAutoLabel";
 

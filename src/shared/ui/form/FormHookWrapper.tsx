@@ -10,7 +10,7 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 
-import { preventFormSubmit } from "@/functions/prevent-form-submit";
+import { preventFormSubmit } from "@/shared/lib/prevent-form-submit";
 
 import TriggerFormInitially from "./TriggerFormInitially";
 

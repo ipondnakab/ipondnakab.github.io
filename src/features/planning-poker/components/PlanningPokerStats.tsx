@@ -1,7 +1,7 @@
 "use client";
 
-import { PLANNING_POKER_ADMIN_PARAM } from "@/constants/planning-poker";
-import { RoomData, RoomStats } from "@/interfaces/poker";
+import { PLANNING_POKER_ADMIN_PARAM } from "@/features/planning-poker/constants";
+import { RoomData, RoomStats } from "@/features/planning-poker/model/poker";
 import { Card, Chip } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";

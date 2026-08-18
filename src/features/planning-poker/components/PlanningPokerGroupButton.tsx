@@ -1,5 +1,5 @@
-import { buildGroupAverage } from "@/functions/group-vote-averages";
-import { GroupObject, RoomData } from "@/interfaces/poker";
+import { buildGroupAverage } from "@/features/planning-poker/lib/group-vote-averages";
+import { GroupObject, RoomData } from "@/features/planning-poker/model/poker";
 import { Button, cn } from "@nextui-org/react";
 
 export interface PlanningPokerGroupButtonProps {

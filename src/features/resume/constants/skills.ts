@@ -1,4 +1,4 @@
-import { SkillCategory } from "@/interfaces/resume";
+import { SkillCategory } from "@/features/resume/model/resume";
 
 // Every skill below is drawn from the existing résumé data (the readme skill
 // cards in components/readme/* and the technologies named across

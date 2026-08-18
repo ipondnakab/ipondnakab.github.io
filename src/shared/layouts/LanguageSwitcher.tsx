@@ -1,7 +1,7 @@
 "use client";
 
-import { LANGUAGE_OPTIONS } from "@/constants/languages";
-import { trackEvent } from "@/libs/analytics";
+import { LANGUAGE_OPTIONS } from "@/shared/i18n/languages";
+import { trackEvent } from "@/shared/lib/analytics";
 import {
   Button,
   Dropdown,

@@ -18,11 +18,10 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import ChatWidget from "@/components/chat/ChatWidget";
-import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
-import { NAV_MENUS } from "@/constants/nav-menu";
-import { SOCIALS } from "@/constants/social";
-import { trackEvent } from "@/libs/analytics";
+import { NAV_MENUS } from "@/shared/config/nav-menu";
+import { SOCIALS } from "@/shared/config/social";
+import ThemeSwitcher from "@/shared/layouts/ThemeSwitcher";
+import { trackEvent } from "@/shared/lib/analytics";
 
 import { HiDotsHorizontal } from "react-icons/hi";
 import AnimationSwitcher from "./AnimationSwitcher";
@@ -32,9 +31,15 @@ import LanguageSwitcher from "./LanguageSwitcher";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;
+  /**
+   * Floating widgets rendered above the page (e.g. the chat launcher). Passed
+   * in by `app/layout.tsx` rather than imported here: `shared/` must not depend
+   * on `features/`, or the app shell would pull every feature into its bundle.
+   */
+  overlay?: React.ReactNode;
 }
 
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, overlay }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showAnimation, setShowAnimation] = React.useState(true);
   const pathname = usePathname();
@@ -216,7 +221,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         <div className="z-20">{children}</div>
       </div>
       <BackgroundParticles isPlaying={showAnimation} />
-      <ChatWidget />
+      {overlay}
     </>
   );
 };

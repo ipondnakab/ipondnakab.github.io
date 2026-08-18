@@ -1,4 +1,4 @@
-import { SupportedLanguage } from "@/i18n/config";
+import { SupportedLanguage } from "@/shared/i18n/config";
 
 interface LanguageOption {
   code: SupportedLanguage;

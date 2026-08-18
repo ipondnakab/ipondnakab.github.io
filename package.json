@@ -2,10 +2,17 @@
   "name": "ipondnakab",
   "version": "3.0.0",
   "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
     "format": "prettier --write '**/*.{js,ts,tsx,css,md,json}'",
@@ -42,6 +49,10 @@
     "@types/react-dom": "^18"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.5",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^18",
@@ -49,6 +60,7 @@
     "@types/three": "^0.182.0",
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
+    "@vitejs/plugin-react": "^6.0.5",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
@@ -56,12 +68,14 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-unused-imports": "^4.4.1",
     "husky": "^8.0.0",
+    "jsdom": "^26",
     "lint-staged": "^15.2.0",
     "postcss": "^8",
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   },
   "husky": {
     "hooks": {

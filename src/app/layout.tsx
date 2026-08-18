@@ -3,14 +3,15 @@ import "@/app/globals.css";
 import type { Metadata } from "next";
 
 import Providers from "@/app/providers";
-import DefaultLayout from "@/components/layouts/DefaultLayout";
-import StructuredData from "@/components/seo/StructuredData";
+import ChatWidget from "@/features/chat/components/ChatWidget";
+import DefaultLayout from "@/shared/layouts/DefaultLayout";
+import StructuredData from "@/shared/seo/StructuredData";
 
 export interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-import { SITE_URL } from "@/constants/site";
+import { SITE_URL } from "@/shared/config/site";
 const SITE_TITLE = "Kittipat Daengdee — Full-Stack Software Engineer";
 const SITE_DESCRIPTION =
   "Kittipat Daengdee (ipondnakab) is a full-stack software engineer specializing in React, Next.js, TypeScript, Node.js and Spring Boot. Explore the résumé, projects and experiments.";
@@ -88,7 +89,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       <body suppressHydrationWarning>
         <StructuredData />
         <Providers>
-          <DefaultLayout>{children}</DefaultLayout>
+          <DefaultLayout overlay={<ChatWidget />}>{children}</DefaultLayout>
         </Providers>
       </body>
     </html>

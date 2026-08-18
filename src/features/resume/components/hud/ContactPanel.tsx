@@ -5,10 +5,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiOutlineMail } from "react-icons/hi";
 
-import { SOCIALS } from "@/constants/social";
+import { SOCIALS } from "@/shared/config/social";
 
-import { environment } from "@/core/environment";
-import { trackEvent } from "@/libs/analytics";
+import { environment } from "@/shared/config/environment";
+import { trackEvent } from "@/shared/lib/analytics";
 import MotionCard from "./MotionCard";
 import { slideIn } from "./motion";
 

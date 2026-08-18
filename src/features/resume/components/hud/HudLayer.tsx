@@ -3,7 +3,7 @@
 import { AnimatePresence } from "framer-motion";
 import React from "react";
 
-import { ResumeChapterId } from "@/interfaces/resume";
+import { ResumeChapterId } from "@/features/resume/model/resume";
 
 import AboutPanel from "./AboutPanel";
 import ContactPanel from "./ContactPanel";

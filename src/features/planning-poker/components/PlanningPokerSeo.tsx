@@ -1,7 +1,7 @@
 import React from "react";
 import { HiChevronDown } from "react-icons/hi";
 
-import { SITE_URL } from "@/constants/site";
+import { SITE_URL } from "@/shared/config/site";
 
 // Server-rendered, crawlable content + structured data for the Planning Poker
 // page. The interactive tool above it is a client component that renders almost

@@ -6,8 +6,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
-import { ResumeChapter } from "@/interfaces/resume";
-import { trackEvent } from "@/libs/analytics";
+import { ResumeChapter } from "@/features/resume/model/resume";
+import { trackEvent } from "@/shared/lib/analytics";
 
 export interface ChapterNavProps {
   chapters: ResumeChapter[];

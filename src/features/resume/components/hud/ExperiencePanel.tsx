@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { WORK_EXPERIENCES } from "@/constants/work-experiences";
-import { localize } from "@/functions/localize";
+import { WORK_EXPERIENCES } from "@/features/profile";
+import { localize } from "@/shared/lib/localize";
 
 import MotionCard from "./MotionCard";
 import { slideIn, staggerParent } from "./motion";

@@ -169,3 +169,40 @@ Corporate website + OKR platform
 ## ⚡ Fun Fact
 
 I build things, break things, and rebuild them better 🚀
+
+---
+
+## 🛠️ Development
+
+This repo is the source of [ipondnakab.github.io](https://ipondnakab.github.io) —
+a Next.js 14 App Router site deployed to GitHub Pages as a **static export**.
+
+```bash
+yarn install
+yarn dev          # http://localhost:3000
+
+yarn typecheck    # tsc --noEmit
+yarn lint         # eslint
+yarn test         # vitest
+yarn build        # static export -> ./dist
+```
+
+Code is organised by feature:
+
+```
+src/
+├── app/          # routes — thin pages
+├── features/     # one folder per feature: components/ lib/ model/ constants
+└── shared/       # ui, layouts, providers, lib, config, i18n, types
+```
+
+Dependencies point one way — `app/` → `features/` → `shared/` — and ESLint
+enforces it. See:
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — the layering and why
+- [docs/CODING_GUIDE.md](docs/CODING_GUIDE.md) — templates and detailed rules
+- [docs/SPEC_DRIVEN_DEVELOPMENT.md](docs/SPEC_DRIVEN_DEVELOPMENT.md) — the Spec Kit workflow
+- [.specify/memory/constitution.md](.specify/memory/constitution.md) — the non-negotiables
+
+Anything needing a real backend lives in [`portfolio-api/`](portfolio-api/), a
+separate Vercel project — the static export has no server.

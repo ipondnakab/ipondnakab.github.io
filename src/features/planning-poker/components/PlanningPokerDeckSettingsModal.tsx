@@ -1,13 +1,13 @@
 "use client";
 
-import { PLANNING_POKER_MAX_GROUPS_LENGTH } from "@/constants/planning-poker";
+import { PLANNING_POKER_MAX_GROUPS_LENGTH } from "@/features/planning-poker/constants";
 import {
   DECKS,
   DEFAULT_GROUP_COLOR,
   DeckType,
   GROUP_COLOR_OPTIONS,
   GroupObject,
-} from "@/interfaces/poker";
+} from "@/features/planning-poker/model/poker";
 import {
   Button,
   Checkbox,

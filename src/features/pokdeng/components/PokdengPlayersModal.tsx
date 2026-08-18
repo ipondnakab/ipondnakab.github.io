@@ -17,9 +17,9 @@ import { IoAdd, IoTrashOutline } from "react-icons/io5";
 import {
   POKDENG_MAX_PLAYERS,
   POKDENG_NAME_MAX_LENGTH,
-} from "@/constants/pokdeng";
-import { formatPokdengCredit } from "@/functions/pokdeng-credit";
-import { PokdengPlayer } from "@/interfaces/pokdeng";
+} from "@/features/pokdeng/constants";
+import { formatPokdengCredit } from "@/features/pokdeng/lib/credit";
+import { PokdengPlayer } from "@/features/pokdeng/model/pokdeng";
 
 export interface PokdengPlayersModalProps {
   isOpen: boolean;

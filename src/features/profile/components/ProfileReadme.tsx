@@ -5,17 +5,17 @@ import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import CodingLanguages from "@/components/readme/CodingLanguages";
-import Educations from "@/components/readme/Educations";
-import Frameworks from "@/components/readme/Frameworks";
-import OtherSkills from "@/components/readme/OtherSkills";
-import OutsourceProjects from "@/components/readme/OutsourceProjects";
-import ProfileAvatar from "@/components/readme/ProfileAvatar";
-import WorkExperiences from "@/components/readme/WorkExperiences";
+import CodingLanguages from "@/features/profile/components/CodingLanguages";
+import Educations from "@/features/profile/components/Educations";
+import Frameworks from "@/features/profile/components/Frameworks";
+import OtherSkills from "@/features/profile/components/OtherSkills";
+import OutsourceProjects from "@/features/profile/components/OutsourceProjects";
+import ProfileAvatar from "@/features/profile/components/ProfileAvatar";
+import WorkExperiences from "@/features/profile/components/WorkExperiences";
 
-export interface HomeProps {}
+export interface ProfileReadmeProps {}
 
-const Home: React.FC<HomeProps> = () => {
+const ProfileReadme: React.FC<ProfileReadmeProps> = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col p-2 gap-4 sm:gap-8 sm:p-8">
@@ -46,4 +46,4 @@ const Home: React.FC<HomeProps> = () => {
   );
 };
 
-export default Home;
+export default ProfileReadme;

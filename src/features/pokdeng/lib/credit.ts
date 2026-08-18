@@ -1,4 +1,4 @@
-import { POKDENG_HISTORY_LIMIT } from "@/constants/pokdeng";
+import { POKDENG_HISTORY_LIMIT } from "@/features/pokdeng/constants";
 import {
   PokdengGame,
   PokdengOutcome,
@@ -7,7 +7,7 @@ import {
   PokdengPlayerStatus,
   PokdengTurn,
   PokdengTurnResult,
-} from "@/interfaces/pokdeng";
+} from "@/features/pokdeng/model/pokdeng";
 
 // Pure credit math for the Pok Deng tracker. Nothing here touches storage or
 // React — the caller applies the returned game and persists it.

@@ -1,4 +1,4 @@
-import { Menu } from "@/interfaces/menu";
+import { Menu } from "@/shared/types/menu";
 
 export const NAV_MENUS: Menu[] = [
   {

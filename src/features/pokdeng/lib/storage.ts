@@ -1,5 +1,5 @@
-import { POKDENG_STORAGE_KEY } from "@/constants/pokdeng";
-import { PokdengGame } from "@/interfaces/pokdeng";
+import { POKDENG_STORAGE_KEY } from "@/features/pokdeng/constants";
+import { PokdengGame } from "@/features/pokdeng/model/pokdeng";
 
 // The site is a static export with no server, so the tracker's whole state
 // lives in localStorage on the host's device. Every helper here is safe to call

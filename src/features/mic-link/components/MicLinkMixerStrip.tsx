@@ -5,8 +5,11 @@ import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { MIC_LINK_MAX_GAIN, MIC_LINK_MIN_GAIN } from "@/constants/mic-link";
-import { MicLinkStatus } from "@/interfaces/mic-link";
+import {
+  MIC_LINK_MAX_GAIN,
+  MIC_LINK_MIN_GAIN,
+} from "@/features/mic-link/constants";
+import { MicLinkStatus } from "@/features/mic-link/model/mic-link";
 import MicLinkLevelMeter from "./MicLinkLevelMeter";
 import MicLinkStatusChip from "./MicLinkStatusChip";
 

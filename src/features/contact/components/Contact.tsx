@@ -10,16 +10,16 @@ import { HiOutlineMail, HiOutlineUser } from "react-icons/hi";
 import { IoChatbubbleEllipsesOutline, IoSend } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 
+import { ContactForm } from "@/features/contact/model/contact";
+import ProfileAvatar from "@/features/profile/components/ProfileAvatar";
+import { environment } from "@/shared/config/environment";
+import { SOCIALS } from "@/shared/config/social";
+import { trackEvent } from "@/shared/lib/analytics";
 import FormHookWrapper, {
   FormHookWrapperRef,
-} from "@/components/form-hook-wrapper/FormHookWrapper";
-import InputString from "@/components/inputs/InputString";
-import InputTextarea from "@/components/inputs/InputTextarea";
-import ProfileAvatar from "@/components/readme/ProfileAvatar";
-import { SOCIALS } from "@/constants/social";
-import { environment } from "@/core/environment";
-import { ContactForm } from "@/interfaces/contact";
-import { trackEvent } from "@/libs/analytics";
+} from "@/shared/ui/form/FormHookWrapper";
+import InputString from "@/shared/ui/inputs/InputString";
+import InputTextarea from "@/shared/ui/inputs/InputTextarea";
 
 export interface ContactProps {}
 

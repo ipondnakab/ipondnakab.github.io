@@ -13,21 +13,21 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-import { MIC_LINK_DB_NAME } from "@/constants/database-name";
 import {
   MIC_LINK_ICE_SERVERS,
   MIC_LINK_LOW_LATENCY_PTIME_MS,
   MIC_LINK_MAX_BITRATE_KBPS,
   MIC_LINK_MAX_SENDERS,
-} from "@/constants/mic-link";
+} from "@/features/mic-link/constants";
 import {
   MicLinkCandidate,
   MicLinkConnectionInfo,
   MicLinkQuality,
   MicLinkSenderDoc,
   MicLinkStatus,
-} from "@/interfaces/mic-link";
-import { db } from "@/libs/firebase";
+} from "@/features/mic-link/model/mic-link";
+import { MIC_LINK_DB_NAME } from "@/shared/config/database-name";
+import { db } from "@/shared/lib/firebase";
 
 // WebRTC signalling over Firestore.
 //

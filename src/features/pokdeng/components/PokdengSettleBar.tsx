@@ -5,8 +5,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoCheckmarkDone, IoCloseOutline } from "react-icons/io5";
 
-import { formatPokdengCredit } from "@/functions/pokdeng-credit";
-import { PokdengOutcome } from "@/interfaces/pokdeng";
+import { formatPokdengCredit } from "@/features/pokdeng/lib/credit";
+import { PokdengOutcome } from "@/features/pokdeng/model/pokdeng";
 
 export interface PokdengSettleBarProps {
   pickCount: number;

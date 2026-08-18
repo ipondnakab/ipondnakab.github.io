@@ -5,9 +5,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoLinkSharp } from "react-icons/io5";
 
-import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
-import { localize } from "@/functions/localize";
-import { trackEvent } from "@/libs/analytics";
+import { OUTSOURCE_PROJECTS } from "@/features/profile/constants/outsource-projects";
+import { trackEvent } from "@/shared/lib/analytics";
+import { localize } from "@/shared/lib/localize";
 
 export interface OutsourceProjectsProps {}
 

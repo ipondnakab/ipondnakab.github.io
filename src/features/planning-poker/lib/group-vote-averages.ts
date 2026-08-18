@@ -1,4 +1,7 @@
-import { PlayerVotes, RoundHistoryVote } from "@/interfaces/poker";
+import {
+  PlayerVotes,
+  RoundHistoryVote,
+} from "@/features/planning-poker/model/poker";
 
 // One group's slice of a completed round.
 export interface GroupAverage {

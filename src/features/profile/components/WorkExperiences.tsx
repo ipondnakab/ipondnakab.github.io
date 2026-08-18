@@ -5,8 +5,8 @@ import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { WORK_EXPERIENCES } from "@/constants/work-experiences";
-import { localize } from "@/functions/localize";
+import { WORK_EXPERIENCES } from "@/features/profile/constants/work-experiences";
+import { localize } from "@/shared/lib/localize";
 
 export interface WorkExperiencesProps {}
 

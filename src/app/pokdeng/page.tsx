@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import PokdengCredit from "@/components/pokdeng/PokdengCredit";
+import PokdengCredit from "@/features/pokdeng/components/PokdengCredit";
 
 const TITLE = "Pok Deng Credit Tracker — Host vs Players Scoreboard";
 const DESCRIPTION =

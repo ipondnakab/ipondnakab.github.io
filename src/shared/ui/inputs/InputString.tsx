@@ -10,7 +10,7 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { FieldController } from "@/interfaces/field-controller";
+import { FieldController } from "@/shared/types/field-controller";
 
 // NextUI's <Input> prop type is a very large union; spreading into the JSX
 // element exceeds TypeScript's complexity budget (TS2590) now that the 3D stack

@@ -5,7 +5,7 @@ import gsap from "gsap";
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-import { RESUME_CHAPTERS } from "@/constants/resume-chapters";
+import { RESUME_CHAPTERS } from "@/features/resume/constants/chapters";
 
 // Light intensity eased alongside the camera and read by the key light.
 export interface SceneMood {

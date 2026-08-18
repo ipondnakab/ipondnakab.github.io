@@ -5,7 +5,7 @@ import {
 } from "react-icons/ti";
 import { VscGithub } from "react-icons/vsc";
 
-import { Social } from "@/interfaces/social";
+import { Social } from "@/shared/types/social";
 
 export const SOCIALS: Social[] = [
   {

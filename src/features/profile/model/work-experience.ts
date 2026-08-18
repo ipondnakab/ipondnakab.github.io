@@ -1,4 +1,4 @@
-import { LocalizedText } from "@/interfaces/localized-text";
+import { LocalizedText } from "@/shared/types/localized-text";
 
 export interface WorkExperience {
   urlImage: string;

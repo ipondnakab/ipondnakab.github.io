@@ -1,7 +1,7 @@
 "use client";
 
-import { buildGroupAverage } from "@/functions/group-vote-averages";
-import { RoomData, RoomStats } from "@/interfaces/poker";
+import { buildGroupAverage } from "@/features/planning-poker/lib/group-vote-averages";
+import { RoomData, RoomStats } from "@/features/planning-poker/model/poker";
 import {
   Button,
   Dropdown,

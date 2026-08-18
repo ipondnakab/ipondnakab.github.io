@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import {
   RESUME_CHAPTERS,
   RESUME_CHAPTER_COUNT,
-} from "@/constants/resume-chapters";
+} from "@/features/resume/constants/chapters";
 
 import { useTheme } from "next-themes";
 import ChapterNav from "./hud/ChapterNav";

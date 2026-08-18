@@ -13,10 +13,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoClose, IoSend } from "react-icons/io5";
 
-import { environment } from "@/core/environment";
-import { ChatMessage } from "@/interfaces/chat";
-import { trackEvent } from "@/libs/analytics";
-import { saveChatTranscript } from "@/libs/chat-history";
+import { saveChatTranscript } from "@/features/chat/lib/chat-history";
+import { ChatMessage } from "@/features/chat/model/chat";
+import { environment } from "@/shared/config/environment";
+import { trackEvent } from "@/shared/lib/analytics";
 import { cn } from "@nextui-org/theme";
 
 export interface ChatWidgetProps {

@@ -1,4 +1,4 @@
-import { ProjectExperience } from "@/interfaces/work-experience";
+import { ProjectExperience } from "@/features/profile/model/work-experience";
 export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
     title: "Speechful (speechful.ai)",

@@ -1,4 +1,4 @@
-import { ResumeChapter } from "@/interfaces/resume";
+import { ResumeChapter } from "@/features/resume/model/resume";
 
 // Accent/effect colours follow the site's theme `primary` — HUD uses the
 // `primary` Tailwind token and the backdrop glow uses `hsl(var(--nextui-primary))`

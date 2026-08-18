@@ -11,14 +11,12 @@ import {
 } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { PLANNING_POKER_DB_NAME } from "@/constants/database-name";
 import {
   PLANNING_POKER_ADMIN_PARAM,
   PLANNING_POKER_HISTORY_LIMIT,
   PLANNING_POKER_NOTE_MAX_LENGTH,
-} from "@/constants/planning-poker";
-import { environment } from "@/core/environment";
-import { buildRoundHistoryEntry } from "@/functions/build-round-history-entry";
+} from "@/features/planning-poker/constants";
+import { buildRoundHistoryEntry } from "@/features/planning-poker/lib/build-round-history-entry";
 import {
   DECKS,
   DeckType,
@@ -26,9 +24,11 @@ import {
   PlayerVotes,
   RoomData,
   RoomStats,
-} from "@/interfaces/poker";
-import { trackEvent } from "@/libs/analytics";
-import { db } from "@/libs/firebase";
+} from "@/features/planning-poker/model/poker";
+import { PLANNING_POKER_DB_NAME } from "@/shared/config/database-name";
+import { environment } from "@/shared/config/environment";
+import { trackEvent } from "@/shared/lib/analytics";
+import { db } from "@/shared/lib/firebase";
 import PlanningPokerCardSelection from "./PlanningPokerCardSelection";
 import PlanningPokerConfirmKickModal from "./PlanningPokerConfirmKickModal";
 import PlanningPokerConfirmResetModal from "./PlanningPokerConfirmResetModal";

@@ -4,7 +4,7 @@ import { Chip } from "@nextui-org/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { MicLinkStatus } from "@/interfaces/mic-link";
+import { MicLinkStatus } from "@/features/mic-link/model/mic-link";
 
 type ChipColor = "default" | "primary" | "success" | "warning" | "danger";
 

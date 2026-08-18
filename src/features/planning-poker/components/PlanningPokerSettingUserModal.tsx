@@ -1,6 +1,6 @@
 "use client";
 
-import { RoomData } from "@/interfaces/poker";
+import { RoomData } from "@/features/planning-poker/model/poker";
 import {
   Button,
   Chip,

@@ -7,7 +7,7 @@ import QRCode from "qrcode";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { trackEvent } from "@/libs/analytics";
+import { trackEvent } from "@/shared/lib/analytics";
 
 const PromptPay: React.FC = () => {
   const { t } = useTranslation();

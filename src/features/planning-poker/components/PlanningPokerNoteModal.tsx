@@ -1,6 +1,6 @@
 "use client";
 
-import { PLANNING_POKER_NOTE_MAX_LENGTH } from "@/constants/planning-poker";
+import { PLANNING_POKER_NOTE_MAX_LENGTH } from "@/features/planning-poker/constants";
 import {
   Button,
   Input,

@@ -8,7 +8,7 @@ import {
   POKDENG_DEFAULT_MULTIPLIER,
   POKDENG_MAX_PLAYERS,
   POKDENG_NAME_MAX_LENGTH,
-} from "@/constants/pokdeng";
+} from "@/features/pokdeng/constants";
 import {
   createPokdengGame,
   createPokdengPlayer,
@@ -19,19 +19,19 @@ import {
   setPokdengPlayerStatus,
   settlePokdengTurn,
   undoPokdengTurn,
-} from "@/functions/pokdeng-credit";
+} from "@/features/pokdeng/lib/credit";
 import {
   clearPokdengGame,
   loadPokdengGame,
   savePokdengGame,
-} from "@/functions/pokdeng-storage";
+} from "@/features/pokdeng/lib/storage";
 import {
   PokdengGame,
   PokdengOutcome,
   PokdengPicks,
   PokdengPlayerStatus,
-} from "@/interfaces/pokdeng";
-import { trackEvent } from "@/libs/analytics";
+} from "@/features/pokdeng/model/pokdeng";
+import { trackEvent } from "@/shared/lib/analytics";
 import PokdengHeader from "./PokdengHeader";
 import PokdengHistoryModal from "./PokdengHistoryModal";
 import PokdengHostCard from "./PokdengHostCard";

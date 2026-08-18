@@ -8,7 +8,7 @@ import i18n, {
   LANGUAGE_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
   SupportedLanguage,
-} from "@/i18n/config";
+} from "@/shared/i18n/config";
 
 export interface I18nProviderProps {
   children: React.ReactNode;

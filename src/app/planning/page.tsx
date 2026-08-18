@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import PlanningPoker from "@/components/planning-poker/PlanningPoker";
-import PlanningPokerSeo from "@/components/planning-poker/PlanningPokerSeo";
-import PlanningPokerSeoGate from "@/components/planning-poker/PlanningPokerSeoGate";
+import PlanningPoker from "@/features/planning-poker/components/PlanningPoker";
+import PlanningPokerSeo from "@/features/planning-poker/components/PlanningPokerSeo";
+import PlanningPokerSeoGate from "@/features/planning-poker/components/PlanningPokerSeoGate";
 
 const TITLE =
   "Free Online Planning Point Estimation — Scrum estimation point for Agile Teams";

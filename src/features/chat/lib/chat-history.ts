@@ -1,8 +1,8 @@
 import { doc, setDoc } from "firebase/firestore";
 
-import { KHUNKAO_CHAT_DB_NAME } from "@/constants/database-name";
-import { ChatMessage, ChatTranscript } from "@/interfaces/chat";
-import { db } from "@/libs/firebase";
+import { ChatMessage, ChatTranscript } from "@/features/chat/model/chat";
+import { KHUNKAO_CHAT_DB_NAME } from "@/shared/config/database-name";
+import { db } from "@/shared/lib/firebase";
 
 // Records KhunKao conversations so Kittipat can see what visitors actually ask.
 //

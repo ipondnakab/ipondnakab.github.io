@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import MicLink from "@/components/mic-link/MicLink";
+import MicLink from "@/features/mic-link/components/MicLink";
 
 const TITLE =
   "Mic Link — Use Your Phone as a Wireless Microphone in the Browser";

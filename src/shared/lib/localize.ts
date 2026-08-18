@@ -1,4 +1,4 @@
-import { LocalizedText } from "@/interfaces/localized-text";
+import { LocalizedText } from "@/shared/types/localized-text";
 
 // Resolve a LocalizedText to the active language, falling back to English when
 // that language has no translation for the entry.

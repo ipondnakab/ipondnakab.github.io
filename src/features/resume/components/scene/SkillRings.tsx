@@ -5,13 +5,13 @@ import { useFrame } from "@react-three/fiber";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-import { RESUME_CHAPTER_COUNT } from "@/constants/resume-chapters";
+import { RESUME_CHAPTER_COUNT } from "@/features/resume/constants/chapters";
 import {
   FALLBACK_SKILL_ICON,
   SKILL_ICONS,
-} from "@/constants/resume-skill-icons";
-import { SKILL_CATEGORIES } from "@/constants/resume-skills";
-import { SkillCategory } from "@/interfaces/resume";
+} from "@/features/resume/constants/skill-icons";
+import { SKILL_CATEGORIES } from "@/features/resume/constants/skills";
+import { SkillCategory } from "@/features/resume/model/resume";
 
 // One skill node = its brand icon, tinted to the category colour.
 const SkillNodeIcon: React.FC<{ skill: string; color: string }> = ({

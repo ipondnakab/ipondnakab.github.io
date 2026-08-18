@@ -8,7 +8,7 @@ import { HiOutlineHome } from "react-icons/hi";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdOutlineForum } from "react-icons/md";
 
-const ContactSendSuccess = () => {
+const ContactSuccess = () => {
   const { t } = useTranslation();
   const reduceMotion = useReducedMotion();
 
@@ -70,4 +70,4 @@ const ContactSendSuccess = () => {
   );
 };
 
-export default ContactSendSuccess;
+export default ContactSuccess;

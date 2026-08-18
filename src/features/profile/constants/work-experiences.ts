@@ -1,4 +1,4 @@
-import { WorkExperience } from "@/interfaces/work-experience";
+import { WorkExperience } from "@/features/profile/model/work-experience";
 
 export const WORK_EXPERIENCES: WorkExperience[] = [
   {

@@ -7,7 +7,7 @@ import { MdRestartAlt } from "react-icons/md";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-import { GameState } from "@/interfaces/game-state";
+import { GameState } from "@/features/threejs/model/game-state";
 
 // --- CONFIGURATION ---
 const GRID_SIZE = 30;

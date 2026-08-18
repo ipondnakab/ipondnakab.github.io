@@ -11,17 +11,17 @@ import {
   IoPlayOutline,
 } from "react-icons/io5";
 
-import { POKDENG_MULTIPLIERS } from "@/constants/pokdeng";
+import { POKDENG_MULTIPLIERS } from "@/features/pokdeng/constants";
 import {
   formatPokdengCredit,
   isPokdengPlayerActive,
   pokdengPickAmount,
-} from "@/functions/pokdeng-credit";
+} from "@/features/pokdeng/lib/credit";
 import {
   PokdengOutcome,
   PokdengPlayer,
   PokdengPlayerStatus,
-} from "@/interfaces/pokdeng";
+} from "@/features/pokdeng/model/pokdeng";
 
 export interface PokdengPlayerCardProps {
   player: PokdengPlayer;

@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef } from "react";
 
-import { ensureAnalytics, trackPageView } from "@/libs/analytics";
+import { ensureAnalytics, trackPageView } from "@/shared/lib/analytics";
 
 // Initialises Firebase Analytics and reports client-side route changes as GA4
 // `page_view` events. Renders nothing.

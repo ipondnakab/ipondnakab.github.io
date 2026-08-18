@@ -15,8 +15,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoArrowUndo } from "react-icons/io5";
 
-import { formatPokdengCredit } from "@/functions/pokdeng-credit";
-import { PokdengTurn } from "@/interfaces/pokdeng";
+import { formatPokdengCredit } from "@/features/pokdeng/lib/credit";
+import { PokdengTurn } from "@/features/pokdeng/model/pokdeng";
 
 const SECTION_LABEL_CLASS =
   "text-[11px] font-semibold uppercase tracking-wider text-default-400";

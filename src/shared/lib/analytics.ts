@@ -5,7 +5,7 @@ import {
   logEvent,
 } from "firebase/analytics";
 
-import { app } from "@/libs/firebase";
+import { app } from "@/shared/lib/firebase";
 
 // Firebase Analytics (Google Analytics 4) only runs in the browser, and only
 // when the environment supports it — it is unavailable during SSR/build and in

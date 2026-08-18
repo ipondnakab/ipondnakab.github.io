@@ -28,7 +28,12 @@
     "postcss.config.js"
   ],
   "rules": {
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-console": [
+      "error",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
     "no-var": "error",
     "prefer-const": "error",
     "eqeqeq": ["error", "smart"],
@@ -49,7 +54,12 @@
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-empty-object-type": "off",
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "sort-imports": "off",
     "no-restricted-imports": [
       "error",
@@ -62,5 +72,356 @@
         ]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/shared/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": ["@/features/*", "@/features/**"],
+                "message": "shared/ must not import from features/. Invert the dependency: expose a slot/prop and let app/ pass the feature component in."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/app/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/chat/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/chat/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/contact/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/contact/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/mic-link/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/mic-link/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/mini-project/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/mini-project/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/planning-poker/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/planning-poker/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/pokdeng/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/pokdeng/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/profile/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/profile/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/prompt-pay/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/prompt-pay/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/resume/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/resume/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/threejs/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/threejs/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

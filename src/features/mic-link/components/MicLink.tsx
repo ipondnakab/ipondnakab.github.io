@@ -3,8 +3,11 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
 
-import { MIC_LINK_MIC_PARAM, MIC_LINK_ROOM_PARAM } from "@/constants/mic-link";
-import { createMicLinkRoomId } from "@/functions/mic-link-room-id";
+import {
+  MIC_LINK_MIC_PARAM,
+  MIC_LINK_ROOM_PARAM,
+} from "@/features/mic-link/constants";
+import { createMicLinkRoomId } from "@/features/mic-link/lib/room-id";
 import MicLinkLobby from "./MicLinkLobby";
 import MicLinkReceiver from "./MicLinkReceiver";
 import MicLinkSender from "./MicLinkSender";

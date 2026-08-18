@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { SITE_URL } from "@/constants/site";
+import { SITE_URL } from "@/shared/config/site";
 
 // Higher-priority, more frequently-crawled routes we actively promote.
 const PROMOTED_ROUTES = new Set(["/planning", "/resume"]);

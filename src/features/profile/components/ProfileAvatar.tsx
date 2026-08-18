@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { PROFILE_AVATARS } from "@/constants/profile-avatars";
-import { trackEvent } from "@/libs/analytics";
+import { PROFILE_AVATARS } from "@/features/profile/constants/profile-avatars";
+import { trackEvent } from "@/shared/lib/analytics";
 
 export interface ProfileAvatarProps {
   className?: string;

@@ -18,31 +18,34 @@ import { useTranslation } from "react-i18next";
 import {
   MIC_LINK_AUDIO_CONSTRAINTS,
   MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME,
-} from "@/constants/mic-link";
+} from "@/features/mic-link/constants";
 import {
   AudioLevelMonitor,
   createAudioLevelMonitor,
-} from "@/functions/audio-level";
+} from "@/features/mic-link/lib/audio-level";
 import {
   describePlatform,
   DeviceAudioProfile,
   readCaptureLatencyMs,
-} from "@/functions/device-audio-profile";
+} from "@/features/mic-link/lib/device-audio-profile";
 import {
   createLocalAudioMonitor,
   LocalAudioMonitor,
-} from "@/functions/local-audio-monitor";
+} from "@/features/mic-link/lib/local-audio-monitor";
+import {
+  MicLinkSenderSession,
+  openSenderSession,
+} from "@/features/mic-link/lib/signaling";
+import {
+  MicLinkQuality,
+  MicLinkStatus,
+} from "@/features/mic-link/model/mic-link";
+import { trackEvent } from "@/shared/lib/analytics";
 import {
   isWakeLockSupported,
   requestScreenWakeLock,
   ScreenWakeLock,
-} from "@/functions/screen-wake-lock";
-import { MicLinkQuality, MicLinkStatus } from "@/interfaces/mic-link";
-import { trackEvent } from "@/libs/analytics";
-import {
-  MicLinkSenderSession,
-  openSenderSession,
-} from "@/libs/mic-link-signaling";
+} from "@/shared/lib/screen-wake-lock";
 import MicLinkLevelMeter from "./MicLinkLevelMeter";
 import MicLinkStatusChip from "./MicLinkStatusChip";
 

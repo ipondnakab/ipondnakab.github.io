@@ -16,10 +16,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HiArrowUpRight } from "react-icons/hi2";
 
-import { OUTSOURCE_PROJECTS } from "@/constants/outsource-projects";
-import { localize } from "@/functions/localize";
-import { ProjectExperience } from "@/interfaces/work-experience";
-import { trackEvent } from "@/libs/analytics";
+import { OUTSOURCE_PROJECTS, ProjectExperience } from "@/features/profile";
+import { trackEvent } from "@/shared/lib/analytics";
+import { localize } from "@/shared/lib/localize";
 
 import MotionCard from "./MotionCard";
 import { slideIn, staggerParent } from "./motion";

@@ -1,4 +1,4 @@
-import { RoomData } from "@/interfaces/poker";
+import { RoomData } from "@/features/planning-poker/model/poker";
 import { Button, Card, Divider } from "@nextui-org/react";
 import { IoCafeOutline, IoSettingsOutline } from "react-icons/io5";
 
