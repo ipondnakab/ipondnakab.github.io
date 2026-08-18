@@ -51,7 +51,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # 24 matches .nvmrc and the floor in package.json engines. Node 20
+          # went EOL in April 2026 and is below @testing-library/jest-dom's
+          # ">=22", which broke `yarn install` here.
+          node-version: "24"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
