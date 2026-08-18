@@ -154,6 +154,44 @@
       }
     },
     {
+      "files": ["src/features/chat/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/chat/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["src/features/contact/**"],
       "rules": {
         "no-restricted-imports": [
@@ -177,6 +215,112 @@
               {
                 "group": ["@/app/*", "@/app/**"],
                 "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/contact/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/contact/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/credit/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/credit/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/credit/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/credit/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
               }
             ]
           }
@@ -214,6 +358,44 @@
       }
     },
     {
+      "files": ["src/features/mic-link/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/mic-link/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["src/features/mini-project/**"],
       "rules": {
         "no-restricted-imports": [
@@ -237,6 +419,44 @@
               {
                 "group": ["@/app/*", "@/app/**"],
                 "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/mini-project/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/mini-project/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
               }
             ]
           }
@@ -274,6 +494,44 @@
       }
     },
     {
+      "files": ["src/features/planning-poker/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/planning-poker/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["src/features/pokdeng/**"],
       "rules": {
         "no-restricted-imports": [
@@ -297,6 +555,44 @@
               {
                 "group": ["@/app/*", "@/app/**"],
                 "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/pokdeng/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/pokdeng/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
               }
             ]
           }
@@ -334,6 +630,44 @@
       }
     },
     {
+      "files": ["src/features/profile/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/profile/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["src/features/prompt-pay/**"],
       "rules": {
         "no-restricted-imports": [
@@ -357,6 +691,44 @@
               {
                 "group": ["@/app/*", "@/app/**"],
                 "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/prompt-pay/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/prompt-pay/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
               }
             ]
           }
@@ -394,6 +766,44 @@
       }
     },
     {
+      "files": ["src/features/resume/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/resume/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "files": ["src/features/threejs/**"],
       "rules": {
         "no-restricted-imports": [
@@ -417,6 +827,44 @@
               {
                 "group": ["@/app/*", "@/app/**"],
                 "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/features/threejs/index.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["../*", "../**"],
+                "message": "Use the '@/' path alias for cross-folder imports. Relative imports are only allowed for same-folder siblings (./)."
+              },
+              {
+                "group": [
+                  "@/features/*/lib/**",
+                  "@/features/*/model/**",
+                  "@/features/*/constants",
+                  "@/features/*/constants/**",
+                  "!@/features/threejs/**"
+                ],
+                "message": "Feature internals are private. Import types, constants and helpers via the feature barrel ('@/features/<name>'); only 'components/<Component>' may be imported by path."
+              },
+              {
+                "group": ["@/app/*", "@/app/**"],
+                "message": "Modules must not import from app/. Routes depend on features/ and shared/, never the reverse."
+              },
+              {
+                "group": [
+                  "./components/*",
+                  "./components/**",
+                  "@/features/*/components/**"
+                ],
+                "message": "Constitution VII: a barrel must not re-export a client component. The App Router registers every client component reachable from a barrel in the route's client-reference manifest, so this pulls the whole feature into any route that imports it. Let consumers import the component by path."
               }
             ]
           }

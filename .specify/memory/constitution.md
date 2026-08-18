@@ -88,6 +88,13 @@ yarn build       # next build — the static export
   satisfies them, and MUST be seen failing first.
 - "It compiles" is not evidence. If a gate was skipped, the change is not done
   and the report MUST say so.
+- The gates MUST run in CI, not only on a developer's machine. The Pages
+  workflow MUST run `typecheck`, `lint` and `test` before `build`; a red gate
+  MUST block the deploy.
+
+**Rationale:** a gate that only runs where someone remembers to run it is a
+convention, not a gate. Installing the test tooling in CI and never invoking it
+is the worst of both — the cost without the protection.
 
 ### V. Localised and themed, or it is not shipped
 
@@ -113,14 +120,51 @@ yarn build       # next build — the static export
   route is added to `src/shared/config/nav-menu.ts` and/or the mini-project
   catalogue.
 
+### VII. Bundle cost is measured, not assumed
+
+Every visitor downloads this site's JavaScript before it works. First Load JS is
+therefore a feature, and it is verified rather than hoped for.
+
+- A change that touches a route MUST report that route's First Load JS delta
+  from `yarn build`. "No material change" is a valid report; silence is not.
+- A plan that grows a route MUST state the number and justify it, or set a
+  budget in its Technical Context and stay inside it.
+- A module in `shared/` MUST NOT construct a heavy third-party client at module
+  scope when a lighter consumer would inherit it. Construct it lazily, or split
+  the module so each consumer pays only for what it imports.
+- Barrels MUST NOT re-export client components (see Principle II) — the App
+  Router's client-reference manifest is built from the import graph, so
+  tree-shaking does not undo it.
+- Reach for a plain element over a component library primitive when the
+  behaviour is not needed. An `<a>` is not a worse link than `Link` for an
+  outbound URL.
+
+**Rationale:** these costs are invisible in code review and obvious in the build
+output. Measured twice in this repo: re-exporting two client components from one
+barrel doubled `/contact/success` (190 kB → 394 kB), and importing `trackEvent`
+pulled the whole Firestore SDK into `/credit` (141 kB → 296 kB) because
+`shared/lib/firebase.ts` calls `getFirestore(app)` at module scope.
+
 ---
 
 ## Additional Constraints
 
 - **Package manager is yarn.** `yarn.lock` is committed; never introduce
   `package-lock.json`.
-- **Bundle size is a user-facing feature.** `yarn build` prints First Load JS per
-  route. A plan that grows a route materially MUST say so and justify it.
+- **The Node runtime is pinned in three places and they MUST agree.**
+  `engines.node` in `package.json` declares the supported floor, `.nvmrc` pins
+  the exact version for local work, and the workflow's `node-version` pins the
+  same version for CI. The pin MUST satisfy the floor, and the floor MUST
+  satisfy every dependency's own `engines.node`. Checked by
+  `src/shared/config/runtime.test.ts`. _A Node 20 runner against a dependency
+  requiring >=22 broke the deploy once; that is the failure this prevents._
+- **A new dependency MUST be justified on two axes before it lands:** its
+  licence, read from its own `package.json` and `LICENSE` file rather than
+  assumed, and its First Load JS cost on the routes that import it. Record both
+  in the plan. Anything that is not an OSI licence MUST be called out
+  explicitly, not absorbed silently. _GSAP ships under a proprietary no-charge
+  licence while sitting among MIT dependencies, and `@tsparticles/react`
+  declares no licence field at all._
 - **`sideEffects` in `package.json`** is what lets webpack tree-shake through
   the barrels. Only `**/*.css` is side-effectful; keep it that way.
 - **Never commit or print secrets.** `.env` is git-ignored and CI generates it
@@ -151,4 +195,4 @@ consistent. Version bumps follow semver — MAJOR for a removed or redefined
 principle, MINOR for a new principle or materially expanded guidance, PATCH for
 clarifications.
 
-**Version:** 1.0.0 | **Ratified:** 2026-08-18 | **Last amended:** 2026-08-18
+**Version:** 1.1.0 | **Ratified:** 2026-08-18 | **Last amended:** 2026-08-18

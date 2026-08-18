@@ -28,9 +28,14 @@ box left unchecked needs a justification in Complexity Tracking below.
 - [ ] **II. Feature-module boundaries** — new code lives in one `src/features/<name>/`;
       `shared/` does not import `features/`; cross-feature access goes through the barrel
 - [ ] **III. Typed and linted** — no `any`, no stray `console.*`, `interface` for object shapes
-- [ ] **IV. Verified before done** — `yarn typecheck && yarn lint && yarn test && yarn build`
+- [ ] **IV. Verified before done** — `yarn typecheck && yarn lint && yarn test && yarn build`,
+      and the same gates run in CI before the build
 - [ ] **V. Localised and themed** — copy in all locales, legible in dark and light
 - [ ] **VI. Accessible and measured** — keyboard reachable, named, analytics on key actions
+- [ ] **VII. Bundle cost measured** — First Load JS delta reported for every touched
+      route and inside the budget above; no barrel re-exports a client component; no
+      module-scope heavy client in `shared/`; any new dependency's licence and
+      bundle cost recorded
 
 ## Project structure
 
