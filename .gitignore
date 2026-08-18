@@ -38,3 +38,6 @@ next-env.d.ts
 #dist
 /dist
 /dist/*
+
+# firebase security rules (kept local, deployed via the Firebase Console/CLI)
+firestore.rules
