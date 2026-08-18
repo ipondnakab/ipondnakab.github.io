@@ -80,15 +80,18 @@
   },
   "credit": {
     "title": "Credits & Acknowledgments",
-    "intro": "このプロジェクトは素晴らしいOpen Source Libraryとツールなしでは実現できませんでした。メンテナーとコントリビューターの皆様に感謝します。",
-    "coreFramework": "Core Framework",
-    "nextDesc": "Production向けReact Framework",
-    "reactDesc": "UIを構築するためのJavaScript Library",
-    "typescriptDesc": "あらゆる規模に対応するTyped JavaScript",
-    "stylingUi": "Styling & UI",
-    "tailwindDesc": "Utility-first CSS Framework",
-    "deployment": "Deployment",
-    "githubPagesDesc": "GitHub RepositoryからWebサイトをホスティング",
+    "intro": "このサイトは {{count}} 個のオープンソースプロジェクトと、それを支える人々の成果の上に成り立っています。メンテナーとコントリビューターの皆様に感謝します。",
+    "category": {
+      "framework": "フレームワークと言語",
+      "ui": "UI とスタイリング",
+      "threeD": "3D とアニメーション",
+      "data": "データとフォーム",
+      "i18n": "国際化",
+      "tooling": "ツールとテスト",
+      "hosting": "ホスティング"
+    },
+    "visit": "{{name}} を開く",
+    "thanks": "オープンソースは実在の人々によって、その多くは無償で維持されています。役に立ったプロジェクトがあれば、スターを付ける、丁寧なバグ報告をする、支援するといった形で応援してみてください。",
     "madeWith": "❤️ と Open Source Software を使って作成"
   },
   "contact": {

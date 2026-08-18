@@ -80,15 +80,18 @@
   },
   "credit": {
     "title": "Credits & Acknowledgments",
-    "intro": "本项目离不开优秀的 Open Source Library 和工具。感谢所有维护者和贡献者！",
-    "coreFramework": "Core Framework",
-    "nextDesc": "用于生产环境的 React Framework",
-    "reactDesc": "用于构建用户界面的 JavaScript Library",
-    "typescriptDesc": "适用于各种规模项目的 Typed JavaScript",
-    "stylingUi": "Styling & UI",
-    "tailwindDesc": "Utility-first CSS Framework",
-    "deployment": "Deployment",
-    "githubPagesDesc": "通过 GitHub Repository 部署网站",
+    "intro": "本站建立在 {{count}} 个开源项目以及维护它们的人们的工作之上。感谢所有维护者和贡献者。",
+    "category": {
+      "framework": "框架与语言",
+      "ui": "界面与样式",
+      "threeD": "3D 与动画",
+      "data": "数据与表单",
+      "i18n": "国际化",
+      "tooling": "工具与测试",
+      "hosting": "托管"
+    },
+    "visit": "访问 {{name}}",
+    "thanks": "开源由真实的人维护，其中大多数并无报酬。如果这些项目也帮到了你，不妨点个 star、提交一份清晰的问题报告，或赞助他们。",
     "madeWith": "使用 ❤️ 和 Open Source Software 构建"
   },
   "contact": {

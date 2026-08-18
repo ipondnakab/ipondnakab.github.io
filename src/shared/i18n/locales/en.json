@@ -80,16 +80,19 @@
   },
   "credit": {
     "title": "Credits & Acknowledgments",
-    "intro": "This project wouldn't be possible without these amazing open-source libraries and tools. Thank you to all the maintainers and contributors!",
-    "coreFramework": "Core Framework",
-    "nextDesc": "The React Framework for Production",
-    "reactDesc": "A JavaScript library for building user interfaces",
-    "typescriptDesc": "Typed JavaScript at Any Scale",
-    "stylingUi": "Styling & UI",
-    "tailwindDesc": "A utility-first CSS framework",
-    "deployment": "Deployment",
-    "githubPagesDesc": "Hosting from your GitHub repository",
-    "madeWith": "Made with ❤️ using open source software"
+    "intro": "This site stands on the work of {{count}} open-source projects and the people who maintain them. Thank you to every maintainer and contributor.",
+    "category": {
+      "framework": "Framework & Language",
+      "ui": "UI & Styling",
+      "threeD": "3D & Animation",
+      "data": "Data & Forms",
+      "i18n": "Internationalisation",
+      "tooling": "Tooling & Testing",
+      "hosting": "Hosting"
+    },
+    "visit": "Visit {{name}}",
+    "thanks": "Open source is maintained by real people, most of them unpaid. If one of these projects helps you too, consider starring it, reporting a good bug, or sponsoring it.",
+    "madeWith": "Made with ❤️ and open-source software"
   },
   "contact": {
     "title": "Send me a Message",

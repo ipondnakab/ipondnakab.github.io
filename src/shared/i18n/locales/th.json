@@ -80,15 +80,18 @@
   },
   "credit": {
     "title": "Credits & Acknowledgments",
-    "intro": "โปรเจกต์นี้เกิดขึ้นไม่ได้หากไม่มี Open Source Libraries และเครื่องมือดี ๆ เหล่านี้ ขอขอบคุณผู้พัฒนาและผู้มีส่วนร่วมทุกคน",
-    "coreFramework": "Core Framework",
-    "nextDesc": "React Framework สำหรับ Production",
-    "reactDesc": "JavaScript Library สำหรับสร้าง User Interface",
-    "typescriptDesc": "JavaScript พร้อมระบบ Type ที่รองรับทุกขนาดโปรเจกต์",
-    "stylingUi": "Styling & UI",
-    "tailwindDesc": "CSS Framework แบบ Utility-first",
-    "deployment": "Deployment",
-    "githubPagesDesc": "โฮสต์เว็บไซต์ผ่าน GitHub Repository",
+    "intro": "เว็บไซต์นี้สร้างขึ้นบนผลงานของโปรเจกต์โอเพนซอร์ส {{count}} โปรเจกต์ และผู้ที่ดูแลรักษามัน ขอขอบคุณผู้พัฒนาและผู้มีส่วนร่วมทุกคน",
+    "category": {
+      "framework": "เฟรมเวิร์กและภาษา",
+      "ui": "UI และการจัดรูปแบบ",
+      "threeD": "3D และแอนิเมชัน",
+      "data": "ข้อมูลและฟอร์ม",
+      "i18n": "การรองรับหลายภาษา",
+      "tooling": "เครื่องมือและการทดสอบ",
+      "hosting": "โฮสติ้ง"
+    },
+    "visit": "ไปที่ {{name}}",
+    "thanks": "โอเพนซอร์สดูแลโดยคนจริง ๆ ซึ่งส่วนใหญ่ไม่ได้รับค่าตอบแทน หากโปรเจกต์เหล่านี้มีประโยชน์กับคุณ ลองกดดาว รายงานบั๊ก หรือสนับสนุนพวกเขาดู",
     "madeWith": "สร้างด้วย ❤️ และ Open Source Software"
   },
   "contact": {

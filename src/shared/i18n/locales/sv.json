@@ -80,15 +80,18 @@
   },
   "credit": {
     "title": "Credits & Acknowledgments",
-    "intro": "Det här projektet hade inte varit möjligt utan fantastiska Open Source Libraries och verktyg. Tack till alla utvecklare och bidragsgivare!",
-    "coreFramework": "Core Framework",
-    "nextDesc": "React Framework för produktionsmiljö",
-    "reactDesc": "JavaScript Library för att bygga användargränssnitt",
-    "typescriptDesc": "Typed JavaScript för projekt i alla storlekar",
-    "stylingUi": "Styling & UI",
-    "tailwindDesc": "Utility-first CSS Framework",
-    "deployment": "Deployment",
-    "githubPagesDesc": "Hosting direkt från ditt GitHub Repository",
+    "intro": "Den här sidan vilar på arbetet från {{count}} projekt med öppen källkod och människorna som underhåller dem. Tack till alla utvecklare och bidragsgivare.",
+    "category": {
+      "framework": "Ramverk & språk",
+      "ui": "Gränssnitt & styling",
+      "threeD": "3D & animation",
+      "data": "Data & formulär",
+      "i18n": "Internationalisering",
+      "tooling": "Verktyg & testning",
+      "hosting": "Hosting"
+    },
+    "visit": "Besök {{name}}",
+    "thanks": "Öppen källkod underhålls av riktiga människor, de flesta utan betalning. Om något av dessa projekt hjälper dig också — ge det en stjärna, skriv en bra buggrapport eller sponsra det.",
     "madeWith": "Byggt med ❤️ och Open Source Software"
   },
   "contact": {
