@@ -408,6 +408,78 @@
     "hide": "チャットを非表示",
     "savedNotice": "会話は、どんな質問が多いかをKittipatが把握するために保存されます。"
   },
+  "drunkardGame": {
+    "eyebrow": "パーティーはここから",
+    "appName": "Drunkard Game",
+    "appTag": "ポケットに入るパーティーゲーム",
+    "hero": {
+      "title": "スマホ1台で、",
+      "accent": "みんなが盛り上がる。",
+      "description": "遊びやすい10種類のパーティーゲームで、集まりをゲームナイトに。スマホを回して、ルールに従って、忘れられない思い出を作ろう。"
+    },
+    "getItOn": "今すぐ入手",
+    "downloadAria": "Google PlayからDrunkard Gameをダウンロード",
+    "appStoreAria": "iOS版Drunkard Gameは近日公開予定です",
+    "comingSoon": "近日公開",
+    "adultsOnly": "Androidで無料 · 18歳以上",
+    "previewTitle": "ゲームを選んで、次の人へ。",
+    "previewSubtitle": "面倒な準備は不要。友達とスマホ1台だけ。",
+    "highlights": {
+      "onePhone": "スマホ1台",
+      "instant": "すぐに開始",
+      "partyReady": "パーティー向け"
+    },
+    "games": {
+      "eyebrow": "10種類の遊び方",
+      "title": "好きなカオスを選ぼう",
+      "kingsCup": {
+        "title": "King's Cup",
+        "description": "カードを引いてルールに従い、最後のキングを引かないよう祈ろう。"
+      },
+      "headsUp": {
+        "title": "Heads Up",
+        "description": "スマホを額に当て、友達のヒントを頼りに60秒以内で答えよう。"
+      },
+      "slotMachine": {
+        "title": "Slot Machine",
+        "description": "リールを回し、出てきたチャレンジに挑戦しよう。"
+      },
+      "fingerChooser": {
+        "title": "Finger Chooser",
+        "description": "みんなで画面に指を置き、ランダムに1人を選ぼう。"
+      },
+      "secretNumber": {
+        "title": "Secret Number",
+        "description": "スライドして秘密の数字を予想。外れならセーフ、当たったらドリンク！"
+      },
+      "commandCards": {
+        "title": "Command Cards",
+        "description": "カードを引いて、書かれたチャレンジを実行しよう。"
+      },
+      "crocodile": {
+        "title": "Crocodile",
+        "description": "危険な歯を選ぶと、ワニに噛まれる！"
+      },
+      "shakeIt": {
+        "title": "Shake It",
+        "description": "スマホを振って、楽しいサプライズを見つけよう。"
+      },
+      "speedTapper": {
+        "title": "Speed Tapper",
+        "description": "時間切れまで、できるだけ速くタップしよう。"
+      },
+      "theBomb": {
+        "title": "The Bomb",
+        "description": "画面から指を離さず、爆発する前に爆弾を次の人へ渡そう。"
+      }
+    },
+    "cta": {
+      "title": "次のラウンドへ進もう。",
+      "description": "次のパーティーにDrunkard Gameを持って行き、スマホ1台でみんなと遊ぼう。",
+      "button": "Google Playでダウンロード"
+    },
+    "privacy": "プライバシーポリシー"
+  },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"
   }

@@ -408,6 +408,78 @@
     "hide": "隐藏聊天",
     "savedNotice": "对话会被保存，以便 Kittipat 了解大家常问的问题。"
   },
+  "drunkardGame": {
+    "eyebrow": "派对从这里开始",
+    "appName": "Drunkard Game",
+    "appTag": "装进口袋的派对游戏",
+    "hero": {
+      "title": "一部手机，",
+      "accent": "全场尽兴。",
+      "description": "十款简单好玩的派对游戏，让每次聚会都变成游戏之夜。传递手机、遵守规则，一起创造值得反复讲述的故事。"
+    },
+    "getItOn": "立即获取",
+    "downloadAria": "从Google Play下载Drunkard Game",
+    "appStoreAria": "Drunkard Game iOS版即将推出",
+    "comingSoon": "即将推出",
+    "adultsOnly": "Android免费提供 · 仅限18岁以上",
+    "previewTitle": "选个游戏，传下去。",
+    "previewSubtitle": "无需复杂准备，只要朋友和一部手机。",
+    "highlights": {
+      "onePhone": "一部手机",
+      "instant": "快速开始",
+      "partyReady": "派对就绪"
+    },
+    "games": {
+      "eyebrow": "十种玩法",
+      "title": "选择你喜欢的欢乐混乱",
+      "kingsCup": {
+        "title": "King's Cup",
+        "description": "抽一张牌，遵守对应规则，并祈祷最后一张国王牌不在你手里。"
+      },
+      "headsUp": {
+        "title": "Heads Up",
+        "description": "把手机举到额头，根据朋友的提示，在60秒内尽可能多地猜出答案。"
+      },
+      "slotMachine": {
+        "title": "Slot Machine",
+        "description": "转动老虎机，完成出现的挑战。"
+      },
+      "fingerChooser": {
+        "title": "Finger Chooser",
+        "description": "所有人把手指放在屏幕上，让游戏随机选中一位玩家。"
+      },
+      "secretNumber": {
+        "title": "Secret Number",
+        "description": "滑动猜出秘密数字——猜错安全，猜中就喝。"
+      },
+      "commandCards": {
+        "title": "Command Cards",
+        "description": "抽一张卡片，完成卡片上的挑战。"
+      },
+      "crocodile": {
+        "title": "Crocodile",
+        "description": "选错牙齿，小心鳄鱼咬你！"
+      },
+      "shakeIt": {
+        "title": "Shake It",
+        "description": "摇动手机，揭晓有趣的惊喜。"
+      },
+      "speedTapper": {
+        "title": "Speed Tapper",
+        "description": "在时间结束前尽可能快速点击。"
+      },
+      "theBomb": {
+        "title": "The Bomb",
+        "description": "手指不要离开屏幕，在炸弹爆炸前把它传给下一位玩家。"
+      }
+    },
+    "cta": {
+      "title": "准备好下一轮了吗？",
+      "description": "下次聚会带上Drunkard Game，一部手机就能让所有朋友一起玩。",
+      "button": "前往Google Play下载"
+    },
+    "privacy": "隐私政策"
+  },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"
   }

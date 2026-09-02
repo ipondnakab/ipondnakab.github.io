@@ -1,6 +1,6 @@
 import { LocalizedText } from "@/shared/types/localized-text";
 import { IconType } from "react-icons";
-import { GiPokerHand } from "react-icons/gi";
+import { GiPartyPopper, GiPokerHand } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
 import { MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
@@ -24,6 +24,19 @@ export const MINI_PROJECTS: {
       zh: "使用 Three.js 开发的一系列 Mini Projects，展示了多种 3D 图形技术和交互式体验。",
     },
     icon: SiThreedotjs,
+  },
+  {
+    name: "drunkard-game",
+    title: "DRUNKARD GAME",
+    href: "/drunkard-game",
+    description: {
+      en: "An Android party-game collection with ten quick games, including Heads Up, King's Cup, Finger Chooser, and The Bomb—all played together on one phone.",
+      th: "รวม 10 เกมปาร์ตี้บน Android ทั้งเดาคำบนหัว แก้วของราชา ตัวเลือกนิ้วมือ และระเบิด เล่นสนุกด้วยกันได้จากมือถือเพียงเครื่องเดียว",
+      sv: "En samling med tio snabba festspel för Android, bland annat Heads Up, King's Cup, Finger Chooser och The Bomb—alla spelas tillsammans på en telefon.",
+      ja: "Heads Up、King's Cup、Finger Chooser、The Bombなど、スマホ1台で一緒に遊べる10種類のAndroid向けパーティーゲーム集。",
+      zh: "一款包含十种快速小游戏的Android派对游戏合集，包括Heads Up、King's Cup、Finger Chooser和The Bomb，大家用一部手机即可同乐。",
+    },
+    icon: GiPartyPopper,
   },
   {
     name: "planning-poker",

@@ -408,6 +408,78 @@
     "hide": "Dölj chatten",
     "savedNotice": "Konversationer sparas så att Kittipat kan se vad folk frågar om."
   },
+  "drunkardGame": {
+    "eyebrow": "Festen börjar här",
+    "appName": "Drunkard Game",
+    "appTag": "Festspel i fickan",
+    "hero": {
+      "title": "En telefon.",
+      "accent": "En hel fest.",
+      "description": "Förvandla varje träff till en spelkväll med tio lättspelade festspel. Skicka telefonen vidare, följ reglerna och skapa historier värda att återberätta."
+    },
+    "getItOn": "Hämta på",
+    "downloadAria": "Ladda ner Drunkard Game från Google Play",
+    "appStoreAria": "Drunkard Game för iOS kommer snart",
+    "comingSoon": "snart",
+    "adultsOnly": "Gratis på Android · Från 18 år",
+    "previewTitle": "Välj ett spel. Skicka vidare.",
+    "previewSubtitle": "Ingen krånglig start—bara vänner och en telefon.",
+    "highlights": {
+      "onePhone": "En telefon",
+      "instant": "Snabbstart",
+      "partyReady": "Festklart"
+    },
+    "games": {
+      "eyebrow": "Tio sätt att spela",
+      "title": "Välj din sorts kaos",
+      "kingsCup": {
+        "title": "King's Cup",
+        "description": "Dra ett kort, följ regeln och hoppas att du slipper hitta den sista kungen."
+      },
+      "headsUp": {
+        "title": "Heads Up",
+        "description": "Håll telefonen mot pannan, följ vännernas ledtrådar och tävla mot 60-sekundersklockan."
+      },
+      "slotMachine": {
+        "title": "Slot Machine",
+        "description": "Snurra hjulen och anta utmaningen som visas."
+      },
+      "fingerChooser": {
+        "title": "Finger Chooser",
+        "description": "Lägg fingrarna på skärmen och låt spelet slumpa fram en spelare."
+      },
+      "secretNumber": {
+        "title": "Secret Number",
+        "description": "Dra för att gissa det hemliga numret—fel är säkert, rätt betyder dryck."
+      },
+      "commandCards": {
+        "title": "Command Cards",
+        "description": "Dra ett kort och utför utmaningen som står på det."
+      },
+      "crocodile": {
+        "title": "Crocodile",
+        "description": "Välj fel tand och krokodilen biter!"
+      },
+      "shakeIt": {
+        "title": "Shake It",
+        "description": "Skaka telefonen för att avslöja en rolig överraskning."
+      },
+      "speedTapper": {
+        "title": "Speed Tapper",
+        "description": "Tryck så snabbt du kan innan tiden tar slut."
+      },
+      "theBomb": {
+        "title": "The Bomb",
+        "description": "Håll ett finger på skärmen och skicka bomben vidare innan den exploderar."
+      }
+    },
+    "cta": {
+      "title": "Redo för nästa omgång?",
+      "description": "Ta med Drunkard Game till nästa fest och låt hela gänget spela från en enda telefon.",
+      "button": "Ladda ner på Google Play"
+    },
+    "privacy": "Integritetspolicy"
+  },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"
   }

@@ -408,6 +408,78 @@
     "hide": "Hide chat",
     "savedNotice": "Chats are saved so Kittipat can see what people ask."
   },
+  "drunkardGame": {
+    "eyebrow": "The party starts here",
+    "appName": "Drunkard Game",
+    "appTag": "Party games in your pocket",
+    "hero": {
+      "title": "One phone.",
+      "accent": "A whole party.",
+      "description": "Turn any get-together into game night with ten easy-to-play party games. Pass the phone, follow the rules, and make some stories worth retelling."
+    },
+    "getItOn": "Get it on",
+    "downloadAria": "Download Drunkard Game from Google Play",
+    "appStoreAria": "Drunkard Game for iOS is coming soon",
+    "comingSoon": "soon",
+    "adultsOnly": "Free on Android · Adults 18+",
+    "previewTitle": "Pick a game. Pass it on.",
+    "previewSubtitle": "No complicated setup—just friends and one phone.",
+    "highlights": {
+      "onePhone": "One phone",
+      "instant": "Quick start",
+      "partyReady": "Party ready"
+    },
+    "games": {
+      "eyebrow": "Ten ways to play",
+      "title": "Choose your kind of chaos",
+      "kingsCup": {
+        "title": "King's Cup",
+        "description": "Draw a card, follow its rule, and hope you are not the one who finds the final King."
+      },
+      "headsUp": {
+        "title": "Heads Up",
+        "description": "Hold the phone to your forehead, follow your friends' clues, and race the 60-second clock."
+      },
+      "slotMachine": {
+        "title": "Slot Machine",
+        "description": "Spin the reels and take on the challenge they reveal."
+      },
+      "fingerChooser": {
+        "title": "Finger Chooser",
+        "description": "Place your fingers on the screen and let the game randomly choose one player."
+      },
+      "secretNumber": {
+        "title": "Secret Number",
+        "description": "Slide to guess the secret number—miss and you are safe, get it right and you drink."
+      },
+      "commandCards": {
+        "title": "Command Cards",
+        "description": "Draw a card and complete the challenge written on it."
+      },
+      "crocodile": {
+        "title": "Crocodile",
+        "description": "Choose the wrong tooth and the crocodile bites!"
+      },
+      "shakeIt": {
+        "title": "Shake It",
+        "description": "Shake the phone to reveal a fun surprise."
+      },
+      "speedTapper": {
+        "title": "Speed Tapper",
+        "description": "Tap as fast as you can before time runs out."
+      },
+      "theBomb": {
+        "title": "The Bomb",
+        "description": "Keep a finger on the screen and pass the bomb before it explodes."
+      }
+    },
+    "cta": {
+      "title": "Ready for the next round?",
+      "description": "Bring Drunkard Game to your next party and keep the whole group playing from one phone.",
+      "button": "Download on Google Play"
+    },
+    "privacy": "Privacy policy"
+  },
   "kittipat": {
     "dangdee": "Kittipat Daengdee"
   }

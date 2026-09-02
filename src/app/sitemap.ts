@@ -16,6 +16,7 @@ const ROUTES = [
   "/threejs",
   "/credit",
   "/contact",
+  "/drunkard-game",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
