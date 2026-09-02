@@ -31,7 +31,7 @@ const DrunkardGameLanding: React.FC<DrunkardGameLandingProps> = () => {
     }
 
     const redirectTimer = window.setTimeout(() => {
-      window.open(DRUNKARD_GAME_PLAY_URL, "_blank");
+      window.location.replace(DRUNKARD_GAME_PLAY_URL);
     }, DRUNKARD_GAME_ANDROID_REDIRECT_DELAY_MS);
 
     return () => window.clearTimeout(redirectTimer);
