@@ -59,8 +59,9 @@ fall back to the highest-numbered folder in `specs/`.
 
 [`.specify/memory/constitution.md`](../.specify/memory/constitution.md) encodes
 what is actually true of this repo — no server at runtime, one-way dependencies
-between `app/`, `features/` and `shared/`, four gates before done, copy in five
-locales, both themes. `/speckit.plan` ticks each principle explicitly and
+between `app/`, `features/` and `shared/`, four gates before done (in CI, not
+just locally), copy in five locales, both themes, and a measured First Load JS
+cost for every touched route. `/speckit.plan` ticks each principle explicitly and
 anything unchecked has to be justified in the plan's Complexity Tracking table.
 
 Amend it with `/speckit.constitution` rather than editing it in isolation — the

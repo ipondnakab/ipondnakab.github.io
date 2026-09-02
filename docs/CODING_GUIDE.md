@@ -207,6 +207,22 @@ Use `.tsx` only when the data contains JSX (e.g. `shared/config/social.tsx`).
 - `shared/config/environment.ts` — the one place `process.env.NEXT_PUBLIC_*` is
   read. Read env here, not scattered across components.
 
+### Adding a dependency
+
+Two things go in the plan before it lands:
+
+1. **Its licence** — read from the package's own `package.json` _and_ its
+   `LICENSE` file, not assumed. They disagree more often than you would expect:
+   `@tsparticles/react` declares no `license` field but ships an MIT `LICENSE`,
+   and GSAP is a proprietary no-charge licence sitting among MIT dependencies.
+   Anything that is not an OSI licence gets called out explicitly.
+2. **Its First Load JS cost** on the routes that import it, from `yarn build`.
+   A dev-only dependency costs nothing here; say so rather than omitting it.
+
+Also check its `engines.node` against `package.json`'s floor —
+`src/shared/config/runtime.test.ts` will fail if the new dependency needs more
+than the floor admits.
+
 ---
 
 ## 9. Tests
@@ -413,8 +429,11 @@ yarn typecheck && yarn lint && yarn test && yarn build
 1. `yarn typecheck` passes (no type errors).
 2. `yarn lint` passes (`yarn lint:fix` applied).
 3. `yarn test` passes, and new logic has tests that were red first.
-4. `yarn build` succeeds, and the First Load JS delta for touched routes is
-   understood and justified.
+4. `yarn build` succeeds, and the First Load JS delta for **every touched route**
+   is reported — "no material change" is a valid report, silence is not. No
+   barrel re-exports a client component; no `shared/` module constructs a heavy
+   client at module scope; a plain element is preferred where the component
+   library's behaviour is not needed.
 5. `yarn format` applied (or handled by the pre-commit hook).
 6. Verified in `yarn dev` — both dark and light themes when UI changed.
 7. Copy added to all five locales.

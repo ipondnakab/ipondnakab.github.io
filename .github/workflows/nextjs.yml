@@ -95,6 +95,15 @@ jobs:
 
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      # Constitution principle IV: the gates run here, not only locally. A red
+      # gate must block the deploy, so these come before the build. Separate
+      # steps so the CI summary names which gate failed.
+      - name: Typecheck
+        run: ${{ steps.detect-package-manager.outputs.runner }} tsc --noEmit
+      - name: Lint
+        run: ${{ steps.detect-package-manager.outputs.runner }} eslint . --ext .js,.ts,.tsx
+      - name: Test
+        run: ${{ steps.detect-package-manager.outputs.runner }} vitest run
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
