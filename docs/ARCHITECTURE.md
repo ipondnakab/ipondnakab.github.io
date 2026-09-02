@@ -83,32 +83,6 @@ import type { ContactForm } from "@/features/contact";
 through the barrels. Only `globals.css` is imported for its side effects; keep
 it that way or the barrels start pulling their whole feature along.
 
-## Heavy clients are constructed lazily, not at module scope
-
-The same class of problem bites without a barrel in sight. `shared/lib/firebase.ts`
-does this at module load:
-
-```ts
-export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-export const db = getFirestore(app); // ← runs for anyone who imports `app`
-```
-
-`shared/lib/analytics.ts` imports `app` from it, so **any route that calls
-`trackEvent` also ships the entire Firestore SDK**, whether or not it touches a
-database. That took `/credit` from 141 kB to 296 kB First Load JS.
-
-Webpack cannot drop `db`: `getFirestore(app)` is a call into an external module,
-so it is not provably side-effect-free and `sideEffects: false` does not help.
-
-A module in `shared/` must therefore not construct a heavy third-party client at
-module scope when a lighter consumer would inherit it. Either construct it lazily
-behind a function, or split the module so each consumer pays only for what it
-imports.
-
-> **Known violation:** `shared/lib/firebase.ts` is exactly this pattern today.
-> Every route importing `trackEvent` carries Firestore. Splitting `app` and `db`
-> into separate modules would shrink several routes; it is not done yet.
-
 ## Routes are thin
 
 A `page.tsx` sets `metadata` and renders one feature component. Logic lives in
@@ -140,15 +114,9 @@ DOM.
 yarn typecheck && yarn lint && yarn test && yarn build
 ```
 
-`next build` runs ESLint and the type-check too, and the Pages workflow runs
-`tsc --noEmit`, `eslint` and `vitest run` as separate steps before building — so
-a violation of any rule above breaks the deploy and the CI summary names which
-gate failed. Fix the code rather than downgrading the rule.
-
-The Node runtime is pinned in three places that must agree: the floor in
-`package.json` `engines.node`, the pin in `.nvmrc`, and the same pin in the
-workflow. `src/shared/config/runtime.test.ts` fails if they drift, or if the
-floor is lower than any dependency's own `engines.node`.
+`next build` runs ESLint and the type-check too, so a violation of any rule
+above breaks the GitHub Pages deploy. Fix the code rather than downgrading the
+rule.
 
 ## What has no server
 

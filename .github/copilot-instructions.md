@@ -60,22 +60,9 @@ logic in `lib/`; write the test first and see it fail.
 yarn typecheck && yarn lint && yarn test && yarn build
 ```
 
-CI runs the same gates as separate steps before building, so a red gate blocks
-the deploy. Fix the code — never downgrade a rule to make a build pass.
-
-**Report the First Load JS delta for every route you touch** ("no material
-change" counts; silence does not). Three measured traps: a barrel that
-re-exports a client component pulls the whole feature into every route that
-touches it; a `shared/` module that constructs a heavy client at module scope
-makes every consumer pay for it (`shared/lib/firebase.ts` calls
-`getFirestore(app)`, so importing `trackEvent` ships all of Firestore); and a
-component-library primitive is often heavier than the plain element that would
-do. Adding a dependency means recording its licence — read from its own
-manifest and `LICENSE`, not assumed — and its bundle cost.
-
-Node is pinned in three places that must agree: `engines.node` in
-`package.json`, `.nvmrc`, and the workflow's `node-version`.
-`src/shared/config/runtime.test.ts` fails if they drift.
+`next build` runs ESLint and the type-check, so any rule violation breaks the
+GitHub Pages deploy. Fix the code — never downgrade a rule to make a build pass.
+Watch the First Load JS numbers `yarn build` prints; they are user-facing.
 
 ## Firestore
 

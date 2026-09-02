@@ -43,10 +43,6 @@ yarn format           # prettier --write across the repo
 yarn typecheck && yarn lint && yarn test && yarn build
 ```
 
-CI runs the same gates (`.github/workflows/nextjs.yml`) before building, so a red gate blocks the deploy. Running them locally first is faster than finding out from Actions.
-
-**Node:** the floor lives in `package.json` `engines.node`, the pin in `.nvmrc`, and the same pin in the workflow's `node-version` — all three must agree, and `src/shared/config/runtime.test.ts` fails if they drift.
-
 ## Directory map
 
 | Path                   | Purpose                                                                 |
@@ -109,17 +105,7 @@ Pure logic in `lib/` is the priority; that is where the real invariants are. Wri
 
 ## Bundle size
 
-`yarn build` prints First Load JS per route. Treat it as a user-facing number, and **report the delta for any route you touch** — "no material change" is a valid report, silence is not.
-
-Three traps, all measured in this repo:
-
-- **Barrels must not re-export client components.** The App Router builds each route's client-reference manifest from the import graph, so tree-shaking does not undo it. Re-exporting two client components from one barrel doubled `/contact/success` (190 kB → 394 kB).
-- **`shared/` must not construct a heavy third-party client at module scope.** `shared/lib/firebase.ts` calls `getFirestore(app)` at module load, so importing `trackEvent` — which imports `app` from it — drags the whole Firestore SDK in. That cost `/credit` 141 kB → 296 kB until the analytics call was dropped. Construct lazily, or split the module.
-- **Prefer a plain element when the behaviour is not needed.** An `<a>` is not a worse link than NextUI's `Link` for an outbound URL, and does not pull in react-aria.
-
-`package.json` declares `"sideEffects": ["**/*.css"]` — only `globals.css` is side-effectful, and that is what lets webpack tree-shake through the barrels.
-
-**Adding a dependency** means recording two things in the plan: its licence, read from its own `package.json` and `LICENSE` file rather than assumed, and its First Load JS cost on the routes that import it. A non-OSI licence gets called out explicitly — GSAP ships under a proprietary no-charge licence while sitting among MIT deps, and `@tsparticles/react` declares no licence field at all.
+`yarn build` prints First Load JS per route. Treat it as a user-facing number: if a change grows a route materially, say so and justify it. `package.json` declares `"sideEffects": ["**/*.css"]` — only `globals.css` is side-effectful, and that is what lets webpack tree-shake through the barrels.
 
 ## Feature-specific notes
 
