@@ -1,6 +1,26 @@
 import { ProjectExperience } from "@/features/profile/model/work-experience";
 export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
+    title: "Planning Poker",
+    description: [
+      {
+        en: "Real-time estimation tool for agile teams, with shared rooms, voting, reveal/reset controls, and custom card decks.",
+        th: "เครื่องมือประเมินงานแบบเรียลไทม์สำหรับทีม Agile พร้อมห้องร่วมกัน การโหวต การเปิดผลและรีเซ็ต รวมถึงชุดการ์ดที่กำหนดเองได้",
+        sv: "Verktyg för estimering i realtid för agila team, med gemensamma rum, röstning, visning och återställning av röster samt anpassade kortlekar.",
+        ja: "アジャイルチーム向けのリアルタイム見積もりツール。共有ルーム、投票、結果の公開・リセット、カスタムカードデッキに対応。",
+        zh: "面向敏捷团队的实时估算工具，支持共享房间、投票、结果展示与重置，以及自定义卡组。",
+      },
+      {
+        en: "Built with Next.js, TypeScript, NextUI, Tailwind CSS, and Firebase Firestore for real-time synchronization.",
+        th: "พัฒนาด้วย Next.js, TypeScript, NextUI, Tailwind CSS และ Firebase Firestore สำหรับซิงก์ข้อมูลแบบเรียลไทม์",
+        sv: "Byggt med Next.js, TypeScript, NextUI, Tailwind CSS och Firebase Firestore för synkronisering i realtid.",
+        ja: "Next.js、TypeScript、NextUI、Tailwind CSSで開発し、Firebase Firestoreでリアルタイム同期を実現。",
+        zh: "使用 Next.js、TypeScript、NextUI 和 Tailwind CSS 开发，通过 Firebase Firestore 实现实时同步。",
+      },
+    ],
+    projectUrl: "https://kittipat.dev/planning",
+  },
+  {
     title: "Drunkard Game",
     description: [
       {
