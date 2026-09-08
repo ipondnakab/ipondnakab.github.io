@@ -112,6 +112,17 @@ Tech: React.js, Flutter, Node.js, Golang
 
 ## 🌟 Featured Projects
 
+### Drunkard Game
+
+Personal mobile app with mini games for friends to play together at parties.
+
+- Built with **Expo, React Native, and TypeScript**
+- Games include Heads Up, King's Cup, and Finger Chooser
+- Thai/English localization and EAS Update workflows
+- [Project page](https://kittipat.dev/drunkard-game) · [Google Play](https://play.google.com/store/apps/details?id=com.ipondnakab.drunkardgame)
+
+---
+
 ### 🧠 Speechful (speechful.ai)
 
 AI-powered tutoring platform
