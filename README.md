@@ -42,6 +42,7 @@ I enjoy solving complex problems, collaborating with teams, and continuously imp
 ### Testing & Tools
 
 - Automated testing with Playwright
+- AI-assisted development / SpecKit / spec-driven development
 - Git / Docker / Jenkins
 - Audio processing and recording workflows
 
@@ -66,6 +67,7 @@ Khon Kaen University (2018 – 2022)
 **Full Stack Engineer**
 
 - Developed **Alive** — a wellness application for AIA customers
+- Used **AI-assisted development with SpecKit** in a **spec-driven development** workflow
 - Built with:
   - 📱 Expo (Frontend)
   - ☕ Spring Boot (Backend)
