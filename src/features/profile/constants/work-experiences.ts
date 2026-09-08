@@ -4,11 +4,11 @@ export const WORK_EXPERIENCES: WorkExperience[] = [
   {
     urlImage: "./images/omise-logo.jpeg",
     title: {
-      en: "ODDS ( Mar 2026 - Present )",
-      th: "ODDS ( มี.ค. 2026 - ปัจจุบัน )",
-      sv: "ODDS ( Mars 2026 - Nuvarande )",
-      ja: "ODDS（2026年3月 - 現在）",
-      zh: "ODDS（2026年3月 - 至今）",
+      en: "Omise ( Mar 2026 - Present )",
+      th: "Omise ( มี.ค. 2026 - ปัจจุบัน )",
+      sv: "Omise ( Mars 2026 - Nuvarande )",
+      ja: "Omise（2026年3月 - 現在）",
+      zh: "Omise（2026年3月 - 至今）",
     },
     position: "Full Stack Engineer",
     description: {
