@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://ipondnakab.github.io" target="_blank"> 
+    <a href="https://kittipat.dev" target="_blank"> 
         <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&duration=3000&pause=1000000&color=9B9B9B&background=FF000000&center=true&vCenter=true&width=435&lines=Hello+I%27m+KITTIPAT+DAENGDEE"/>
     </a>
 </p>
@@ -9,34 +9,45 @@
 
 ## 🧑‍💻 About Me
 
-I’m a **Software Engineer with 5+ years of experience** in full-stack web and application development, including automated testing.
+I am a **Full Stack Software Engineer with 5+ years of experience** in web and mobile application development and automated testing.
 
-💡 I enjoy solving complex problems with creative approaches
-🤝 Thrive in collaborative team environments
-📈 Always learning and improving my skills
+Since **March 2026**, I have worked as a **Full Stack Engineer at Omise**, developing **Alive**, a wellness application for AIA customers, using **Expo** for the frontend and **Spring Boot** for the backend.
+
+My experience includes platforms for the **Stock Exchange of Thailand (SET)**, a **Japanese local-government tax management system**, and frontend development for **Speechful**, an AI-powered tutoring platform with audio processing and recording workflows.
+
+I enjoy solving complex problems, collaborating with teams, and continuously improving my engineering skills.
 
 ---
 
 ## ⚙️ Tech Stack
 
-### 🖥️ Frameworks & Libraries
+### Frontend & Mobile
 
 - React.js / Next.js / Vue.js / Angular
-- Node.js / Spring Boot
+- React Native / Expo / Flutter
 - Tailwind CSS / Bootstrap
-
-### 💻 Languages
-
-- TypeScript / JavaScript
-- Java / Python / Go / C++
 - HTML / CSS / SCSS
 
-### 🛠️ Tools & Other Skills
+### Backend & Data
 
-- Git / Docker / Jenkins
+- Spring Boot / Node.js / Deno
 - SQL / Firebase
-- LINE API
-- Automated Testing (Playwright)
+- LINE Messaging API
+
+### Languages
+
+- TypeScript / JavaScript / Java
+- Python / Go / C++
+
+### Testing & Tools
+
+- Automated testing with Playwright
+- Git / Docker / Jenkins
+- Audio processing and recording workflows
+
+### Communication
+
+- Collaborative development and problem-solving
 - English (Intermediate)
 
 ---
@@ -50,7 +61,7 @@ Khon Kaen University (2018 – 2022)
 
 ## 💼 Work Experience
 
-### 🚀 ODDS (Mar 2026 – Present)
+### Omise (Mar 2026 - Present)
 
 **Full Stack Engineer**
 
@@ -162,7 +173,7 @@ Corporate website + OKR platform
 ## 📫 Contact Me
 
 - 💼 LinkedIn: [Kittipat Daengdee](https://www.linkedin.com/in/kittipat-dd/)
-- 🌐 Portfolio: [Kittipat Daengdee](https://ipondnakab.github.io/)
+- Portfolio: [Kittipat Daengdee](https://kittipat.dev/)
 
 ---
 
