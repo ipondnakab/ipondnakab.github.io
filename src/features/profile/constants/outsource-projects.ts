@@ -1,6 +1,26 @@
 import { ProjectExperience } from "@/features/profile/model/work-experience";
 export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
+    title: "Drunkard Game",
+    description: [
+      {
+        en: "Personal mobile app with mini games for friends to play together at parties, including Heads Up, King's Cup, and Finger Chooser.",
+        th: "แอปมือถือส่วนตัวที่รวมมินิเกมสำหรับเล่นกับเพื่อนในปาร์ตี้ เช่น Heads Up, King's Cup และ Finger Chooser",
+        sv: "Egen mobilapp med minispel för vänner på fester, bland annat Heads Up, King's Cup och Finger Chooser.",
+        ja: "Heads Up、King's Cup、Finger Chooserなど、友人とパーティーで楽しめるミニゲームを集めた個人開発のモバイルアプリ。",
+        zh: "个人开发的聚会小游戏移动应用，包含 Heads Up、King's Cup 和 Finger Chooser，供朋友一起游玩。",
+      },
+      {
+        en: "Built with Expo, React Native, and TypeScript, with Thai/English localization and EAS Update workflows.",
+        th: "พัฒนาด้วย Expo, React Native และ TypeScript รองรับภาษาไทยและอังกฤษ พร้อมกระบวนการอัปเดตผ่าน EAS Update",
+        sv: "Byggd med Expo, React Native och TypeScript, med stöd för thailändska och engelska samt uppdateringar via EAS Update.",
+        ja: "Expo、React Native、TypeScriptで開発。タイ語・英語に対応し、EAS Updateによる更新フローを採用。",
+        zh: "使用 Expo、React Native 和 TypeScript 开发，支持泰语和英语，并通过 EAS Update 进行更新。",
+      },
+    ],
+    projectUrl: "https://kittipat.dev/drunkard-game",
+  },
+  {
     title: "Speechful (speechful.ai)",
     description: [
       {
