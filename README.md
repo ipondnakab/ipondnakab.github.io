@@ -9,34 +9,45 @@
 
 ## 🧑‍💻 About Me
 
-I’m a **Software Engineer with 5+ years of experience** in full-stack web and application development, including automated testing.
+I am a **Full Stack Software Engineer with 5+ years of experience** in web and mobile application development and automated testing.
 
-💡 I enjoy solving complex problems with creative approaches
-🤝 Thrive in collaborative team environments
-📈 Always learning and improving my skills
+Currently at **ODDS**, I work on **Alive**, a wellness application for AIA customers, using **Expo** for the frontend and **Spring Boot** for the backend.
+
+My experience includes platforms for the **Stock Exchange of Thailand (SET)**, a **Japanese local-government tax management system**, and frontend development for **Speechful**, an AI-powered tutoring platform with audio processing and recording workflows.
+
+I enjoy solving complex problems, collaborating with teams, and continuously improving my engineering skills.
 
 ---
 
 ## ⚙️ Tech Stack
 
-### 🖥️ Frameworks & Libraries
+### Frontend & Mobile
 
 - React.js / Next.js / Vue.js / Angular
-- Node.js / Spring Boot
+- React Native / Expo / Flutter
 - Tailwind CSS / Bootstrap
-
-### 💻 Languages
-
-- TypeScript / JavaScript
-- Java / Python / Go / C++
 - HTML / CSS / SCSS
 
-### 🛠️ Tools & Other Skills
+### Backend & Data
 
-- Git / Docker / Jenkins
+- Spring Boot / Node.js / Deno
 - SQL / Firebase
-- LINE API
-- Automated Testing (Playwright)
+- LINE Messaging API
+
+### Languages
+
+- TypeScript / JavaScript / Java
+- Python / Go / C++
+
+### Testing & Tools
+
+- Automated testing with Playwright
+- Git / Docker / Jenkins
+- Audio processing and recording workflows
+
+### Communication
+
+- Collaborative development and problem-solving
 - English (Intermediate)
 
 ---
