@@ -112,6 +112,17 @@ Tech: React.js, Flutter, Node.js, Golang
 
 ## 🌟 Featured Projects
 
+### Planning Poker
+
+Real-time estimation tool for agile teams.
+
+- Shared rooms, voting, reveal/reset controls, and custom card decks
+- Built with **Next.js, TypeScript, NextUI, Tailwind CSS, and Firebase Firestore**
+- Real-time synchronization of room state and votes
+- [Try Planning Poker](https://kittipat.dev/planning)
+
+---
+
 ### Drunkard Game
 
 Personal mobile app with mini games for friends to play together at parties.
