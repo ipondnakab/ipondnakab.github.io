@@ -4,5 +4,11 @@
     "api/*.ts": {
       "maxDuration": 30
     }
+  },
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "master": true
+    }
   }
 }
