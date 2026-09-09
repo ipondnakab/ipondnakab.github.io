@@ -22,6 +22,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import chatHandler from "./api/chat";
 import contactHandler from "./api/contact";
+import drunkardGameHandler from "./api/drunkard-game";
 
 // Mirrors Vercel's file-based routing: api/<name>.ts is served at /api/<name>.
 const ROUTES: Record<
@@ -30,6 +31,7 @@ const ROUTES: Record<
 > = {
   "/api/chat": chatHandler,
   "/api/contact": contactHandler,
+  "/api/drunkard-game": drunkardGameHandler,
 };
 
 const PORT = Number(process.env.PORT ?? 3001);
