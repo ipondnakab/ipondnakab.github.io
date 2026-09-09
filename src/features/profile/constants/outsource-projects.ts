@@ -1,6 +1,46 @@
 import { ProjectExperience } from "@/features/profile/model/work-experience";
 export const OUTSOURCE_PROJECTS: ProjectExperience[] = [
   {
+    title: "Planning Poker",
+    description: [
+      {
+        en: "Real-time estimation tool for agile teams, with shared rooms, voting, reveal/reset controls, and custom card decks.",
+        th: "เครื่องมือประเมินงานแบบเรียลไทม์สำหรับทีม Agile พร้อมห้องร่วมกัน การโหวต การเปิดผลและรีเซ็ต รวมถึงชุดการ์ดที่กำหนดเองได้",
+        sv: "Verktyg för estimering i realtid för agila team, med gemensamma rum, röstning, visning och återställning av röster samt anpassade kortlekar.",
+        ja: "アジャイルチーム向けのリアルタイム見積もりツール。共有ルーム、投票、結果の公開・リセット、カスタムカードデッキに対応。",
+        zh: "面向敏捷团队的实时估算工具，支持共享房间、投票、结果展示与重置，以及自定义卡组。",
+      },
+      {
+        en: "Built with Next.js, TypeScript, NextUI, Tailwind CSS, and Firebase Firestore for real-time synchronization.",
+        th: "พัฒนาด้วย Next.js, TypeScript, NextUI, Tailwind CSS และ Firebase Firestore สำหรับซิงก์ข้อมูลแบบเรียลไทม์",
+        sv: "Byggt med Next.js, TypeScript, NextUI, Tailwind CSS och Firebase Firestore för synkronisering i realtid.",
+        ja: "Next.js、TypeScript、NextUI、Tailwind CSSで開発し、Firebase Firestoreでリアルタイム同期を実現。",
+        zh: "使用 Next.js、TypeScript、NextUI 和 Tailwind CSS 开发，通过 Firebase Firestore 实现实时同步。",
+      },
+    ],
+    projectUrl: "https://kittipat.dev/planning",
+  },
+  {
+    title: "Drunkard Game",
+    description: [
+      {
+        en: "Personal mobile app with mini games for friends to play together at parties, including Heads Up, King's Cup, and Finger Chooser.",
+        th: "แอปมือถือส่วนตัวที่รวมมินิเกมสำหรับเล่นกับเพื่อนในปาร์ตี้ เช่น Heads Up, King's Cup และ Finger Chooser",
+        sv: "Egen mobilapp med minispel för vänner på fester, bland annat Heads Up, King's Cup och Finger Chooser.",
+        ja: "Heads Up、King's Cup、Finger Chooserなど、友人とパーティーで楽しめるミニゲームを集めた個人開発のモバイルアプリ。",
+        zh: "个人开发的聚会小游戏移动应用，包含 Heads Up、King's Cup 和 Finger Chooser，供朋友一起游玩。",
+      },
+      {
+        en: "Built with Expo, React Native, and TypeScript, with Thai/English localization and EAS Update workflows.",
+        th: "พัฒนาด้วย Expo, React Native และ TypeScript รองรับภาษาไทยและอังกฤษ พร้อมกระบวนการอัปเดตผ่าน EAS Update",
+        sv: "Byggd med Expo, React Native och TypeScript, med stöd för thailändska och engelska samt uppdateringar via EAS Update.",
+        ja: "Expo、React Native、TypeScriptで開発。タイ語・英語に対応し、EAS Updateによる更新フローを採用。",
+        zh: "使用 Expo、React Native 和 TypeScript 开发，支持泰语和英语，并通过 EAS Update 进行更新。",
+      },
+    ],
+    projectUrl: "https://kittipat.dev/drunkard-game",
+  },
+  {
     title: "Speechful (speechful.ai)",
     description: [
       {
