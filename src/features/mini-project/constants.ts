@@ -1,6 +1,6 @@
 import { LocalizedText } from "@/shared/types/localized-text";
 import { IconType } from "react-icons";
-import { GiPartyPopper, GiPokerHand } from "react-icons/gi";
+import { GiPartyPopper, GiPokerHand, GiShuttlecock } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
 import { MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
@@ -50,6 +50,19 @@ export const MINI_PROJECTS: {
       zh: "一款基于 Web 的 Planning Point estimation 应用，帮助 Agile 团队协作估算任务复杂度。",
     },
     icon: MdOutlineStyle,
+  },
+  {
+    name: "badminton",
+    title: "BADMINTON",
+    href: "/badminton",
+    icon: GiShuttlecock,
+    description: {
+      en: "Organize badminton players into random singles or doubles matches and round-robin competitions.",
+      th: "สุ่มทีมแบดมินตัน หรือจัดการแข่งขันแบบพบกันหมดทั้งประเภทเดี่ยวและคู่",
+      ja: "バドミントンのシングルス・ダブルスの抽選や総当たり戦を作成。",
+      sv: "Lotta badmintonlag eller skapa en serie för singel och dubbel där alla möter alla.",
+      zh: "随机生成羽毛球单打或双打对阵，或创建循环赛。",
+    },
   },
   {
     name: "pokdeng",
