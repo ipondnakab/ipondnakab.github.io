@@ -550,5 +550,28 @@
     "loadingSession": "正在加载已保存的数据…",
     "storageUnavailable": "无法在此设备上保存更改。你可以继续比赛，但离开或刷新页面后，最近的更改可能丢失。",
     "temporarySession": "在可以保存之前，更改仅保留在内存中。"
+  },
+  "deepjump": {
+    "title": "Deepjump",
+    "description": "粘贴深层链接，点击即可打开应用。",
+    "label": "深层链接",
+    "placeholder": "myapp://path 或 intent://…",
+    "jump": "跳转",
+    "invalid": "请输入有效的完整深层链接，例如 myapp://path 或 https://example.com。",
+    "hint": "能否打开链接取决于浏览器及已安装的支持该链接的应用。Android intent:// 链接可在 Chrome 等支持的浏览器中使用。",
+    "history": "最近跳转",
+    "historyHint": "最近 50 个不重复的跳转尝试仅保存在此设备的当前浏览器中。",
+    "empty": "暂无跳转记录。",
+    "clear": "清空历史",
+    "delete": "删除",
+    "storageError": "无法保存或加载历史记录。您仍可跳转到链接。",
+    "launchError": "浏览器无法打开此链接。请检查链接及已安装的应用。",
+    "jumpLink": "跳转到 {{url}}",
+    "deleteLink": "删除 {{url}}",
+    "deleteTitle": "删除此链接？",
+    "deleteDescription": "此链接将从已保存的历史记录中删除。",
+    "clearTitle": "清空所有历史记录？",
+    "clearDescription": "此浏览器中保存的所有链接都将被删除。此操作无法撤销。",
+    "cancel": "取消"
   }
 }

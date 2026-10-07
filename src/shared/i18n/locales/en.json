@@ -550,5 +550,28 @@
     "loadingSession": "Loading your saved session…",
     "storageUnavailable": "Changes could not be saved on this device. You can keep playing, but recent changes may be lost when you leave or refresh.",
     "temporarySession": "Changes are kept in memory until saving is available."
+  },
+  "deepjump": {
+    "title": "Deepjump",
+    "description": "Paste a deeplink and jump to your app.",
+    "label": "Deeplink",
+    "placeholder": "myapp://path or intent://…",
+    "jump": "Jump",
+    "invalid": "Enter a valid absolute deeplink, such as myapp://path or https://example.com.",
+    "hint": "Opening a link depends on your browser and an installed app that supports it. Android intent:// links work in supported browsers such as Chrome.",
+    "history": "Recent jumps",
+    "historyHint": "The last 50 unique jump attempts are saved only in this browser on this device.",
+    "empty": "No jumps yet.",
+    "clear": "Clear history",
+    "delete": "Delete",
+    "storageError": "History could not be saved or loaded. You can still jump to links.",
+    "launchError": "The browser could not open this link. Check the link and installed app.",
+    "jumpLink": "Jump to {{url}}",
+    "deleteLink": "Delete {{url}}",
+    "deleteTitle": "Delete this link?",
+    "deleteDescription": "This will remove the link from your saved history.",
+    "clearTitle": "Clear all history?",
+    "clearDescription": "This will remove all saved links from this browser. This cannot be undone.",
+    "cancel": "Cancel"
   }
 }

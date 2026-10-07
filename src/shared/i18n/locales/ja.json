@@ -550,5 +550,28 @@
     "loadingSession": "保存したデータを読み込み中…",
     "storageUnavailable": "この端末に変更を保存できませんでした。プレイは続けられますが、ページを離れたり更新したりすると最新の変更が失われる場合があります。",
     "temporarySession": "保存できるまで変更はメモリ内に保持されます。"
+  },
+  "deepjump": {
+    "title": "Deepjump",
+    "description": "ディープリンクを貼り付けてアプリを開きます。",
+    "label": "ディープリンク",
+    "placeholder": "myapp://path または intent://…",
+    "jump": "開く",
+    "invalid": "myapp://path や https://example.com などの有効な絶対リンクを入力してください。",
+    "hint": "リンクを開けるかどうかはブラウザーと対応アプリのインストール状況によります。Android の intent:// リンクは Chrome などの対応ブラウザーで利用できます。",
+    "history": "最近の履歴",
+    "historyHint": "重複しない直近50件の起動試行を、この端末のブラウザーにのみ保存します。",
+    "empty": "履歴はまだありません。",
+    "clear": "履歴を消去",
+    "delete": "削除",
+    "storageError": "履歴を保存または読み込めませんでした。リンクは引き続き開けます。",
+    "launchError": "ブラウザーでリンクを開けませんでした。リンクとインストール済みアプリを確認してください。",
+    "jumpLink": "{{url}} を開く",
+    "deleteLink": "{{url}} を削除",
+    "deleteTitle": "このリンクを削除しますか？",
+    "deleteDescription": "このリンクを保存済みの履歴から削除します。",
+    "clearTitle": "履歴をすべて消去しますか？",
+    "clearDescription": "このブラウザーに保存されたリンクをすべて削除します。この操作は取り消せません。",
+    "cancel": "キャンセル"
   }
 }

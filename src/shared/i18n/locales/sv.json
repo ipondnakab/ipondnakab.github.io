@@ -550,5 +550,28 @@
     "loadingSession": "Läser in din sparade session…",
     "storageUnavailable": "Ändringarna kunde inte sparas på den här enheten. Du kan fortsätta spela, men de senaste ändringarna kan försvinna när du lämnar eller laddar om sidan.",
     "temporarySession": "Ändringar behålls i minnet tills det går att spara."
+  },
+  "deepjump": {
+    "title": "Deepjump",
+    "description": "Klistra in en djuplänk och öppna din app.",
+    "label": "Djuplänk",
+    "placeholder": "myapp://path eller intent://…",
+    "jump": "Öppna",
+    "invalid": "Ange en giltig absolut djuplänk, till exempel myapp://path eller https://example.com.",
+    "hint": "Länken kräver en webbläsare och en installerad app som stöder den. Android-länkar med intent:// fungerar i webbläsare som Chrome.",
+    "history": "Senaste försök",
+    "historyHint": "De senaste 50 unika öppningsförsöken sparas bara i denna webbläsare på denna enhet.",
+    "empty": "Ingen historik ännu.",
+    "clear": "Rensa historik",
+    "delete": "Ta bort",
+    "storageError": "Historiken kunde inte sparas eller läsas. Du kan fortfarande öppna länkar.",
+    "launchError": "Webbläsaren kunde inte öppna länken. Kontrollera länken och den installerade appen.",
+    "jumpLink": "Öppna {{url}}",
+    "deleteLink": "Ta bort {{url}}",
+    "deleteTitle": "Ta bort länken?",
+    "deleteDescription": "Länken tas bort från din sparade historik.",
+    "clearTitle": "Rensa all historik?",
+    "clearDescription": "Alla sparade länkar tas bort från denna webbläsare. Detta kan inte ångras.",
+    "cancel": "Avbryt"
   }
 }

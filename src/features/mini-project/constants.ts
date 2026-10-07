@@ -2,7 +2,7 @@ import { LocalizedText } from "@/shared/types/localized-text";
 import { IconType } from "react-icons";
 import { GiPartyPopper, GiPokerHand, GiShuttlecock } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
-import { MdOutlineStyle } from "react-icons/md";
+import { MdOpenInNew, MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
 
 export const MINI_PROJECTS: {
@@ -102,5 +102,18 @@ export const MINI_PROJECTS: {
       zh: "一个简单的 PromptPay 二维码生成工具，帮助用户快速创建收款二维码。",
     },
     icon: IoQrCodeOutline,
+  },
+  {
+    name: "deepjump",
+    title: "DEEPJUMP",
+    href: "/deepjump",
+    description: {
+      en: "Paste a deeplink and jump to your app.",
+      th: "วางดีปลิงก์แล้วกด Jump เพื่อเปิดแอปของคุณ",
+      ja: "ディープリンクを貼り付けてアプリを開きます。",
+      sv: "Klistra in en djuplänk och öppna din app.",
+      zh: "粘贴深层链接，点击即可打开应用。",
+    },
+    icon: MdOpenInNew,
   },
 ] as const;
