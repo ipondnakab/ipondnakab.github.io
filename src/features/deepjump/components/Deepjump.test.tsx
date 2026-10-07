@@ -29,6 +29,13 @@ const mount = (navigate = vi.fn()) => {
   );
   return { ...view, navigate };
 };
+const clickHistoryDelete = (url: string) => {
+  const row = screen.getByText(url).closest("li");
+  const trashIcon = row?.querySelector("svg");
+  if (!trashIcon) throw new Error(`Missing history delete icon for ${url}`);
+  fireEvent.click(trashIcon);
+};
+
 afterEach(() => {
   cleanup();
   localStorage.clear();
@@ -62,7 +69,7 @@ describe("Deepjump launcher", () => {
     expect(navigate).not.toHaveBeenCalled();
     expect(localStorage.getItem(HISTORY_KEY)).toBeNull();
   });
-  it("restores history after remount, jumps again, deletes and clears", async () => {
+  it("restores history, jumps by tapping its URL, and confirms icon deletion and clearing", async () => {
     localStorage.setItem(
       HISTORY_KEY,
       JSON.stringify([
@@ -73,12 +80,13 @@ describe("Deepjump launcher", () => {
     const first = mount();
     first.unmount();
     const { navigate } = mount();
-    fireEvent.click(screen.getByRole("button", { name: "Jump to app://b" }));
+    fireEvent.click(screen.getByText("app://b"));
     expect(navigate).toHaveBeenCalledWith("app://b");
     expect(JSON.parse(localStorage.getItem(HISTORY_KEY)!)[0].url).toBe(
       "app://b",
     );
-    fireEvent.click(screen.getByRole("button", { name: "Delete app://b" }));
+    clickHistoryDelete("app://b");
+    expect(navigate).toHaveBeenCalledTimes(1);
     expect(JSON.parse(localStorage.getItem(HISTORY_KEY)!)).toHaveLength(2);
     const deleteDialog = await screen.findByRole("dialog");
     expect(within(deleteDialog).getByText("app://b")).toBeTruthy();
@@ -100,8 +108,13 @@ describe("Deepjump launcher", () => {
     const stored = JSON.stringify([{ url: "app://keep", jumpedAt: 1 }]);
     localStorage.setItem(HISTORY_KEY, stored);
     mount();
-    for (const name of ["Delete app://keep", "Clear history"]) {
-      fireEvent.click(screen.getByRole("button", { name }));
+    const actions = [
+      () => clickHistoryDelete("app://keep"),
+      () =>
+        fireEvent.click(screen.getByRole("button", { name: "Clear history" })),
+    ];
+    for (const openConfirmation of actions) {
+      openConfirmation();
       const dialog = await screen.findByRole("dialog");
       fireEvent.click(within(dialog).getByRole("button", { name: "Cancel" }));
       await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
