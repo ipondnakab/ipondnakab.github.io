@@ -185,6 +185,7 @@ const Deepjump: React.FC<DeepjumpProps> = ({ navigate }) => {
           </h2>
           <Button
             type="button"
+            size="sm"
             isDisabled={!history.length}
             onClick={() => setPendingAction({ kind: "clear" })}
             color="danger"
@@ -209,56 +210,27 @@ const Deepjump: React.FC<DeepjumpProps> = ({ navigate }) => {
             <p className="text-sm text-default-600">{t("deepjump.empty")}</p>
           </Card>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-3 px-4">
             {history.map((entry) => (
               <li key={entry.url} className="min-w-0">
                 <Card
                   isBlurred
                   disableAnimation
-                  className="min-w-0 rounded-3xl p-4 shadow-sm sm:flex-row sm:items-center sm:gap-4"
+                  className="min-w-0 flex-row items-center justify-center border bg-default-100/70 border-default rounded-large shadow-sm sm:flex-row sm:items-center sm:gap-4"
                 >
-                  <p className="min-w-0 flex-1 break-all rounded-xl bg-default-100/70 p-3 font-mono text-sm leading-relaxed">
+                  <p
+                    className="min-w-0 cursor-pointer flex-1 break-all p-3 py-4 font-mono text-sm leading-relaxed"
+                    onClick={() => jump(entry.url)}
+                  >
                     {entry.url}
                   </p>
-                  <div className="mt-3 grid grid-cols-2 gap-2 sm:mt-0 sm:flex sm:shrink-0">
-                    <Button
-                      type="button"
-                      onClick={() => jump(entry.url)}
-                      aria-label={t("deepjump.jumpLink", { url: entry.url })}
-                      color="primary"
-                      variant="flat"
-                      radius="lg"
-                      disableAnimation
-                      endContent={
-                        <IoArrowForward
-                          aria-hidden
-                          className="shrink-0 text-lg"
-                        />
-                      }
-                      className="min-h-12 min-w-0 whitespace-normal px-4 font-semibold"
-                    >
-                      {t("deepjump.jump")}
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={() =>
-                        setPendingAction({ kind: "delete", url: entry.url })
-                      }
-                      aria-label={t("deepjump.deleteLink", { url: entry.url })}
-                      startContent={
-                        <IoTrashOutline
-                          aria-hidden
-                          className="shrink-0 text-lg"
-                        />
-                      }
-                      color="danger"
-                      variant="flat"
-                      radius="lg"
-                      disableAnimation
-                      className="min-h-12 min-w-0 whitespace-normal px-4 font-semibold"
-                    >
-                      {t("deepjump.delete")}
-                    </Button>
+                  <div
+                    className="text-danger px-2"
+                    onClick={() =>
+                      setPendingAction({ kind: "delete", url: entry.url })
+                    }
+                  >
+                    <IoTrashOutline aria-hidden />
                   </div>
                 </Card>
               </li>
