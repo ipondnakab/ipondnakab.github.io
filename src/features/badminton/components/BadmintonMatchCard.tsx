@@ -2,6 +2,7 @@
 
 import { Team } from "@/features/badminton/model/badminton";
 import React from "react";
+import BadmintonScoreboard from "./BadmintonScoreboard";
 import { useTranslation } from "react-i18next";
 import { IoCheckmarkCircle, IoPersonOutline } from "react-icons/io5";
 
@@ -10,6 +11,7 @@ export interface BadmintonMatchCardProps {
   number: number;
   winner?: number | null;
   onSelectWinner?: (side: number) => void;
+  showScoreboard?: boolean;
 }
 
 const BadmintonMatchCard: React.FC<BadmintonMatchCardProps> = ({
@@ -17,6 +19,7 @@ const BadmintonMatchCard: React.FC<BadmintonMatchCardProps> = ({
   number,
   winner,
   onSelectWinner,
+  showScoreboard = false,
 }) => {
   const { t } = useTranslation();
   return (
@@ -91,6 +94,7 @@ const BadmintonMatchCard: React.FC<BadmintonMatchCardProps> = ({
           );
         })}
       </div>
+      {showScoreboard && <BadmintonScoreboard teams={teams} />}
     </article>
   );
 };
