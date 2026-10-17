@@ -1,7 +1,7 @@
 "use client";
 
 import BadmintonScoreboard from "@/features/badminton/components/BadmintonScoreboard";
-import { Player, Team } from "@/features/badminton/model/badminton";
+import { Team } from "@/features/badminton/model/badminton";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +16,7 @@ const StandaloneBadmintonScoreboard = () => {
       id: String(index),
       name: name.trim() || `Team ${index + 1}`,
       gender: "other",
-    } satisfies Player,
+    },
   ]);
 
   return (
