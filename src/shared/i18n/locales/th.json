@@ -556,7 +556,10 @@
     "addPointFor": "เพิ่มคะแนนให้ {{name}}",
     "matchWinner": "{{name}} ชนะการแข่งขัน",
     "undoScore": "ย้อนกลับ",
-    "resetScore": "รีเซ็ตคะแนน"
+    "resetScore": "รีเซ็ตคะแนน",
+    "scoreModestandard": "มาตรฐาน",
+    "scoreModefreehand": "นับคะแนนอิสระ",
+    "removePointFor": "ลดคะแนนให้ {{name}}"
   },
   "deepjump": {
     "title": "Deepjump",
