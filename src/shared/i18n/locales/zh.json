@@ -559,7 +559,10 @@
     "resetScore": "重置比分",
     "scoreModestandard": "标准",
     "scoreModefreehand": "自由计分",
-    "removePointFor": "为{{name}}减分"
+    "removePointFor": "为{{name}}减分",
+    "scoreSize": "比分字号",
+    "decreaseScoreSize": "缩小比分字号",
+    "increaseScoreSize": "放大比分字号"
   },
   "deepjump": {
     "title": "Deepjump",
