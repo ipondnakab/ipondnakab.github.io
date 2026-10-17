@@ -549,7 +549,17 @@
     "randomSinglesHelp": "Slumpade en-mot-en-matcher prioriterar mindre använda motståndare från singelhistoriken. Vid udda antal spelare vilar en.",
     "loadingSession": "Läser in din sparade session…",
     "storageUnavailable": "Ändringarna kunde inte sparas på den här enheten. Du kan fortsätta spela, men de senaste ändringarna kan försvinna när du lämnar eller laddar om sidan.",
-    "temporarySession": "Ändringar behålls i minnet tills det går att spara."
+    "temporarySession": "Ändringar behålls i minnet tills det går att spara.",
+    "scoreboard": "Resultattavla",
+    "gameNumber": "Set {{number}}",
+    "gamesWon": "Vunna set: {{count}}",
+    "addPointFor": "Lägg till poäng för {{name}}",
+    "matchWinner": "{{name}} vinner matchen",
+    "undoScore": "Ångra",
+    "resetScore": "Nollställ poäng",
+    "scoreModestandard": "Standard",
+    "scoreModefreehand": "Fri poängräkning",
+    "removePointFor": "Ta bort poäng för {{name}}"
   },
   "deepjump": {
     "title": "Deepjump",

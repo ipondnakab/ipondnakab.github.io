@@ -549,7 +549,17 @@
     "randomSinglesHelp": "シングルスの履歴から対戦回数が少ない相手を優先して1対1の試合を抽選します。奇数の場合は1人が休みます。",
     "loadingSession": "保存したデータを読み込み中…",
     "storageUnavailable": "この端末に変更を保存できませんでした。プレイは続けられますが、ページを離れたり更新したりすると最新の変更が失われる場合があります。",
-    "temporarySession": "保存できるまで変更はメモリ内に保持されます。"
+    "temporarySession": "保存できるまで変更はメモリ内に保持されます。",
+    "scoreboard": "スコアボード",
+    "gameNumber": "第{{number}}ゲーム",
+    "gamesWon": "{{count}}ゲーム勝利",
+    "addPointFor": "{{name}}に得点を追加",
+    "matchWinner": "{{name}}の勝利",
+    "undoScore": "元に戻す",
+    "resetScore": "スコアをリセット",
+    "scoreModestandard": "標準",
+    "scoreModefreehand": "自由採点",
+    "removePointFor": "{{name}}の得点を減らす"
   },
   "deepjump": {
     "title": "Deepjump",

@@ -549,7 +549,17 @@
     "randomSinglesHelp": "Random one-on-one matches favor less-used opponents from singles history. With an odd player count, one player sits out.",
     "loadingSession": "Loading your saved session…",
     "storageUnavailable": "Changes could not be saved on this device. You can keep playing, but recent changes may be lost when you leave or refresh.",
-    "temporarySession": "Changes are kept in memory until saving is available."
+    "temporarySession": "Changes are kept in memory until saving is available.",
+    "scoreboard": "Scoreboard",
+    "gameNumber": "Game {{number}}",
+    "gamesWon": "Games won: {{count}}",
+    "addPointFor": "Add point for {{name}}",
+    "matchWinner": "{{name}} wins the match",
+    "undoScore": "Undo",
+    "resetScore": "Reset score",
+    "scoreModestandard": "Standard",
+    "scoreModefreehand": "Freehand",
+    "removePointFor": "Remove point from {{name}}"
   },
   "deepjump": {
     "title": "Deepjump",
