@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import { winnerOf } from "@/features/badminton/components/BadmintonScoreboard";
+import { describe, expect, it } from "vitest";
 
 describe("badminton scoring", () => {
   it("requires 21 points and a two-point lead", () => {
