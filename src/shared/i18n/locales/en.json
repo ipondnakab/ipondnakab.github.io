@@ -556,7 +556,10 @@
     "addPointFor": "Add point for {{name}}",
     "matchWinner": "{{name}} wins the match",
     "undoScore": "Undo",
-    "resetScore": "Reset score"
+    "resetScore": "Reset score",
+    "scoreModestandard": "Standard",
+    "scoreModefreehand": "Freehand",
+    "removePointFor": "Remove point from {{name}}"
   },
   "deepjump": {
     "title": "Deepjump",
