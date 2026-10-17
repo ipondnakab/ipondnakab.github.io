@@ -559,7 +559,10 @@
     "resetScore": "Reset score",
     "scoreModestandard": "Standard",
     "scoreModefreehand": "Freehand",
-    "removePointFor": "Remove point from {{name}}"
+    "removePointFor": "Remove point from {{name}}",
+    "scoreSize": "Score size",
+    "decreaseScoreSize": "Decrease score size",
+    "increaseScoreSize": "Increase score size"
   },
   "deepjump": {
     "title": "Deepjump",
