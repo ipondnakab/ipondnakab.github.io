@@ -562,7 +562,10 @@
     "removePointFor": "为{{name}}减分",
     "scoreSize": "比分字号",
     "decreaseScoreSize": "缩小比分字号",
-    "increaseScoreSize": "放大比分字号"
+    "increaseScoreSize": "放大比分字号",
+    "standaloneHint": "无需创建比赛即可直接使用记分板。",
+    "teamLabel": "队伍 {{number}}",
+    "openOrganizer": "打开羽毛球比赛管理"
   },
   "deepjump": {
     "title": "Deepjump",
