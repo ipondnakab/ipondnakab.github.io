@@ -562,7 +562,10 @@
     "removePointFor": "{{name}}の得点を減らす",
     "scoreSize": "スコアの文字サイズ",
     "decreaseScoreSize": "スコア表示を小さくする",
-    "increaseScoreSize": "スコア表示を大きくする"
+    "increaseScoreSize": "スコア表示を大きくする",
+    "standaloneHint": "大会を設定せずにスコアボードを使用できます。",
+    "teamLabel": "チーム {{number}}",
+    "openOrganizer": "バドミントン対戦管理を開く"
   },
   "deepjump": {
     "title": "Deepjump",
