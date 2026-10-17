@@ -10,7 +10,7 @@ export interface BadmintonScoreboardProps {
 }
 
 type Score = [number, number];
-const winnerOf = ([a, b]: Score): number | null => {
+export const winnerOf = ([a, b]: Score): number | null => {
   if (a === 30 && a > b) return 0;
   if (b === 30 && b > a) return 1;
   if (a >= 21 && a - b >= 2) return 0;
