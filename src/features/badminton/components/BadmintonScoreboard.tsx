@@ -21,6 +21,13 @@ export const winnerOf = ([a, b]: Score): number | null => {
 const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
   const { t } = useTranslation();
   const [mode, setMode] = useState<"standard" | "freehand">("standard");
+  const [scoreSize, setScoreSize] = useState(1);
+  const scoreSizeClasses = [
+    "text-3xl sm:text-4xl",
+    "text-4xl sm:text-5xl",
+    "text-5xl sm:text-6xl",
+    "text-6xl sm:text-7xl",
+  ] as const;
   const [games, setGames] = useState<Score[]>([]);
   const [points, setPoints] = useState<Score>([0, 0]);
   const [undo, setUndo] = useState<{ games: Score[]; points: Score }[]>([]);
@@ -73,6 +80,37 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
         )}
       </CardHeader>
       <CardBody className="space-y-4 pt-0">
+        <div className="flex items-center justify-end gap-2">
+          <span className="mr-auto text-xs font-medium text-default-500">
+            {t("badminton.scoreSize")}
+          </span>
+          <Button
+            isIconOnly
+            size="sm"
+            radius="lg"
+            variant="flat"
+            isDisabled={scoreSize === 0}
+            onPress={() => setScoreSize((current) => Math.max(0, current - 1))}
+            aria-label={t("badminton.decreaseScoreSize")}
+          >
+            A−
+          </Button>
+          <Button
+            isIconOnly
+            size="sm"
+            radius="lg"
+            variant="flat"
+            isDisabled={scoreSize === scoreSizeClasses.length - 1}
+            onPress={() =>
+              setScoreSize((current) =>
+                Math.min(scoreSizeClasses.length - 1, current + 1),
+              )
+            }
+            aria-label={t("badminton.increaseScoreSize")}
+          >
+            A+
+          </Button>
+        </div>
         <div className="grid grid-cols-2 gap-2 rounded-2xl bg-default-100 p-1">
           {(["standard", "freehand"] as const).map((value) => (
             <Button
@@ -109,7 +147,9 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
                   {t("badminton.gamesWon", { count: wins[side] })}
                 </p>
               )}
-              <p className="my-2 text-4xl font-bold tabular-nums">
+              <p
+                className={`my-2 font-bold leading-none tabular-nums ${scoreSizeClasses[scoreSize]}`}
+              >
                 {mode === "standard" && completed ? "–" : points[side]}
               </p>
               <div className="flex gap-2">

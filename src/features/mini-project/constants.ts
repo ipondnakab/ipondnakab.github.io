@@ -65,6 +65,19 @@ export const MINI_PROJECTS: {
     },
   },
   {
+    name: "badminton-scoreboard",
+    title: "BADMINTON SCOREBOARD",
+    href: "/mini-project/badminton/scoreboard",
+    icon: GiShuttlecock,
+    description: {
+      en: "Track badminton points instantly with standard or freehand scoring and adjustable score size.",
+      th: "นับคะแนนแบดมินตันได้ทันที ทั้งโหมดมาตรฐานและโหมดอิสระ พร้อมปรับขนาดตัวเลขคะแนน",
+      ja: "標準・自由モードでバドミントンの得点を記録し、スコアの文字サイズも変更できます。",
+      sv: "Räkna badmintonpoäng direkt i standard- eller fritt läge och justera poängstorleken.",
+      zh: "使用标准或自由模式即时记录羽毛球比分，并调整比分字号。",
+    },
+  },
+  {
     name: "pokdeng",
     title: "POKDENG CREDIT",
     href: "/pokdeng",

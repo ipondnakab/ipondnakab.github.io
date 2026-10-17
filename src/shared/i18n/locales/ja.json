@@ -559,7 +559,13 @@
     "resetScore": "スコアをリセット",
     "scoreModestandard": "標準",
     "scoreModefreehand": "自由採点",
-    "removePointFor": "{{name}}の得点を減らす"
+    "removePointFor": "{{name}}の得点を減らす",
+    "scoreSize": "スコアの文字サイズ",
+    "decreaseScoreSize": "スコア表示を小さくする",
+    "increaseScoreSize": "スコア表示を大きくする",
+    "standaloneHint": "大会を設定せずにスコアボードを使用できます。",
+    "teamLabel": "チーム {{number}}",
+    "openOrganizer": "バドミントン対戦管理を開く"
   },
   "deepjump": {
     "title": "Deepjump",

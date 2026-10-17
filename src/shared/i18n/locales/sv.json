@@ -559,7 +559,13 @@
     "resetScore": "Nollställ poäng",
     "scoreModestandard": "Standard",
     "scoreModefreehand": "Fri poängräkning",
-    "removePointFor": "Ta bort poäng för {{name}}"
+    "removePointFor": "Ta bort poäng för {{name}}",
+    "scoreSize": "Poängstorlek",
+    "decreaseScoreSize": "Minska poängstorlek",
+    "increaseScoreSize": "Öka poängstorlek",
+    "standaloneHint": "Använd poängtavlan utan att skapa en turnering.",
+    "teamLabel": "Lag {{number}}",
+    "openOrganizer": "Öppna badmintonorganisatören"
   },
   "deepjump": {
     "title": "Deepjump",
