@@ -562,7 +562,10 @@
     "removePointFor": "ลดคะแนนให้ {{name}}",
     "scoreSize": "ขนาดตัวเลขคะแนน",
     "decreaseScoreSize": "ลดขนาดตัวเลขคะแนน",
-    "increaseScoreSize": "เพิ่มขนาดตัวเลขคะแนน"
+    "increaseScoreSize": "เพิ่มขนาดตัวเลขคะแนน",
+    "standaloneHint": "ใช้งานกระดานคะแนนได้ทันทีโดยไม่ต้องสร้างการแข่งขัน",
+    "teamLabel": "ทีม {{number}}",
+    "openOrganizer": "เปิดตัวจัดการแข่งขันแบดมินตัน"
   },
   "deepjump": {
     "title": "Deepjump",
