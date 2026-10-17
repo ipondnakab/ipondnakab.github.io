@@ -1,7 +1,7 @@
 "use client";
 
 import { Team } from "@/features/badminton/model/badminton";
-import { Button } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -54,11 +54,12 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
     setUndo((history) => history.slice(0, -1));
   };
   return (
-    <section className="space-y-3 border-t border-default-200/60 p-4" aria-label={t("badminton.scoreboard")}>
-      <div className="flex items-center justify-between gap-2">
+    <Card className="border border-default-200/70 bg-content1/90 shadow-sm" aria-label={t("badminton.scoreboard")}>
+      <CardHeader className="flex items-center justify-between gap-2 pb-2">
         <h4 className="text-sm font-semibold">{t("badminton.scoreboard")}</h4>
         {mode === "standard" && <span className="text-xs text-default-500">{t("badminton.gameNumber", { number: Math.min(games.length + 1, 3) })}</span>}
-      </div>
+      </CardHeader>
+      <CardBody className="space-y-4 pt-0">
       <div className="grid grid-cols-2 gap-2 rounded-2xl bg-default-100 p-1">
         {(["standard", "freehand"] as const).map((value) => (
           <Button key={value} variant={mode === value ? "solid" : "light"} color={mode === value ? "primary" : "default"} onPress={() => { setMode(value); setPoints([0, 0]); setGames([]); setUndo([]); }} aria-pressed={mode === value}>
@@ -85,7 +86,8 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
         {mode === "standard" && <Button size="sm" variant="flat" isDisabled={!undo.length} onPress={restore}>{t("badminton.undoScore")}</Button>}
         <Button size="sm" variant="light" color="danger" onPress={() => { setGames([]); setPoints([0, 0]); setUndo([]); }}>{t("badminton.resetScore")}</Button>
       </div>
-    </section>
+      </CardBody>
+    </Card>
   );
 };
 
