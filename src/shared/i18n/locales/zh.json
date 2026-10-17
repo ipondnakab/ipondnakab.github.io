@@ -549,7 +549,14 @@
     "randomSinglesHelp": "随机生成一对一比赛，根据单打历史优先选择交手次数较少的对手。人数为奇数时，一名球员休息。",
     "loadingSession": "正在加载已保存的数据…",
     "storageUnavailable": "无法在此设备上保存更改。你可以继续比赛，但离开或刷新页面后，最近的更改可能丢失。",
-    "temporarySession": "在可以保存之前，更改仅保留在内存中。"
+    "temporarySession": "在可以保存之前，更改仅保留在内存中。",
+    "scoreboard": "记分牌",
+    "gameNumber": "第{{number}}局",
+    "gamesWon": "已赢{{count}}局",
+    "addPointFor": "为{{name}}加分",
+    "matchWinner": "{{name}}赢得比赛",
+    "undoScore": "撤销",
+    "resetScore": "重置比分"
   },
   "deepjump": {
     "title": "Deepjump",
