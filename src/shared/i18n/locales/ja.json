@@ -556,7 +556,10 @@
     "addPointFor": "{{name}}に得点を追加",
     "matchWinner": "{{name}}の勝利",
     "undoScore": "元に戻す",
-    "resetScore": "スコアをリセット"
+    "resetScore": "スコアをリセット",
+    "scoreModestandard": "標準",
+    "scoreModefreehand": "自由採点",
+    "removePointFor": "{{name}}の得点を減らす"
   },
   "deepjump": {
     "title": "Deepjump",
