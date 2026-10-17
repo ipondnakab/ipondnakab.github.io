@@ -562,7 +562,10 @@
     "removePointFor": "Remove point from {{name}}",
     "scoreSize": "Score size",
     "decreaseScoreSize": "Decrease score size",
-    "increaseScoreSize": "Increase score size"
+    "increaseScoreSize": "Increase score size",
+    "standaloneHint": "Use the scoreboard without setting up a tournament.",
+    "teamLabel": "Team {{number}}",
+    "openOrganizer": "Open badminton organizer"
   },
   "deepjump": {
     "title": "Deepjump",
