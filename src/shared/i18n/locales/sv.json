@@ -556,7 +556,10 @@
     "addPointFor": "Lägg till poäng för {{name}}",
     "matchWinner": "{{name}} vinner matchen",
     "undoScore": "Ångra",
-    "resetScore": "Nollställ poäng"
+    "resetScore": "Nollställ poäng",
+    "scoreModestandard": "Standard",
+    "scoreModefreehand": "Fri poängräkning",
+    "removePointFor": "Ta bort poäng för {{name}}"
   },
   "deepjump": {
     "title": "Deepjump",
