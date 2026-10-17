@@ -472,6 +472,7 @@ const Badminton: React.FC<BadmintonProps> = () => {
                         key={i}
                         teams={teams}
                         number={i + 1}
+                        showScoreboard
                       />
                     ))}
                   </div>
@@ -589,6 +590,7 @@ const Badminton: React.FC<BadmintonProps> = () => {
                             key={m}
                             teams={match.teams}
                             number={m + 1}
+                            showScoreboard
                             winner={match.winner}
                             onSelectWinner={(side) =>
                               setField("rounds", (current) =>
