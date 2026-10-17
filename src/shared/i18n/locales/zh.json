@@ -556,7 +556,10 @@
     "addPointFor": "为{{name}}加分",
     "matchWinner": "{{name}}赢得比赛",
     "undoScore": "撤销",
-    "resetScore": "重置比分"
+    "resetScore": "重置比分",
+    "scoreModestandard": "标准",
+    "scoreModefreehand": "自由计分",
+    "removePointFor": "为{{name}}减分"
   },
   "deepjump": {
     "title": "Deepjump",
