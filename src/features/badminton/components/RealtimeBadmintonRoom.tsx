@@ -116,7 +116,7 @@ const RealtimeBadmintonRoom = () => {
     : [0, 0];
   const completed = wins.some((count) => count >= 2);
   return (
-    <main className="w-full space-y-4 px-0 py-4">
+    <main className="w-full space-y-4 px-2 py-4 sm:px-4 lg:px-6">
       <header className="rounded-2xl bg-content1 p-3">
         <h1 className="text-2xl font-bold">Live Badminton Scoreboard</h1>
         <p className="text-sm text-default-500">
