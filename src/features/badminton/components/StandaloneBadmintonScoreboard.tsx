@@ -20,7 +20,7 @@ const StandaloneBadmintonScoreboard = () => {
   ]);
 
   return (
-    <main className="w-full max-w-none space-y-5 px-0 py-5 pb-10">
+    <main className="w-full max-w-none space-y-5 px-2 py-5 pb-10 sm:px-4 lg:px-6">
       <header className="relative isolate overflow-hidden rounded-3xl border border-primary/15 bg-content1/80 p-3 sm:p-5">
         <div
           aria-hidden
