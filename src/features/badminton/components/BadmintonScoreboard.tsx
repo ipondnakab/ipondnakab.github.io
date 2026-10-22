@@ -56,6 +56,11 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
     } else setPoints(next);
   };
 
+  const increasePoint = (side: number) => {
+    if (mode === "freehand") changeFreehandPoint(side, 1);
+    else addPoint(side);
+  };
+
   const restore = () => {
     const previous = undo[undo.length - 1];
     if (!previous) return;
@@ -133,7 +138,7 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
           {teams.map((team, side) => (
             <div
               key={side}
-              className={`rounded-2xl border-2 p-3 text-center ${
+              className={`min-w-0 rounded-2xl border-2 p-1 text-center sm:p-3 ${
                 side === 0
                   ? "border-red-500/60 bg-red-500/10"
                   : "border-blue-500/60 bg-blue-500/10"
@@ -151,13 +156,19 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
                   {t("badminton.gamesWon", { count: wins[side] })}
                 </p>
               )}
-              <p
-                className={`my-2 font-bold leading-none tabular-nums ${scoreSizeClasses[scoreSize]} ${
+              <button
+                type="button"
+                disabled={mode === "standard" && completed}
+                onClick={() => increasePoint(side)}
+                aria-label={t("badminton.addPointFor", {
+                  name: team.map((player) => player.name).join(" / "),
+                })}
+                className={`my-2 flex min-h-32 w-full items-center justify-center rounded-xl font-bold leading-none tabular-nums transition-colors active:bg-default-200/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed ${scoreSizeClasses[scoreSize]} ${
                   side === 0 ? "text-red-500" : "text-blue-500"
                 }`}
               >
                 {mode === "standard" && completed ? "–" : points[side]}
-              </p>
+              </button>
               <div className="flex gap-2">
                 {mode === "freehand" && (
                   <Button
