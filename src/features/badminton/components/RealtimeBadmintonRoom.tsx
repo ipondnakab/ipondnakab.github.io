@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  authenticateRoom,
   createRoom,
   newRoomCode,
   normalizeCode,
@@ -30,26 +29,16 @@ const RealtimeBadmintonRoom = () => {
   }, []);
   useEffect(() => {
     if (!code) return;
-    let unsubscribe: (() => void) | undefined;
-    let active = true;
-    authenticateRoom()
-      .then(() => {
-        if (!active) return;
-        unsubscribe = subscribeRoom(
-          code,
-          (value) => {
-            setRoom(value);
-            if (value) setNames(value.names);
-            else setError("Room not found.");
-          },
-          (cause) => setError(cause.message),
-        );
-      })
-      .catch((cause: Error) => setError(cause.message));
-    return () => {
-      active = false;
-      unsubscribe?.();
-    };
+    const unsubscribe = subscribeRoom(
+      code,
+      (value) => {
+        setRoom(value);
+        if (value) setNames(value.names);
+        else setError("Room not found.");
+      },
+      (cause) => setError(cause.message),
+    );
+    return () => unsubscribe();
   }, [code]);
   const enter = (next: string) => {
     setError("");
