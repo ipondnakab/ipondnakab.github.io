@@ -1,0 +1,33 @@
+# Add this match block inside your EXISTING Firestore rules service/cloud.firestore match /databases/{database}/documents.
+# Do not replace existing rules used by other features.
+match /badmintonScoreRooms/{roomId} {
+  function signedIn() {
+    return request.auth != null;
+  }
+  function validRoom(data) {
+    return data.keys().hasAll(["names", "points", "games", "mode", "revision"]) &&
+      data.names is list && data.names.size() == 2 &&
+      data.names[0] is string && data.names[0].size() <= 40 &&
+      data.names[1] is string && data.names[1].size() <= 40 &&
+      data.points is list && data.points.size() == 2 &&
+      data.points[0] is int && data.points[0] >= 0 && data.points[0] <= 100000 &&
+      data.points[1] is int && data.points[1] >= 0 && data.points[1] <= 100000 &&
+      data.games is list && data.games.size() <= 3 &&
+      data.mode in ["standard", "freehand"] &&
+      data.revision is int && data.revision >= 0;
+  }
+  allow get: if signedIn();
+  allow list: if false;
+  allow create: if signedIn() &&
+    roomId.matches('[A-Z2-9]{8}') &&
+    request.resource.data.keys().hasOnly(["names", "points", "games", "mode", "revision", "createdAt"]) &&
+    validRoom(request.resource.data) &&
+    request.resource.data.revision == 0 &&
+    request.resource.data.createdAt == request.time;
+  allow update: if signedIn() &&
+    request.resource.data.diff(resource.data).affectedKeys()
+      .hasOnly(["names", "points", "games", "mode", "revision"]) &&
+    validRoom(request.resource.data) &&
+    request.resource.data.revision == resource.data.revision + 1;
+  allow delete: if false;
+}

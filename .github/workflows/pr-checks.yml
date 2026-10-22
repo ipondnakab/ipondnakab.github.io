@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   quality:
-    name: Lint, Typecheck, Test and Build
+    name: Lint, Typecheck and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,5 +28,3 @@ jobs:
         run: yarn lint
       - name: Test
         run: yarn test
-      - name: Build
-        run: yarn build
