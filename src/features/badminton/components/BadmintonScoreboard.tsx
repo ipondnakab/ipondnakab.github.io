@@ -133,13 +133,17 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
           {teams.map((team, side) => (
             <div
               key={side}
-              className={`rounded-2xl border p-3 text-center ${
-                mode === "standard" && matchWinner === side
-                  ? "border-success bg-success/10"
-                  : "border-default-200 bg-default-100/60"
+              className={`rounded-2xl border-2 p-3 text-center ${
+                side === 0
+                  ? "border-red-500/60 bg-red-500/10"
+                  : "border-blue-500/60 bg-blue-500/10"
               }`}
             >
-              <p className="min-h-10 break-words text-sm font-semibold">
+              <p
+                className={`min-h-10 break-words text-sm font-semibold ${
+                  side === 0 ? "text-red-500" : "text-blue-500"
+                }`}
+              >
                 {team.map((player) => player.name).join(" / ")}
               </p>
               {mode === "standard" && (
@@ -148,7 +152,9 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
                 </p>
               )}
               <p
-                className={`my-2 font-bold leading-none tabular-nums ${scoreSizeClasses[scoreSize]}`}
+                className={`my-2 font-bold leading-none tabular-nums ${scoreSizeClasses[scoreSize]} ${
+                  side === 0 ? "text-red-500" : "text-blue-500"
+                }`}
               >
                 {mode === "standard" && completed ? "–" : points[side]}
               </p>
@@ -168,9 +174,13 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
                   </Button>
                 )}
                 <Button
-                  color="primary"
+                  color={side === 0 ? "danger" : "primary"}
                   variant="flat"
-                  className="min-w-0 flex-1"
+                  className={`min-w-0 flex-1 ${
+                    side === 0
+                      ? "bg-red-500/15 text-red-500"
+                      : "bg-blue-500/15 text-blue-500"
+                  }`}
                   isDisabled={mode === "standard" && completed}
                   onPress={() =>
                     mode === "freehand"
