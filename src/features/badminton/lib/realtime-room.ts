@@ -1,5 +1,4 @@
-import { app, db } from "@/shared/lib/firebase";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { db } from "@/shared/lib/firebase";
 import {
   doc,
   getDoc,
@@ -33,10 +32,6 @@ export const newRoomCode = () => {
     (n) => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[n % 32],
   ).join("");
 };
-export const authenticateRoom = async () => {
-  const auth = getAuth(app);
-  if (!auth.currentUser) await signInAnonymously(auth);
-};
 export const subscribeRoom = (
   code: string,
   next: (room: ScoreRoom | null) => void,
@@ -50,7 +45,6 @@ export const subscribeRoom = (
     error,
   );
 export const createRoom = async (code: string) => {
-  await authenticateRoom();
   await setDoc(roomRef(code), {
     names: ["Red Team", "Blue Team"],
     points: [0, 0],
@@ -61,7 +55,6 @@ export const createRoom = async (code: string) => {
   });
 };
 export const roomExists = async (code: string) => {
-  await authenticateRoom();
   return (await getDoc(roomRef(code))).exists();
 };
 export const winnerOf = ([a, b]: Score): number | null => {
