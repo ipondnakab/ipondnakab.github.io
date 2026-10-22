@@ -68,7 +68,9 @@ const RealtimeBadmintonRoom = () => {
       await createRoom(next);
       enter(next);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not create room.");
+      setError(
+        cause instanceof Error ? cause.message : "Could not create room.",
+      );
     } finally {
       setLoading(false);
     }
@@ -110,8 +112,8 @@ const RealtimeBadmintonRoom = () => {
     window.history.replaceState(null, "", url.toString());
   };
   const wins = room
-    ? ([0, 1] as const).map((side) =>
-        room.games.filter((game) => winnerOf(game) === side).length,
+    ? ([0, 1] as const).map(
+        (side) => room.games.filter((game) => winnerOf(game) === side).length,
       )
     : [0, 0];
   const completed = wins.some((count) => count >= 2);
@@ -125,7 +127,12 @@ const RealtimeBadmintonRoom = () => {
       </header>
       {!code ? (
         <section className="space-y-4 rounded-2xl bg-content1 p-4">
-          <Button color="primary" onPress={create} isLoading={loading} fullWidth>
+          <Button
+            color="primary"
+            onPress={create}
+            isLoading={loading}
+            fullWidth
+          >
             Create room
           </Button>
           <div className="flex gap-2">
@@ -137,7 +144,12 @@ const RealtimeBadmintonRoom = () => {
               maxLength={8}
               aria-label="Room code"
             />
-            <Button onPress={join} isLoading={loading} color="primary" variant="flat">
+            <Button
+              onPress={join}
+              isLoading={loading}
+              color="primary"
+              variant="flat"
+            >
               Join
             </Button>
           </div>
@@ -146,13 +158,23 @@ const RealtimeBadmintonRoom = () => {
         <section className="space-y-4">
           <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-content1 p-3">
             <span className="mr-auto font-mono font-bold">Room: {code}</span>
-            <Button size="sm" variant="flat" onPress={() => navigator.clipboard.writeText(window.location.href)}>
+            <Button
+              size="sm"
+              variant="flat"
+              onPress={() =>
+                navigator.clipboard.writeText(window.location.href)
+              }
+            >
               Copy link
             </Button>
-            <Button size="sm" variant="light" onPress={leave}>Leave</Button>
+            <Button size="sm" variant="light" onPress={leave}>
+              Leave
+            </Button>
           </div>
           {!room ? (
-            <p role="status" className="p-4">Connecting to room...</p>
+            <p role="status" className="p-4">
+              Connecting to room...
+            </p>
           ) : (
             <>
               <div className="flex items-center justify-between gap-2 rounded-xl bg-content1 p-2">
@@ -170,23 +192,55 @@ const RealtimeBadmintonRoom = () => {
                   ))}
                 </div>
                 <div className="flex gap-1">
-                  <Button size="sm" isIconOnly aria-label="Smaller score" isDisabled={scoreSize === 0} onPress={() => setScoreSize((n) => Math.max(0, n - 1))}>A−</Button>
-                  <Button size="sm" isIconOnly aria-label="Larger score" isDisabled={scoreSize === 3} onPress={() => setScoreSize((n) => Math.min(3, n + 1))}>A+</Button>
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    aria-label="Smaller score"
+                    isDisabled={scoreSize === 0}
+                    onPress={() => setScoreSize((n) => Math.max(0, n - 1))}
+                  >
+                    A−
+                  </Button>
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    aria-label="Larger score"
+                    isDisabled={scoreSize === 3}
+                    onPress={() => setScoreSize((n) => Math.min(3, n + 1))}
+                  >
+                    A+
+                  </Button>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-1 sm:gap-3">
                 {([0, 1] as const).map((side) => (
-                  <div key={side} className={`min-w-0 rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}>
+                  <div
+                    key={side}
+                    className={`min-w-0 rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
+                  >
                     <Input
                       size="sm"
-                      aria-label={side === 0 ? "Red team name" : "Blue team name"}
+                      aria-label={
+                        side === 0 ? "Red team name" : "Blue team name"
+                      }
                       value={names[side]}
-                      onValueChange={(value) => setNames((current) => current.map((n, i) => i === side ? value : n) as [string, string])}
+                      onValueChange={(value) =>
+                        setNames(
+                          (current) =>
+                            current.map((n, i) => (i === side ? value : n)) as [
+                              string,
+                              string,
+                            ],
+                        )
+                      }
                       onBlur={() => {
-                        if (names[side] !== room.names[side]) change({ type: "name", side, name: names[side] });
+                        if (names[side] !== room.names[side])
+                          change({ type: "name", side, name: names[side] });
                       }}
                     />
-                    {room.mode === "standard" && <p className="pt-2 text-xs">Games won: {wins[side]}</p>}
+                    {room.mode === "standard" && (
+                      <p className="pt-2 text-xs">Games won: {wins[side]}</p>
+                    )}
                     <button
                       type="button"
                       disabled={completed && room.mode === "standard"}
@@ -199,27 +253,58 @@ const RealtimeBadmintonRoom = () => {
                     <div className="flex gap-1">
                       <Button
                         className="min-w-0 flex-1"
-                        isDisabled={room.mode === "standard" || room.points[side] === 0}
-                        onPress={() => change({ type: "point", side, delta: -1 })}
-                      >−1</Button>
+                        isDisabled={
+                          room.mode === "standard" || room.points[side] === 0
+                        }
+                        onPress={() =>
+                          change({ type: "point", side, delta: -1 })
+                        }
+                      >
+                        −1
+                      </Button>
                       <Button
                         className="min-w-0 flex-1"
                         color={side === 0 ? "danger" : "primary"}
                         isDisabled={completed && room.mode === "standard"}
-                        onPress={() => change({ type: "point", side, delta: 1 })}
-                      >+1</Button>
+                        onPress={() =>
+                          change({ type: "point", side, delta: 1 })
+                        }
+                      >
+                        +1
+                      </Button>
                     </div>
                   </div>
                 ))}
               </div>
-              {room.games.length > 0 && <p className="text-center text-sm text-default-500">{room.games.map((game) => game.join("–")).join(" · ")}</p>}
-              {completed && room.mode === "standard" && <p role="status" className="text-center font-semibold">Winner: {room.names[wins[0] >= 2 ? 0 : 1]}</p>}
-              <Button color="danger" variant="flat" onPress={() => change({ type: "reset" })}>Reset scores</Button>
+              {room.games.length > 0 && (
+                <p className="text-center text-sm text-default-500">
+                  {room.games.map((game) => game.join("–")).join(" · ")}
+                </p>
+              )}
+              {completed && room.mode === "standard" && (
+                <p role="status" className="text-center font-semibold">
+                  Winner: {room.names[wins[0] >= 2 ? 0 : 1]}
+                </p>
+              )}
+              <Button
+                color="danger"
+                variant="flat"
+                onPress={() => change({ type: "reset" })}
+              >
+                Reset scores
+              </Button>
             </>
           )}
         </section>
       )}
-      {error && <p role="alert" className="rounded-xl bg-danger/10 p-3 text-sm text-danger">{error}</p>}
+      {error && (
+        <p
+          role="alert"
+          className="rounded-xl bg-danger/10 p-3 text-sm text-danger"
+        >
+          {error}
+        </p>
+      )}
     </main>
   );
 };
