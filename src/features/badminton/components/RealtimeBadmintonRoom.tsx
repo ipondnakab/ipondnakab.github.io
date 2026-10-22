@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  authenticateRoom,
   createRoom,
   newRoomCode,
   normalizeCode,
@@ -32,10 +31,8 @@ const RealtimeBadmintonRoom = () => {
     if (!code) return;
     let unsubscribe: (() => void) | undefined;
     let active = true;
-    authenticateRoom()
-      .then(() => {
-        if (!active) return;
-        unsubscribe = subscribeRoom(
+    if (active) {
+      unsubscribe = subscribeRoom(
           code,
           (value) => {
             setRoom(value);
@@ -44,8 +41,7 @@ const RealtimeBadmintonRoom = () => {
           },
           (cause) => setError(cause.message),
         );
-      })
-      .catch((cause: Error) => setError(cause.message));
+    }
     return () => {
       active = false;
       unsubscribe?.();
