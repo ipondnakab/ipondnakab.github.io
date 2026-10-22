@@ -20,8 +20,8 @@ const StandaloneBadmintonScoreboard = () => {
   ]);
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-5 px-3 py-5 pb-10 sm:px-6 sm:py-8">
-      <header className="relative isolate overflow-hidden rounded-3xl border border-primary/15 bg-content1/80 p-5 sm:p-8">
+    <main className="w-full max-w-none space-y-5 px-0 py-5 pb-10">
+      <header className="relative isolate overflow-hidden rounded-3xl border border-primary/15 bg-content1/80 p-3 sm:p-5">
         <div
           aria-hidden
           className="pointer-events-none absolute -right-16 -top-24 -z-10 h-72 w-72 rounded-full bg-primary/15 blur-3xl"
@@ -40,7 +40,7 @@ const StandaloneBadmintonScoreboard = () => {
           </div>
         </div>
       </header>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         {names.map((name, index) => (
           <Input
             key={index}
