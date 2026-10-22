@@ -59,6 +59,9 @@ const StandaloneBadmintonScoreboard = () => {
         ))}
       </div>
       <BadmintonScoreboard teams={teams} />
+      <Button as={Link} href="/mini-project/badminton/live" color="primary" fullWidth>
+        Create or join a live scoreboard room
+      </Button>
       <Button as={Link} href="/badminton" variant="light" color="primary">
         {t("badminton.openOrganizer")}
       </Button>
