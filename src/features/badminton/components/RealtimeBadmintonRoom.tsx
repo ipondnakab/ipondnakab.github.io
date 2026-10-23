@@ -21,7 +21,9 @@ const RealtimeBadmintonRoom = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [scoreSize, setScoreSize] = useState(6);
-  const [connection, setConnection] = useState<"firebase" | "direct" | "connecting">("firebase");
+  const [connection, setConnection] = useState<
+    "firebase" | "direct" | "connecting"
+  >("firebase");
   const peerRef = useRef<ReturnType<typeof connectScorePeers> | null>(null);
   const revisionRef = useRef(-1);
   const [names, setNames] = useState<[string, string]>(["", ""]);
@@ -171,7 +173,9 @@ const RealtimeBadmintonRoom = () => {
           <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-content1 p-3">
             <span className="mr-auto font-mono font-bold">Room: {code}</span>
             <span role="status" className="text-xs text-default-500">
-              {connection === "direct" ? "Direct peer connection" : "Firebase sync"}
+              {connection === "direct"
+                ? "Direct peer connection"
+                : "Firebase sync"}
             </span>
             <Button
               size="sm"

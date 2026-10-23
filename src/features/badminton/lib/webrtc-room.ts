@@ -39,7 +39,7 @@ export const connectScorePeers = (
   roomCode: string,
   onScore: (room: ScoreRoom) => void,
   onStatus: (status: Status) => void,
-) : PeerSession => {
+): PeerSession => {
   if (typeof RTCPeerConnection === "undefined") {
     onStatus("firebase");
     return Object.assign(() => {}, { broadcast: (_room: ScoreRoom) => {} });
@@ -102,7 +102,10 @@ export const connectScorePeers = (
     const peer = new RTCPeerConnection(rtcConfig);
     connections.set(other, { peer, stop: () => {} });
     peer.onconnectionstatechange = () => {
-      if (peer.connectionState === "failed" || peer.connectionState === "closed") {
+      if (
+        peer.connectionState === "failed" ||
+        peer.connectionState === "closed"
+      ) {
         closePeer(other);
       } else {
         refreshStatus();
@@ -113,37 +116,45 @@ export const connectScorePeers = (
       attachChannel(other, peer.createDataChannel("scores", { ordered: true }));
     }
     let busy = false;
-    const stop = onSnapshot(signal, async (snapshot) => {
-      if (!snapshot.exists() || disposed || busy) return;
-      const data = snapshot.data();
-      try {
-        busy = true;
-        if (!initiator && data.offer && !peer.currentRemoteDescription) {
-          await peer.setRemoteDescription(
-            new RTCSessionDescription(data.offer as RTCSessionDescriptionInit),
-          );
-          await peer.setLocalDescription(await peer.createAnswer());
-          await waitForIce(peer);
-          await setDoc(
-            signal,
-            { answer: peer.localDescription?.toJSON() },
-            { merge: true },
-          );
-        } else if (
-          initiator &&
-          data.answer &&
-          !peer.currentRemoteDescription
-        ) {
-          await peer.setRemoteDescription(
-            new RTCSessionDescription(data.answer as RTCSessionDescriptionInit),
-          );
+    const stop = onSnapshot(
+      signal,
+      async (snapshot) => {
+        if (!snapshot.exists() || disposed || busy) return;
+        const data = snapshot.data();
+        try {
+          busy = true;
+          if (!initiator && data.offer && !peer.currentRemoteDescription) {
+            await peer.setRemoteDescription(
+              new RTCSessionDescription(
+                data.offer as RTCSessionDescriptionInit,
+              ),
+            );
+            await peer.setLocalDescription(await peer.createAnswer());
+            await waitForIce(peer);
+            await setDoc(
+              signal,
+              { answer: peer.localDescription?.toJSON() },
+              { merge: true },
+            );
+          } else if (
+            initiator &&
+            data.answer &&
+            !peer.currentRemoteDescription
+          ) {
+            await peer.setRemoteDescription(
+              new RTCSessionDescription(
+                data.answer as RTCSessionDescriptionInit,
+              ),
+            );
+          }
+        } catch {
+          closePeer(other);
+        } finally {
+          busy = false;
         }
-      } catch {
-        closePeer(other);
-      } finally {
-        busy = false;
-      }
-    }, () => closePeer(other));
+      },
+      () => closePeer(other),
+    );
     connections.get(other)!.stop = stop;
 
     if (initiator) {
