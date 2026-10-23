@@ -8,7 +8,10 @@ import {
 } from "firebase/firestore";
 import type { ScoreRoom } from "./realtime-room";
 
-type RoomMessage = { type: "score"; room: ScoreRoom };
+interface RoomMessage {
+  type: "score";
+  room: ScoreRoom;
+}
 type Status = "connecting" | "direct" | "firebase";
 type PeerSession = (() => void) & { broadcast: (room: ScoreRoom) => void };
 
