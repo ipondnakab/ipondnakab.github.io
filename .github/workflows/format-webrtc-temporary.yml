@@ -1,0 +1,29 @@
+name: Format WebRTC implementation
+
+on:
+  push:
+    branches: [feat/badminton-webrtc-firebase-fallback]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn prettier --write src/features/badminton/lib/webrtc-room.ts src/features/badminton/components/RealtimeBadmintonRoom.tsx
+      - name: Commit formatting
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/features/badminton/lib/webrtc-room.ts src/features/badminton/components/RealtimeBadmintonRoom.tsx
+          if ! git diff --cached --quiet; then
+            git commit -m "style(badminton): apply Prettier to WebRTC files"
+            git push
+          fi
