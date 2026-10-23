@@ -13,14 +13,13 @@ import {
 import { Button, Input } from "@nextui-org/react";
 import { useCallback, useEffect, useState } from "react";
 
-const scoreSizes = ["text-4xl", "text-5xl", "text-6xl", "text-7xl"];
 const RealtimeBadmintonRoom = () => {
   const [entry, setEntry] = useState("");
   const [code, setCode] = useState("");
   const [room, setRoom] = useState<ScoreRoom | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [scoreSize, setScoreSize] = useState(2);
+  const [scoreSize, setScoreSize] = useState(6);
   const [names, setNames] = useState<[string, string]>(["", ""]);
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -180,13 +179,16 @@ const RealtimeBadmintonRoom = () => {
                     </Button>
                   ))}
                 </div>
-                <div className="flex gap-1">
+                <div className="flex items-center gap-1">
+                  <span className="text-xs tabular-nums text-default-500">
+                    {scoreSize}rem
+                  </span>
                   <Button
                     size="sm"
                     isIconOnly
                     aria-label="Smaller score"
-                    isDisabled={scoreSize === 0}
-                    onPress={() => setScoreSize((n) => Math.max(0, n - 1))}
+                    isDisabled={scoreSize === 1}
+                    onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
                   >
                     A−
                   </Button>
@@ -194,10 +196,18 @@ const RealtimeBadmintonRoom = () => {
                     size="sm"
                     isIconOnly
                     aria-label="Larger score"
-                    isDisabled={scoreSize === 3}
-                    onPress={() => setScoreSize((n) => Math.min(3, n + 1))}
+                    isDisabled={scoreSize === 20}
+                    onPress={() => setScoreSize((n) => Math.min(20, n + 1))}
                   >
                     A+
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="flat"
+                    onPress={() => setScoreSize(6)}
+                    aria-label="Reset score font size"
+                  >
+                    Reset
                   </Button>
                 </div>
               </div>
@@ -235,7 +245,8 @@ const RealtimeBadmintonRoom = () => {
                       disabled={completed && room.mode === "standard"}
                       aria-label={`Add point for ${room.names[side]}`}
                       onClick={() => change({ type: "point", side, delta: 1 })}
-                      className={`flex min-h-48 w-full items-center justify-center font-bold tabular-nums focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${scoreSizes[scoreSize]} ${side === 0 ? "text-red-500" : "text-blue-500"}`}
+                      style={{ fontSize: `${scoreSize}rem` }}
+                      className={`flex min-h-48 w-full items-center justify-center font-bold leading-none tabular-nums overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${side === 0 ? "text-red-500" : "text-blue-500"}`}
                     >
                       {room.points[side]}
                     </button>
