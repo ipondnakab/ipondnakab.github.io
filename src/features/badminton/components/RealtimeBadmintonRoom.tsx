@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const RealtimeBadmintonRoom = () => {
   const [entry, setEntry] = useState("");
+  const [newName, setNewName] = useState("");
   const [code, setCode] = useState("");
   const [room, setRoom] = useState<ScoreRoom | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,7 @@ const RealtimeBadmintonRoom = () => {
   useEffect(() => {
     const url = new URL(window.location.href);
     const requested = normalizeCode(url.searchParams.get("room") || "");
-    if (requested.length === 8) setCode(requested);
+    if (requested) setCode(requested);
   }, []);
   useEffect(() => {
     if (!code) return;
@@ -77,8 +78,11 @@ const RealtimeBadmintonRoom = () => {
     setLoading(true);
     setError("");
     try {
-      let next = newRoomCode();
-      while (await roomExists(next)) next = newRoomCode();
+      const chosen = normalizeCode(newName);
+      let next = chosen || newRoomCode();
+      if (!chosen) {
+        while (await roomExists(next)) next = newRoomCode();
+      }
       await createRoom(next);
       enter(next);
     } catch (cause) {
@@ -91,8 +95,8 @@ const RealtimeBadmintonRoom = () => {
   };
   const join = async () => {
     const next = normalizeCode(entry);
-    if (next.length !== 8) {
-      setError("Enter an 8-character room code.");
+    if (!next) {
+      setError("Enter a room name.");
       return;
     }
     setLoading(true);
@@ -136,11 +140,18 @@ const RealtimeBadmintonRoom = () => {
       <header className="rounded-2xl bg-content1 p-3">
         <h1 className="text-2xl font-bold">Live Badminton Scoreboard</h1>
         <p className="text-sm text-default-500">
-          Share a room code to score together in real time.
+          Create or join a named room to score together in real time.
         </p>
       </header>
       {!code ? (
         <section className="space-y-4 rounded-2xl bg-content1 p-4">
+          <Input
+            label="Room name (optional)"
+            placeholder="e.g. friday-badminton"
+            value={newName}
+            onValueChange={setNewName}
+            maxLength={40}
+          />
           <Button
             color="primary"
             onPress={create}
@@ -151,11 +162,11 @@ const RealtimeBadmintonRoom = () => {
           </Button>
           <div className="flex gap-2">
             <Input
-              label="Room code"
-              placeholder="8-character code"
+              label="Room name"
+              placeholder="Enter a room name"
               value={entry}
               onValueChange={(value) => setEntry(normalizeCode(value))}
-              maxLength={8}
+              maxLength={40}
               aria-label="Room code"
             />
             <Button
