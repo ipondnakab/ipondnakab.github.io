@@ -202,13 +202,13 @@ const RealtimeBadmintonRoom = () => {
                     A+
                   </Button>
                   <Button
-            size="sm"
-            variant="flat"
-            onPress={() => setScoreSize(6)}
-            aria-label="Reset score font size"
-          >
-            Reset
-          </Button>
+                    size="sm"
+                    variant="flat"
+                    onPress={() => setScoreSize(6)}
+                    aria-label="Reset score font size"
+                  >
+                    Reset
+                  </Button>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-1 sm:gap-3">
