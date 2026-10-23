@@ -2,8 +2,8 @@
 # These rules are public because the badminton lobby does not require Firebase Auth.
 # Room codes are not secret authorization; deploy App Check and abuse controls before broad use.
 match /badmintonScoreRooms/{roomId}/peers/{peerId} {
-  allow get, list: if roomId.matches('[A-Z2-9]{8}');
-  allow create, update: if roomId.matches('[A-Z2-9]{8}') &&
+  allow get, list: if roomId.matches('[a-z0-9_-]{1,40}');
+  allow create, update: if roomId.matches('[a-z0-9_-]{1,40}') &&
     peerId.matches('[0-9a-f-]{36}') &&
     request.resource.data.keys().hasOnly(['seenAt']) &&
     request.resource.data.seenAt is number &&
@@ -12,8 +12,8 @@ match /badmintonScoreRooms/{roomId}/peers/{peerId} {
   allow delete: if true;
 }
 match /badmintonScoreRooms/{roomId}/links/{linkId} {
-  allow get, list: if roomId.matches('[A-Z2-9]{8}');
-  allow create, update: if roomId.matches('[A-Z2-9]{8}') &&
+  allow get, list: if roomId.matches('[a-z0-9_-]{1,40}');
+  allow create, update: if roomId.matches('[a-z0-9_-]{1,40}') &&
     request.resource.data.keys().hasOnly(['offer', 'answer']) &&
     request.resource.data.keys().hasAny(['offer', 'answer']) &&
     request.resource.data.size() <= 2;
