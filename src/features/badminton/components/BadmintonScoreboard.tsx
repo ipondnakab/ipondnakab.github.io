@@ -21,13 +21,7 @@ export const winnerOf = ([a, b]: Score): number | null => {
 const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
   const { t } = useTranslation();
   const [mode, setMode] = useState<"standard" | "freehand">("standard");
-  const [scoreSize, setScoreSize] = useState(1);
-  const scoreSizeClasses = [
-    "text-3xl sm:text-4xl",
-    "text-4xl sm:text-5xl",
-    "text-5xl sm:text-6xl",
-    "text-6xl sm:text-7xl",
-  ] as const;
+  const [scoreSize, setScoreSize] = useState(6);
   const [games, setGames] = useState<Score[]>([]);
   const [points, setPoints] = useState<Score>([0, 0]);
   const [undo, setUndo] = useState<{ games: Score[]; points: Score }[]>([]);
@@ -87,15 +81,15 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
       <CardBody className="space-y-4 pt-0">
         <div className="flex items-center justify-end gap-2">
           <span className="mr-auto text-xs font-medium text-default-500">
-            {t("badminton.scoreSize")}
+            {t("badminton.scoreSize")} ({scoreSize}rem)
           </span>
           <Button
             isIconOnly
             size="sm"
             radius="lg"
             variant="flat"
-            isDisabled={scoreSize === 0}
-            onPress={() => setScoreSize((current) => Math.max(0, current - 1))}
+            isDisabled={scoreSize === 1}
+            onPress={() => setScoreSize((current) => Math.max(1, current - 1))}
             aria-label={t("badminton.decreaseScoreSize")}
           >
             A−
@@ -105,16 +99,17 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
             size="sm"
             radius="lg"
             variant="flat"
-            isDisabled={scoreSize === scoreSizeClasses.length - 1}
+            isDisabled={scoreSize === 20}
             onPress={() =>
               setScoreSize((current) =>
-                Math.min(scoreSizeClasses.length - 1, current + 1),
+                Math.min(20, current + 1),
               )
             }
             aria-label={t("badminton.increaseScoreSize")}
           >
             A+
           </Button>
+          <Button size="sm" variant="flat" onPress={() => setScoreSize(6)} aria-label="Reset score font size">Reset</Button>
         </div>
         <div className="grid grid-cols-2 gap-2 rounded-2xl bg-default-100 p-1">
           {(["standard", "freehand"] as const).map((value) => (
@@ -163,7 +158,8 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
                 aria-label={t("badminton.addPointFor", {
                   name: team.map((player) => player.name).join(" / "),
                 })}
-                className={`my-2 flex min-h-32 w-full items-center justify-center rounded-xl font-bold leading-none tabular-nums transition-colors active:bg-default-200/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed ${scoreSizeClasses[scoreSize]} ${
+                style={{ fontSize: `${scoreSize}rem` }}
+                className={`my-2 flex min-h-32 w-full items-center justify-center rounded-xl font-bold leading-none tabular-nums overflow-hidden transition-colors active:bg-default-200/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed ${
                   side === 0 ? "text-red-500" : "text-blue-500"
                 }`}
               >
