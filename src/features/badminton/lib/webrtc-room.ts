@@ -10,6 +10,7 @@ import type { ScoreRoom } from "./realtime-room";
 
 type RoomMessage = { type: "score"; room: ScoreRoom };
 type Status = "connecting" | "direct" | "firebase";
+type PeerSession = (() => void) & { broadcast: (room: ScoreRoom) => void };
 
 const rtcConfig: RTCConfiguration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -38,10 +39,10 @@ export const connectScorePeers = (
   roomCode: string,
   onScore: (room: ScoreRoom) => void,
   onStatus: (status: Status) => void,
-) => {
+) : PeerSession => {
   if (typeof RTCPeerConnection === "undefined") {
     onStatus("firebase");
-    return () => {};
+    return Object.assign(() => {}, { broadcast: (_room: ScoreRoom) => {} });
   }
 
   const self = crypto.randomUUID();
