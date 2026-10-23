@@ -100,16 +100,19 @@ const BadmintonScoreboard: React.FC<BadmintonScoreboardProps> = ({ teams }) => {
             radius="lg"
             variant="flat"
             isDisabled={scoreSize === 20}
-            onPress={() =>
-              setScoreSize((current) =>
-                Math.min(20, current + 1),
-              )
-            }
+            onPress={() => setScoreSize((current) => Math.min(20, current + 1))}
             aria-label={t("badminton.increaseScoreSize")}
           >
             A+
           </Button>
-          <Button size="sm" variant="flat" onPress={() => setScoreSize(6)} aria-label="Reset score font size">Reset</Button>
+          <Button
+            size="sm"
+            variant="flat"
+            onPress={() => setScoreSize(6)}
+            aria-label="Reset score font size"
+          >
+            Reset
+          </Button>
         </div>
         <div className="grid grid-cols-2 gap-2 rounded-2xl bg-default-100 p-1">
           {(["standard", "freehand"] as const).map((value) => (
