@@ -2,8 +2,8 @@ import { db } from "@/shared/lib/firebase";
 import {
   doc,
   getDoc,
-  runTransaction,
   onSnapshot,
+  runTransaction,
   serverTimestamp,
 } from "firebase/firestore";
 
@@ -19,11 +19,20 @@ export interface ScoreRoom {
 const collection = "badmintonScoreRooms";
 const roomRef = (code: string) => doc(db, collection, code);
 export const normalizeCode = (value: string) =>
-  value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 40);
 export const newRoomCode = () => {
   const bytes = new Uint8Array(6);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes, (n) => "abcdefghjkmnpqrstuvwxyz23456789"[n % 32]).join("");
+  return Array.from(
+    bytes,
+    (n) => "abcdefghjkmnpqrstuvwxyz23456789"[n % 32],
+  ).join("");
 };
 export const subscribeRoom = (
   code: string,
