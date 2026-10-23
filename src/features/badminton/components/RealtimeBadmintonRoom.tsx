@@ -180,7 +180,9 @@ const RealtimeBadmintonRoom = () => {
                   ))}
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="text-xs tabular-nums text-default-500">{scoreSize}rem</span>
+                  <span className="text-xs tabular-nums text-default-500">
+                    {scoreSize}rem
+                  </span>
                   <Button
                     size="sm"
                     isIconOnly
@@ -199,7 +201,14 @@ const RealtimeBadmintonRoom = () => {
                   >
                     A+
                   </Button>
-                  <Button size="sm" variant="flat" onPress={() => setScoreSize(6)} aria-label="Reset score font size">Reset</Button>
+                  <Button
+            size="sm"
+            variant="flat"
+            onPress={() => setScoreSize(6)}
+            aria-label="Reset score font size"
+          >
+            Reset
+          </Button>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-1 sm:gap-3">
