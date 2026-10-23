@@ -2,10 +2,9 @@ import { db } from "@/shared/lib/firebase";
 import {
   doc,
   getDoc,
-  onSnapshot,
   runTransaction,
+  onSnapshot,
   serverTimestamp,
-  setDoc,
 } from "firebase/firestore";
 
 export type RoomMode = "standard" | "freehand";
@@ -20,17 +19,11 @@ export interface ScoreRoom {
 const collection = "badmintonScoreRooms";
 const roomRef = (code: string) => doc(db, collection, code);
 export const normalizeCode = (value: string) =>
-  value
-    .toUpperCase()
-    .replace(/[^A-Z0-9]/g, "")
-    .slice(0, 8);
+  value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
 export const newRoomCode = () => {
-  const bytes = new Uint8Array(8);
+  const bytes = new Uint8Array(6);
   crypto.getRandomValues(bytes);
-  return Array.from(
-    bytes,
-    (n) => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[n % 32],
-  ).join("");
+  return Array.from(bytes, (n) => "abcdefghjkmnpqrstuvwxyz23456789"[n % 32]).join("");
 };
 export const subscribeRoom = (
   code: string,
@@ -45,13 +38,18 @@ export const subscribeRoom = (
     error,
   );
 export const createRoom = async (code: string) => {
-  await setDoc(roomRef(code), {
-    names: ["Red Team", "Blue Team"],
-    points: [0, 0],
-    games: [],
-    mode: "freehand",
-    revision: 0,
-    createdAt: serverTimestamp(),
+  const ref = roomRef(code);
+  await runTransaction(db, async (transaction) => {
+    const existing = await transaction.get(ref);
+    if (existing.exists()) throw new Error("Room name already exists.");
+    transaction.set(ref, {
+      names: ["Red Team", "Blue Team"],
+      points: [0, 0],
+      games: [],
+      mode: "freehand",
+      revision: 0,
+      createdAt: serverTimestamp(),
+    });
   });
 };
 export const roomExists = async (code: string) => {
