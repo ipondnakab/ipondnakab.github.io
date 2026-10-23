@@ -20,7 +20,7 @@ match /badmintonScoreRooms/{roomId} {
   allow get: if true && signedIn();
   allow list: if false;
   allow create: if true && signedIn() &&
-    roomId.matches('[A-Z2-9]{8}') &&
+    roomId.matches('[a-z0-9_-]{1,40}') &&
     request.resource.data.keys().hasOnly(["names", "points", "games", "mode", "revision", "createdAt"]) &&
     validRoom(request.resource.data) &&
     request.resource.data.revision == 0 &&
