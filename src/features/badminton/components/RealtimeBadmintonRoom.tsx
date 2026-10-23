@@ -10,8 +10,9 @@ import {
   updateRoom,
   winnerOf,
 } from "@/features/badminton/lib/realtime-room";
+import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
 import { Button, Input } from "@nextui-org/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const RealtimeBadmintonRoom = () => {
   const [entry, setEntry] = useState("");
@@ -20,6 +21,9 @@ const RealtimeBadmintonRoom = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [scoreSize, setScoreSize] = useState(6);
+  const [connection, setConnection] = useState<"firebase" | "direct" | "connecting">("firebase");
+  const peerRef = useRef<ReturnType<typeof connectScorePeers> | null>(null);
+  const revisionRef = useRef(-1);
   const [names, setNames] = useState<[string, string]>(["", ""]);
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -28,16 +32,36 @@ const RealtimeBadmintonRoom = () => {
   }, []);
   useEffect(() => {
     if (!code) return;
+    revisionRef.current = -1;
+    const peer = connectScorePeers(
+      code,
+      (incoming) => {
+        if (incoming.revision > revisionRef.current) {
+          revisionRef.current = incoming.revision;
+          setRoom(incoming);
+        }
+      },
+      setConnection,
+    );
+    peerRef.current = peer;
     const unsubscribe = subscribeRoom(
       code,
       (value) => {
-        setRoom(value);
+        if (value && value.revision >= revisionRef.current) {
+          revisionRef.current = value.revision;
+          setRoom(value);
+          peer.broadcast(value);
+        }
         if (value) setNames(value.names);
         else setError("Room not found.");
       },
       (cause) => setError(cause.message),
     );
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      peer();
+      peerRef.current = null;
+    };
   }, [code]);
   const enter = (next: string) => {
     setError("");
@@ -146,6 +170,9 @@ const RealtimeBadmintonRoom = () => {
         <section className="space-y-4">
           <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-content1 p-3">
             <span className="mr-auto font-mono font-bold">Room: {code}</span>
+            <span role="status" className="text-xs text-default-500">
+              {connection === "direct" ? "Direct peer connection" : "Firebase sync"}
+            </span>
             <Button
               size="sm"
               variant="flat"
