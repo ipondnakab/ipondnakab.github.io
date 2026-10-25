@@ -501,26 +501,26 @@
     estree-walker "^2.0.2"
     picomatch "^4.0.2"
 
-"@speckub/cli@0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@speckub/cli/-/cli-0.1.3.tgz#487e2c7d1d098adc27645d67abbb1c1412d462b2"
-  integrity sha512-Ngizjtgus9xP6qqE2Jn8ClE0Pq7jk5MkXSxBFooTlefWKwXCOybECrg4dYoZrtNXTR9sLY28IepNeXEU9C5NEg==
+"@speckub/cli@0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@speckub/cli/-/cli-0.1.4.tgz#03a1f2e83500379704ee3fcc81e9b75afcdbd092"
+  integrity sha512-6B8gyu7Ke2fWDSABavoK//epV/L70M6yaKfMy2pPHWVs3ER5yjuuKiFT2gCniL5oyIz57DwIabO4kW8qtBZwSQ==
   dependencies:
     "@mermaid-js/tiny" "^11.17.2"
-    "@speckub/core" "^0.1.3"
+    "@speckub/core" "^0.1.4"
     markdown-it "^14.1.0"
 
-"@speckub/core@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@speckub/core/-/core-0.1.3.tgz#d73fb420c97e0ae18b795b743dcdaf6640414d22"
-  integrity sha512-DevnzjKwHZOd69mYgDPXb0QMfODVX7ywPUsNkTlfYA9pWlb6UJk+8T5l4lf4lWVLtyXNjtZzDXj1jhoO1/gDoQ==
+"@speckub/core@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@speckub/core/-/core-0.1.4.tgz#d75b002342c77e4b673918929a8dbb5dd1725423"
+  integrity sha512-Pzg4T4UnUYgCVzt0ollM1igDNBsvIxXqiWFMUzO4Eir0ftwEkhqXAR3fN3LzUXtxL9AldhuO1hba32nQaHFaGA==
   dependencies:
-    "@speckub/schema" "^0.1.3"
+    "@speckub/schema" "^0.1.4"
 
-"@speckub/schema@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@speckub/schema/-/schema-0.1.3.tgz#2f88794038e2342d86b3d3af04ef8726001e2a98"
-  integrity sha512-Kzr09tMnV+qP9wnErZrPi6YPJ8BCYuixhEKOgDVs+EMnTIFXEDLtlK0C8/KqDNDHItH9M2KLtTpZgj5RN2qpBQ==
+"@speckub/schema@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@speckub/schema/-/schema-0.1.4.tgz#3f07d02dd4a997f8c80468deaeeed478d6883d67"
+  integrity sha512-vqJvWfhbUYUsmppm1sViW0MZceCmz8rCQjxclHaeQNB+KTlvFQM2d1hA9ehyG02yOFvZJNRxm1LFK3JRMHH3GA==
   dependencies:
     gray-matter "^4.0.3"
     zod "^3.24.2"

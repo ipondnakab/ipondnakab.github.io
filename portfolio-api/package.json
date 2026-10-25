@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@speckub/cli": "0.1.3",
+    "@speckub/cli": "0.1.4",
     "@vercel/node": "^5.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5"

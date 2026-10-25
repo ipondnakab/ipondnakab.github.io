@@ -5,6 +5,9 @@ description: Review SpecKub API specifications against source using an AI agent,
 
 # Review API specifications against source
 
+Follow the [document discovery rules](../speckub-create/references/discovery.md) for repository-wide spec lookup,
+metadata markers, legacy compatibility, and template/example exclusions.
+
 Read the project-local `.speckub/templates/api.md` and `.speckub/examples/api.md`
 when present. The user's explicit task takes precedence, then the custom template
 controls presentation, then bundled guidance supplies defaults. Examples teach
@@ -21,7 +24,7 @@ claims, and hidden unknowns; do not require irrelevant boilerplate. These are AI
 findings, not checks performed by the deterministic CLI.
 
 This is the optional AI review step. Read repository instructions and existing
-specs in the requested docs directory (default `docs/api`). Accept a prompt,
+specs across the project root, or the explicitly requested docs directory. Accept a prompt,
 HTTP prefix, repository directory, or specific source/spec file as scope. With no
 scope, review the available specs. Resolve ambiguity before reviewing unrelated
 services. If no specs match, report that there is nothing to review and suggest
@@ -48,7 +51,7 @@ is available; otherwise report render checks as not run. CLI validation does not
 parse Mermaid or prove sequence correctness.
 
 Use the available SpecKub CLI to run `list` and `validate --id ID` with the correct
-`--root` and `--docs-dir`. Keep deterministic findings separate from AI findings.
+`--root`; add `--docs-dir` only for an explicit document-directory filter. Keep deterministic findings separate from AI findings.
 If the CLI is unavailable, report that check as not run. Do not execute application
 modules, call external APIs, or run runtime tests unless the user authorized it.
 Do not read secret files or change application code or endpoint docs during review.

@@ -42,6 +42,24 @@ none can be established and report that gap. Keep this file in .speckub/template
 
 {{nested_body_encoding_and_conditional_rules}}
 
+### JSON request example
+
+<!-- For an endpoint that accepts JSON, replace the entire object below with
+valid JSON using the documented fields, types, nesting and synthetic values.
+Include observed server defaults where helpful and distinguish them from sample
+values. Document application/json only when supported by the endpoint.
+For an endpoint with no body, replace this subsection with "No request body."
+For a non-JSON body, show its actual encoding instead. Do not send an empty JSON
+object merely to fill this template. -->
+
+```json
+{
+  "{{request_field}}": "{{synthetic_value_matching_field_type}}"
+}
+```
+
+{{observed_defaults_and_omission_behavior_or_explicit_unknowns}}
+
 ## Responses
 
 {{status_header_and_response_field_tables}}

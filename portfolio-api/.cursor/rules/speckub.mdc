@@ -1,7 +1,7 @@
 ---
 description: Keep Git-backed SpecKub API documentation aligned with endpoint changes
 globs:
-  - '**/docs/api/**/*.md'
+  - '**/*.md'
   - '**/*Controller*'
   - '**/*route*'
 alwaysApply: false
@@ -9,7 +9,7 @@ alwaysApply: false
 
 # SpecKub API documentation
 
-For endpoint work, first discover the stable ID with `speckub list`, inspect it with `speckub inspect <endpoint-id>`, then update the associated Markdown specification under `docs/api/`.
+For endpoint work, first discover the stable ID with `speckub list`, inspect it with `speckub inspect <endpoint-id>`, then update the associated Markdown specification at their existing paths (new documents default to `docs/api/`).
 
 Use YAML frontmatter contract v1: `specVersion: 1`, `id`, `kind: http`, `method`, `path`, `summary`, and optional repository-relative `source` paths.
 
@@ -31,3 +31,8 @@ the skill file explicitly. Keep existing endpoint IDs and report discovery gaps.
 Use `/speckub.template [design request or reference path]` to customize
 `.speckub/templates/api.md` and `.speckub/examples/api.md` with the
 `speckub-template/SKILL.md` skill. Custom layout never changes the HTTP schema.
+
+Discover specs across the project with `speckub list`; `--docs-dir` is an optional
+directory filter. New endpoint docs use `speckub: true` in YAML frontmatter;
+legacy unmarked specs remain supported. Keep templates/examples opted out with
+`speckub: false`. Preserve existing spec paths and stable IDs.

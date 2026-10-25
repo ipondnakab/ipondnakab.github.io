@@ -30,6 +30,15 @@ For nested bodies, describe object/array structure and distinguish required from
 nullable. A response field table may omit Location. Explain conditional fields
 and avoid ambiguous values such as a bare dash for unknown constraints.
 
+For endpoints that accept JSON, include a fenced `json` request-body example
+with valid syntax and synthetic values matching the documented types, nested
+objects, and arrays. Show required fields and useful optional fields. Clearly
+separate illustrative values from server-applied defaults; document a default
+and omission behavior only when supported by source. A copyable request should
+use the same body and the supported content type. If no request body is accepted,
+say "No request body" and keep examples bodyless. For form, multipart, binary or
+other encodings, show the actual format instead of inventing a JSON contract.
+
 Use an error table with status, actual code/message, trigger, and caller action.
 If no machine-readable error code exists, say so instead of inventing one. Do not
 assume all framework-standard statuses are implemented. In particular, an
@@ -64,6 +73,9 @@ Before handing off a document, check:
 - Frontmatter parses, the endpoint ID stays stable, and source references exist.
 - Method/path, auth, validation and status codes agree with routing/middleware.
 - Required/default/nullable rules and nested body shapes are explicit where known.
+- JSON request examples parse and agree with field types and validation rules;
+  sample values are distinguished from actual defaults. Bodyless and non-JSON
+  endpoints use their real request format.
 - Errors explain when they occur; examples match success and failure contracts.
 - Side effects, dependency failures and async behavior are covered where applicable.
 - Relationships and the sequence diagram agree with source and each other.

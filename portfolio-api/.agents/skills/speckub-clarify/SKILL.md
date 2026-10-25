@@ -5,6 +5,9 @@ description: Clarify or correct SpecKub API documentation from user feedback or 
 
 # Clarify and correct API documentation
 
+Follow the [document discovery rules](../speckub-create/references/discovery.md) for repository-wide spec lookup,
+metadata markers, legacy compatibility, and template/example exclusions.
+
 Read the project-local `.speckub/templates/api.md` and `.speckub/examples/api.md`
 when present. The user's explicit task takes precedence, then the custom template
 controls presentation, then bundled guidance supplies defaults. Examples teach

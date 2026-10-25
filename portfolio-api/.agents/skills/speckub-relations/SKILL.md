@@ -5,6 +5,9 @@ description: Map relationships between discovered APIs and services from source 
 
 # Map API and service relationships
 
+Follow the [document discovery rules](../speckub-create/references/discovery.md) for repository-wide spec lookup,
+metadata markers, legacy compatibility, and template/example exclusions.
+
 Run after scan and before create. Read repository instructions and
 `.speckub/scan.md`. Accept an optional natural-language prompt, HTTP route prefix,
 service directory, or source file; without scope, use the inventory scope.

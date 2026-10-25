@@ -1,26 +1,27 @@
 ---
 speckub: false
 specVersion: 1
-id: example.users.get-by-id
+id: example.users.create
 kind: http
-method: GET
-path: /api/users/{id}
-summary: Illustrative user lookup contract
+method: POST
+path: /api/users
+summary: Illustrative user creation contract
 ---
 
-# Get a user — illustrative example
+# Create a user — illustrative example
 
 ## Overview
 
-This fictional API demonstrates the document layout. It is not a discovered
-endpoint, source-backed specification, or tested implementation in your project.
+This fictional API demonstrates the document layout and a JSON request body. It
+is not a discovered endpoint, source-backed specification, or tested
+implementation in your project.
 
 ## Contract
 
 | Property            | Value                                       |
 | ------------------- | ------------------------------------------- |
-| Method and route    | `GET /api/users/{id}`                       |
-| Request media type  | No body                                     |
+| Method and route    | `POST /api/users`                           |
+| Request media type  | `application/json`                          |
 | Response media type | `application/json`                          |
 | Version             | Not specified in this illustrative contract |
 
@@ -31,41 +32,62 @@ choice, not a claim about your application's authentication or gateway.
 
 ## Request
 
-| Field | Location | Type   | Required / nullable | Constraints / default        | Meaning |
-| ----- | -------- | ------ | ------------------- | ---------------------------- | ------- |
-| id    | Path     | string | Required, non-null  | Nonempty segment; no default | User ID |
+| Field  | Location | Type    | Required / nullable | Constraints / default            | Meaning                |
+| ------ | -------- | ------- | ------------------- | -------------------------------- | ---------------------- |
+| name   | Body     | string  | Required, non-null  | Nonempty; no default             | Display name           |
+| email  | Body     | string  | Required, non-null  | Email address; no default        | Contact address        |
+| notify | Body     | boolean | Optional, non-null  | Defaults to `false` when omitted | Send a welcome message |
 
-No query parameters or request body are defined in this example.
+No path or query parameters are defined in this example. Send the body with
+`Content-Type: application/json`.
+
+### JSON request example
+
+```json
+{
+  "name": "Ada",
+  "email": "ada@example.invalid",
+  "notify": false
+}
+```
+
+`Ada` and `ada@example.invalid` are synthetic sample values, not server defaults.
+In this fictional contract, omitting `notify` uses `false`; sending `null` is
+invalid. A real spec must establish defaults and omission behavior from source.
 
 ## Responses
 
-| Status | Condition           | Body         |
-| ------ | ------------------- | ------------ |
-| 200    | User exists         | User object  |
-| 404    | User does not exist | Error object |
+| Status | Condition            | Body         |
+| ------ | -------------------- | ------------ |
+| 201    | Valid user data      | User object  |
+| 400    | Invalid request body | Error object |
 
-| Field | Type   | Required / nullable | Meaning      |
-| ----- | ------ | ------------------- | ------------ |
-| id    | string | Present, non-null   | User ID      |
-| name  | string | Present, non-null   | Display name |
+| Field | Type   | Required / nullable | Meaning         |
+| ----- | ------ | ------------------- | --------------- |
+| id    | string | Present, non-null   | User ID         |
+| name  | string | Present, non-null   | Display name    |
+| email | string | Present, non-null   | Contact address |
 
 ## Errors
 
-| Status | Code / message   | Trigger    | Caller action |
-| ------ | ---------------- | ---------- | ------------- |
-| 404    | `user_not_found` | Unknown ID | Check the ID  |
+| Status | Code / message    | Trigger                | Caller action            |
+| ------ | ----------------- | ---------------------- | ------------------------ |
+| 400    | `invalid_request` | Body fails field rules | Correct the request body |
 
-The illustrative error body is `{ "error": "user_not_found" }`.
+The illustrative error body is `{ "error": "invalid_request" }`.
 
 ## Behavior
 
-Look up a user without modifying state. No retry policy is defined. A real spec
-must replace these fictional rules with evidence from the selected implementation.
+Validate the body and create a user. When `notify` is `true`, request a welcome
+message; this simplified example does not define its transport or delivery
+policy. No idempotency or retry guarantee is defined. A real spec must replace
+these fictional rules with evidence from the selected implementation.
 
 ## Relationships
 
-No downstream service is included in this simplified example. Do not infer that
-your application's user lookup has no database or service dependencies.
+Persistence and notification dependencies are not specified in this illustrative
+contract. Do not infer that a real user-creation endpoint has no database or
+service dependencies.
 
 ## Request flow
 
@@ -73,39 +95,48 @@ your application's user lookup has no database or service dependencies.
 sequenceDiagram
     actor Client
     participant API as Illustrative User API
-    Client->>API: GET /api/users/1
-    API->>API: Look up user
-    alt User exists
-        API-->>Client: 200 JSON user
-    else User missing
-        API-->>Client: 404 user_not_found
+    Client->>API: POST /api/users (JSON body)
+    API->>API: Validate request
+    alt Valid body
+        API->>API: Create user
+        opt notify is true
+            API->>API: Request welcome message (transport unspecified)
+        end
+        API-->>Client: 201 JSON user
+    else Invalid body
+        API-->>Client: 400 invalid_request
     end
 ```
 
 ## Examples
 
-Illustrative request only; `api.example.invalid` is not a live test endpoint:
+Illustrative request using the JSON above; `api.example.invalid` is not a live
+test endpoint:
 
 ```sh
-curl https://api.example.invalid/api/users/1
+curl -X POST https://api.example.invalid/api/users \
+  -H 'Content-Type: application/json' \
+  --data '{"name":"Ada","email":"ada@example.invalid","notify":false}'
 ```
 
-Illustrative 200 response:
+Illustrative 201 response:
 
 ```json
-{ "id": "1", "name": "Ada" }
+{ "id": "1", "name": "Ada", "email": "ada@example.invalid" }
 ```
 
-Illustrative request for a missing user:
+Illustrative invalid request (missing required `name`):
 
 ```sh
-curl https://api.example.invalid/api/users/missing
+curl -X POST https://api.example.invalid/api/users \
+  -H 'Content-Type: application/json' \
+  --data '{"email":"ada@example.invalid"}'
 ```
 
-Illustrative 404 response:
+Illustrative 400 response:
 
 ```json
-{ "error": "user_not_found" }
+{ "error": "invalid_request" }
 ```
 
 ## Limits and operations

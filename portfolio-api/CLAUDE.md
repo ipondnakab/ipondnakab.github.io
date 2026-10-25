@@ -1,6 +1,6 @@
 # SpecKub instructions for Claude Code
 
-Maintain API documentation as versioned Markdown under `docs/api/`.
+Maintain API documentation as versioned Markdown at their existing paths (new documents default to `docs/api/`).
 
 When modifying an API route:
 
@@ -28,3 +28,8 @@ the skill file explicitly. Keep existing endpoint IDs and report discovery gaps.
 Use `/speckub.template [design request or reference path]` to customize
 `.speckub/templates/api.md` and `.speckub/examples/api.md` with the
 `speckub-template/SKILL.md` skill. Custom layout never changes the HTTP schema.
+
+Discover specs across the project with `speckub list`; `--docs-dir` is an optional
+directory filter. New endpoint docs use `speckub: true` in YAML frontmatter;
+legacy unmarked specs remain supported. Keep templates/examples opted out with
+`speckub: false`. Preserve existing spec paths and stable IDs.

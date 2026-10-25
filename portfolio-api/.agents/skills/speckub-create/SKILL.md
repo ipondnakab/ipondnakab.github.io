@@ -5,6 +5,9 @@ description: Create or update SpecKub Markdown API documents from a scanned inve
 
 # Create API documents
 
+Follow the [document discovery rules](references/discovery.md) for repository-wide spec lookup,
+metadata markers, legacy compatibility, and template/example exclusions.
+
 Read the project-local `.speckub/templates/api.md` and `.speckub/examples/api.md`
 when present. The user's explicit task takes precedence, then the custom template
 controls presentation, then bundled guidance supplies defaults. Examples teach
@@ -14,6 +17,13 @@ on a customized template; evaluate equivalent content instead. Replace all
 placeholders in real specs. Report incompatible schema requests rather than
 silently accepting unsupported fields. Use `/speckub.template` to redesign the
 project's template without rewriting endpoint docs.
+
+For a customized template, preserve its section names, order, tables, and writing
+style. In the generated endpoint, replace template `speckub: false` with
+`speckub: true`; add the marker if an older custom template has none. Do not copy
+template/example IDs or unresolved placeholders into real contracts. This is a
+change to the generated document, not permission to rewrite the user's template.
+The UI renders the Markdown body without requiring the bundled section names.
 
 Read and follow the [API document standard](references/api-document.md) for the
 section structure, contract tables, evidence rules, and review checklist. Apply
@@ -45,6 +55,7 @@ endpoint and HTTP method, using this frontmatter contract:
 
 ```yaml
 ---
+speckub: true
 specVersion: 1
 id: users.get-by-id
 kind: http
@@ -69,7 +80,10 @@ Quote YAML strings as needed. Do not add unsupported schema fields in frontmatte
 put request/response details in the Markdown body.
 
 Document observed authentication, headers, path/query parameters, body validation,
-responses, status codes, limits, and side effects. Use synthetic examples. Label
+responses, status codes, limits, and side effects. Include a fenced JSON request
+example when the endpoint accepts JSON, using the field/default and encoding
+rules in [the API document standard](references/api-document.md). Use synthetic
+examples. Label
 inferences, missing details, and intended behavior separately from implemented
 behavior. Do not read secret environment files or include credentials.
 
@@ -86,8 +100,8 @@ If the user requested a preview, return proposed changes without writing.
 
 Locate the available CLI (installed command, project script, or user-supplied built
 checkout); do not assume the scanned project contains SpecKub's source tree.
-Run `speckub list --root ROOT --docs-dir DOCS --json` and deterministic
-`speckub validate --id ID --root ROOT --docs-dir DOCS --json` for created/updated
+Run `speckub list --root ROOT --json` and deterministic
+`speckub validate --id ID --root ROOT --json` for created/updated
 IDs. Fix structural/reference issues. If the CLI is unavailable, report checks as
 not run; do not silently download or install another version.
 

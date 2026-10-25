@@ -5,6 +5,9 @@ description: Discover HTTP APIs across repository languages and frameworks and p
 
 # Discover an API inventory
 
+Follow the [document discovery rules](../speckub-create/references/discovery.md) for repository-wide spec lookup,
+metadata markers, legacy compatibility, and template/example exclusions.
+
 Use the coding agent's source understanding to discover HTTP endpoints across
 languages and frameworks. Do not limit discovery to a fixed parser or list of
 frameworks. Do not claim complete coverage when routing cannot be resolved.
@@ -62,7 +65,7 @@ scan and user annotations; distinguish a stale candidate from a confirmed remova
 Do not record secret values or source dumps. If a preview was requested, show the
 inventory without writing it.
 
-Do not create or modify `docs/api/` during scan. Do not change application code.
+Do not create or modify endpoint documents anywhere during scan. Do not change application code.
 Report inventory counts, scope and gaps, then direct the user to `/speckub.relations`
 to map API/service interactions before `/speckub.create` writes docs. Source discovery is not semantic
 validation or a guarantee that every endpoint was found.

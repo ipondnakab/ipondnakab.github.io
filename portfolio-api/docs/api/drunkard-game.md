@@ -5,19 +5,18 @@ id: portfolio-api.drunkard-game.post
 kind: http
 method: POST
 path: /api/drunkard-game
-summary: Submit a Drunkard Game contact message with a secret header check
+summary: Submit a Drunkard Game message to the configured LINE inbox
 source:
   - api/drunkard-game.ts
+  - lib/cors.ts
   - lib/rate-limit.ts
 ---
 
-# Drunkard Game submission
+# Drunkard Game contact submission
 
 ## Overview
 
-This endpoint accepts a contact-form style submission for the Drunkard Game feature and validates it before delivering a LINE message to the configured recipient. Unlike the general contact endpoint, it enforces a custom `x-secret-key` header check and accepts `OPTIONS` as a preflight-style request.
-
-The route is implemented directly in its own Vercel handler and is discovered by the file-based `api/*.ts` router in the project.
+Accepts a contact payload from the Drunkard Game integration, validates a shared secret header and the JSON fields, then sends a text message to the configured LINE user. This handler is part of the `portfolio-api` service.
 
 ## Contract
 
@@ -30,67 +29,75 @@ The route is implemented directly in its own Vercel handler and is discovered by
 
 ## Authentication and authorization
 
-This route uses a custom shared-secret header rather than browser-origin auth alone:
-
-- `OPTIONS` requests are explicitly allowed with `204` response.
-- `POST` is required; other methods receive `405 { "error": "method_not_allowed" }`.
-- The header `x-secret-key` must match `process.env.DRUNKARD_GAME_SECRET_KEY` exactly.
-- If the secret is missing or mismatched, the route returns `401 { "error": "unauthorized" }`.
-- The server also reads `LINE_CHANNEL_ACCESS_TOKEN` and `LINE_USER_ID` from environment variables before sending a LINE push.
+The handler requires `x-secret-key` to exactly match the nonempty `DRUNKARD_GAME_SECRET_KEY` environment value. It does not call the shared `guardRequest`; therefore the source does not apply the `Origin` allowlist to this route. `OPTIONS` receives `204` before secret validation, while other non-POST methods receive `405`. LINE delivery additionally requires `LINE_CHANNEL_ACCESS_TOKEN` and `LINE_USER_ID`; values are not included here.
 
 ## Request
 
+Send `Content-Type: application/json` and the required secret header. The body must be an object with nonempty `name`, `email`, and `content` strings. Maximum original string lengths are 100, 200, and 2,000 characters respectively; email is checked against the source regex after trimming. The values are trimmed before building the outbound message. A nonempty string `website` causes validation to fail. Other `website` types are ignored, and additional body properties are unused.
+
 | Field | Location | Type | Required / nullable | Constraints / default | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| x-secret-key | Header | string | Required | Must equal server secret | Auth secret sent by the game client |
-| name | Body | string | Required, non-null | 1..100 chars after trim | Sender display name |
-| email | Body | string | Required, non-null | 1..200 chars; valid email pattern | Sender email address |
-| content | Body | string | Required, non-null | 1..2000 chars after trim | Message text |
-| website | Body | string | Optional, nullable | If non-empty, request is rejected as bot-like | Hidden honeypot field |
+| `x-secret-key` | Header | string | Required, nonempty | Exact match to `DRUNKARD_GAME_SECRET_KEY`; no default | Shared-secret request authorization |
+| name | Body | string | Required, non-null | Nonempty after trim; maximum 100 original characters | Sender display name |
+| email | Body | string | Required, non-null | Nonempty after trim; maximum 200 original characters; must match email regex after trim | Sender email address |
+| content | Body | string | Required, non-null | Nonempty after trim; maximum 2,000 original characters | Message body |
+| website | Body | string | Optional | A nonempty string fails validation | Honeypot value |
 
-Additional validation rules:
+There are no path or query parameters.
 
-- A non-empty `website` field causes `parseDrunkardGamePayload` to return `null`, which becomes `400 { "error": "invalid_request" }`.
-- The route does not perform origin allowlist checks in this handler; that logic is implemented in a separate route and not in this file.
+### JSON request example
+
+```json
+{
+  "name": "Ada Lovelace",
+  "email": "ada@example.invalid",
+  "content": "I would like to share feedback about the game."
+}
+```
+
+The example values are synthetic. The secret header is omitted from the body example and must be supplied separately; no secret value is shown. No defaults are applied to omitted fields.
 
 ## Responses
 
 | Status | Condition | Body |
 | --- | --- | --- |
-| 204 | `OPTIONS` preflight | Empty response |
-| 200 | Message accepted and pushed successfully | `{ "ok": true }` |
-| 400 | Invalid payload or hidden-bot trap | `{ "error": "invalid_request" }` |
-| 401 | Secret header missing or wrong | `{ "error": "unauthorized" }` |
-| 405 | Non-`POST` method | `{ "error": "method_not_allowed" }` |
-| 429 | Rate limited | `{ "error": "rate_limited", "retryAfterSeconds": n }` |
-| 500 | Missing LINE env or internal failure | `{ "error": "server_misconfigured" }` or `{ "error": "internal_error" }` |
-| 502 | LINE push failed | `{ "error": "upstream_error" }` |
+| 200 | LINE push succeeds | `{ "ok": true }` |
+| 204 | `OPTIONS` preflight | Empty body |
+| 400 | Payload invalid, including a nonempty string honeypot | `{ "error": "invalid_request" }` |
+| 401 | Missing, empty configured secret, or mismatched `x-secret-key` | `{ "error": "unauthorized" }` |
+| 405 | Method is not `POST` or handled `OPTIONS` | `{ "error": "method_not_allowed" }` |
+| 429 | Per-instance rate limit reached or LINE returns HTTP 429 | `{ "error": "rate_limited", "retryAfterSeconds": n }` for local limit; `{ "error": "upstream_error" }` for LINE 429 |
+| 500 | LINE configuration missing or unexpected exception | `{ "error": "server_misconfigured" }` or `{ "error": "internal_error" }` |
+| 502 | LINE returns non-success status other than 429 | `{ "error": "upstream_error" }` |
+
+The handler sets `Retry-After` for its own rate limit. It does not establish a `Retry-After` header for an upstream LINE 429.
 
 ## Errors
 
 | Status | Code / message | Trigger | Caller action |
 | --- | --- | --- | --- |
-| 204 | Preflight success | `OPTIONS` request | Browser or client can continue with the request |
-| 400 | `invalid_request` | Malformed payload or honeypot field | Fix request body |
-| 401 | `unauthorized` | Missing or bad secret header | Supply the correct secret header |
-| 405 | `method_not_allowed` | Non-POST method | Use `POST` |
-| 429 | `rate_limited` | Too many valid submissions from same client IP | Retry after `Retry-After` |
-| 500 | `server_misconfigured` | Missing LINE env vars | Configure deploy secrets |
-| 502 | `upstream_error` | LINE push failed | Retry later |
+| 400 | `invalid_request` | Missing, malformed, over-limit, or invalid fields; nonempty string `website` | Correct the JSON payload |
+| 401 | `unauthorized` | `x-secret-key` does not match the configured nonempty secret | Configure the caller and deployment consistently |
+| 405 | `method_not_allowed` | Method is not `POST` or `OPTIONS` | Use `POST` |
+| 429 | `rate_limited` | More than 3 requests in the handler's 60-minute in-memory window for the client key | Wait for `Retry-After` when provided |
+| 500 | `server_misconfigured` | Missing `LINE_CHANNEL_ACCESS_TOKEN` or `LINE_USER_ID` after payload and rate checks | Configure deployment variables |
+| 500 | `internal_error` | Unexpected exception during LINE request handling | Retry later; no automatic retry is implemented |
+| 429 / 502 | `upstream_error` | LINE returns an error; status 429 remains 429 and other failures map to 502 | Retry according to caller policy; this handler does not retry automatically |
 
 ## Behavior
 
-- The route keeps a simple in-memory rate limit with a fixed budget of `3` requests per hour.
-- The message is assembled in the same style as the main contact form but prefixed with `📮 Drunkard Game contact`.
-- Request validation occurs before the rate limit check and before the LINE push.
-- The route logs provider failure details server-side instead of exposing provider text to callers.
+The handler checks `OPTIONS`, method, secret header, payload, and rate limit in that order. It then checks LINE configuration and synchronously sends a LINE Messaging API push request. The outbound text includes a fixed subject, sender name, email, and content. No idempotency key or automatic retry is implemented.
+
+The route's `clientKey` helper reads `x-forwarded-for` and falls back to `unknown`; the source does not verify that the header is trustworthy in every deployment configuration. The limiter is in-memory per warm serverless instance, not a globally shared quota.
 
 ## Relationships
 
 | Target | Interaction | Trigger / condition | Failure behavior |
 | --- | --- | --- | --- |
-| `lib.rate_limit` | per-IP limiter | After secret and payload validation | `429` with `Retry-After` |
-| `external.line_push` | outbound HTTPS push | Valid authorized request | `502`/`429` returned as upstream errors |
+| `portfolio-api.lib.rate-limit` | In-process limiter | After secret and payload validation | `429 rate_limited` with `Retry-After` |
+| `external.line.push` | Outbound HTTPS JSON request | Valid request, matching secret, allowed limit, and LINE configuration | LINE 429 maps to `429 upstream_error`; other non-success statuses map to `502 upstream_error`; exceptions map to 500 |
+
+No API-to-API caller or asynchronous event relationship was established in the inspected repository. The frontend repository is outside this scan scope. Relationship identities are recorded in `.speckub/relations.md`.
 
 ## Request flow
 
@@ -98,80 +105,84 @@ Additional validation rules:
 sequenceDiagram
     actor Client
     participant API as portfolio-api /api/drunkard-game
-    participant Limit as lib.rate_limit
+    participant Limit as lib/rate-limit
     participant LINE as LINE Messaging API
 
-    Client->>API: OPTIONS /api/drunkard-game
-    API-->>Client: 204
-
-    Client->>API: POST /api/drunkard-game with x-secret-key + JSON
-    API->>API: validate method, secret, payload, honeypot
-    alt Unauthorized or invalid
-        API-->>Client: 401/400/405
-    else Valid
-        API->>Limit: checkRateLimit(clientKey(request))
-        Limit-->>API: allowed or retryAfterSeconds
-        alt Rate limited
-            API-->>Client: 429 with Retry-After
-        else Allowed
-            API->>LINE: POST message/push
-            alt LINE success
-                LINE-->>API: 200 OK
-                API-->>Client: 200 { ok: true }
-            else LINE failure
-                LINE-->>API: error status
-                API-->>Client: 429/502
+    Client->>API: POST /api/drunkard-game with JSON and x-secret-key
+    alt OPTIONS preflight
+        API-->>Client: 204
+    else Other non-POST method
+        API-->>Client: 405 method_not_allowed
+    else POST
+        API->>API: Verify x-secret-key
+        alt Secret invalid
+            API-->>Client: 401 unauthorized
+        else Secret valid
+            API->>API: Validate JSON payload
+            alt Payload invalid
+                API-->>Client: 400 invalid_request
+            else Payload valid
+                API->>Limit: Check client key (3 per hour)
+                alt Rate limited
+                    Limit-->>API: Rejected with retry delay
+                    API-->>Client: 429 rate_limited
+                else Allowed
+                    API->>API: Check LINE configuration
+                    alt Configuration missing
+                        API-->>Client: 500 server_misconfigured
+                    else Configured
+                        API->>LINE: POST message/push
+                        alt LINE success
+                            LINE-->>API: Success response
+                            API-->>Client: 200 { ok: true }
+                        else LINE error
+                            LINE-->>API: Error status
+                            API-->>Client: 429 or 502 upstream_error
+                        end
+                    end
+                end
             end
         end
     end
 ```
 
+The sequence follows `api/drunkard-game.ts` handler order. `clientKey` is imported from `lib/cors.ts`, but that helper only derives the limiter key; the shared `guardRequest` and origin check are not invoked by this handler.
+
 ## Examples
 
-Synthetic valid request:
+Synthetic request:
 
-```json
-{
-  "name": "Ada Lovelace",
-  "email": "ada@example.com",
-  "content": "I want to join the Drunkard Game event.",
-  "website": ""
-}
+```sh
+curl -X POST https://portfolio-api.example.invalid/api/drunkard-game \
+  -H 'Content-Type: application/json' \
+  -H 'x-secret-key: <configured-secret>' \
+  --data '{"name":"Ada Lovelace","email":"ada@example.invalid","content":"I would like to share feedback about the game."}'
 ```
 
-Headers:
+The placeholder above is not a credential and must be replaced by the caller from its secure configuration.
 
-```http
-x-secret-key: my-secret
-```
-
-Example success response:
+Representative success response:
 
 ```json
 { "ok": true }
 ```
 
-Example unauthorized response:
+Representative unauthorized response:
 
 ```json
 { "error": "unauthorized" }
 ```
 
+The host and responses are illustrative and have not been sent to a server.
+
 ## Limits and operations
 
-- `RATE_LIMIT_PER_HOUR = 3`
-- `MAX_NAME_CHARS = 100`
-- `MAX_EMAIL_CHARS = 200`
-- `MAX_CONTENT_CHARS = 2000`
-- The route requires `DRUNKARD_GAME_SECRET_KEY` in the deployment environment and `LINE_CHANNEL_ACCESS_TOKEN` / `LINE_USER_ID` for LINE delivery.
-- This handler does not implement CORS origin checks; it enforces header-based auth and method checks directly.
+- `name`: at most 100 original characters; `email`: at most 200; `content`: at most 2,000.
+- Rate limit: 3 requests per 60 minutes per client key in memory for each warm serverless instance.
+- `vercel.json` sets a 30-second maximum function duration. No separate upstream timeout is configured in the handler.
+- The local `dev-server.ts` has a 100,000-character request-body cap; a matching production cap is not established by inspected source.
+- Required environment variable names: `DRUNKARD_GAME_SECRET_KEY`, `LINE_CHANNEL_ACCESS_TOKEN`, and `LINE_USER_ID`. Values are intentionally omitted.
 
 ## Evidence and verification
 
-Source reviewed:
-
-- `api/drunkard-game.ts` for method gating, secret validation, payload checks, rate limiting, and LINE push
-- `lib/rate-limit.ts` for limiter semantics
-- `dev-server.ts` for route registration in the local shim
-
-Structural/reference validation was not claimed here; the CLI validation status is reported separately. The semantic check remains `skipped` unless explicitly executed by the SpecKub CLI.
+Source reviewed: `api/drunkard-game.ts` (`handler`, `verifySecretHeader`, `parseDrunkardGamePayload`), `lib/cors.ts` (`clientKey`; `guardRequest` is not called here), `lib/rate-limit.ts` (`createRateLimiter`), `dev-server.ts` (local route mapping and body cap), and `vercel.json` (function duration). No runtime test or Mermaid rendering is claimed here. SpecKub structural/reference validation is reported separately; the CLI semantic check remains `skipped`.
