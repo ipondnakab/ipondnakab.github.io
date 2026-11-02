@@ -11,6 +11,7 @@ import Frameworks from "@/features/profile/components/Frameworks";
 import OtherSkills from "@/features/profile/components/OtherSkills";
 import OutsourceProjects from "@/features/profile/components/OutsourceProjects";
 import ProfileAvatar from "@/features/profile/components/ProfileAvatar";
+import SpecKubShowcase from "@/features/profile/components/SpecKubShowcase";
 import WorkExperiences from "@/features/profile/components/WorkExperiences";
 
 export interface ProfileReadmeProps {}
@@ -41,6 +42,7 @@ const ProfileReadme: React.FC<ProfileReadmeProps> = () => {
       <OtherSkills />
       <Educations />
       <WorkExperiences />
+      <SpecKubShowcase />
       <OutsourceProjects />
     </div>
   );
