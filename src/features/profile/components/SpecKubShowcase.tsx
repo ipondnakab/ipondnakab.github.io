@@ -105,7 +105,7 @@ const SpecKubShowcase: React.FC<SpecKubShowcaseProps> = () => {
             </a>
             <a
               className="rounded-lg border border-foreground/20 px-4 py-2 font-medium"
-              href="https://github.com/speckub/speckub"
+              href="https://github.com/ipondnakab/speckub"
               target="_blank"
               rel="noopener noreferrer"
             >
