@@ -21,12 +21,12 @@ Accepts a visitor conversation, applies request and rate checks, sends it to Gro
 
 ## Contract
 
-| Property | Value |
-| --- | --- |
-| Method and route | `POST /api/chat` |
-| Request media type | `application/json` |
-| Response media type | `application/json` |
-| Version | Not specified in source |
+| Property            | Value                   |
+| ------------------- | ----------------------- |
+| Method and route    | `POST /api/chat`        |
+| Request media type  | `application/json`      |
+| Response media type | `application/json`      |
+| Version             | Not specified in source |
 
 ## Authentication and authorization
 
@@ -36,11 +36,11 @@ There is no visitor account authentication. `guardRequest` requires a present `O
 
 The body must be a JSON object with a `messages` array. Each message must be an object with `role` equal to `user` or `assistant` and a nonempty string `content` of at most 1,000 characters. The array must contain 1 through 20 messages and end with a `user` message. Content is checked for nonempty trimmed text, but the 1,000-character ceiling applies to the original string before trimming. Other message properties are not used by the handler.
 
-| Field | Location | Type | Required / nullable | Constraints / default | Meaning |
-| --- | --- | --- | --- | --- | --- |
-| messages | Body | array of objects | Required, non-null | 1-20 entries; final entry must have role `user` | Conversation sent to the model |
-| messages[].role | Body | string | Required, non-null | `user` or `assistant` | Conversation speaker |
-| messages[].content | Body | string | Required, non-null | Nonempty after trim; maximum 1,000 original characters | Message text |
+| Field              | Location | Type             | Required / nullable | Constraints / default                                  | Meaning                        |
+| ------------------ | -------- | ---------------- | ------------------- | ------------------------------------------------------ | ------------------------------ |
+| messages           | Body     | array of objects | Required, non-null  | 1-20 entries; final entry must have role `user`        | Conversation sent to the model |
+| messages[].role    | Body     | string           | Required, non-null  | `user` or `assistant`                                  | Conversation speaker           |
+| messages[].content | Body     | string           | Required, non-null  | Nonempty after trim; maximum 1,000 original characters | Message text                   |
 
 No path or query parameters are defined. Send `Content-Type: application/json`.
 
@@ -58,46 +58,46 @@ The example values are synthetic; the server does not supply defaults for messag
 
 ## Responses
 
-| Status | Condition | Body |
-| --- | --- | --- |
-| 200 | Groq returns nonempty assistant content | `{ "reply": "..." }` |
-| 204 | CORS preflight (`OPTIONS`) | Empty body |
-| 400 | Body or messages fail validation | `{ "error": "invalid_request" }` |
-| 403 | Missing or unlisted `Origin` | `{ "error": "origin_not_allowed" }` |
-| 405 | Method is not `POST` or `OPTIONS` | `{ "error": "method_not_allowed" }` |
-| 429 | Local rate limit reached or Groq returns 429 | `{ "error": "rate_limited", "retryAfterSeconds": n }` for local limit; `{ "error": "upstream_error" }` for Groq 429 |
-| 500 | Groq key missing or an unexpected exception occurs | `{ "error": "server_misconfigured" }` or `{ "error": "internal_error" }` |
-| 502 | Groq returns another non-2xx status or no usable content | `{ "error": "upstream_error" }` or `{ "error": "empty_response" }` |
+| Status | Condition                                                | Body                                                                                                                |
+| ------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 200    | Groq returns nonempty assistant content                  | `{ "reply": "..." }`                                                                                                |
+| 204    | CORS preflight (`OPTIONS`)                               | Empty body                                                                                                          |
+| 400    | Body or messages fail validation                         | `{ "error": "invalid_request" }`                                                                                    |
+| 403    | Missing or unlisted `Origin`                             | `{ "error": "origin_not_allowed" }`                                                                                 |
+| 405    | Method is not `POST` or `OPTIONS`                        | `{ "error": "method_not_allowed" }`                                                                                 |
+| 429    | Local rate limit reached or Groq returns 429             | `{ "error": "rate_limited", "retryAfterSeconds": n }` for local limit; `{ "error": "upstream_error" }` for Groq 429 |
+| 500    | Groq key missing or an unexpected exception occurs       | `{ "error": "server_misconfigured" }` or `{ "error": "internal_error" }`                                            |
+| 502    | Groq returns another non-2xx status or no usable content | `{ "error": "upstream_error" }` or `{ "error": "empty_response" }`                                                  |
 
 The handler sets `Retry-After` when its own limiter rejects a request. It does not set that header for a Groq 429 response.
 
 ## Errors
 
-| Status | Code / message | Trigger | Caller action |
-| --- | --- | --- | --- |
-| 400 | `invalid_request` | `messages` missing, empty, too long, malformed, or not ending in a user message | Correct the JSON body |
-| 403 | `origin_not_allowed` | Origin missing or not allowlisted | Send from an allowed site origin |
-| 405 | `method_not_allowed` | Method is neither `POST` nor handled `OPTIONS` | Use `POST` |
-| 429 | `rate_limited` | More than 10 requests in the handler's 60-second in-memory window for the client key | Wait for `Retry-After` when provided |
-| 500 | `server_misconfigured` | `GROQ_API_KEY` is unavailable | Configure the deployment variable |
-| 500 | `internal_error` | Unexpected exception while processing the request | Retry later; no retry guarantee is specified |
-| 429 / 502 | `upstream_error` | Groq returns a non-success response; 429 remains 429 and other statuses map to 502 | Retry according to caller policy; this endpoint does not document an automatic retry |
-| 502 | `empty_response` | Groq response has no nonempty first-choice message content | Retry later |
+| Status    | Code / message         | Trigger                                                                              | Caller action                                                                        |
+| --------- | ---------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| 400       | `invalid_request`      | `messages` missing, empty, too long, malformed, or not ending in a user message      | Correct the JSON body                                                                |
+| 403       | `origin_not_allowed`   | Origin missing or not allowlisted                                                    | Send from an allowed site origin                                                     |
+| 405       | `method_not_allowed`   | Method is neither `POST` nor handled `OPTIONS`                                       | Use `POST`                                                                           |
+| 429       | `rate_limited`         | More than 10 requests in the handler's 60-second in-memory window for the client key | Wait for `Retry-After` when provided                                                 |
+| 500       | `server_misconfigured` | `GROQ_API_KEY` is unavailable                                                        | Configure the deployment variable                                                    |
+| 500       | `internal_error`       | Unexpected exception while processing the request                                    | Retry later; no retry guarantee is specified                                         |
+| 429 / 502 | `upstream_error`       | Groq returns a non-success response; 429 remains 429 and other statuses map to 502   | Retry according to caller policy; this endpoint does not document an automatic retry |
+| 502       | `empty_response`       | Groq response has no nonempty first-choice message content                           | Retry later                                                                          |
 
 ## Behavior
 
-After the shared request guard, the handler checks for `GROQ_API_KEY`, then consumes the per-instance rate budget, and only then validates the body. The upstream request uses model `llama-3.3-70b-versatile`, `max_tokens: 400`, and `temperature: 0.4`. It sends the local system prompt, validated conversation, and a final system directive that asks for Thai when the latest visitor message contains Thai-script characters and English otherwise.
+After the shared request guard, the handler checks for `GROQ_API_KEY`, then consumes the per-instance rate budget, and only then validates the body. The upstream request uses model `openai/gpt-oss-120b`, `max_tokens: 400`, and `temperature: 0.4`. It sends the local system prompt, validated conversation, and a final system directive that asks for Thai when the latest visitor message contains Thai-script characters and English otherwise.
 
 The upstream request is synchronous; the handler waits for the result before responding. Provider error details are logged server-side and not returned. The in-memory rate limiter is scoped to a warm serverless instance and is not a globally shared security control. No idempotency or automatic retry behavior is implemented.
 
 ## Relationships
 
-| Target | Interaction | Trigger / condition | Failure behavior |
-| --- | --- | --- | --- |
-| `portfolio-api.lib.cors` | Shared in-process request guard | Every request | Ends with `204`, `403`, or `405` before chat logic |
-| `portfolio-api.lib.knowledge` | Local prompt data | Constructing the Groq request | No separate failure handling; prompt is imported by the handler |
-| `portfolio-api.lib.rate-limit` | In-process limiter | After guard and API-key check, before body validation | `429 rate_limited` with `Retry-After` |
-| `external.groq.chat-completions` | Outbound HTTPS JSON request | Configured key, allowed rate limit, and valid body | Provider `429` maps to `429`; other non-success responses map to `502`; exceptions map to `500` |
+| Target                           | Interaction                     | Trigger / condition                                   | Failure behavior                                                                                |
+| -------------------------------- | ------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `portfolio-api.lib.cors`         | Shared in-process request guard | Every request                                         | Ends with `204`, `403`, or `405` before chat logic                                              |
+| `portfolio-api.lib.knowledge`    | Local prompt data               | Constructing the Groq request                         | No separate failure handling; prompt is imported by the handler                                 |
+| `portfolio-api.lib.rate-limit`   | In-process limiter              | After guard and API-key check, before body validation | `429 rate_limited` with `Retry-After`                                                           |
+| `external.groq.chat-completions` | Outbound HTTPS JSON request     | Configured key, allowed rate limit, and valid body    | Provider `429` maps to `429`; other non-success responses map to `502`; exceptions map to `500` |
 
 No upstream API caller or asynchronous event relationship was established in the inspected repository. The frontend repository is outside this scan scope. Relationship identities are recorded in `.speckub/relations.md`.
 

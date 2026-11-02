@@ -7,7 +7,9 @@ import { createRateLimiter } from "../lib/rate-limit";
 const checkRateLimit = createRateLimiter({ windowMs: 60_000, max: 10 });
 
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+// Groq decommissioned llama-3.3-70b-versatile for developer-tier accounts on
+// 2026-08-16. GPT-OSS 120B is its supported production replacement.
+const GROQ_MODEL = "openai/gpt-oss-120b";
 
 // Caps chosen to bound cost and abuse, not because the model requires them.
 const MAX_MESSAGES = 20;
