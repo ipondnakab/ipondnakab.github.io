@@ -9,6 +9,7 @@ import {
   UseFormProps,
   UseFormReturn,
 } from "react-hook-form";
+import { ZodType, ZodTypeDef } from "zod";
 
 import { preventFormSubmit } from "@/shared/lib/prevent-form-submit";
 
@@ -32,12 +33,19 @@ export type SubmitErrorHandler<
   args?: UseFormReturn<TFieldValues, TContext>,
 ) => void | Promise<void>;
 
+type ValidationSchema<TFieldValues extends FieldValues> = ZodType<
+  TFieldValues,
+  ZodTypeDef,
+  TFieldValues
+>;
+
 interface FormHookWrapperProps<
   TFieldValues extends FieldValues = FieldValues,
   TContext = unknown,
 > extends UseFormProps<TFieldValues, TContext> {
   validateInitially?: boolean;
-  validationSchema?: unknown | (() => unknown);
+  validationSchema?:
+    ValidationSchema<TFieldValues> | (() => ValidationSchema<TFieldValues>);
   preventEnterSubmit?: boolean;
   onSubmit: SubmitHandler<TFieldValues, TContext>;
   onError?: SubmitErrorHandler<TFieldValues, TContext> | undefined;
@@ -64,9 +72,14 @@ function FormHookWrapperInner<
   }: FormHookWrapperProps<TFieldValues, TContext>,
   forwardRef: React.ForwardedRef<UseFormReturn<TFieldValues, TContext>>,
 ): JSX.Element {
+  const schema =
+    typeof validationSchema === "function"
+      ? validationSchema()
+      : validationSchema;
+
   const args = useForm<TFieldValues, TContext>({
     mode: "all",
-    resolver: validationSchema ? zodResolver(validationSchema) : undefined,
+    resolver: schema ? zodResolver(schema) : undefined,
     ...props,
   });
 
