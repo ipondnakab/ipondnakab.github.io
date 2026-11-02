@@ -391,6 +391,11 @@
     }
   },
   "chat": {
+    "mascot": {
+      "idle": "お手伝いします",
+      "thinking": "考え中…",
+      "replying": "お役に立ててうれしいです！"
+    },
     "title": "KhunKao",
     "subtitle": "Kittipatのアシスタント",
     "greeting": "こんにちは、KhunKaoです。Kittipatの猫です。彼の経歴、プロジェクト、スキルについて何でも聞いてください。",

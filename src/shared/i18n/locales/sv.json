@@ -391,6 +391,11 @@
     }
   },
   "chat": {
+    "mascot": {
+      "idle": "Redo att hjälpa",
+      "thinking": "Funderar…",
+      "replying": "Hjälper gärna!"
+    },
     "title": "KhunKao",
     "subtitle": "Kittipats assistent",
     "greeting": "Hej, jag är KhunKao — Kittipats katt. Fråga mig vad som helst om hans erfarenhet, projekt eller kompetenser.",

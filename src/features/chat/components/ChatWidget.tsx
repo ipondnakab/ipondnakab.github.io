@@ -1,23 +1,23 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  Image,
-  Spinner,
-  Textarea,
-  Tooltip,
-} from "@nextui-org/react";
+import { Button, Card, Spinner, Textarea, Tooltip } from "@nextui-org/react";
 import clsx from "clsx";
+import { motion, useReducedMotion } from "framer-motion";
+import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoClose, IoSend } from "react-icons/io5";
 
+import {
+  MASCOT_REPLY_DURATION_MS,
+  MASCOT_TRAVEL_DURATION_MS,
+} from "@/features/chat/constants";
 import { saveChatTranscript } from "@/features/chat/lib/chat-history";
 import { ChatMessage } from "@/features/chat/model/chat";
+import type { MascotPhase, MascotState } from "@/features/chat/model/mascot";
 import { environment } from "@/shared/config/environment";
 import { trackEvent } from "@/shared/lib/analytics";
-import { cn } from "@nextui-org/theme";
+import PixelKhunKao from "./PixelKhunKao";
 
 export interface ChatWidgetProps {
   className?: string;
@@ -28,19 +28,11 @@ export interface ChatWidgetProps {
 // instead of starting to 400.
 const MAX_TURNS_SENT = 20;
 
-// The site mascot, reused as the assistant's face (see components/layouts/
-// Khunkao.tsx for the original character).
-//
-// This is a 192px-wide downscale of images/khunkao.png, not the original: the
-// launcher renders on every route at 56px, and the full-size asset is 1.1 MB —
-// `images.unoptimized` is set in next.config.js, so Next will not resize it for
-// us. Regenerate with:
-//   sips --resampleWidth 192 public/images/khunkao.png \
-//     --out public/images/khunkao-avatar.png
-//
-// Absolute rather than "./images/..." because the widget renders on nested
-// routes too (e.g. /drunkard-game/privacy), where a relative path resolves wrongly.
-const KHUNKAO_AVATAR = "/images/khunkao-avatar.png";
+// A dismissed session never mounts this component or downloads the sprite atlas.
+const ChatMascot = dynamic(() => import("./ChatMascot"), {
+  ssr: false,
+  loading: () => <PixelKhunKao className="h-full w-full" />,
+});
 
 // The tooltip announces itself once after the page settles, so visitors notice
 // the launcher without having to hover it. The settle delay keeps it from
@@ -57,9 +49,13 @@ const DISMISSED_STORAGE_KEY = "chat.dismissed";
 const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [phase, setPhase] = useState<MascotPhase>("closed");
+  const reducedMotion = useReducedMotion();
+  const skipMotion = reducedMotion !== false;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   // While the intro is playing the tooltip ignores hover/focus, so moving the
@@ -72,15 +68,69 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   const transcriptRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIsDismissed(
-      window.sessionStorage?.getItem(DISMISSED_STORAGE_KEY) === "1",
-    );
+    let dismissed = false;
+    try {
+      dismissed = window.sessionStorage.getItem(DISMISSED_STORAGE_KEY) === "1";
+    } catch {
+      // Keep the cat usable when browser storage is blocked.
+    }
+    setIsDismissed(dismissed);
+    setPhase(dismissed ? "closed" : "loading");
   }, []);
 
-  const handleDismiss = () => {
-    window.sessionStorage?.setItem(DISMISSED_STORAGE_KEY, "1");
-    setIsDismissed(true);
+  useEffect(() => {
+    if (!isReplying) return;
+    const timer = setTimeout(
+      () => setIsReplying(false),
+      MASCOT_REPLY_DURATION_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [isReplying]);
+
+  const mascotState: MascotState = isSending
+    ? "thinking"
+    : isReplying
+      ? "replying"
+      : "idle";
+
+  const handleMascotReady = useCallback(() => {
+    setPhase((current) =>
+      current === "loading" ? (skipMotion ? "active" : "entering") : current,
+    );
+  }, [skipMotion]);
+
+  useEffect(() => {
+    if (phase !== "entering" && phase !== "exiting") return;
+    const finish = () => {
+      if (phase === "exiting") {
+        setPhase("closed");
+        setIsDismissed(true);
+      } else {
+        setPhase("active");
+      }
+    };
+    if (skipMotion) {
+      finish();
+      return;
+    }
+    const timer = setTimeout(finish, MASCOT_TRAVEL_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [phase, skipMotion]);
+
+  const handleClose = () => {
     setIsOpen(false);
+    setIsTooltipOpen(false);
+  };
+
+  const handleDismiss = () => {
+    try {
+      window.sessionStorage.setItem(DISMISSED_STORAGE_KEY, "1");
+    } catch {
+      // Dismiss for this mount even when the browser cannot remember it.
+    }
+    setIsOpen(false);
+    setIsTooltipOpen(false);
+    setPhase("exiting");
     trackEvent("chat_dismissed");
   };
 
@@ -90,6 +140,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   }, [messages, isSending]);
 
   useEffect(() => {
+    if (phase !== "active" || !isIntroPlaying) return;
     const showTimer = setTimeout(
       () => setIsTooltipOpen(true),
       TOOLTIP_INTRO_DELAY_MS,
@@ -103,13 +154,16 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
-  }, []);
+  }, [phase, isIntroPlaying]);
 
   const handleToggle = () => {
-    setIsOpen((open) => {
-      if (!open) trackEvent("chat_open");
-      return !open;
-    });
+    if (isOpen) {
+      handleClose();
+      return;
+    }
+    trackEvent("chat_open");
+    setIsOpen(true);
+    setIsTooltipOpen(false);
   };
 
   const handleSend = useCallback(async () => {
@@ -123,6 +177,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
     setMessages(nextMessages);
     setDraft("");
     setError(null);
+    setIsReplying(false);
     setIsSending(true);
     trackEvent("chat_message_sent", { length: question.length });
 
@@ -153,6 +208,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
         { role: "assistant", content: payload.reply },
       ];
       setMessages(withReply);
+      setIsReplying(true);
       // Fire-and-forget: recording is a side benefit, so it must not delay the
       // reply appearing or fail the turn. saveChatTranscript swallows its own
       // errors.
@@ -189,18 +245,9 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
       )}
     >
       {isOpen && (
-        <Card className="flex h-[28rem] w-[min(22rem,calc(100vw-3rem))] flex-col overflow-hidden p-0 shadow-xl">
-          <div className="flex items-center justify-between border-b border-default-200 px-4 py-3">
+        <Card className="flex h-[min(28rem,calc(100dvh-10rem))] w-[min(22rem,calc(100vw-3rem))] flex-col overflow-hidden p-0 shadow-xl">
+          <div className="flex shrink-0 items-center justify-between border-b border-default-200 px-4 py-3">
             <div className="flex items-center gap-2">
-              {/* Decorative: the name sits directly beside it, so alt is empty
-                  to avoid a screen reader announcing it twice. */}
-              <Image
-                removeWrapper
-                disableSkeleton
-                src={KHUNKAO_AVATAR}
-                alt=""
-                className="h-8 w-8 shrink-0 scale-x-[-1] rounded-full bg-default-100 object-cover object-top"
-              />
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">{t("chat.title")}</span>
                 <span className="text-tiny text-default-500">
@@ -213,15 +260,26 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
               size="sm"
               variant="light"
               aria-label={t("chat.close")}
-              onPress={() => setIsOpen(false)}
+              onPress={handleClose}
             >
               <IoClose size={18} />
             </Button>
           </div>
 
+          <div className="flex shrink-0 justify-center border-b border-default-200 bg-primary/5 px-4 py-2">
+            <span
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              className="rounded-full bg-content1/80 px-3 py-1 text-tiny text-default-600"
+            >
+              {t(`chat.mascot.${mascotState}`)}
+            </span>
+          </div>
+
           <div
             ref={transcriptRef}
-            className="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-3"
+            className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-3"
           >
             {messages.length === 0 && (
               <div className="flex flex-col gap-3">
@@ -261,7 +319,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
             )}
           </div>
 
-          <div className="flex items-end gap-2 border-t border-default-200 px-3 py-3">
+          <div className="flex shrink-0 items-end gap-2 border-t border-default-200 px-3 py-3">
             <Textarea
               minRows={1}
               maxRows={4}
@@ -288,67 +346,73 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
         </Card>
       )}
 
-      <div className="relative">
-        {/* Suppressed while the panel is open: the button is a close control then,
-          and "click to chat" would describe the wrong action. */}
-        <Tooltip
-          content={t("chat.tooltip")}
-          placement="left"
-          showArrow
-          isDisabled={isOpen}
-          delay={300}
-          // Controlled throughout, so React never sees a controlled →
-          // uncontrolled switch. During the intro, hover and focus are ignored;
-          // afterwards onOpenChange is the only thing driving it.
-          isOpen={isTooltipOpen && !isOpen}
-          onOpenChange={(open) => {
-            if (!isIntroPlaying) setIsTooltipOpen(open);
-          }}
-        >
-          <Button
-            isIconOnly
-            radius="full"
-            size="lg"
-            className={cn(
-              "overflow-visible p-0 shadow-lg",
-              isOpen
-                ? "bg-default-100 h-12 w-12"
-                : "bg-transparent min-w-16 h-28 w-16",
-            )}
-            aria-label={isOpen ? t("chat.close") : t("chat.open")}
-            onPress={handleToggle}
+      <div className="relative h-28 w-28">
+        <div className="pointer-events-none fixed bottom-6 right-0 h-28 w-40 overflow-hidden">
+          <motion.div
+            data-testid="chat-companion"
+            data-phase={phase}
+            className="pointer-events-auto absolute bottom-0 right-6 h-28 w-28"
+            initial={{ x: skipMotion ? 0 : 224 }}
+            animate={{
+              x: phase === "loading" || phase === "exiting" ? 224 : 0,
+            }}
+            transition={{
+              duration: skipMotion ? 0 : MASCOT_TRAVEL_DURATION_MS / 1000,
+              ease: "linear",
+            }}
           >
-            {isOpen ? (
-              <IoClose size={22} />
-            ) : (
-              // Flipped horizontally so the cat faces into the page rather than off
-              // the right edge — same treatment as the original mascot component.
-              <Image
-                removeWrapper
-                disableSkeleton
-                src={KHUNKAO_AVATAR}
-                alt=""
-                className="h-full w-full scale-x-[-1] object-cover object-top"
-              />
-            )}
-          </Button>
-        </Tooltip>
+            <Tooltip
+              content={t("chat.tooltip")}
+              placement="left"
+              showArrow
+              isDisabled={isOpen || phase !== "active"}
+              delay={300}
+              isOpen={isTooltipOpen && !isOpen && phase === "active"}
+              onOpenChange={(open) => {
+                if (!isIntroPlaying) setIsTooltipOpen(open);
+              }}
+            >
+              <Button
+                isIconOnly
+                radius="full"
+                size="lg"
+                className="h-28 w-28 min-w-28 overflow-visible bg-transparent p-0 shadow-none data-[disabled=true]:opacity-100"
+                aria-label={isOpen ? t("chat.close") : t("chat.open")}
+                isDisabled={phase !== "active"}
+                onPress={handleToggle}
+              >
+                <ChatMascot
+                  state={
+                    phase === "entering" || phase === "exiting"
+                      ? "walking"
+                      : mascotState
+                  }
+                  facing={
+                    phase === "entering"
+                      ? "left"
+                      : phase === "exiting"
+                        ? "right"
+                        : "front"
+                  }
+                  onReady={handleMascotReady}
+                />
+              </Button>
+            </Tooltip>
 
-        {/* Dismiss badge. Only offered while the panel is closed — with it open
-            the header already has a close control, and hiding the launcher
-            out from under an active conversation would be jarring. */}
-        {!isOpen && (
-          <Button
-            isIconOnly
-            radius="full"
-            size="sm"
-            aria-label={t("chat.hide")}
-            className="absolute -right-1 -top-1 h-6 min-h-6 w-6 min-w-6 bg-default-200 p-0 text-default-700 shadow-md"
-            onPress={handleDismiss}
-          >
-            <IoClose size={12} />
-          </Button>
-        )}
+            {phase === "active" && (
+              <Button
+                isIconOnly
+                radius="full"
+                size="sm"
+                aria-label={t("chat.hide")}
+                className="absolute right-0 top-0 h-6 min-h-6 w-6 min-w-6 bg-default-200 p-0 text-default-700 shadow-md"
+                onPress={handleDismiss}
+              >
+                <IoClose size={12} />
+              </Button>
+            )}
+          </motion.div>
+        </div>
       </div>
     </div>
   );

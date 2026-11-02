@@ -391,6 +391,11 @@
     }
   },
   "chat": {
+    "mascot": {
+      "idle": "随时为你解答",
+      "thinking": "思考中…",
+      "replying": "很高兴能帮到你！"
+    },
     "title": "KhunKao",
     "subtitle": "Kittipat 的助理",
     "greeting": "你好，我是 KhunKao，Kittipat 的猫。欢迎询问他的工作经历、项目或技能。",

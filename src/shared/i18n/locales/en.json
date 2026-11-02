@@ -391,6 +391,11 @@
     }
   },
   "chat": {
+    "mascot": {
+      "idle": "Here to help",
+      "thinking": "Thinking…",
+      "replying": "Happy to help!"
+    },
     "title": "KhunKao",
     "subtitle": "Kittipat's assistant",
     "greeting": "Hi, I'm KhunKao — Kittipat's cat. Ask me anything about his experience, projects or skills.",
