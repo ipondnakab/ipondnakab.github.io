@@ -115,31 +115,49 @@ describe("chat companion response states", () => {
     const fetch = vi.fn(() => pending);
     vi.stubGlobal("fetch", fetch);
     openChat();
-    expect(screen.getByText(en.chat.mascot.idle)).toBeInTheDocument();
+    expect(screen.getByTestId("walking-cat")).toHaveAttribute(
+      "data-state",
+      "idle",
+    );
     send();
-    expect(screen.getByText(en.chat.mascot.thinking)).toBeInTheDocument();
+    expect(screen.getByTestId("walking-cat")).toHaveAttribute(
+      "data-state",
+      "thinking",
+    );
     await act(async () => {
       finish(
         new Response(JSON.stringify({ reply: "He builds helpful tools." })),
       );
     });
     expect(screen.getByText("He builds helpful tools.")).toBeInTheDocument();
-    expect(screen.getByText(en.chat.mascot.replying)).toBeInTheDocument();
+    expect(screen.getByTestId("walking-cat")).toHaveAttribute(
+      "data-state",
+      "replying",
+    );
     expect(fetch).toHaveBeenCalledWith(
       "https://api.example.test/api/chat",
       expect.objectContaining({ method: "POST" }),
     );
     act(() => vi.advanceTimersByTime(MASCOT_REPLY_DURATION_MS));
-    expect(screen.getByText(en.chat.mascot.idle)).toBeInTheDocument();
+    expect(screen.getByTestId("walking-cat")).toHaveAttribute(
+      "data-state",
+      "idle",
+    );
   });
 
   it("returns to idle with the existing error when the request fails", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
     openChat();
     await act(async () => send());
-    expect(screen.getByText(en.chat.mascot.idle)).toBeInTheDocument();
+    expect(screen.getByTestId("walking-cat")).toHaveAttribute(
+      "data-state",
+      "idle",
+    );
     expect(screen.getByRole("alert")).toHaveTextContent(en.chat.errors.offline);
-    expect(screen.queryByText(en.chat.mascot.replying)).toBeNull();
+    expect(screen.getByTestId("walking-cat")).not.toHaveAttribute(
+      "data-state",
+      "replying",
+    );
   });
 });
 

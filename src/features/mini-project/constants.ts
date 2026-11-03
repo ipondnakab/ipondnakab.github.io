@@ -1,17 +1,24 @@
-import { LocalizedText } from "@/shared/types/localized-text";
-import { IconType } from "react-icons";
+import type { MiniProject } from "@/features/mini-project/model/mini-project";
+import SpecKubIcon from "@/shared/ui/icons/SpecKubIcon";
 import { GiPartyPopper, GiPokerHand, GiShuttlecock } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
 import { MdOpenInNew, MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
 
-export const MINI_PROJECTS: {
-  name: string;
-  title: string;
-  href: string;
-  description: LocalizedText;
-  icon: IconType;
-}[] = [
+export const MINI_PROJECTS: readonly MiniProject[] = [
+  {
+    name: "speckub",
+    title: "SpecKub",
+    href: "https://www.speckub.dev",
+    description: {
+      en: "Create, validate, and browse API specifications with a TypeScript CLI and web explorer, designed for AI-assisted development.",
+      th: "เครื่องมือสร้าง ตรวจสอบ และเปิดดู API Spec ผ่าน TypeScript CLI และเว็บ รองรับการพัฒนาร่วมกับ AI",
+      ja: "TypeScript製CLIとWebエクスプローラーでAPI仕様を作成・検証・閲覧できる、AI支援開発向けツール。",
+      sv: "Skapa, validera och utforska API-specifikationer med ett CLI i TypeScript och en webbvy, utformade för AI-assisterad utveckling.",
+      zh: "通过 TypeScript CLI 和网页工具创建、验证和浏览 API 规格，支持 AI 辅助开发。",
+    },
+    icon: SpecKubIcon,
+  },
   {
     name: "threejs",
     title: "THREE.JS",
