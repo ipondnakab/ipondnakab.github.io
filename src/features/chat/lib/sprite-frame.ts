@@ -1,5 +1,5 @@
 import {
-  MASCOT_ANIMATION_FRAMES,
+  MASCOT_ACTIONS,
   MASCOT_CANVAS_SIZE,
   MASCOT_SOURCE_FRAMES,
   MASCOT_SPRITE_BASELINE,
@@ -8,16 +8,24 @@ import {
   MASCOT_SPRITE_WIDTH,
 } from "@/features/chat/constants";
 import type {
+  MascotAction,
+  MascotAmbientAction,
   MascotSpriteFrame,
   MascotState,
 } from "@/features/chat/model/mascot";
+
+import { resolveMascotAction } from "./ambient-action";
 
 export const getMascotSpriteFrame = (
   state: MascotState,
   tick: number,
   reducedMotion: boolean,
+  ambientAction: MascotAmbientAction | null = null,
 ): MascotSpriteFrame => {
-  const sequence = MASCOT_ANIMATION_FRAMES[state];
+  const clip =
+    MASCOT_ACTIONS[resolveMascotAction(state, ambientAction, reducedMotion)];
+  const sequence = clip.frames;
+  const scale = MASCOT_SPRITE_SCALE * clip.scale;
   const index = reducedMotion
     ? 0
     : sequence[Math.max(0, Math.floor(tick)) % sequence.length];
@@ -36,11 +44,20 @@ export const getMascotSpriteFrame = (
   return {
     source,
     destination: {
-      x: MASCOT_CANVAS_SIZE / 2 + (x - frame.anchorX) * MASCOT_SPRITE_SCALE,
-      y: MASCOT_SPRITE_BASELINE + (y - frame.baseline) * MASCOT_SPRITE_SCALE,
-      width: source.width * MASCOT_SPRITE_SCALE,
-      height: source.height * MASCOT_SPRITE_SCALE,
+      x: MASCOT_CANVAS_SIZE / 2 + (x - frame.anchorX) * scale,
+      y: MASCOT_SPRITE_BASELINE + (y - frame.baseline) * scale,
+      width: source.width * scale,
+      height: source.height * scale,
     },
     baseline: frame.baseline,
   };
+};
+
+export const getMascotFrameDuration = (
+  action: MascotAction,
+  tick: number,
+): number => {
+  const clip = MASCOT_ACTIONS[action];
+  const index = Math.max(0, Math.floor(tick)) % clip.frames.length;
+  return clip.frameDurations?.[index] ?? clip.frameMs;
 };

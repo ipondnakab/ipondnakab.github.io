@@ -1,22 +1,29 @@
 "use client";
 
-import { Button, Card, Spinner, Textarea, Tooltip } from "@nextui-org/react";
+import { Button, Card, Image, Spinner, Textarea } from "@nextui-org/react";
 import clsx from "clsx";
 import { motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoClose, IoSend } from "react-icons/io5";
 
 import {
+  MASCOT_AVATAR_SRC,
+  MASCOT_INTRO_DURATION_MS,
   MASCOT_REPLY_DURATION_MS,
   MASCOT_TRAVEL_DURATION_MS,
 } from "@/features/chat/constants";
 import { saveChatTranscript } from "@/features/chat/lib/chat-history";
 import { ChatMessage } from "@/features/chat/model/chat";
-import type { MascotPhase, MascotState } from "@/features/chat/model/mascot";
+import type {
+  MascotActionEvent,
+  MascotPhase,
+  MascotState,
+} from "@/features/chat/model/mascot";
 import { environment } from "@/shared/config/environment";
 import { trackEvent } from "@/shared/lib/analytics";
+import PixelChatBubble from "./PixelChatBubble";
 import PixelKhunKao from "./PixelKhunKao";
 
 export interface ChatWidgetProps {
@@ -34,13 +41,6 @@ const ChatMascot = dynamic(() => import("./ChatMascot"), {
   loading: () => <PixelKhunKao className="h-full w-full" />,
 });
 
-// The tooltip announces itself once after the page settles, so visitors notice
-// the launcher without having to hover it. The settle delay keeps it from
-// appearing while the route is still painting — several pages mount heavy
-// content (BackgroundParticles, the 3D résumé) right as this component does.
-const TOOLTIP_INTRO_DELAY_MS = 800;
-const TOOLTIP_INTRO_DURATION_MS = 5000;
-
 // Dismissing the launcher hides it for the rest of the browsing session.
 // sessionStorage rather than localStorage is deliberate: "not right now" should
 // not mean "never again" — a new tab or a return visit brings KhunKao back.
@@ -49,6 +49,7 @@ const DISMISSED_STORAGE_KEY = "chat.dismissed";
 const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [phase, setPhase] = useState<MascotPhase>("closed");
   const reducedMotion = useReducedMotion();
   const skipMotion = reducedMotion !== false;
@@ -56,16 +57,19 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+  const [actionEvent, setActionEvent] = useState<MascotActionEvent | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  // While the intro is playing the tooltip ignores hover/focus, so moving the
-  // cursor away can't cut the 5 seconds short. Once it ends, the Tooltip goes
-  // back to being driven entirely by onOpenChange.
+  const [isBubbleOpen, setIsBubbleOpen] = useState(false);
+  // Pointer leave must not shorten the three-second invitation on arrival.
   const [isIntroPlaying, setIsIntroPlaying] = useState(true);
   // null until the effect below has read sessionStorage, which does not exist
   // while the static export is prerendered.
   const [isDismissed, setIsDismissed] = useState<boolean | null>(null);
+  const invitationId = useId();
   const transcriptRef = useRef<HTMLDivElement>(null);
+  const actionEventIdRef = useRef(0);
 
   useEffect(() => {
     let dismissed = false;
@@ -87,11 +91,12 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
     return () => clearTimeout(timer);
   }, [isReplying]);
 
-  const mascotState: MascotState = isSending
-    ? "thinking"
-    : isReplying
-      ? "replying"
-      : "idle";
+  const mascotState: MascotState =
+    isSending || (isOpen && draft.trim().length > 0)
+      ? "thinking"
+      : isReplying
+        ? "replying"
+        : "idle";
 
   const handleMascotReady = useCallback(() => {
     setPhase((current) =>
@@ -117,9 +122,17 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
     return () => clearTimeout(timer);
   }, [phase, skipMotion]);
 
+  const triggerAction = (action: MascotActionEvent["action"]) => {
+    if (phase !== "active") return;
+    actionEventIdRef.current += 1;
+    setActionEvent({ id: actionEventIdRef.current, action });
+  };
+
   const handleClose = () => {
+    triggerAction("stretch");
     setIsOpen(false);
-    setIsTooltipOpen(false);
+    setIsBubbleOpen(false);
+    setIsIntroPlaying(false);
   };
 
   const handleDismiss = () => {
@@ -129,7 +142,8 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
       // Dismiss for this mount even when the browser cannot remember it.
     }
     setIsOpen(false);
-    setIsTooltipOpen(false);
+    setIsBubbleOpen(false);
+    setIsIntroPlaying(false);
     setPhase("exiting");
     trackEvent("chat_dismissed");
   };
@@ -141,18 +155,14 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
 
   useEffect(() => {
     if (phase !== "active" || !isIntroPlaying) return;
-    const showTimer = setTimeout(
-      () => setIsTooltipOpen(true),
-      TOOLTIP_INTRO_DELAY_MS,
-    );
-    const hideTimer = setTimeout(() => {
-      setIsTooltipOpen(false);
+    setIsBubbleOpen(true);
+    const hideTimer = window.setTimeout(() => {
+      setIsBubbleOpen(false);
       setIsIntroPlaying(false);
-    }, TOOLTIP_INTRO_DELAY_MS + TOOLTIP_INTRO_DURATION_MS);
+    }, MASCOT_INTRO_DURATION_MS);
 
     return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
+      window.clearTimeout(hideTimer);
     };
   }, [phase, isIntroPlaying]);
 
@@ -161,9 +171,11 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
       handleClose();
       return;
     }
+    triggerAction("stretch");
     trackEvent("chat_open");
     setIsOpen(true);
-    setIsTooltipOpen(false);
+    setIsBubbleOpen(false);
+    setIsIntroPlaying(false);
   };
 
   const handleSend = useCallback(async () => {
@@ -237,6 +249,8 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
   // launcher the visitor already dismissed from flashing on screen first.
   if (!environment.chatApiUrl || isDismissed !== false) return null;
 
+  const showBubble = isBubbleOpen && !isOpen && phase === "active";
+
   return (
     <div
       className={clsx(
@@ -248,6 +262,15 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
         <Card className="flex h-[min(28rem,calc(100dvh-10rem))] w-[min(22rem,calc(100vw-3rem))] flex-col overflow-hidden p-0 shadow-xl">
           <div className="flex shrink-0 items-center justify-between border-b border-default-200 px-4 py-3">
             <div className="flex items-center gap-2">
+              <Image
+                removeWrapper
+                disableSkeleton
+                src={MASCOT_AVATAR_SRC}
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 shrink-0 scale-x-[-1] rounded-full bg-default-100 object-cover object-top"
+              />
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">{t("chat.title")}</span>
                 <span className="text-tiny text-default-500">
@@ -265,18 +288,6 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
               <IoClose size={18} />
             </Button>
           </div>
-
-          <div className="flex shrink-0 justify-center border-b border-default-200 bg-primary/5 px-4 py-2">
-            <span
-              role="status"
-              aria-live="polite"
-              aria-atomic="true"
-              className="rounded-full bg-content1/80 px-3 py-1 text-tiny text-default-600"
-            >
-              {t(`chat.mascot.${mascotState}`)}
-            </span>
-          </div>
-
           <div
             ref={transcriptRef}
             className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-3"
@@ -326,7 +337,11 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
               size="sm"
               variant="bordered"
               value={draft}
-              onValueChange={setDraft}
+              onValueChange={(value) => {
+                setDraft(value);
+                setIsReplying(false);
+                setActionEvent(null);
+              }}
               onKeyDown={handleKeyDown}
               aria-label={t("chat.inputLabel")}
               placeholder={t("chat.placeholder")}
@@ -347,6 +362,11 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
       )}
 
       <div className="relative h-28 w-28">
+        {showBubble && (
+          <PixelChatBubble id={invitationId}>
+            {t("chat.tooltip")}
+          </PixelChatBubble>
+        )}
         <div className="pointer-events-none fixed bottom-6 right-0 h-28 w-40 overflow-hidden">
           <motion.div
             data-testid="chat-companion"
@@ -361,43 +381,52 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ className }) => {
               ease: "linear",
             }}
           >
-            <Tooltip
-              content={t("chat.tooltip")}
-              placement="left"
-              showArrow
-              isDisabled={isOpen || phase !== "active"}
-              delay={300}
-              isOpen={isTooltipOpen && !isOpen && phase === "active"}
-              onOpenChange={(open) => {
-                if (!isIntroPlaying) setIsTooltipOpen(open);
+            <Button
+              isIconOnly
+              radius="full"
+              size="lg"
+              className="h-28 w-28 min-w-28 overflow-visible bg-transparent p-0 shadow-none data-[disabled=true]:opacity-100"
+              aria-label={isOpen ? t("chat.close") : t("chat.open")}
+              aria-describedby={showBubble ? invitationId : undefined}
+              isDisabled={phase !== "active"}
+              onMouseEnter={() => {
+                setIsHovered(true);
+                if (!isIntroPlaying) setIsBubbleOpen(true);
               }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                if (!isIntroPlaying) setIsBubbleOpen(false);
+                setActionEvent((current) =>
+                  current?.action === "roll" ? null : current,
+                );
+              }}
+              onFocus={() => {
+                triggerAction("roll");
+                if (!isIntroPlaying) setIsBubbleOpen(true);
+              }}
+              onBlur={() => {
+                if (!isIntroPlaying) setIsBubbleOpen(false);
+              }}
+              onPress={handleToggle}
             >
-              <Button
-                isIconOnly
-                radius="full"
-                size="lg"
-                className="h-28 w-28 min-w-28 overflow-visible bg-transparent p-0 shadow-none data-[disabled=true]:opacity-100"
-                aria-label={isOpen ? t("chat.close") : t("chat.open")}
-                isDisabled={phase !== "active"}
-                onPress={handleToggle}
-              >
-                <ChatMascot
-                  state={
-                    phase === "entering" || phase === "exiting"
-                      ? "walking"
-                      : mascotState
-                  }
-                  facing={
-                    phase === "entering"
-                      ? "left"
-                      : phase === "exiting"
-                        ? "right"
-                        : "front"
-                  }
-                  onReady={handleMascotReady}
-                />
-              </Button>
-            </Tooltip>
+              <ChatMascot
+                state={
+                  phase === "entering" || phase === "exiting"
+                    ? "walking"
+                    : mascotState
+                }
+                facing={
+                  phase === "entering"
+                    ? "left"
+                    : phase === "exiting"
+                      ? "right"
+                      : "front"
+                }
+                onReady={handleMascotReady}
+                actionEvent={actionEvent}
+                isHovered={phase === "active" && isHovered}
+              />
+            </Button>
 
             {phase === "active" && (
               <Button

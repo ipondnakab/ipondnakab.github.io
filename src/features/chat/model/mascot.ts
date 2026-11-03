@@ -21,3 +21,18 @@ export interface MascotSpriteFrame {
   destination: SpriteRectangle;
   baseline: number;
 }
+
+export type MascotAmbientAction = "roll" | "groom" | "stretch" | "expression";
+export type MascotAction = "sit" | "walk" | MascotAmbientAction;
+
+export interface MascotClip {
+  frames: readonly number[];
+  frameMs: number;
+  frameDurations?: readonly number[];
+  scale: number;
+}
+
+export interface MascotActionEvent {
+  id: number;
+  action: "roll" | "stretch";
+}

@@ -39,7 +39,7 @@ vi.mock("framer-motion", async (importOriginal) => ({
 vi.mock("next/dynamic", () => ({
   default:
     () =>
-    ({ state, facing, onReady }: ChatMascotProps) => {
+    ({ state, facing, onReady, actionEvent, isHovered }: ChatMascotProps) => {
       useEffect(() => {
         motionPreference.reportReady = onReady;
         if (motionPreference.autoReady) onReady?.();
@@ -49,6 +49,9 @@ vi.mock("next/dynamic", () => ({
           data-testid="walking-cat"
           data-state={state}
           data-facing={facing}
+          data-hovered={isHovered}
+          data-action={actionEvent?.action}
+          data-action-id={actionEvent?.id}
         />
       );
     },
@@ -172,9 +175,12 @@ describe("one cat on page load", () => {
     openChat();
     const cat = screen.getByTestId("walking-cat");
     expect(screen.getAllByTestId("walking-cat")).toHaveLength(1);
-    expect(document.querySelector("img")).toBeNull();
+    const avatar = document.querySelector("img");
+    expect(avatar).toHaveAttribute("src", "/images/khunkao-avatar.png");
+    expect(avatar).toHaveAttribute("alt", "");
     fireEvent.click(screen.getAllByRole("button", { name: en.chat.close })[0]);
     expect(screen.queryByLabelText(en.chat.inputLabel)).toBeNull();
+    expect(document.querySelector("img")).toBeNull();
     expect(screen.getByTestId("walking-cat")).toBe(cat);
     expect(screen.getByTestId("chat-companion")).toHaveAttribute(
       "data-phase",
@@ -273,5 +279,134 @@ describe("one cat on page load", () => {
     );
     act(() => vi.advanceTimersByTime(MASCOT_TRAVEL_DURATION_MS));
     expect(screen.queryByTestId("walking-cat")).toBeNull();
+  });
+});
+
+describe("mascot interaction events", () => {
+  it("rolls on hover/focus and stretches for each open and close control", () => {
+    mountWidget();
+    act(() => vi.advanceTimersByTime(MASCOT_TRAVEL_DURATION_MS));
+    const cat = screen.getByTestId("walking-cat");
+    let launcher = screen.getByRole("button", { name: en.chat.open });
+    fireEvent.mouseEnter(launcher);
+    expect(cat).toHaveAttribute("data-hovered", "true");
+    fireEvent.mouseLeave(launcher);
+    expect(cat).toHaveAttribute("data-hovered", "false");
+    const first = cat.getAttribute("data-action-id");
+    fireEvent.focus(launcher);
+    expect(cat.getAttribute("data-action-id")).not.toBe(first);
+    fireEvent.click(launcher);
+    expect(cat).toHaveAttribute("data-action", "stretch");
+    let closes = screen.getAllByRole("button", { name: en.chat.close });
+    const opened = cat.getAttribute("data-action-id");
+    fireEvent.click(closes[0]);
+    expect(cat).toHaveAttribute("data-action", "stretch");
+    expect(cat.getAttribute("data-action-id")).not.toBe(opened);
+    launcher = screen.getByRole("button", { name: en.chat.open });
+    fireEvent.click(launcher);
+    closes = screen.getAllByRole("button", { name: en.chat.close });
+    fireEvent.click(closes[closes.length - 1]);
+    expect(cat).toHaveAttribute("data-action", "stretch");
+    expect(screen.queryByLabelText(en.chat.inputLabel)).toBeNull();
+  });
+
+  it("grooms while a draft waits, stops when cleared/closed, and typing interrupts a reply", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(new Response(JSON.stringify({ reply: "Hello!" }))),
+    );
+    openChat();
+    const cat = screen.getByTestId("walking-cat");
+    const input = screen.getByLabelText(en.chat.inputLabel);
+    fireEvent.change(input, { target: { value: "Hello" } });
+    expect(cat).toHaveAttribute("data-state", "thinking");
+    const launcher = screen
+      .getAllByRole("button", { name: en.chat.close })
+      .at(-1)!;
+    fireEvent.focus(launcher);
+    const hovered = Number(cat.getAttribute("data-action-id"));
+    expect(cat).toHaveAttribute("data-action", "roll");
+    fireEvent.change(input, { target: { value: "Hello again" } });
+    expect(cat).not.toHaveAttribute("data-action");
+    fireEvent.focus(launcher);
+    expect(cat).toHaveAttribute("data-action", "roll");
+    expect(Number(cat.getAttribute("data-action-id"))).toBeGreaterThan(hovered);
+    fireEvent.change(input, { target: { value: "" } });
+    expect(cat).toHaveAttribute("data-state", "idle");
+    await act(async () => send());
+    expect(cat).toHaveAttribute("data-state", "replying");
+    fireEvent.change(input, { target: { value: "Another question" } });
+    expect(cat).toHaveAttribute("data-state", "thinking");
+    fireEvent.click(screen.getAllByRole("button", { name: en.chat.close })[0]);
+    expect(cat).toHaveAttribute("data-state", "idle");
+  });
+});
+
+describe("chat invitation bubble", () => {
+  it("waits for readiness and sitting, then shows for exactly three seconds", () => {
+    motionPreference.autoReady = false;
+    const { container } = mountWidget();
+    act(() => vi.advanceTimersByTime(5000));
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    act(() => motionPreference.reportReady?.());
+    act(() => vi.advanceTimersByTime(MASCOT_TRAVEL_DURATION_MS - 1));
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    act(() => vi.advanceTimersByTime(1));
+    const bubble = screen.getByTestId("chat-invitation");
+    expect(bubble).toHaveTextContent(en.chat.tooltip);
+    expect(bubble).toHaveAttribute("role", "status");
+    expect(container).toContainElement(bubble);
+    expect(screen.queryByRole("tooltip")).toBeNull();
+    expect(screen.getByRole("button", { name: en.chat.open })).toHaveAttribute(
+      "aria-describedby",
+      bubble.id,
+    );
+    fireEvent.mouseLeave(screen.getByRole("button", { name: en.chat.open }));
+    act(() => vi.advanceTimersByTime(2999));
+    expect(screen.getByTestId("chat-invitation")).toHaveTextContent(
+      en.chat.tooltip,
+    );
+    act(() => vi.advanceTimersByTime(1));
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    act(() => vi.advanceTimersByTime(6000));
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    const launcher = screen.getByRole("button", { name: en.chat.open });
+    fireEvent.mouseEnter(launcher);
+    expect(screen.getByTestId("chat-invitation")).toHaveTextContent(
+      en.chat.tooltip,
+    );
+    fireEvent.mouseLeave(launcher);
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    fireEvent.focus(launcher);
+    expect(screen.getByTestId("chat-invitation")).toHaveTextContent(
+      en.chat.tooltip,
+    );
+    fireEvent.blur(launcher);
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+  });
+
+  it("cancels the invitation when opening chat and does not replay on close", () => {
+    openChat();
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+    fireEvent.click(screen.getAllByRole("button", { name: en.chat.close })[0]);
+    act(() => vi.advanceTimersByTime(1000));
+    expect(screen.queryByTestId("chat-invitation")).toBeNull();
+  });
+
+  it("shows after skipped travel and clears its timer on unmount", () => {
+    motionPreference.reduced = true;
+    const scheduled = vi.spyOn(window, "setTimeout");
+    const cleared = vi.spyOn(window, "clearTimeout");
+    const { unmount } = mountWidget();
+    expect(screen.getByTestId("chat-invitation")).toHaveTextContent(
+      en.chat.tooltip,
+    );
+    const index = scheduled.mock.calls.findIndex(([, delay]) => delay === 3000);
+    expect(index).toBeGreaterThanOrEqual(0);
+    const timer = scheduled.mock.results[index]?.value;
+    unmount();
+    expect(cleared).toHaveBeenCalledWith(timer);
   });
 });
