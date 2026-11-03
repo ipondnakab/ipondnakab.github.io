@@ -54,6 +54,14 @@ describe("Node runtime pinning", () => {
     ).toBe(true);
   });
 
+  it("keeps package installers on the same Node major as the runtime pin", () => {
+    const major = semver.coerce(nvmrc)!.major;
+    expect(
+      semver.subset(pkg.engines!.node!, `${major}.x`),
+      "engines.node must not admit earlier or future Node majors",
+    ).toBe(true);
+  });
+
   it("declares a floor every direct dependency can live with", () => {
     const floor = pkg.engines!.node!;
     // The lowest version the floor admits — if a dependency needs more than
@@ -87,5 +95,14 @@ describe("Node runtime pinning", () => {
       offenders,
       `engines.node "${floor}" admits ${lowest!.version}, which these reject`,
     ).toEqual([]);
+  });
+});
+
+describe("Clean-install build dependencies", () => {
+  it("declares and locks the form resolver's compatible Zod 3 dependency", () => {
+    const range = pkg.dependencies?.zod;
+    expect(range, "zod must be a direct runtime dependency").toBeTruthy();
+    expect(semver.subset(range ?? "", "3.x")).toBe(true);
+    expect(read("yarn.lock")).toMatch(/^zod@/m);
   });
 });
