@@ -9,3 +9,10 @@
 
 Analysis: the plan preserves schema support, matches current runtime pins and
 addresses both the reported compiler failure and runtime-selection warning.
+
+## Separate API deployment
+
+- [x] Observe a failing regression for the API's unbounded Node engine.
+- [x] Pin API engines to 24.x and document its independent runtime requirement.
+- [x] Verify fresh API frozen-lockfile installation, typecheck and API tests.
+- [x] Run root typecheck, lint, tests and build; record actual results.

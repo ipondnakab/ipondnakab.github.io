@@ -70,6 +70,12 @@ before the first deploy — set:
 | Root Directory   | `portfolio-api` |
 | Framework Preset | Other           |
 
+Use Node.js **24.x** for this API project, matching the parent site's `.nvmrc`.
+The API has its own `package.json`: its `engines.node` is pinned to `24.x` so
+Vercel cannot select Node 26, which the locked `@renovatebot/pep440` dependency
+does not support. Changing only the parent site's engine does not affect this
+separate deployment.
+
 Root Directory is the important one. Leaving it at the repo root makes Vercel
 build the Next.js site instead of this function.
 

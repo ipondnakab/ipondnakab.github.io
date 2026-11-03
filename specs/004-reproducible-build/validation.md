@@ -70,3 +70,55 @@ are recorded below using the rounded Next.js build figures.
 | `/robots.txt`                        |     0 B |     0 B |     0 |
 | `/sitemap.xml`                       |     0 B |     0 B |     0 |
 | `/threejs`                           |  331 kB |  331 kB |     0 |
+
+## Separate API deployment runtime
+
+The API has an independent package.json. Its >=20 engine admitted Node 26,
+which the locked @renovatebot/pep440 4.2.1 rejects (^20.9.0 || ^22.11.0 || ^24).
+The API engine is now 24.x. The root runtime regression failed before this
+change and now verifies the separate API remains on the shared bounded major.
+No dependency, lockfile or endpoint implementation changed. The API README
+documents why its engine must be set independently.
+
+Verified on Node 24.6.0 / Yarn 1.22.22:
+
+- A fresh API node_modules from yarn install --frozen-lockfile --offline
+  --ignore-scripts --cache-folder <temporary-cache>; engine checks stayed enabled.
+  The unchanged locked pep440 dependency installs successfully. Scripts were
+  skipped in the temporary checkout; no install-engine bypass was used.
+- API yarn typecheck and yarn test: passed (one mocked-provider test).
+- Root yarn typecheck, yarn lint, yarn test (16 files / 93 tests), yarn build:
+  passed in order, with 25 static pages exported.
+- git diff --check: passed.
+
+HTTP endpoints were not changed, so SpecKub endpoint inspection/validation was
+not applicable. No semantic verification is claimed. No production API request,
+Vercel deployment, commit or push was performed. This verifies the installation
+failure fix, not the earlier live Groq upstream response.
+
+Frontend First Load JS versus the previously verified root-build fix:
+
+| Route                                |  Before |   After | Delta |
+| ------------------------------------ | ------: | ------: | ----: |
+| `/`                                  |  389 kB |  389 kB |     0 |
+| `/_not-found`                        | 87.9 kB | 87.9 kB |     0 |
+| `/apple-icon.png`                    |     0 B |     0 B |     0 |
+| `/badminton`                         |  191 kB |  191 kB |     0 |
+| `/contact`                           |  391 kB |  391 kB |     0 |
+| `/contact/success`                   |  191 kB |  191 kB |     0 |
+| `/credit`                            |  143 kB |  143 kB |     0 |
+| `/deepjump`                          |  191 kB |  191 kB |     0 |
+| `/drunkard-game`                     |  123 kB |  123 kB |     0 |
+| `/drunkard-game/privacy`             |  146 kB |  146 kB |     0 |
+| `/icon.png`                          |     0 B |     0 B |     0 |
+| `/mic-link`                          |  438 kB |  438 kB |     0 |
+| `/mini-project`                      |  338 kB |  338 kB |     0 |
+| `/mini-project/badminton/live`       |  290 kB |  290 kB |     0 |
+| `/mini-project/badminton/scoreboard` |  174 kB |  174 kB |     0 |
+| `/planning`                          |  466 kB |  466 kB |     0 |
+| `/pokdeng`                           |  347 kB |  347 kB |     0 |
+| `/prompt-pay`                        |  326 kB |  326 kB |     0 |
+| `/resume`                            |  501 kB |  501 kB |     0 |
+| `/robots.txt`                        |     0 B |     0 B |     0 |
+| `/sitemap.xml`                       |     0 B |     0 B |     0 |
+| `/threejs`                           |  331 kB |  331 kB |     0 |

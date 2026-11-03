@@ -106,3 +106,20 @@ describe("Clean-install build dependencies", () => {
     expect(read("yarn.lock")).toMatch(/^zod@/m);
   });
 });
+
+describe("Separate API deployment runtime", () => {
+  it("keeps the API installer on the same supported Node major", () => {
+    const apiPackage = JSON.parse(read("portfolio-api", "package.json")) as {
+      engines?: { node?: string };
+    };
+    const range = apiPackage.engines?.node;
+    const major = semver.coerce(nvmrc)!.major;
+    expect(
+      range,
+      "portfolio-api needs its own bounded Node engine",
+    ).toBeTruthy();
+    expect(semver.subset(range ?? "", `${major}.x`)).toBe(true);
+    expect(semver.satisfies(`${major}.0.0`, range ?? "")).toBe(true);
+    expect(semver.satisfies(`${major + 1}.0.0`, range ?? "")).toBe(false);
+  });
+});
