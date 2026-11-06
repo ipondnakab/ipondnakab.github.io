@@ -30,6 +30,7 @@
       "ai": "AI"
     },
     "action": {
+      "download": "ดาวน์โหลดเรซูเม่ (PDF)",
       "view": "ดู",
       "visit": "เยี่ยมชม",
       "close": "ปิด"

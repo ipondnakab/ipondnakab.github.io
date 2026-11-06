@@ -30,6 +30,7 @@
       "ai": "AI"
     },
     "action": {
+      "download": "Ladda ner CV (PDF)",
       "view": "Visa",
       "visit": "Besök",
       "close": "Stäng"

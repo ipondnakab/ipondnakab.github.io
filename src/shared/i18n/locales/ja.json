@@ -30,6 +30,7 @@
       "ai": "AI"
     },
     "action": {
+      "download": "履歴書をダウンロード (PDF)",
       "view": "見る",
       "visit": "アクセス",
       "close": "閉じる"

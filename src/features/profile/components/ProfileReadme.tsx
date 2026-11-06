@@ -13,6 +13,7 @@ import OutsourceProjects from "@/features/profile/components/OutsourceProjects";
 import ProfileAvatar from "@/features/profile/components/ProfileAvatar";
 import SpecKubShowcase from "@/features/profile/components/SpecKubShowcase";
 import WorkExperiences from "@/features/profile/components/WorkExperiences";
+import ResumeDownload from "@/features/resume/components/ResumeDownload";
 
 export interface ProfileReadmeProps {}
 
@@ -44,6 +45,13 @@ const ProfileReadme: React.FC<ProfileReadmeProps> = () => {
       <WorkExperiences />
       <SpecKubShowcase />
       <OutsourceProjects />
+      <Card
+        isBlurred
+        className="flex flex-col items-center justify-center gap-4 p-8"
+      >
+        <h2 className="text-xl font-bold">{t("nav.resume")}</h2>
+        <ResumeDownload />
+      </Card>
     </div>
   );
 };

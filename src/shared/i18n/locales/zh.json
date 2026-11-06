@@ -30,6 +30,7 @@
       "ai": "AI"
     },
     "action": {
+      "download": "下载简历 (PDF)",
       "view": "查看",
       "visit": "访问",
       "close": "关闭"
