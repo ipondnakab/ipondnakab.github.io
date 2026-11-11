@@ -321,7 +321,7 @@ const RealtimeBadmintonRoom = () => {
             isLoading={loading}
             fullWidth
           >
-            Create room
+            {t("badminton.live.createRoom")}
           </Button>
           <div className="flex gap-2">
             <Input
@@ -339,7 +339,7 @@ const RealtimeBadmintonRoom = () => {
               color="primary"
               variant="flat"
             >
-              Join
+              {t("badminton.live.join")}
             </Button>
           </div>
         </section>
@@ -355,7 +355,7 @@ const RealtimeBadmintonRoom = () => {
                   QR
                 </Button>
                 <Button size="sm" variant="light" onPress={leave}>
-                  Leave
+                  {t("badminton.live.leave")}
                 </Button>
               </div>
             </div>
@@ -415,7 +415,7 @@ const RealtimeBadmintonRoom = () => {
                     navigator.clipboard.writeText(window.location.href)
                   }
                 >
-                  Copy link
+                  {t("badminton.live.copyLink")}
                 </Button>
                 <span>{t("badminton.live.firebaseHint")}</span>
               </div>
@@ -494,7 +494,7 @@ const RealtimeBadmintonRoom = () => {
                       onPress={() => setScoreSize(6)}
                       aria-label={t("badminton.live.resetSizeLabel")}
                     >
-                      Reset size
+                      {t("badminton.live.resetSize")}
                     </Button>
                   </div>
                 </details>
@@ -541,7 +541,7 @@ const RealtimeBadmintonRoom = () => {
                         aria-label={t("badminton.live.resetSizeLabel")}
                         onPress={() => setScoreSize(6)}
                       >
-                        Reset
+                        {t("badminton.live.resetSize")}
                       </Button>
                     </div>
                     <div className="flex flex-wrap items-center gap-1 sm:gap-2">
@@ -552,16 +552,16 @@ const RealtimeBadmintonRoom = () => {
                         aria-label={t("badminton.live.resetScoresLabel")}
                         onPress={() => change({ type: "reset" })}
                       >
-                        Reset scores
+                        {t("badminton.live.resetScores")}
                       </Button>
                       <Button
                         size="sm"
                         color="primary"
                         variant="solid"
                         onPress={() => void exitTeamsFullscreen()}
-                      aria-label={t("badminton.live.exitFullscreen")}
-                    >
-                        Exit
+                        aria-label={t("badminton.live.exitFullscreen")}
+                      >
+                        {t("badminton.live.exit")}
                       </Button>
                     </div>
                   </div>
@@ -665,7 +665,7 @@ const RealtimeBadmintonRoom = () => {
                 variant="flat"
                 onPress={() => change({ type: "reset" })}
               >
-                Reset scores
+                {t("badminton.live.resetScores")}
               </Button>
             </>
           )}
@@ -695,7 +695,7 @@ const RealtimeBadmintonRoom = () => {
       </Modal>
       {syncFailed && (
         <Button size="sm" variant="flat" onPress={() => void flush()}>
-          Retry pending sync
+          {t("badminton.live.retrySync")}
         </Button>
       )}
       {error && (
