@@ -60,7 +60,7 @@ const RealtimeBadmintonRoom = () => {
         if (value && value.revision >= revisionRef.current) {
           revisionRef.current = value.revision;
           // Reapply queued local actions over the latest committed state.
-          const optimistic = pendingRef.current.reduce(applyRoomAction, value);
+          const optimistic = pendingRef.current.length ? (roomRef.current ?? value) : value;
           roomRef.current = optimistic;
           setRoom(optimistic);
           peer?.broadcast(value);
