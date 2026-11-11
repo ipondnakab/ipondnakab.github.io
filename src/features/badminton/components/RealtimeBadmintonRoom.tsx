@@ -23,8 +23,10 @@ import {
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const RealtimeBadmintonRoom = () => {
+  const { t } = useTranslation();
   const [entry, setEntry] = useState("");
   const [newName, setNewName] = useState("");
   const [code, setCode] = useState("");
@@ -102,7 +104,7 @@ const RealtimeBadmintonRoom = () => {
       code,
       (value) => {
         if (!value) {
-          setError("Room not found.");
+          setError(t("badminton.live.roomNotFound"));
           return;
         }
         accept(value);
@@ -114,7 +116,7 @@ const RealtimeBadmintonRoom = () => {
       unsubscribe();
       peer?.();
     };
-  }, [code, syncMode]);
+  }, [code, syncMode, t]);
   useEffect(() => {
     if (!code) {
       setQrDataUrl("");
@@ -124,7 +126,7 @@ const RealtimeBadmintonRoom = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("room", code);
     setShareUrl(url.toString());
-  }, [code]);
+  }, [code, t]);
   useEffect(() => {
     if (!showQr || !shareUrl) return;
     let active = true;
@@ -137,12 +139,12 @@ const RealtimeBadmintonRoom = () => {
         if (active) setQrDataUrl(url);
       })
       .catch(() => {
-        if (active) setError("Could not generate QR code.");
+        if (active) setError(t("badminton.live.qrError"));
       });
     return () => {
       active = false;
     };
-  }, [showQr, shareUrl]);
+  }, [showQr, shareUrl, t]);
   useEffect(() => {
     if (!teamsFullscreen) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -176,7 +178,9 @@ const RealtimeBadmintonRoom = () => {
       enter(next);
     } catch (cause) {
       setError(
-        cause instanceof Error ? cause.message : "Could not create room.",
+        cause instanceof Error
+          ? cause.message
+          : t("badminton.live.createError"),
       );
     } finally {
       setLoading(false);
@@ -185,16 +189,19 @@ const RealtimeBadmintonRoom = () => {
   const join = async () => {
     const next = normalizeCode(entry);
     if (!next) {
-      setError("Enter a room name.");
+      setError(t("badminton.live.enterRoom"));
       return;
     }
     setLoading(true);
     setError("");
     try {
-      if (!(await roomExists(next))) throw new Error("Room not found.");
+      if (!(await roomExists(next)))
+        throw new Error(t("badminton.live.roomNotFound"));
       enter(next);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not join room.");
+      setError(
+        cause instanceof Error ? cause.message : t("badminton.live.joinError"),
+      );
     } finally {
       setLoading(false);
     }
@@ -214,7 +221,11 @@ const RealtimeBadmintonRoom = () => {
     } catch (cause) {
       if (roomCodeRef.current === code) {
         setSyncFailed(true);
-        setError(cause instanceof Error ? cause.message : "Score sync failed.");
+        setError(
+          cause instanceof Error
+            ? cause.message
+            : t("badminton.live.syncError"),
+        );
       }
     } finally {
       busyRef.current = false;
@@ -298,17 +309,17 @@ const RealtimeBadmintonRoom = () => {
   return (
     <main className="w-full select-none space-y-4 px-2 py-4 sm:px-4 lg:px-6">
       <header className="rounded-2xl bg-content1 p-3">
-        <h1 className="text-2xl font-bold">Live Badminton Scoreboard</h1>
+        <h1 className="text-2xl font-bold">{t("badminton.live.title")}</h1>
         <p className="text-sm text-default-500">
-          Create or join a named room to score together in real time.
+          {t("badminton.live.subtitle")}
         </p>
       </header>
       {!code ? (
         <section className="space-y-4 rounded-2xl bg-content1 p-4">
           <Input
             className="select-text"
-            label="Room name (optional)"
-            placeholder="e.g. friday-badminton"
+            label={t("badminton.live.optionalName")}
+            placeholder={t("badminton.live.nameExample")}
             value={newName}
             onValueChange={setNewName}
             maxLength={40}
@@ -319,17 +330,17 @@ const RealtimeBadmintonRoom = () => {
             isLoading={loading}
             fullWidth
           >
-            Create room
+            {t("badminton.live.createRoom")}
           </Button>
           <div className="flex gap-2">
             <Input
               className="select-text"
-              label="Room name"
-              placeholder="Enter a room name"
+              label={t("badminton.live.roomName")}
+              placeholder={t("badminton.live.enterRoom")}
               value={entry}
               onValueChange={(value) => setEntry(normalizeCode(value))}
               maxLength={40}
-              aria-label="Room code"
+              aria-label={t("badminton.live.roomCode")}
             />
             <Button
               onPress={join}
@@ -337,153 +348,181 @@ const RealtimeBadmintonRoom = () => {
               color="primary"
               variant="flat"
             >
-              Join
+              {t("badminton.live.join")}
             </Button>
           </div>
         </section>
       ) : (
         <section className="space-y-4">
-          <div className="min-w-0 space-y-3 rounded-2xl bg-content1 p-3 sm:p-4">
+          <div className="min-w-0 space-y-2 rounded-2xl bg-content1 p-2.5 sm:p-3">
             <div className="flex min-w-0 items-center justify-between gap-2">
-              <span className="min-w-0 truncate font-mono text-base font-bold sm:text-lg">
-                Room: {code}
+              <span className="min-w-0 truncate font-mono text-sm font-bold sm:text-lg">
+                {t("badminton.live.room")}: {code}
               </span>
-              <Button size="sm" variant="light" onPress={leave}>
-                Leave
-              </Button>
+              <div className="flex shrink-0 items-center gap-1">
+                <Button
+                  size="sm"
+                  variant="flat"
+                  onPress={() => setShowQr(true)}
+                >
+                  QR
+                </Button>
+                <Button size="sm" variant="light" onPress={leave}>
+                  {t("badminton.live.leave")}
+                </Button>
+              </div>
             </div>
-            <div
-              className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
-              role="group"
-              aria-label="Sync transport"
-            >
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                color={syncMode === "firebase" ? "primary" : "default"}
-                variant={syncMode === "firebase" ? "solid" : "flat"}
-                onPress={() => setSyncMode("firebase")}
+            <div className="flex min-w-0 items-center gap-2">
+              <div
+                className="flex shrink-0 gap-1"
+                role="group"
+                aria-label={t("badminton.live.syncTransport")}
               >
-                Firebase Sync
-              </Button>
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                color={syncMode === "p2p" ? "primary" : "default"}
-                variant={syncMode === "p2p" ? "solid" : "flat"}
-                onPress={() => setSyncMode("p2p")}
-              >
-                LAN / P2P
-              </Button>
-            </div>
-            <div className="flex min-h-5 min-w-0 items-center gap-2">
+                <Button
+                  size="sm"
+                  color={syncMode === "firebase" ? "primary" : "default"}
+                  variant={syncMode === "firebase" ? "solid" : "flat"}
+                  onPress={() => setSyncMode("firebase")}
+                >
+                  Firebase
+                </Button>
+                <Button
+                  size="sm"
+                  color={syncMode === "p2p" ? "primary" : "default"}
+                  variant={syncMode === "p2p" ? "solid" : "flat"}
+                  onPress={() => setSyncMode("p2p")}
+                >
+                  P2P
+                </Button>
+              </div>
               <span
                 role="status"
                 aria-live="polite"
-                className="min-w-0 text-xs leading-5 text-default-500 sm:text-sm"
-              >
-                {syncing
-                  ? "Saving…"
-                  : syncMode === "p2p" && connection === "direct"
-                    ? "P2P connected · Firebase persistence"
-                    : syncMode === "p2p"
-                      ? "Connecting P2P · Firebase persistence"
-                      : "Firebase sync"}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                variant="flat"
-                onPress={() =>
-                  navigator.clipboard.writeText(window.location.href)
+                className="min-w-0 flex-1 truncate text-right text-xs text-default-500"
+                title={
+                  syncing
+                    ? t("badminton.live.saving")
+                    : syncMode === "p2p" && connection === "direct"
+                      ? t("badminton.live.p2pConnectedFull")
+                      : syncMode === "p2p"
+                        ? t("badminton.live.p2pConnectingFull")
+                        : t("badminton.live.firebaseSync")
                 }
               >
-                Copy link
-              </Button>
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                variant="flat"
-                onPress={() => setShowQr(true)}
-              >
-                QR code
-              </Button>
+                {syncing
+                  ? t("badminton.live.saving")
+                  : syncMode === "p2p" && connection === "direct"
+                    ? t("badminton.live.connected")
+                    : syncMode === "p2p"
+                      ? t("badminton.live.connecting")
+                      : t("badminton.live.synced")}
+              </span>
             </div>
+            <details className="group text-xs text-default-500">
+              <summary className="cursor-pointer py-1">
+                {t("badminton.live.roomOptions")}
+              </summary>
+              <div className="flex flex-wrap items-center gap-2 pt-2">
+                <Button
+                  size="sm"
+                  variant="flat"
+                  onPress={() =>
+                    navigator.clipboard.writeText(window.location.href)
+                  }
+                >
+                  {t("badminton.live.copyLink")}
+                </Button>
+                <span>{t("badminton.live.firebaseHint")}</span>
+              </div>
+            </details>
           </div>
           {!room ? (
             <p role="status" className="p-4">
-              Connecting to room...
+              {t("badminton.live.connectingRoom")}
             </p>
           ) : (
             <>
               <div className="min-w-0 space-y-2 rounded-xl bg-content1 p-2 sm:p-3">
-                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                  {(["standard", "freehand"] as const).map((mode) => (
-                    <Button
-                      key={mode}
-                      size="sm"
-                      className="min-w-0 w-full sm:w-auto"
-                      color={room.mode === mode ? "primary" : "default"}
-                      variant={room.mode === mode ? "solid" : "flat"}
-                      onPress={() => change({ type: "mode", mode })}
-                    >
-                      {mode === "standard" ? "Standard" : "Freehand"}
-                    </Button>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <div
+                    className="flex min-w-0 flex-1 gap-1"
+                    role="group"
+                    aria-label={t("badminton.live.scoringMode")}
+                  >
+                    {(["standard", "freehand"] as const).map((mode) => (
+                      <Button
+                        key={mode}
+                        size="sm"
+                        className="min-w-0 flex-1"
+                        color={room.mode === mode ? "primary" : "default"}
+                        variant={room.mode === mode ? "solid" : "flat"}
+                        onPress={() => change({ type: "mode", mode })}
+                      >
+                        {mode === "standard"
+                          ? t("badminton.scoreModestandard")
+                          : t("badminton.scoreModefreehand")}
+                      </Button>
+                    ))}
+                  </div>
                   <Button
                     size="sm"
-                    className="min-w-0 w-full sm:w-auto"
+                    color="primary"
                     variant="flat"
                     onPress={() => void enterTeamsFullscreen()}
                   >
-                    Fullscreen teams
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="min-w-0 w-full sm:w-auto"
-                    variant={mirrored ? "solid" : "flat"}
-                    color={mirrored ? "primary" : "default"}
-                    aria-label="Mirror teams on this device"
-                    onPress={() => setMirrored((value) => !value)}
-                  >
-                    ⇄ Mirror
+                    <span className="sm:hidden">
+                      {t("badminton.live.expand")}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {t("badminton.live.fullscreen")}
+                    </span>
                   </Button>
                 </div>
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <span className="mr-1 text-xs tabular-nums text-default-500">
-                    Score size: {scoreSize}rem
-                  </span>
-                  <Button
-                    size="sm"
-                    isIconOnly
-                    aria-label="Smaller score"
-                    isDisabled={scoreSize === 1}
-                    onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
-                  >
-                    A−
-                  </Button>
-                  <Button
-                    size="sm"
-                    isIconOnly
-                    aria-label="Larger score"
-                    isDisabled={scoreSize === 50}
-                    onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
-                  >
-                    A+
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    onPress={() => setScoreSize(6)}
-                    aria-label="Reset score font size"
-                  >
-                    Reset
-                  </Button>
-                </div>
+                <details className="group text-sm">
+                  <summary className="cursor-pointer py-1 text-default-500">
+                    {t("badminton.live.displaySettings")} · {scoreSize}rem
+                  </summary>
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant={mirrored ? "solid" : "flat"}
+                      color={mirrored ? "primary" : "default"}
+                      aria-label={t("badminton.live.mirrorLabel")}
+                      onPress={() => setMirrored((value) => !value)}
+                    >
+                      ⇄ {t("badminton.live.mirror")}
+                    </Button>
+                    <Button
+                      size="sm"
+                      isIconOnly
+                      aria-label={t("badminton.decreaseScoreSize")}
+                      isDisabled={scoreSize === 1}
+                      onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
+                    >
+                      A−
+                    </Button>
+                    <span className="text-xs tabular-nums text-default-500">
+                      {scoreSize}rem
+                    </span>
+                    <Button
+                      size="sm"
+                      isIconOnly
+                      aria-label={t("badminton.increaseScoreSize")}
+                      isDisabled={scoreSize === 50}
+                      onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
+                    >
+                      A+
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      onPress={() => setScoreSize(6)}
+                      aria-label={t("badminton.live.resetSizeLabel")}
+                    >
+                      {t("badminton.live.resetSize")}
+                    </Button>
+                  </div>
+                </details>
               </div>
               <div
                 ref={teamsFullscreenRef}
@@ -499,7 +538,7 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         isIconOnly
-                        aria-label="Decrease fullscreen score font size"
+                        aria-label={t("badminton.decreaseScoreSize")}
                         isDisabled={scoreSize === 1}
                         onPress={() =>
                           setScoreSize((size) => Math.max(1, size - 1))
@@ -513,7 +552,7 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         isIconOnly
-                        aria-label="Increase fullscreen score font size"
+                        aria-label={t("badminton.increaseScoreSize")}
                         isDisabled={scoreSize === 50}
                         onPress={() =>
                           setScoreSize((size) => Math.min(50, size + 1))
@@ -524,21 +563,32 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         variant="flat"
-                        aria-label="Reset fullscreen score font size"
+                        aria-label={t("badminton.live.resetSizeLabel")}
                         onPress={() => setScoreSize(6)}
                       >
-                        Reset
+                        {t("badminton.live.resetSize")}
                       </Button>
                     </div>
-                    <Button
-                      size="sm"
-                      color="primary"
-                      variant="solid"
-                      onPress={() => void exitTeamsFullscreen()}
-                      aria-label="Exit fullscreen teams"
-                    >
-                      Exit
-                    </Button>
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        aria-label={t("badminton.live.resetScoresLabel")}
+                        onPress={() => change({ type: "reset" })}
+                      >
+                        {t("badminton.live.resetScores")}
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="primary"
+                        variant="solid"
+                        onPress={() => void exitTeamsFullscreen()}
+                        aria-label={t("badminton.live.exitFullscreen")}
+                      >
+                        {t("badminton.live.exit")}
+                      </Button>
+                    </div>
                   </div>
                 )}
                 <div
@@ -565,7 +615,9 @@ const RealtimeBadmintonRoom = () => {
                           className="select-text"
                           size="sm"
                           aria-label={
-                            side === 0 ? "Red team name" : "Blue team name"
+                            side === 0
+                              ? t("badminton.live.redTeamName")
+                              : t("badminton.live.blueTeamName")
                           }
                           value={names[side]}
                           onValueChange={(value) =>
@@ -583,7 +635,7 @@ const RealtimeBadmintonRoom = () => {
                         />
                         {room.mode === "standard" && (
                           <p className="pt-2 text-xs">
-                            Games won: {wins[side]}
+                            {t("badminton.gamesWon", { count: wins[side] })}
                           </p>
                         )}
                         <div
@@ -632,7 +684,9 @@ const RealtimeBadmintonRoom = () => {
               )}
               {completed && room.mode === "standard" && (
                 <p role="status" className="text-center font-semibold">
-                  Winner: {room.names[wins[0] >= 2 ? 0 : 1]}
+                  {t("badminton.live.winner", {
+                    name: room.names[wins[0] >= 2 ? 0 : 1],
+                  })}
                 </p>
               )}
               <Button
@@ -640,7 +694,7 @@ const RealtimeBadmintonRoom = () => {
                 variant="flat"
                 onPress={() => change({ type: "reset" })}
               >
-                Reset scores
+                {t("badminton.live.resetScores")}
               </Button>
             </>
           )}
@@ -648,7 +702,7 @@ const RealtimeBadmintonRoom = () => {
       )}
       <Modal isOpen={showQr} onOpenChange={setShowQr} placement="center">
         <ModalContent>
-          <ModalHeader>Scan to join room</ModalHeader>
+          <ModalHeader>{t("badminton.live.scanToJoin")}</ModalHeader>
           <ModalBody className="items-center pb-6">
             {qrDataUrl ? (
               <Image
@@ -656,11 +710,11 @@ const RealtimeBadmintonRoom = () => {
                 width={256}
                 height={256}
                 unoptimized
-                alt={`QR code to join room ${code}`}
+                alt={t("badminton.live.qrAlt", { code })}
                 className="rounded-lg bg-white p-2"
               />
             ) : (
-              <p>Generating QR code…</p>
+              <p>{t("badminton.live.generatingQr")}</p>
             )}
             <p className="break-all text-center text-xs text-default-500">
               {shareUrl}
@@ -670,7 +724,7 @@ const RealtimeBadmintonRoom = () => {
       </Modal>
       {syncFailed && (
         <Button size="sm" variant="flat" onPress={() => void flush()}>
-          Retry pending sync
+          {t("badminton.live.retrySync")}
         </Button>
       )}
       {error && (
