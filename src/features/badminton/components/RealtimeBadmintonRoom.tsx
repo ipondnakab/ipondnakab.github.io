@@ -50,7 +50,10 @@ const RealtimeBadmintonRoom = () => {
   useEffect(() => {
     if (!scoreSizeLoaded) return;
     try {
-      window.localStorage.setItem("badminton-score-font-size", String(scoreSize));
+      window.localStorage.setItem(
+        "badminton-score-font-size",
+        String(scoreSize),
+      );
     } catch {
       // The font-size controls still work without persistent storage.
     }
@@ -320,7 +323,7 @@ const RealtimeBadmintonRoom = () => {
           </Button>
           <div className="flex gap-2">
             <Input
-            className="select-text"
+              className="select-text"
               label="Room name"
               placeholder="Enter a room name"
               value={entry}
@@ -498,7 +501,9 @@ const RealtimeBadmintonRoom = () => {
                         isIconOnly
                         aria-label="Decrease fullscreen score font size"
                         isDisabled={scoreSize === 1}
-                        onPress={() => setScoreSize((size) => Math.max(1, size - 1))}
+                        onPress={() =>
+                          setScoreSize((size) => Math.max(1, size - 1))
+                        }
                       >
                         A−
                       </Button>
@@ -510,7 +515,9 @@ const RealtimeBadmintonRoom = () => {
                         isIconOnly
                         aria-label="Increase fullscreen score font size"
                         isDisabled={scoreSize === 50}
-                        onPress={() => setScoreSize((size) => Math.min(50, size + 1))}
+                        onPress={() =>
+                          setScoreSize((size) => Math.min(50, size + 1))
+                        }
                       >
                         A+
                       </Button>
@@ -555,7 +562,7 @@ const RealtimeBadmintonRoom = () => {
                         }}
                       >
                         <Input
-            className="select-text"
+                          className="select-text"
                           size="sm"
                           aria-label={
                             side === 0 ? "Red team name" : "Blue team name"
