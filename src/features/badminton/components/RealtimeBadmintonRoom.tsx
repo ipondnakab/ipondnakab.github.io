@@ -293,7 +293,7 @@ const RealtimeBadmintonRoom = () => {
     : [0, 0];
   const completed = wins.some((count) => count >= 2);
   return (
-    <main className="w-full space-y-4 px-2 py-4 sm:px-4 lg:px-6">
+    <main className="w-full select-none space-y-4 px-2 py-4 sm:px-4 lg:px-6">
       <header className="rounded-2xl bg-content1 p-3">
         <h1 className="text-2xl font-bold">Live Badminton Scoreboard</h1>
         <p className="text-sm text-default-500">
@@ -303,6 +303,7 @@ const RealtimeBadmintonRoom = () => {
       {!code ? (
         <section className="space-y-4 rounded-2xl bg-content1 p-4">
           <Input
+            className="select-text"
             label="Room name (optional)"
             placeholder="e.g. friday-badminton"
             value={newName}
@@ -319,6 +320,7 @@ const RealtimeBadmintonRoom = () => {
           </Button>
           <div className="flex gap-2">
             <Input
+            className="select-text"
               label="Room name"
               placeholder="Enter a room name"
               value={entry}
@@ -553,6 +555,7 @@ const RealtimeBadmintonRoom = () => {
                         }}
                       >
                         <Input
+            className="select-text"
                           size="sm"
                           aria-label={
                             side === 0 ? "Red team name" : "Blue team name"
