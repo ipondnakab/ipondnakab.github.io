@@ -23,8 +23,10 @@ import {
 import Image from "next/image";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const RealtimeBadmintonRoom = () => {
+  const { t } = useTranslation();
   const [entry, setEntry] = useState("");
   const [newName, setNewName] = useState("");
   const [code, setCode] = useState("");
@@ -102,7 +104,7 @@ const RealtimeBadmintonRoom = () => {
       code,
       (value) => {
         if (!value) {
-          setError("Room not found.");
+          setError(t("badminton.live.roomNotFound"));
           return;
         }
         accept(value);
@@ -137,7 +139,7 @@ const RealtimeBadmintonRoom = () => {
         if (active) setQrDataUrl(url);
       })
       .catch(() => {
-        if (active) setError("Could not generate QR code.");
+        if (active) setError(t("badminton.live.qrError"));
       });
     return () => {
       active = false;
@@ -176,7 +178,7 @@ const RealtimeBadmintonRoom = () => {
       enter(next);
     } catch (cause) {
       setError(
-        cause instanceof Error ? cause.message : "Could not create room.",
+        cause instanceof Error ? cause.message : t("badminton.live.createError"),
       );
     } finally {
       setLoading(false);
@@ -185,16 +187,16 @@ const RealtimeBadmintonRoom = () => {
   const join = async () => {
     const next = normalizeCode(entry);
     if (!next) {
-      setError("Enter a room name.");
+      setError(t("badminton.live.enterRoom"));
       return;
     }
     setLoading(true);
     setError("");
     try {
-      if (!(await roomExists(next))) throw new Error("Room not found.");
+      if (!(await roomExists(next))) throw new Error(t("badminton.live.roomNotFound"));
       enter(next);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not join room.");
+      setError(cause instanceof Error ? cause.message : t("badminton.live.joinError"));
     } finally {
       setLoading(false);
     }
@@ -214,7 +216,7 @@ const RealtimeBadmintonRoom = () => {
     } catch (cause) {
       if (roomCodeRef.current === code) {
         setSyncFailed(true);
-        setError(cause instanceof Error ? cause.message : "Score sync failed.");
+        setError(cause instanceof Error ? cause.message : t("badminton.live.syncError"));
       }
     } finally {
       busyRef.current = false;
@@ -298,17 +300,17 @@ const RealtimeBadmintonRoom = () => {
   return (
     <main className="w-full select-none space-y-4 px-2 py-4 sm:px-4 lg:px-6">
       <header className="rounded-2xl bg-content1 p-3">
-        <h1 className="text-2xl font-bold">Live Badminton Scoreboard</h1>
+        <h1 className="text-2xl font-bold">{t("badminton.live.title")}</h1>
         <p className="text-sm text-default-500">
-          Create or join a named room to score together in real time.
+          {t("badminton.live.subtitle")}
         </p>
       </header>
       {!code ? (
         <section className="space-y-4 rounded-2xl bg-content1 p-4">
           <Input
             className="select-text"
-            label="Room name (optional)"
-            placeholder="e.g. friday-badminton"
+            label={t("badminton.live.optionalName")}
+            placeholder={t("badminton.live.nameExample")}
             value={newName}
             onValueChange={setNewName}
             maxLength={40}
@@ -324,12 +326,12 @@ const RealtimeBadmintonRoom = () => {
           <div className="flex gap-2">
             <Input
               className="select-text"
-              label="Room name"
-              placeholder="Enter a room name"
+              label={t("badminton.live.roomName")}
+              placeholder={t("badminton.live.enterRoom")}
               value={entry}
               onValueChange={(value) => setEntry(normalizeCode(value))}
               maxLength={40}
-              aria-label="Room code"
+              aria-label={t("badminton.live.roomCode")}
             />
             <Button
               onPress={join}
@@ -346,7 +348,7 @@ const RealtimeBadmintonRoom = () => {
           <div className="min-w-0 space-y-2 rounded-2xl bg-content1 p-2.5 sm:p-3">
             <div className="flex min-w-0 items-center justify-between gap-2">
               <span className="min-w-0 truncate font-mono text-sm font-bold sm:text-lg">
-                Room: {code}
+                {t("badminton.live.room")}: {code}
               </span>
               <div className="flex shrink-0 items-center gap-1">
                 <Button size="sm" variant="flat" onPress={() => setShowQr(true)}>
@@ -361,7 +363,7 @@ const RealtimeBadmintonRoom = () => {
               <div
                 className="flex shrink-0 gap-1"
                 role="group"
-                aria-label="Sync transport"
+                aria-label={t("badminton.live.syncTransport")}
               >
                 <Button
                   size="sm"
@@ -386,25 +388,25 @@ const RealtimeBadmintonRoom = () => {
                 className="min-w-0 flex-1 truncate text-right text-xs text-default-500"
                 title={
                   syncing
-                    ? "Saving…"
+                    ? t("badminton.live.saving")
                     : syncMode === "p2p" && connection === "direct"
-                      ? "P2P connected · Firebase persistence"
+                      ? t("badminton.live.p2pConnectedFull")
                       : syncMode === "p2p"
-                        ? "Connecting P2P · Firebase persistence"
-                        : "Firebase sync"
+                        ? t("badminton.live.p2pConnectingFull")
+                        : t("badminton.live.firebaseSync")
                 }
               >
                 {syncing
-                  ? "Saving…"
+                  ? t("badminton.live.saving")
                   : syncMode === "p2p" && connection === "direct"
-                    ? "Connected"
+                    ? t("badminton.live.connected")
                     : syncMode === "p2p"
-                      ? "Connecting…"
-                      : "Synced"}
+                      ? t("badminton.live.connecting")
+                      : t("badminton.live.synced")}
               </span>
             </div>
             <details className="group text-xs text-default-500">
-              <summary className="cursor-pointer py-1">Room options</summary>
+              <summary className="cursor-pointer py-1">{t("badminton.live.roomOptions")}</summary>
               <div className="flex flex-wrap items-center gap-2 pt-2">
                 <Button
                   size="sm"
@@ -415,19 +417,19 @@ const RealtimeBadmintonRoom = () => {
                 >
                   Copy link
                 </Button>
-                <span>Scores sync via Firebase.</span>
+                <span>{t("badminton.live.firebaseHint")}</span>
               </div>
             </details>
           </div>
           {!room ? (
             <p role="status" className="p-4">
-              Connecting to room...
+              {t("badminton.live.connectingRoom")}
             </p>
           ) : (
             <>
               <div className="min-w-0 space-y-2 rounded-xl bg-content1 p-2 sm:p-3">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <div className="flex min-w-0 flex-1 gap-1" role="group" aria-label="Scoring mode">
+                  <div className="flex min-w-0 flex-1 gap-1" role="group" aria-label={t("badminton.live.scoringMode")}>
                     {(["standard", "freehand"] as const).map((mode) => (
                       <Button
                         key={mode}
@@ -437,7 +439,7 @@ const RealtimeBadmintonRoom = () => {
                         variant={room.mode === mode ? "solid" : "flat"}
                         onPress={() => change({ type: "mode", mode })}
                       >
-                        {mode === "standard" ? "Standard" : "Freehand"}
+                        {mode === "standard" ? t("badminton.scoreModestandard") : t("badminton.scoreModefreehand")}
                       </Button>
                     ))}
                   </div>
@@ -447,28 +449,28 @@ const RealtimeBadmintonRoom = () => {
                     variant="flat"
                     onPress={() => void enterTeamsFullscreen()}
                   >
-                    <span className="sm:hidden">Expand</span>
-                    <span className="hidden sm:inline">Fullscreen</span>
+                    <span className="sm:hidden">{t("badminton.live.expand")}</span>
+                    <span className="hidden sm:inline">{t("badminton.live.fullscreen")}</span>
                   </Button>
                 </div>
                 <details className="group text-sm">
                   <summary className="cursor-pointer py-1 text-default-500">
-                    Display settings · {scoreSize}rem
+                    {t("badminton.live.displaySettings")} · {scoreSize}rem
                   </summary>
                   <div className="flex flex-wrap items-center gap-2 pt-2">
                     <Button
                       size="sm"
                       variant={mirrored ? "solid" : "flat"}
                       color={mirrored ? "primary" : "default"}
-                      aria-label="Mirror teams on this device"
+                      aria-label={t("badminton.live.mirrorLabel")}
                       onPress={() => setMirrored((value) => !value)}
                     >
-                      ⇄ Mirror
+                      ⇄ {t("badminton.live.mirror")}
                     </Button>
                     <Button
                       size="sm"
                       isIconOnly
-                      aria-label="Smaller score"
+                      aria-label={t("badminton.decreaseScoreSize")}
                       isDisabled={scoreSize === 1}
                       onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
                     >
@@ -480,7 +482,7 @@ const RealtimeBadmintonRoom = () => {
                     <Button
                       size="sm"
                       isIconOnly
-                      aria-label="Larger score"
+                      aria-label={t("badminton.increaseScoreSize")}
                       isDisabled={scoreSize === 50}
                       onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
                     >
@@ -490,7 +492,7 @@ const RealtimeBadmintonRoom = () => {
                       size="sm"
                       variant="flat"
                       onPress={() => setScoreSize(6)}
-                      aria-label="Reset score font size"
+                      aria-label={t("badminton.live.resetSizeLabel")}
                     >
                       Reset size
                     </Button>
@@ -511,7 +513,7 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         isIconOnly
-                        aria-label="Decrease fullscreen score font size"
+                        aria-label={t("badminton.decreaseScoreSize")}
                         isDisabled={scoreSize === 1}
                         onPress={() =>
                           setScoreSize((size) => Math.max(1, size - 1))
@@ -525,7 +527,7 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         isIconOnly
-                        aria-label="Increase fullscreen score font size"
+                        aria-label={t("badminton.increaseScoreSize")}
                         isDisabled={scoreSize === 50}
                         onPress={() =>
                           setScoreSize((size) => Math.min(50, size + 1))
@@ -536,7 +538,7 @@ const RealtimeBadmintonRoom = () => {
                       <Button
                         size="sm"
                         variant="flat"
-                        aria-label="Reset fullscreen score font size"
+                        aria-label={t("badminton.live.resetSizeLabel")}
                         onPress={() => setScoreSize(6)}
                       >
                         Reset
@@ -547,7 +549,7 @@ const RealtimeBadmintonRoom = () => {
                         size="sm"
                         color="danger"
                         variant="flat"
-                        aria-label="Reset both teams scores to zero"
+                        aria-label={t("badminton.live.resetScoresLabel")}
                         onPress={() => change({ type: "reset" })}
                       >
                         Reset scores
@@ -557,7 +559,7 @@ const RealtimeBadmintonRoom = () => {
                         color="primary"
                         variant="solid"
                         onPress={() => void exitTeamsFullscreen()}
-                      aria-label="Exit fullscreen teams"
+                      aria-label={t("badminton.live.exitFullscreen")}
                     >
                         Exit
                       </Button>
@@ -588,7 +590,7 @@ const RealtimeBadmintonRoom = () => {
                           className="select-text"
                           size="sm"
                           aria-label={
-                            side === 0 ? "Red team name" : "Blue team name"
+                            side === 0 ? t("badminton.live.redTeamName") : t("badminton.live.blueTeamName")
                           }
                           value={names[side]}
                           onValueChange={(value) =>
@@ -606,7 +608,7 @@ const RealtimeBadmintonRoom = () => {
                         />
                         {room.mode === "standard" && (
                           <p className="pt-2 text-xs">
-                            Games won: {wins[side]}
+                            {t("badminton.gamesWon", { count: wins[side] })}
                           </p>
                         )}
                         <div
@@ -655,7 +657,7 @@ const RealtimeBadmintonRoom = () => {
               )}
               {completed && room.mode === "standard" && (
                 <p role="status" className="text-center font-semibold">
-                  Winner: {room.names[wins[0] >= 2 ? 0 : 1]}
+                  {t("badminton.live.winner", { name: room.names[wins[0] >= 2 ? 0 : 1] })}
                 </p>
               )}
               <Button
@@ -671,7 +673,7 @@ const RealtimeBadmintonRoom = () => {
       )}
       <Modal isOpen={showQr} onOpenChange={setShowQr} placement="center">
         <ModalContent>
-          <ModalHeader>Scan to join room</ModalHeader>
+          <ModalHeader>{t("badminton.live.scanToJoin")}</ModalHeader>
           <ModalBody className="items-center pb-6">
             {qrDataUrl ? (
               <Image
@@ -679,11 +681,11 @@ const RealtimeBadmintonRoom = () => {
                 width={256}
                 height={256}
                 unoptimized
-                alt={`QR code to join room ${code}`}
+                alt={t("badminton.live.qrAlt", { code })}
                 className="rounded-lg bg-white p-2"
               />
             ) : (
-              <p>Generating QR code…</p>
+              <p>{t("badminton.live.generatingQr")}</p>
             )}
             <p className="break-all text-center text-xs text-default-500">
               {shareUrl}
