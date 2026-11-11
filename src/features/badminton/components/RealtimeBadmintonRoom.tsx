@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  applyRoomAction,
   createRoom,
   newRoomCode,
   normalizeCode,
@@ -27,6 +28,11 @@ const RealtimeBadmintonRoom = () => {
   >("firebase");
   const peerRef = useRef<ReturnType<typeof connectScorePeers> | null>(null);
   const revisionRef = useRef(-1);
+  const roomRef = useRef<ScoreRoom | null>(null);
+  const pendingRef = useRef<Parameters<typeof updateRoom>[1][]>([]);
+  const busyRef = useRef(false);
+  const [syncMode, setSyncMode] = useState<"firebase" | "p2p">("firebase");
+  const [syncing, setSyncing] = useState(false);
   const [names, setNames] = useState<[string, string]>(["", ""]);
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -36,24 +42,28 @@ const RealtimeBadmintonRoom = () => {
   useEffect(() => {
     if (!code) return;
     revisionRef.current = -1;
-    const peer = connectScorePeers(
+    const peer = syncMode === "p2p" ? connectScorePeers(
       code,
       (incoming) => {
         if (incoming.revision > revisionRef.current) {
           revisionRef.current = incoming.revision;
+          roomRef.current = incoming;
           setRoom(incoming);
         }
       },
       setConnection,
-    );
+    ) : null;
     peerRef.current = peer;
     const unsubscribe = subscribeRoom(
       code,
       (value) => {
         if (value && value.revision >= revisionRef.current) {
           revisionRef.current = value.revision;
-          setRoom(value);
-          peer.broadcast(value);
+          // Reapply queued local actions over the latest committed state.
+          const optimistic = pendingRef.current.reduce(applyRoomAction, value);
+          roomRef.current = optimistic;
+          setRoom(optimistic);
+          peer?.broadcast(value);
         }
         if (value) setNames(value.names);
         else setError("Room not found.");
@@ -62,13 +72,15 @@ const RealtimeBadmintonRoom = () => {
     );
     return () => {
       unsubscribe();
-      peer();
+      peer?.();
       peerRef.current = null;
     };
-  }, [code]);
+  }, [code, syncMode]);
   const enter = (next: string) => {
     setError("");
     setRoom(null);
+    roomRef.current = null;
+    pendingRef.current = [];
     setCode(next);
     const url = new URL(window.location.href);
     url.searchParams.set("room", next);
@@ -110,20 +122,39 @@ const RealtimeBadmintonRoom = () => {
       setLoading(false);
     }
   };
-  const change = useCallback(
-    async (action: Parameters<typeof updateRoom>[1]) => {
-      try {
-        setError("");
+  const flush = useCallback(async () => {
+    if (busyRef.current || !code) return;
+    busyRef.current = true;
+    setSyncing(true);
+    try {
+      while (pendingRef.current.length) {
+        const action = pendingRef.current[0];
         await updateRoom(code, action);
-      } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "Update failed.");
+        pendingRef.current.shift();
       }
-    },
-    [code],
-  );
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Sync failed. Retry to save pending scores.");
+    } finally {
+      busyRef.current = false;
+      setSyncing(pendingRef.current.length > 0);
+    }
+  }, [code]);
+  const change = useCallback((action: Parameters<typeof updateRoom>[1]) => {
+    const current = roomRef.current;
+    if (!current) return;
+    const next = applyRoomAction(current, action);
+    if (next === current) return;
+    roomRef.current = next;
+    setRoom(next);
+    pendingRef.current.push(action);
+    setError("");
+    void flush();
+  }, [flush]);
   const leave = () => {
     setCode("");
     setRoom(null);
+    roomRef.current = null;
+    pendingRef.current = [];
     setError("");
     const url = new URL(window.location.href);
     url.searchParams.delete("room");
@@ -183,10 +214,12 @@ const RealtimeBadmintonRoom = () => {
         <section className="space-y-4">
           <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-content1 p-3">
             <span className="mr-auto font-mono font-bold">Room: {code}</span>
+            <div className="flex items-center gap-2" role="group" aria-label="Sync transport">
+              <Button size="sm" color={syncMode === "firebase" ? "primary" : "default"} variant={syncMode === "firebase" ? "solid" : "flat"} onPress={() => setSyncMode("firebase")}>Firebase Sync</Button>
+              <Button size="sm" color={syncMode === "p2p" ? "primary" : "default"} variant={syncMode === "p2p" ? "solid" : "flat"} onPress={() => setSyncMode("p2p")}>P2P</Button>
+            </div>
             <span role="status" className="text-xs text-default-500">
-              {connection === "direct"
-                ? "Direct peer connection"
-                : "Firebase sync"}
+              {syncing ? "Saving…" : syncMode === "p2p" && connection === "direct" ? "P2P connected · Firebase persistence" : syncMode === "p2p" ? "Connecting P2P · Firebase persistence" : "Firebase sync"}
             </span>
             <Button
               size="sm"
@@ -339,6 +372,7 @@ const RealtimeBadmintonRoom = () => {
           )}
         </section>
       )}
+      {syncing && <Button size="sm" variant="flat" onPress={() => void flush()}>Retry pending sync</Button>}
       {error && (
         <p
           role="alert"
