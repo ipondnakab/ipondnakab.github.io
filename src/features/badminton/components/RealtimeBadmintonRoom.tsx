@@ -290,7 +290,12 @@ const RealtimeBadmintonRoom = () => {
                   return (
                   <div
                     key={side}
-                    className={`min-w-0 rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
+                    className={`min-w-0 cursor-pointer rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
+                    onClick={(event) => {
+                      // Interactive children handle their own actions, never add another point.
+                      if ((event.target as HTMLElement).closest("button, input, textarea, select, [role='button']")) return;
+                      change({ type: "point", side, delta: 1 });
+                    }}
                   >
                     <Input
                       size="sm"
@@ -319,7 +324,6 @@ const RealtimeBadmintonRoom = () => {
                       type="button"
                       disabled={completed && room.mode === "standard"}
                       aria-label={`Add point for ${room.names[side]}`}
-                      onClick={() => change({ type: "point", side, delta: 1 })}
                       style={{ fontSize: `${scoreSize}rem` }}
                       className={`flex min-h-48 w-full items-center justify-center font-bold leading-none tabular-nums overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${side === 0 ? "text-red-500" : "text-blue-500"}`}
                     >
