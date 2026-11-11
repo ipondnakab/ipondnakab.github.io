@@ -116,7 +116,7 @@ const RealtimeBadmintonRoom = () => {
       unsubscribe();
       peer?.();
     };
-  }, [code, syncMode]);
+  }, [code, syncMode, t]);
   useEffect(() => {
     if (!code) {
       setQrDataUrl("");
@@ -126,7 +126,7 @@ const RealtimeBadmintonRoom = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("room", code);
     setShareUrl(url.toString());
-  }, [code]);
+  }, [code, t]);
   useEffect(() => {
     if (!showQr || !shareUrl) return;
     let active = true;
@@ -144,7 +144,7 @@ const RealtimeBadmintonRoom = () => {
     return () => {
       active = false;
     };
-  }, [showQr, shareUrl]);
+  }, [showQr, shareUrl, t]);
   useEffect(() => {
     if (!teamsFullscreen) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -178,7 +178,9 @@ const RealtimeBadmintonRoom = () => {
       enter(next);
     } catch (cause) {
       setError(
-        cause instanceof Error ? cause.message : t("badminton.live.createError"),
+        cause instanceof Error
+          ? cause.message
+          : t("badminton.live.createError"),
       );
     } finally {
       setLoading(false);
@@ -193,10 +195,13 @@ const RealtimeBadmintonRoom = () => {
     setLoading(true);
     setError("");
     try {
-      if (!(await roomExists(next))) throw new Error(t("badminton.live.roomNotFound"));
+      if (!(await roomExists(next)))
+        throw new Error(t("badminton.live.roomNotFound"));
       enter(next);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : t("badminton.live.joinError"));
+      setError(
+        cause instanceof Error ? cause.message : t("badminton.live.joinError"),
+      );
     } finally {
       setLoading(false);
     }
@@ -216,7 +221,11 @@ const RealtimeBadmintonRoom = () => {
     } catch (cause) {
       if (roomCodeRef.current === code) {
         setSyncFailed(true);
-        setError(cause instanceof Error ? cause.message : t("badminton.live.syncError"));
+        setError(
+          cause instanceof Error
+            ? cause.message
+            : t("badminton.live.syncError"),
+        );
       }
     } finally {
       busyRef.current = false;
@@ -351,7 +360,11 @@ const RealtimeBadmintonRoom = () => {
                 {t("badminton.live.room")}: {code}
               </span>
               <div className="flex shrink-0 items-center gap-1">
-                <Button size="sm" variant="flat" onPress={() => setShowQr(true)}>
+                <Button
+                  size="sm"
+                  variant="flat"
+                  onPress={() => setShowQr(true)}
+                >
                   QR
                 </Button>
                 <Button size="sm" variant="light" onPress={leave}>
