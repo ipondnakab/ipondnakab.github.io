@@ -76,12 +76,8 @@ export type RoomAction =
   | { type: "reset" }
   | { type: "mode"; mode: RoomMode }
   | { type: "name"; side: 0 | 1; name: string };
-export const updateRoom = async (code: string, action: RoomAction) => {
-  await runTransaction(db, async (transaction) => {
-    const ref = roomRef(code);
-    const snapshot = await transaction.get(ref);
-    if (!snapshot.exists()) throw new Error("Room not found");
-    const current = snapshot.data() as ScoreRoom;
+/** Pure scoring reducer shared by optimistic UI and Firestore transactions. */
+export const applyRoomAction = (current: ScoreRoom, action: RoomAction): ScoreRoom => {
     const points: Score = [...current.points];
     let games = [...current.games];
     let mode = current.mode;
@@ -90,9 +86,9 @@ export const updateRoom = async (code: string, action: RoomAction) => {
       const wins = [0, 1].map(
         (side) => games.filter((game) => winnerOf(game) === side).length,
       );
-      if (mode === "standard" && wins.some((count) => count >= 2)) return;
-      if (action.delta === -1 && points[action.side] === 0) return;
-      if (mode === "standard" && action.delta === -1) return;
+      if (mode === "standard" && wins.some((count) => count >= 2)) return current;
+      if (action.delta === -1 && points[action.side] === 0) return current;
+      if (mode === "standard" && action.delta === -1) return current;
       points[action.side] = Math.max(0, points[action.side] + action.delta);
       if (mode === "standard" && winnerOf(points) !== null) {
         games = [...games, [...points] as Score];
@@ -112,12 +108,18 @@ export const updateRoom = async (code: string, action: RoomAction) => {
       names[action.side] =
         action.name.trim().slice(0, 40) || `Team ${action.side + 1}`;
     }
+    return { ...current, points, games, mode, names, revision: current.revision + 1 };
+};
+export const updateRoom = async (code: string, action: RoomAction) => {
+  await runTransaction(db, async (transaction) => {
+    const ref = roomRef(code);
+    const snapshot = await transaction.get(ref);
+    if (!snapshot.exists()) throw new Error("Room not found");
+    const current = snapshot.data() as ScoreRoom;
+    const next = applyRoomAction(current, action);
+    if (next === current) return;
     transaction.update(ref, {
-      points,
-      games,
-      mode,
-      names,
-      revision: current.revision + 1,
+      ...next,
     });
   });
 };
