@@ -251,6 +251,7 @@ const RealtimeBadmintonRoom = () => {
     };
   }, []);
   const leave = () => {
+    if (teamsFullscreen) void exitTeamsFullscreen();
     roomCodeRef.current = "";
     setCode("");
     setRoom(null);
@@ -435,12 +436,43 @@ const RealtimeBadmintonRoom = () => {
                 ref={teamsFullscreenRef}
                 className={
                   teamsFullscreen
-                    ? "fixed inset-0 z-[100] flex flex-col gap-2 bg-background p-2 sm:p-4"
+                    ? "fixed inset-0 z-[100] flex h-[100dvh] w-screen flex-col gap-2 overflow-hidden bg-background p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))] sm:gap-3 sm:p-4"
                     : ""
                 }
               >
                 {teamsFullscreen && (
-                  <div className="flex shrink-0 justify-end">
+                  <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 rounded-lg bg-content1 p-1.5 sm:p-2">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                      <Button
+                        size="sm"
+                        isIconOnly
+                        aria-label="Decrease fullscreen score font size"
+                        isDisabled={scoreSize === 1}
+                        onPress={() => setScoreSize((size) => Math.max(1, size - 1))}
+                      >
+                        A−
+                      </Button>
+                      <span className="min-w-10 text-center text-xs tabular-nums sm:text-sm">
+                        {scoreSize}rem
+                      </span>
+                      <Button
+                        size="sm"
+                        isIconOnly
+                        aria-label="Increase fullscreen score font size"
+                        isDisabled={scoreSize === 20}
+                        onPress={() => setScoreSize((size) => Math.min(20, size + 1))}
+                      >
+                        A+
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        aria-label="Reset fullscreen score font size"
+                        onPress={() => setScoreSize(6)}
+                      >
+                        Reset
+                      </Button>
+                    </div>
                     <Button
                       size="sm"
                       color="primary"
@@ -448,19 +480,19 @@ const RealtimeBadmintonRoom = () => {
                       onPress={() => void exitTeamsFullscreen()}
                       aria-label="Exit fullscreen teams"
                     >
-                      Exit fullscreen
+                      Exit
                     </Button>
                   </div>
                 )}
                 <div
-                  className={`grid grid-cols-2 gap-1 sm:gap-3 ${teamsFullscreen ? "min-h-0 flex-1" : ""}`}
+                  className={`grid grid-cols-2 gap-1 sm:gap-3 ${teamsFullscreen ? "min-h-0 flex-1 auto-rows-fr" : ""}`}
                 >
                   {([0, 1] as const).map((position) => {
                     const side = (mirrored ? 1 - position : position) as 0 | 1;
                     return (
                       <div
                         key={side}
-                        className={`min-w-0 cursor-pointer rounded-xl border-2 p-1 text-center sm:p-3 ${teamsFullscreen ? "flex min-h-0 flex-col" : ""} ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
+                        className={`min-w-0 cursor-pointer rounded-xl border-2 p-1 text-center sm:p-3 ${teamsFullscreen ? "flex min-h-0 flex-col overflow-hidden" : ""} ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
                         onClick={(event) => {
                           if (
                             (event.target as HTMLElement).closest(
@@ -497,7 +529,11 @@ const RealtimeBadmintonRoom = () => {
                           </p>
                         )}
                         <div
-                          style={{ fontSize: `${scoreSize}rem` }}
+                          style={{
+                            fontSize: teamsFullscreen
+                              ? `min(${scoreSize}rem, 23vw, 45dvh)`
+                              : `${scoreSize}rem`,
+                          }}
                           className={`flex min-h-48 w-full items-center justify-center font-bold leading-none tabular-nums overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${teamsFullscreen ? "min-h-0 flex-1" : ""} ${side === 0 ? "text-red-500" : "text-blue-500"}`}
                         >
                           {room.points[side]}
