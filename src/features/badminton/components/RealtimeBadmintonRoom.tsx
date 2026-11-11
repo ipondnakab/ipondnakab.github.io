@@ -24,6 +24,7 @@ const RealtimeBadmintonRoom = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [scoreSize, setScoreSize] = useState(6);
+  const [mirrored, setMirrored] = useState(false);
   const [connection, setConnection] = useState<
     "firebase" | "direct" | "connecting"
   >("firebase");
@@ -291,6 +292,7 @@ const RealtimeBadmintonRoom = () => {
                   ))}
                 </div>
                 <div className="flex items-center gap-1">
+                  <Button size="sm" variant={mirrored ? "solid" : "flat"} color={mirrored ? "primary" : "default"} aria-label="Mirror teams on this device" onPress={() => setMirrored((value) => !value)}>⇄ Mirror</Button>
                   <span className="text-xs tabular-nums text-default-500">
                     {scoreSize}rem
                   </span>
@@ -323,7 +325,9 @@ const RealtimeBadmintonRoom = () => {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-1 sm:gap-3">
-                {([0, 1] as const).map((side) => (
+                {([0, 1] as const).map((position) => {
+                  const side = (mirrored ? 1 - position : position) as 0 | 1;
+                  return (
                   <div
                     key={side}
                     className={`min-w-0 rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
@@ -385,7 +389,8 @@ const RealtimeBadmintonRoom = () => {
                       </Button>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
               {room.games.length > 0 && (
                 <p className="text-center text-sm text-default-500">
