@@ -32,6 +32,29 @@ const RealtimeBadmintonRoom = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [scoreSize, setScoreSize] = useState(6);
+  const [scoreSizeLoaded, setScoreSizeLoaded] = useState(false);
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("badminton-score-font-size");
+      if (saved !== null) {
+        const size = Number(saved);
+        if (Number.isInteger(size) && size >= 1 && size <= 20) {
+          setScoreSize(size);
+        }
+      }
+    } catch {
+      // Local storage may be unavailable in restricted browser contexts.
+    }
+    setScoreSizeLoaded(true);
+  }, []);
+  useEffect(() => {
+    if (!scoreSizeLoaded) return;
+    try {
+      window.localStorage.setItem("badminton-score-font-size", String(scoreSize));
+    } catch {
+      // The font-size controls still work without persistent storage.
+    }
+  }, [scoreSize, scoreSizeLoaded]);
   const [mirrored, setMirrored] = useState(false);
   const [teamsFullscreen, setTeamsFullscreen] = useState(false);
   const teamsFullscreenRef = useRef<HTMLDivElement | null>(null);
