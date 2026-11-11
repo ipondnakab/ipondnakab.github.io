@@ -30,6 +30,7 @@ const RealtimeBadmintonRoom = () => {
   const revisionRef = useRef(-1);
   const confirmedRef = useRef<ScoreRoom | null>(null);
   const roomCodeRef = useRef("");
+  const latestSnapshotRef = useRef<ScoreRoom | null>(null);
   const roomRef = useRef<ScoreRoom | null>(null);
   const pendingRef = useRef<Parameters<typeof updateRoom>[1][]>([]);
   const busyRef = useRef(false);
@@ -48,12 +49,14 @@ const RealtimeBadmintonRoom = () => {
     roomCodeRef.current = code;
     revisionRef.current = -1;
     confirmedRef.current = null;
+    latestSnapshotRef.current = null;
     const peer = syncMode === "p2p" ? connectScorePeers(
       code,
       (incoming) => {
         if (incoming.revision <= revisionRef.current) return;
         revisionRef.current = incoming.revision;
         confirmedRef.current = incoming;
+        latestSnapshotRef.current = incoming;
         if (!pendingRef.current.length) {
           roomRef.current = incoming;
           setRoom(incoming);
@@ -66,6 +69,7 @@ const RealtimeBadmintonRoom = () => {
       if (value.revision < revisionRef.current) return;
       revisionRef.current = value.revision;
       confirmedRef.current = value;
+      latestSnapshotRef.current = value;
       if (!pendingRef.current.length) {
         roomRef.current = value;
         setRoom(value);
@@ -86,6 +90,7 @@ const RealtimeBadmintonRoom = () => {
     roomRef.current = null;
     pendingRef.current = [];
     confirmedRef.current = null;
+    latestSnapshotRef.current = null;
     setSyncFailed(false);
     setCode(next);
     const url = new URL(window.location.href);
@@ -139,6 +144,14 @@ const RealtimeBadmintonRoom = () => {
         await updateRoom(code, action);
         if (roomCodeRef.current !== code) break;
         pendingRef.current.shift();
+        if (!pendingRef.current.length && latestSnapshotRef.current) {
+          const latest = latestSnapshotRef.current;
+          // A stale snapshot must not overwrite a newer local action.
+          if (latest.revision >= (roomRef.current?.revision ?? -1)) {
+            roomRef.current = latest;
+            setRoom(latest);
+          }
+        }
       }
       if (roomCodeRef.current === code && !pendingRef.current.length && confirmedRef.current) {
         // A server snapshot may arrive after the transaction resolves.
