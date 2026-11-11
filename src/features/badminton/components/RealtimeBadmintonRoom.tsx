@@ -315,15 +315,23 @@ const RealtimeBadmintonRoom = () => {
         </section>
       ) : (
         <section className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-content1 p-3">
-            <span className="mr-auto font-mono font-bold">Room: {code}</span>
+          <div className="min-w-0 space-y-3 rounded-2xl bg-content1 p-3 sm:p-4">
+            <div className="flex min-w-0 items-center justify-between gap-2">
+              <span className="min-w-0 truncate font-mono text-base font-bold sm:text-lg">
+                Room: {code}
+              </span>
+              <Button size="sm" variant="light" onPress={leave}>
+                Leave
+              </Button>
+            </div>
             <div
-              className="flex items-center gap-2"
+              className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
               role="group"
               aria-label="Sync transport"
             >
               <Button
                 size="sm"
+                className="min-w-0 w-full sm:w-auto"
                 color={syncMode === "firebase" ? "primary" : "default"}
                 variant={syncMode === "firebase" ? "solid" : "flat"}
                 onPress={() => setSyncMode("firebase")}
@@ -332,6 +340,7 @@ const RealtimeBadmintonRoom = () => {
               </Button>
               <Button
                 size="sm"
+                className="min-w-0 w-full sm:w-auto"
                 color={syncMode === "p2p" ? "primary" : "default"}
                 variant={syncMode === "p2p" ? "solid" : "flat"}
                 onPress={() => setSyncMode("p2p")}
@@ -339,30 +348,41 @@ const RealtimeBadmintonRoom = () => {
                 LAN / P2P
               </Button>
             </div>
-            <span role="status" className="text-xs text-default-500">
-              {syncing
-                ? "Saving…"
-                : syncMode === "p2p" && connection === "direct"
-                  ? "P2P connected · Firebase persistence"
-                  : syncMode === "p2p"
-                    ? "Connecting P2P · Firebase persistence"
-                    : "Firebase sync"}
-            </span>
-            <Button
-              size="sm"
-              variant="flat"
-              onPress={() =>
-                navigator.clipboard.writeText(window.location.href)
-              }
-            >
-              Copy link
-            </Button>
-            <Button size="sm" variant="flat" onPress={() => setShowQr(true)}>
-              QR code
-            </Button>
-            <Button size="sm" variant="light" onPress={leave}>
-              Leave
-            </Button>
+            <div className="flex min-h-5 min-w-0 items-center gap-2">
+              <span
+                role="status"
+                aria-live="polite"
+                className="min-w-0 text-xs leading-5 text-default-500 sm:text-sm"
+              >
+                {syncing
+                  ? "Saving…"
+                  : syncMode === "p2p" && connection === "direct"
+                    ? "P2P connected · Firebase persistence"
+                    : syncMode === "p2p"
+                      ? "Connecting P2P · Firebase persistence"
+                      : "Firebase sync"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+              <Button
+                size="sm"
+                className="min-w-0 w-full sm:w-auto"
+                variant="flat"
+                onPress={() =>
+                  navigator.clipboard.writeText(window.location.href)
+                }
+              >
+                Copy link
+              </Button>
+              <Button
+                size="sm"
+                className="min-w-0 w-full sm:w-auto"
+                variant="flat"
+                onPress={() => setShowQr(true)}
+              >
+                QR code
+              </Button>
+            </div>
           </div>
           {!room ? (
             <p role="status" className="p-4">
@@ -370,12 +390,13 @@ const RealtimeBadmintonRoom = () => {
             </p>
           ) : (
             <>
-              <div className="flex items-center justify-between gap-2 rounded-xl bg-content1 p-2">
-                <div className="flex gap-2">
+              <div className="min-w-0 space-y-2 rounded-xl bg-content1 p-2 sm:p-3">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                   {(["standard", "freehand"] as const).map((mode) => (
                     <Button
                       key={mode}
                       size="sm"
+                      className="min-w-0 w-full sm:w-auto"
                       color={room.mode === mode ? "primary" : "default"}
                       variant={room.mode === mode ? "solid" : "flat"}
                       onPress={() => change({ type: "mode", mode })}
@@ -384,9 +405,10 @@ const RealtimeBadmintonRoom = () => {
                     </Button>
                   ))}
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                   <Button
                     size="sm"
+                    className="min-w-0 w-full sm:w-auto"
                     variant="flat"
                     onPress={() => void enterTeamsFullscreen()}
                   >
@@ -394,6 +416,7 @@ const RealtimeBadmintonRoom = () => {
                   </Button>
                   <Button
                     size="sm"
+                    className="min-w-0 w-full sm:w-auto"
                     variant={mirrored ? "solid" : "flat"}
                     color={mirrored ? "primary" : "default"}
                     aria-label="Mirror teams on this device"
@@ -401,8 +424,10 @@ const RealtimeBadmintonRoom = () => {
                   >
                     ⇄ Mirror
                   </Button>
-                  <span className="text-xs tabular-nums text-default-500">
-                    {scoreSize}rem
+                </div>
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <span className="mr-1 text-xs tabular-nums text-default-500">
+                    Score size: {scoreSize}rem
                   </span>
                   <Button
                     size="sm"
