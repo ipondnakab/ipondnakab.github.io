@@ -14,6 +14,7 @@ import {
 import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
 import { Button, Input, Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
 import QRCode from "qrcode";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const RealtimeBadmintonRoom = () => {
@@ -396,7 +397,7 @@ const RealtimeBadmintonRoom = () => {
         <ModalContent>
           <ModalHeader>Scan to join room</ModalHeader>
           <ModalBody className="items-center pb-6">
-            {qrDataUrl ? <img src={qrDataUrl} width={256} height={256} alt={`QR code to join room ${code}`} className="rounded-lg bg-white p-2" /> : <p>Generating QR code…</p>}
+            {qrDataUrl ? <Image src={qrDataUrl} width={256} height={256} unoptimized alt={`QR code to join room ${code}`} className="rounded-lg bg-white p-2" /> : <p>Generating QR code…</p>}
             <p className="break-all text-center text-xs text-default-500">{shareUrl}</p>
           </ModalBody>
         </ModalContent>
