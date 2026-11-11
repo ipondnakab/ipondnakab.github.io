@@ -34,6 +34,7 @@ const RealtimeBadmintonRoom = () => {
   const [scoreSize, setScoreSize] = useState(6);
   const [mirrored, setMirrored] = useState(false);
   const [teamsFullscreen, setTeamsFullscreen] = useState(false);
+  const teamsFullscreenRef = useRef<HTMLDivElement | null>(null);
   const [connection, setConnection] = useState<
     "firebase" | "direct" | "connecting"
   >("firebase");
@@ -209,6 +210,46 @@ const RealtimeBadmintonRoom = () => {
     },
     [flush],
   );
+  const enterTeamsFullscreen = async () => {
+    const element = teamsFullscreenRef.current;
+    if (!element) return;
+    if (element.requestFullscreen) {
+      try {
+        await element.requestFullscreen();
+        setTeamsFullscreen(true);
+        return;
+      } catch {
+        // Fall back to a viewport overlay where native fullscreen is restricted.
+      }
+    }
+    setTeamsFullscreen(true);
+  };
+  const exitTeamsFullscreen = async () => {
+    if (document.fullscreenElement === teamsFullscreenRef.current) {
+      try {
+        await document.exitFullscreen();
+      } catch {
+        // Restore the normal layout even if the browser rejects the request.
+      }
+    }
+    setTeamsFullscreen(false);
+  };
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      if (document.fullscreenElement !== teamsFullscreenRef.current) {
+        setTeamsFullscreen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setTeamsFullscreen(false);
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
   const leave = () => {
     roomCodeRef.current = "";
     setCode("");
@@ -346,7 +387,7 @@ const RealtimeBadmintonRoom = () => {
                   <Button
                     size="sm"
                     variant="flat"
-                    onPress={() => setTeamsFullscreen(true)}
+                    onPress={() => void enterTeamsFullscreen()}
                   >
                     Fullscreen teams
                   </Button>
@@ -391,6 +432,7 @@ const RealtimeBadmintonRoom = () => {
                 </div>
               </div>
               <div
+                ref={teamsFullscreenRef}
                 className={
                   teamsFullscreen
                     ? "fixed inset-0 z-[100] flex flex-col gap-2 bg-background p-2 sm:p-4"
@@ -403,7 +445,7 @@ const RealtimeBadmintonRoom = () => {
                       size="sm"
                       color="primary"
                       variant="solid"
-                      onPress={() => setTeamsFullscreen(false)}
+                      onPress={() => void exitTeamsFullscreen()}
                       aria-label="Exit fullscreen teams"
                     >
                       Exit fullscreen
