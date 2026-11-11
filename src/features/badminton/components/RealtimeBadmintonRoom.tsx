@@ -11,6 +11,7 @@ import {
   updateRoom,
   winnerOf,
 } from "@/features/badminton/lib/realtime-room";
+import { connectRoomPresence, RoomParticipant } from "@/features/badminton/lib/room-presence";
 import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
 import { Button, Input } from "@nextui-org/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -33,6 +34,7 @@ const RealtimeBadmintonRoom = () => {
   const busyRef = useRef(false);
   const [syncMode, setSyncMode] = useState<"firebase" | "p2p">("firebase");
   const [syncing, setSyncing] = useState(false);
+  const [participants, setParticipants] = useState<RoomParticipant[]>([]);
   const [names, setNames] = useState<[string, string]>(["", ""]);
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -76,6 +78,11 @@ const RealtimeBadmintonRoom = () => {
       peerRef.current = null;
     };
   }, [code, syncMode]);
+  useEffect(() => {
+    if (!code) { setParticipants([]); return; }
+    const session = connectRoomPresence(code, setParticipants, (cause) => setError(cause.message));
+    return session.disconnect;
+  }, [code]);
   const enter = (next: string) => {
     setError("");
     setRoom(null);
@@ -216,7 +223,7 @@ const RealtimeBadmintonRoom = () => {
             <span className="mr-auto font-mono font-bold">Room: {code}</span>
             <div className="flex items-center gap-2" role="group" aria-label="Sync transport">
               <Button size="sm" color={syncMode === "firebase" ? "primary" : "default"} variant={syncMode === "firebase" ? "solid" : "flat"} onPress={() => setSyncMode("firebase")}>Firebase Sync</Button>
-              <Button size="sm" color={syncMode === "p2p" ? "primary" : "default"} variant={syncMode === "p2p" ? "solid" : "flat"} onPress={() => setSyncMode("p2p")}>P2P</Button>
+              <Button size="sm" color={syncMode === "p2p" ? "primary" : "default"} variant={syncMode === "p2p" ? "solid" : "flat"} onPress={() => setSyncMode("p2p")}>LAN / P2P</Button>
             </div>
             <span role="status" className="text-xs text-default-500">
               {syncing ? "Saving…" : syncMode === "p2p" && connection === "direct" ? "P2P connected · Firebase persistence" : syncMode === "p2p" ? "Connecting P2P · Firebase persistence" : "Firebase sync"}
@@ -233,6 +240,10 @@ const RealtimeBadmintonRoom = () => {
             <Button size="sm" variant="light" onPress={leave}>
               Leave
             </Button>
+          </div>
+          <div className="rounded-2xl bg-content1 p-3 space-y-2" aria-label="Room participants">
+            <p className="font-semibold">Online participants ({participants.length})</p>
+            {participants.length ? <ul className="flex flex-wrap gap-2">{participants.map((person) => <li key={person.id} className="rounded-full bg-success/10 px-3 py-1 text-xs text-success">● {person.name}</li>)}</ul> : <p className="text-xs text-default-500">Waiting for participants…</p>}
           </div>
           {!room ? (
             <p role="status" className="p-4">
