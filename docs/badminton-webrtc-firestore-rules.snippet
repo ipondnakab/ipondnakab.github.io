@@ -19,16 +19,3 @@ match /badmintonScoreRooms/{roomId}/links/{linkId} {
     request.resource.data.size() <= 2;
   allow delete: if false;
 }
-
-# Presence: active participant heartbeat (not authentication).
-match /badmintonScoreRooms/{roomId}/participants/{participantId} {
-  allow get, list: if roomId.matches('[a-z0-9_-]{1,40}');
-  allow create, update: if roomId.matches('[a-z0-9_-]{1,40}') &&
-    participantId.matches('[0-9a-f-]{36}') &&
-    request.resource.data.keys().hasOnly(['name', 'seenAt']) &&
-    request.resource.data.name is string && request.resource.data.name.size() <= 32 &&
-    request.resource.data.seenAt is number &&
-    request.resource.data.seenAt <= request.time.toMillis() + 60000 &&
-    request.resource.data.seenAt >= request.time.toMillis() - 60000;
-  allow delete: if true;
-}
