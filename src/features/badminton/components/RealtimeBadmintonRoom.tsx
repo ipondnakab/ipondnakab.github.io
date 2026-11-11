@@ -28,9 +28,7 @@ const RealtimeBadmintonRoom = () => {
     "firebase" | "direct" | "connecting"
   >("firebase");
   const revisionRef = useRef(-1);
-  const confirmedRef = useRef<ScoreRoom | null>(null);
   const roomCodeRef = useRef("");
-  const latestSnapshotRef = useRef<ScoreRoom | null>(null);
   const roomRef = useRef<ScoreRoom | null>(null);
   const pendingRef = useRef<Parameters<typeof updateRoom>[1][]>([]);
   const busyRef = useRef(false);
@@ -47,33 +45,21 @@ const RealtimeBadmintonRoom = () => {
     if (!code) return;
     roomCodeRef.current = code;
     revisionRef.current = -1;
-    confirmedRef.current = null;
-    latestSnapshotRef.current = null;
-    const peer = syncMode === "p2p" ? connectScorePeers(
-      code,
-      (incoming) => {
-        if (incoming.revision <= revisionRef.current) return;
-        revisionRef.current = incoming.revision;
-        confirmedRef.current = incoming;
-        latestSnapshotRef.current = incoming;
-        if (!pendingRef.current.length) {
-          roomRef.current = incoming;
-          setRoom(incoming);
-        }
-      },
-      setConnection,
-    ) : null;
+    const accept = (incoming: ScoreRoom) => {
+      if (incoming.revision < revisionRef.current) return;
+      revisionRef.current = incoming.revision;
+      // Local clicks are never overwritten while their writes are in flight.
+      if (pendingRef.current.length) return;
+      roomRef.current = incoming;
+      setRoom(incoming);
+      setNames(incoming.names);
+    };
+    const peer = syncMode === "p2p"
+      ? connectScorePeers(code, accept, setConnection)
+      : null;
     const unsubscribe = subscribeRoom(code, (value) => {
       if (!value) { setError("Room not found."); return; }
-      if (value.revision < revisionRef.current) return;
-      revisionRef.current = value.revision;
-      confirmedRef.current = value;
-      latestSnapshotRef.current = value;
-      if (!pendingRef.current.length) {
-        roomRef.current = value;
-        setRoom(value);
-      }
-      setNames(value.names);
+      accept(value);
       peer?.broadcast(value);
     }, (cause) => setError(cause.message));
     return () => { unsubscribe(); peer?.(); };
@@ -83,8 +69,6 @@ const RealtimeBadmintonRoom = () => {
     setRoom(null);
     roomRef.current = null;
     pendingRef.current = [];
-    confirmedRef.current = null;
-    latestSnapshotRef.current = null;
     setSyncFailed(false);
     setCode(next);
     const url = new URL(window.location.href);
@@ -136,21 +120,8 @@ const RealtimeBadmintonRoom = () => {
       while (pendingRef.current.length && roomCodeRef.current === code) {
         const action = pendingRef.current[0];
         await updateRoom(code, action);
-        if (roomCodeRef.current !== code) break;
+        if (roomCodeRef.current !== code) return;
         pendingRef.current.shift();
-        if (!pendingRef.current.length && latestSnapshotRef.current) {
-          const latest = latestSnapshotRef.current;
-          // A stale snapshot must not overwrite a newer local action.
-          if (latest.revision >= (roomRef.current?.revision ?? -1)) {
-            roomRef.current = latest;
-            setRoom(latest);
-          }
-        }
-      }
-      if (roomCodeRef.current === code && !pendingRef.current.length && confirmedRef.current) {
-        // A server snapshot may arrive after the transaction resolves.
-        // The subscription will reconcile the final authoritative state.
-        setSyncing(false);
       }
     } catch (cause) {
       if (roomCodeRef.current === code) {
