@@ -406,7 +406,9 @@ const RealtimeBadmintonRoom = () => {
               </span>
             </div>
             <details className="group text-xs text-default-500">
-              <summary className="cursor-pointer py-1">{t("badminton.live.roomOptions")}</summary>
+              <summary className="cursor-pointer py-1">
+                {t("badminton.live.roomOptions")}
+              </summary>
               <div className="flex flex-wrap items-center gap-2 pt-2">
                 <Button
                   size="sm"
@@ -429,7 +431,11 @@ const RealtimeBadmintonRoom = () => {
             <>
               <div className="min-w-0 space-y-2 rounded-xl bg-content1 p-2 sm:p-3">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <div className="flex min-w-0 flex-1 gap-1" role="group" aria-label={t("badminton.live.scoringMode")}>
+                  <div
+                    className="flex min-w-0 flex-1 gap-1"
+                    role="group"
+                    aria-label={t("badminton.live.scoringMode")}
+                  >
                     {(["standard", "freehand"] as const).map((mode) => (
                       <Button
                         key={mode}
@@ -439,7 +445,9 @@ const RealtimeBadmintonRoom = () => {
                         variant={room.mode === mode ? "solid" : "flat"}
                         onPress={() => change({ type: "mode", mode })}
                       >
-                        {mode === "standard" ? t("badminton.scoreModestandard") : t("badminton.scoreModefreehand")}
+                        {mode === "standard"
+                          ? t("badminton.scoreModestandard")
+                          : t("badminton.scoreModefreehand")}
                       </Button>
                     ))}
                   </div>
@@ -449,8 +457,12 @@ const RealtimeBadmintonRoom = () => {
                     variant="flat"
                     onPress={() => void enterTeamsFullscreen()}
                   >
-                    <span className="sm:hidden">{t("badminton.live.expand")}</span>
-                    <span className="hidden sm:inline">{t("badminton.live.fullscreen")}</span>
+                    <span className="sm:hidden">
+                      {t("badminton.live.expand")}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {t("badminton.live.fullscreen")}
+                    </span>
                   </Button>
                 </div>
                 <details className="group text-sm">
@@ -590,7 +602,9 @@ const RealtimeBadmintonRoom = () => {
                           className="select-text"
                           size="sm"
                           aria-label={
-                            side === 0 ? t("badminton.live.redTeamName") : t("badminton.live.blueTeamName")
+                            side === 0
+                              ? t("badminton.live.redTeamName")
+                              : t("badminton.live.blueTeamName")
                           }
                           value={names[side]}
                           onValueChange={(value) =>
@@ -657,7 +671,9 @@ const RealtimeBadmintonRoom = () => {
               )}
               {completed && room.mode === "standard" && (
                 <p role="status" className="text-center font-semibold">
-                  {t("badminton.live.winner", { name: room.names[wins[0] >= 2 ? 0 : 1] })}
+                  {t("badminton.live.winner", {
+                    name: room.names[wins[0] >= 2 ? 0 : 1],
+                  })}
                 </p>
               )}
               <Button
