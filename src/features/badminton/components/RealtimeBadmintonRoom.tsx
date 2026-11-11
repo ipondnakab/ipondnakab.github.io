@@ -38,7 +38,7 @@ const RealtimeBadmintonRoom = () => {
       const saved = window.localStorage.getItem("badminton-score-font-size");
       if (saved !== null) {
         const size = Number(saved);
-        if (Number.isInteger(size) && size >= 1 && size <= 20) {
+        if (Number.isInteger(size) && size >= 1 && size <= 50) {
           setScoreSize(size);
         }
       }
@@ -467,8 +467,8 @@ const RealtimeBadmintonRoom = () => {
                     size="sm"
                     isIconOnly
                     aria-label="Larger score"
-                    isDisabled={scoreSize === 20}
-                    onPress={() => setScoreSize((n) => Math.min(20, n + 1))}
+                    isDisabled={scoreSize === 50}
+                    onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
                   >
                     A+
                   </Button>
@@ -509,8 +509,8 @@ const RealtimeBadmintonRoom = () => {
                         size="sm"
                         isIconOnly
                         aria-label="Increase fullscreen score font size"
-                        isDisabled={scoreSize === 20}
-                        onPress={() => setScoreSize((size) => Math.min(20, size + 1))}
+                        isDisabled={scoreSize === 50}
+                        onPress={() => setScoreSize((size) => Math.min(50, size + 1))}
                       >
                         A+
                       </Button>
