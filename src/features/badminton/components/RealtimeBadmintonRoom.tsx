@@ -27,11 +27,13 @@ const RealtimeBadmintonRoom = () => {
   const [connection, setConnection] = useState<
     "firebase" | "direct" | "connecting"
   >("firebase");
-  const peerRef = useRef<ReturnType<typeof connectScorePeers> | null>(null);
   const revisionRef = useRef(-1);
+  const confirmedRef = useRef<ScoreRoom | null>(null);
+  const roomCodeRef = useRef("");
   const roomRef = useRef<ScoreRoom | null>(null);
   const pendingRef = useRef<Parameters<typeof updateRoom>[1][]>([]);
   const busyRef = useRef(false);
+  const [syncFailed, setSyncFailed] = useState(false);
   const [syncMode, setSyncMode] = useState<"firebase" | "p2p">("firebase");
   const [syncing, setSyncing] = useState(false);
   const [participants, setParticipants] = useState<RoomParticipant[]>([]);
@@ -43,40 +45,35 @@ const RealtimeBadmintonRoom = () => {
   }, []);
   useEffect(() => {
     if (!code) return;
+    roomCodeRef.current = code;
     revisionRef.current = -1;
+    confirmedRef.current = null;
     const peer = syncMode === "p2p" ? connectScorePeers(
       code,
       (incoming) => {
-        if (incoming.revision > revisionRef.current) {
-          revisionRef.current = incoming.revision;
+        if (incoming.revision <= revisionRef.current) return;
+        revisionRef.current = incoming.revision;
+        confirmedRef.current = incoming;
+        if (!pendingRef.current.length) {
           roomRef.current = incoming;
           setRoom(incoming);
         }
       },
       setConnection,
     ) : null;
-    peerRef.current = peer;
-    const unsubscribe = subscribeRoom(
-      code,
-      (value) => {
-        if (value && value.revision >= revisionRef.current) {
-          revisionRef.current = value.revision;
-          // Reapply queued local actions over the latest committed state.
-          const optimistic = pendingRef.current.length ? (roomRef.current ?? value) : value;
-          roomRef.current = optimistic;
-          setRoom(optimistic);
-          peer?.broadcast(value);
-        }
-        if (value) setNames(value.names);
-        else setError("Room not found.");
-      },
-      (cause) => setError(cause.message),
-    );
-    return () => {
-      unsubscribe();
-      peer?.();
-      peerRef.current = null;
-    };
+    const unsubscribe = subscribeRoom(code, (value) => {
+      if (!value) { setError("Room not found."); return; }
+      if (value.revision < revisionRef.current) return;
+      revisionRef.current = value.revision;
+      confirmedRef.current = value;
+      if (!pendingRef.current.length) {
+        roomRef.current = value;
+        setRoom(value);
+      }
+      setNames(value.names);
+      peer?.broadcast(value);
+    }, (cause) => setError(cause.message));
+    return () => { unsubscribe(); peer?.(); };
   }, [code, syncMode]);
   useEffect(() => {
     if (!code) { setParticipants([]); return; }
@@ -88,6 +85,8 @@ const RealtimeBadmintonRoom = () => {
     setRoom(null);
     roomRef.current = null;
     pendingRef.current = [];
+    confirmedRef.current = null;
+    setSyncFailed(false);
     setCode(next);
     const url = new URL(window.location.href);
     url.searchParams.set("room", next);
@@ -130,20 +129,30 @@ const RealtimeBadmintonRoom = () => {
     }
   };
   const flush = useCallback(async () => {
-    if (busyRef.current || !code) return;
+    if (busyRef.current || !code || !pendingRef.current.length) return;
     busyRef.current = true;
     setSyncing(true);
+    setSyncFailed(false);
     try {
-      while (pendingRef.current.length) {
+      while (pendingRef.current.length && roomCodeRef.current === code) {
         const action = pendingRef.current[0];
         await updateRoom(code, action);
+        if (roomCodeRef.current !== code) break;
         pendingRef.current.shift();
       }
+      if (roomCodeRef.current === code && !pendingRef.current.length && confirmedRef.current) {
+        // A server snapshot may arrive after the transaction resolves.
+        // The subscription will reconcile the final authoritative state.
+        setSyncing(false);
+      }
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Sync failed. Retry to save pending scores.");
+      if (roomCodeRef.current === code) {
+        setSyncFailed(true);
+        setError(cause instanceof Error ? cause.message : "Score sync failed.");
+      }
     } finally {
       busyRef.current = false;
-      setSyncing(pendingRef.current.length > 0);
+      if (roomCodeRef.current === code) setSyncing(pendingRef.current.length > 0);
     }
   }, [code]);
   const change = useCallback((action: Parameters<typeof updateRoom>[1]) => {
@@ -158,10 +167,13 @@ const RealtimeBadmintonRoom = () => {
     void flush();
   }, [flush]);
   const leave = () => {
+    roomCodeRef.current = "";
     setCode("");
     setRoom(null);
     roomRef.current = null;
     pendingRef.current = [];
+    confirmedRef.current = null;
+    setSyncFailed(false);
     setError("");
     const url = new URL(window.location.href);
     url.searchParams.delete("room");
@@ -383,7 +395,7 @@ const RealtimeBadmintonRoom = () => {
           )}
         </section>
       )}
-      {syncing && <Button size="sm" variant="flat" onPress={() => void flush()}>Retry pending sync</Button>}
+      {syncFailed && <Button size="sm" variant="flat" onPress={() => void flush()}>Retry pending sync</Button>}
       {error && (
         <p
           role="alert"
