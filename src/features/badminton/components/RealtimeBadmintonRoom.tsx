@@ -530,15 +530,26 @@ const RealtimeBadmintonRoom = () => {
                         Reset
                       </Button>
                     </div>
-                    <Button
-                      size="sm"
-                      color="primary"
-                      variant="solid"
-                      onPress={() => void exitTeamsFullscreen()}
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        aria-label="Reset both teams scores to zero"
+                        onPress={() => change({ type: "reset" })}
+                      >
+                        Reset scores
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="primary"
+                        variant="solid"
+                        onPress={() => void exitTeamsFullscreen()}
                       aria-label="Exit fullscreen teams"
                     >
-                      Exit
-                    </Button>
+                        Exit
+                      </Button>
+                    </div>
                   </div>
                 )}
                 <div
