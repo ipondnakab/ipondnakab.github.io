@@ -448,7 +448,9 @@ const RealtimeBadmintonRoom = () => {
                         isIconOnly
                         aria-label="Decrease fullscreen score font size"
                         isDisabled={scoreSize === 1}
-                        onPress={() => setScoreSize((size) => Math.max(1, size - 1))}
+                        onPress={() =>
+                          setScoreSize((size) => Math.max(1, size - 1))
+                        }
                       >
                         A−
                       </Button>
@@ -460,7 +462,9 @@ const RealtimeBadmintonRoom = () => {
                         isIconOnly
                         aria-label="Increase fullscreen score font size"
                         isDisabled={scoreSize === 20}
-                        onPress={() => setScoreSize((size) => Math.min(20, size + 1))}
+                        onPress={() =>
+                          setScoreSize((size) => Math.min(20, size + 1))
+                        }
                       >
                         A+
                       </Button>
