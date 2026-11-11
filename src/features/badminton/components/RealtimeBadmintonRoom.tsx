@@ -26,6 +26,7 @@ const RealtimeBadmintonRoom = () => {
   const [error, setError] = useState("");
   const [scoreSize, setScoreSize] = useState(6);
   const [mirrored, setMirrored] = useState(false);
+  const [teamsFullscreen, setTeamsFullscreen] = useState(false);
   const [connection, setConnection] = useState<
     "firebase" | "direct" | "connecting"
   >("firebase");
@@ -83,9 +84,18 @@ const RealtimeBadmintonRoom = () => {
       .catch(() => { if (active) setError("Could not generate QR code."); });
     return () => { active = false; };
   }, [showQr, shareUrl]);
+  useEffect(() => {
+    if (!teamsFullscreen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setTeamsFullscreen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [teamsFullscreen]);
   const enter = (next: string) => {
     setError("");
     setRoom(null);
+    setTeamsFullscreen(false);
     roomRef.current = null;
     pendingRef.current = [];
     setSyncFailed(false);
@@ -271,6 +281,7 @@ const RealtimeBadmintonRoom = () => {
                   ))}
                 </div>
                 <div className="flex items-center gap-1">
+                  <Button size="sm" variant="flat" onPress={() => setTeamsFullscreen(true)}>Fullscreen teams</Button>
                   <Button size="sm" variant={mirrored ? "solid" : "flat"} color={mirrored ? "primary" : "default"} aria-label="Mirror teams on this device" onPress={() => setMirrored((value) => !value)}>⇄ Mirror</Button>
                   <span className="text-xs tabular-nums text-default-500">
                     {scoreSize}rem
@@ -303,13 +314,19 @@ const RealtimeBadmintonRoom = () => {
                   </Button>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-1 sm:gap-3">
+              <div className={teamsFullscreen ? "fixed inset-0 z-[100] flex flex-col gap-2 bg-background p-2 sm:p-4" : ""}>
+                {teamsFullscreen && (
+                  <div className="flex shrink-0 justify-end">
+                    <Button size="sm" color="primary" variant="solid" onPress={() => setTeamsFullscreen(false)} aria-label="Exit fullscreen teams">Exit fullscreen</Button>
+                  </div>
+                )}
+              <div className={`grid grid-cols-2 gap-1 sm:gap-3 ${teamsFullscreen ? "min-h-0 flex-1" : ""}`}>
                 {([0, 1] as const).map((position) => {
                   const side = (mirrored ? 1 - position : position) as 0 | 1;
                   return (
                   <div
                     key={side}
-                    className={`min-w-0 cursor-pointer rounded-xl border-2 p-1 text-center sm:p-3 ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
+                    className={`min-w-0 cursor-pointer rounded-xl border-2 p-1 text-center sm:p-3 ${teamsFullscreen ? "flex min-h-0 flex-col" : ""} ${side === 0 ? "border-red-500 bg-red-500/10" : "border-blue-500 bg-blue-500/10"}`}
                     onClick={(event) => {
                       if ((event.target as HTMLElement).closest("button, input, textarea, select, [role='button']")) return;
                       if (completed && room.mode === "standard") return;
@@ -341,7 +358,7 @@ const RealtimeBadmintonRoom = () => {
                     )}
                     <div
                       style={{ fontSize: `${scoreSize}rem` }}
-                      className={`flex min-h-48 w-full items-center justify-center font-bold leading-none tabular-nums overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${side === 0 ? "text-red-500" : "text-blue-500"}`}
+                      className={`flex min-h-48 w-full items-center justify-center font-bold leading-none tabular-nums overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary disabled:opacity-50 ${teamsFullscreen ? "min-h-0 flex-1" : ""} ${side === 0 ? "text-red-500" : "text-blue-500"}`}
                     >
                       {room.points[side]}
                     </div>
@@ -371,6 +388,7 @@ const RealtimeBadmintonRoom = () => {
                   </div>
                   );
                 })}
+              </div>
               </div>
               {room.games.length > 0 && (
                 <p className="text-center text-sm text-default-500">
