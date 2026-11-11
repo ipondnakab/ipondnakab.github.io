@@ -230,7 +230,15 @@ const RealtimeBadmintonRoom = () => {
       if (next === current) return;
       roomRef.current = next;
       setRoom(next);
-      pendingRef.current.push(action);
+      if (action.type === "reset") {
+        // A reset supersedes queued score changes. Preserve an in-flight
+        // transaction, then apply the reset after it finishes.
+        pendingRef.current = busyRef.current
+          ? [...pendingRef.current.slice(0, 1), action]
+          : [action];
+      } else {
+        pendingRef.current.push(action);
+      }
       setError("");
       void flush();
     },
