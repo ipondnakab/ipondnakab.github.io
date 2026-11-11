@@ -12,7 +12,8 @@ import {
   winnerOf,
 } from "@/features/badminton/lib/realtime-room";
 import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/react";
+import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const RealtimeBadmintonRoom = () => {
@@ -36,6 +37,9 @@ const RealtimeBadmintonRoom = () => {
   const [syncMode, setSyncMode] = useState<"firebase" | "p2p">("firebase");
   const [syncing, setSyncing] = useState(false);
   const [names, setNames] = useState<[string, string]>(["", ""]);
+  const [showQr, setShowQr] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState("");
+  const [shareUrl, setShareUrl] = useState("");
   useEffect(() => {
     const url = new URL(window.location.href);
     const requested = normalizeCode(url.searchParams.get("room") || "");
@@ -64,6 +68,20 @@ const RealtimeBadmintonRoom = () => {
     }, (cause) => setError(cause.message));
     return () => { unsubscribe(); peer?.(); };
   }, [code, syncMode]);
+  useEffect(() => {
+    if (!code) { setQrDataUrl(""); setShareUrl(""); return; }
+    const url = new URL(window.location.href);
+    url.searchParams.set("room", code);
+    setShareUrl(url.toString());
+  }, [code]);
+  useEffect(() => {
+    if (!showQr || !shareUrl) return;
+    let active = true;
+    void QRCode.toDataURL(shareUrl, { width: 320, margin: 2, errorCorrectionLevel: "M" })
+      .then((url) => { if (active) setQrDataUrl(url); })
+      .catch(() => { if (active) setError("Could not generate QR code."); });
+    return () => { active = false; };
+  }, [showQr, shareUrl]);
   const enter = (next: string) => {
     setError("");
     setRoom(null);
@@ -150,7 +168,6 @@ const RealtimeBadmintonRoom = () => {
     setRoom(null);
     roomRef.current = null;
     pendingRef.current = [];
-    confirmedRef.current = null;
     setSyncFailed(false);
     setError("");
     const url = new URL(window.location.href);
@@ -227,6 +244,7 @@ const RealtimeBadmintonRoom = () => {
             >
               Copy link
             </Button>
+            <Button size="sm" variant="flat" onPress={() => setShowQr(true)}>QR code</Button>
             <Button size="sm" variant="light" onPress={leave}>
               Leave
             </Button>
@@ -374,6 +392,15 @@ const RealtimeBadmintonRoom = () => {
           )}
         </section>
       )}
+      <Modal isOpen={showQr} onOpenChange={setShowQr} placement="center">
+        <ModalContent>
+          <ModalHeader>Scan to join room</ModalHeader>
+          <ModalBody className="items-center pb-6">
+            {qrDataUrl ? <img src={qrDataUrl} width={256} height={256} alt={`QR code to join room ${code}`} className="rounded-lg bg-white p-2" /> : <p>Generating QR code…</p>}
+            <p className="break-all text-center text-xs text-default-500">{shareUrl}</p>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       {syncFailed && <Button size="sm" variant="flat" onPress={() => void flush()}>Retry pending sync</Button>}
       {error && (
         <p
