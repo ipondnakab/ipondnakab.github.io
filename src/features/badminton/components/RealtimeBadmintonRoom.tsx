@@ -343,74 +343,81 @@ const RealtimeBadmintonRoom = () => {
         </section>
       ) : (
         <section className="space-y-4">
-          <div className="min-w-0 space-y-3 rounded-2xl bg-content1 p-3 sm:p-4">
+          <div className="min-w-0 space-y-2 rounded-2xl bg-content1 p-2.5 sm:p-3">
             <div className="flex min-w-0 items-center justify-between gap-2">
-              <span className="min-w-0 truncate font-mono text-base font-bold sm:text-lg">
+              <span className="min-w-0 truncate font-mono text-sm font-bold sm:text-lg">
                 Room: {code}
               </span>
-              <Button size="sm" variant="light" onPress={leave}>
-                Leave
-              </Button>
+              <div className="flex shrink-0 items-center gap-1">
+                <Button size="sm" variant="flat" onPress={() => setShowQr(true)}>
+                  QR
+                </Button>
+                <Button size="sm" variant="light" onPress={leave}>
+                  Leave
+                </Button>
+              </div>
             </div>
-            <div
-              className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
-              role="group"
-              aria-label="Sync transport"
-            >
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                color={syncMode === "firebase" ? "primary" : "default"}
-                variant={syncMode === "firebase" ? "solid" : "flat"}
-                onPress={() => setSyncMode("firebase")}
+            <div className="flex min-w-0 items-center gap-2">
+              <div
+                className="flex shrink-0 gap-1"
+                role="group"
+                aria-label="Sync transport"
               >
-                Firebase Sync
-              </Button>
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                color={syncMode === "p2p" ? "primary" : "default"}
-                variant={syncMode === "p2p" ? "solid" : "flat"}
-                onPress={() => setSyncMode("p2p")}
-              >
-                LAN / P2P
-              </Button>
-            </div>
-            <div className="flex min-h-5 min-w-0 items-center gap-2">
+                <Button
+                  size="sm"
+                  color={syncMode === "firebase" ? "primary" : "default"}
+                  variant={syncMode === "firebase" ? "solid" : "flat"}
+                  onPress={() => setSyncMode("firebase")}
+                >
+                  Firebase
+                </Button>
+                <Button
+                  size="sm"
+                  color={syncMode === "p2p" ? "primary" : "default"}
+                  variant={syncMode === "p2p" ? "solid" : "flat"}
+                  onPress={() => setSyncMode("p2p")}
+                >
+                  P2P
+                </Button>
+              </div>
               <span
                 role="status"
                 aria-live="polite"
-                className="min-w-0 text-xs leading-5 text-default-500 sm:text-sm"
+                className="min-w-0 flex-1 truncate text-right text-xs text-default-500"
+                title={
+                  syncing
+                    ? "Saving…"
+                    : syncMode === "p2p" && connection === "direct"
+                      ? "P2P connected · Firebase persistence"
+                      : syncMode === "p2p"
+                        ? "Connecting P2P · Firebase persistence"
+                        : "Firebase sync"
+                }
               >
                 {syncing
                   ? "Saving…"
                   : syncMode === "p2p" && connection === "direct"
-                    ? "P2P connected · Firebase persistence"
+                    ? "Connected"
                     : syncMode === "p2p"
-                      ? "Connecting P2P · Firebase persistence"
-                      : "Firebase sync"}
+                      ? "Connecting…"
+                      : "Synced"}
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                variant="flat"
-                onPress={() =>
-                  navigator.clipboard.writeText(window.location.href)
-                }
-              >
-                Copy link
-              </Button>
-              <Button
-                size="sm"
-                className="min-w-0 w-full sm:w-auto"
-                variant="flat"
-                onPress={() => setShowQr(true)}
-              >
-                QR code
-              </Button>
-            </div>
+            <details className="group text-xs text-default-500">
+              <summary className="cursor-pointer py-1">Room options</summary>
+              <div className="flex flex-wrap items-center gap-2 pt-2">
+                <Button
+                  size="sm"
+                  variant="flat"
+                  onPress={() =>
+                    navigator.clipboard.writeText(window.location.href)
+                  }
+                >
+                  Copy link
+                </Button>
+                <span>Scores sync via Firebase.</span>
+              </div>
+            </details>
           </div>
           {!room ? (
             <p role="status" className="p-4">
@@ -419,71 +426,76 @@ const RealtimeBadmintonRoom = () => {
           ) : (
             <>
               <div className="min-w-0 space-y-2 rounded-xl bg-content1 p-2 sm:p-3">
-                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                  {(["standard", "freehand"] as const).map((mode) => (
-                    <Button
-                      key={mode}
-                      size="sm"
-                      className="min-w-0 w-full sm:w-auto"
-                      color={room.mode === mode ? "primary" : "default"}
-                      variant={room.mode === mode ? "solid" : "flat"}
-                      onPress={() => change({ type: "mode", mode })}
-                    >
-                      {mode === "standard" ? "Standard" : "Freehand"}
-                    </Button>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <div className="flex min-w-0 flex-1 gap-1" role="group" aria-label="Scoring mode">
+                    {(["standard", "freehand"] as const).map((mode) => (
+                      <Button
+                        key={mode}
+                        size="sm"
+                        className="min-w-0 flex-1"
+                        color={room.mode === mode ? "primary" : "default"}
+                        variant={room.mode === mode ? "solid" : "flat"}
+                        onPress={() => change({ type: "mode", mode })}
+                      >
+                        {mode === "standard" ? "Standard" : "Freehand"}
+                      </Button>
+                    ))}
+                  </div>
                   <Button
                     size="sm"
-                    className="min-w-0 w-full sm:w-auto"
+                    color="primary"
                     variant="flat"
                     onPress={() => void enterTeamsFullscreen()}
                   >
-                    Fullscreen teams
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="min-w-0 w-full sm:w-auto"
-                    variant={mirrored ? "solid" : "flat"}
-                    color={mirrored ? "primary" : "default"}
-                    aria-label="Mirror teams on this device"
-                    onPress={() => setMirrored((value) => !value)}
-                  >
-                    ⇄ Mirror
+                    <span className="sm:hidden">Expand</span>
+                    <span className="hidden sm:inline">Fullscreen</span>
                   </Button>
                 </div>
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <span className="mr-1 text-xs tabular-nums text-default-500">
-                    Score size: {scoreSize}rem
-                  </span>
-                  <Button
-                    size="sm"
-                    isIconOnly
-                    aria-label="Smaller score"
-                    isDisabled={scoreSize === 1}
-                    onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
-                  >
-                    A−
-                  </Button>
-                  <Button
-                    size="sm"
-                    isIconOnly
-                    aria-label="Larger score"
-                    isDisabled={scoreSize === 50}
-                    onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
-                  >
-                    A+
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    onPress={() => setScoreSize(6)}
-                    aria-label="Reset score font size"
-                  >
-                    Reset
-                  </Button>
-                </div>
+                <details className="group text-sm">
+                  <summary className="cursor-pointer py-1 text-default-500">
+                    Display settings · {scoreSize}rem
+                  </summary>
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant={mirrored ? "solid" : "flat"}
+                      color={mirrored ? "primary" : "default"}
+                      aria-label="Mirror teams on this device"
+                      onPress={() => setMirrored((value) => !value)}
+                    >
+                      ⇄ Mirror
+                    </Button>
+                    <Button
+                      size="sm"
+                      isIconOnly
+                      aria-label="Smaller score"
+                      isDisabled={scoreSize === 1}
+                      onPress={() => setScoreSize((n) => Math.max(1, n - 1))}
+                    >
+                      A−
+                    </Button>
+                    <span className="text-xs tabular-nums text-default-500">
+                      {scoreSize}rem
+                    </span>
+                    <Button
+                      size="sm"
+                      isIconOnly
+                      aria-label="Larger score"
+                      isDisabled={scoreSize === 50}
+                      onPress={() => setScoreSize((n) => Math.min(50, n + 1))}
+                    >
+                      A+
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="flat"
+                      onPress={() => setScoreSize(6)}
+                      aria-label="Reset score font size"
+                    >
+                      Reset size
+                    </Button>
+                  </div>
+                </details>
               </div>
               <div
                 ref={teamsFullscreenRef}
