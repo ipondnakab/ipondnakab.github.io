@@ -1,30 +1,16 @@
 "use client";
 import {
-  FORMATS,
   MAX_BATCH_BYTES,
   MAX_BATCH_FILES,
 } from "@/features/image-type-convert/constants";
-import type {
-  ImageFormat,
-  SelectedImage,
-} from "@/features/image-type-convert/model/converter";
+import {
+  inputType,
+  normalizeImageFile,
+} from "@/features/image-type-convert/lib/input-type";
+import type { SelectedImage } from "@/features/image-type-convert/model/converter";
 
-const imageFile = (file: File): File | null => {
-  if (FORMATS.includes(file.type as ImageFormat)) return file;
-  if (file.type) return null;
-  const extension = file.name.split(".").pop()?.toLowerCase();
-  const type =
-    extension === "jpg" || extension === "jpeg"
-      ? "image/jpeg"
-      : extension === "png"
-        ? "image/png"
-        : extension === "webp"
-          ? "image/webp"
-          : null;
-  return type
-    ? new File([file], file.name, { type, lastModified: file.lastModified })
-    : null;
-};
+const imageFile = (file: File): File | null =>
+  inputType(file) ? normalizeImageFile(file) : null;
 
 export const folderSelection = (files: readonly File[]): SelectedImage[] =>
   files.flatMap((file) => {

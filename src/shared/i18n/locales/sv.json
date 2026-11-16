@@ -650,28 +650,28 @@
     "title": "Konvertera bildformat",
     "subtitle": "Konvertera flera bilder och ladda ner dem separat eller som ZIP.",
     "choose": "Välj bilder eller släpp filer och mappar här",
-    "limits": "PNG, JPEG eller WebP · högst 20 MB / 25 MP",
+    "limits": "Bildfiler · högst 20 MB / 25 MP per bild",
     "original": "Originalbild",
     "output": "Konverterad bild",
     "format": "Utdataformat",
     "quality": "Kvalitet",
-    "note": "PNG är förlustfritt. JPEG får vit bakgrund. Animation och ursprungliga metadata behålls inte.",
+    "note": "PNG, WebP, TIFF och SVG bevarar transparens. JPEG och BMP använder vit bakgrund. Animering och ursprunglig metadata bevaras inte.",
     "working": "Bearbetar bilden…",
     "convert": "Konvertera alla bilder",
     "download": "Ladda ner bild",
     "reset": "Rensa alla / avbryt",
     "privacy": "Dina bilder stannar på din enhet. Konverteringen sker i webbläsaren.",
     "errors": {
-      "fileType": "Välj en PNG-, JPEG- eller WebP-bild.",
+      "fileType": "Välj en bildfil.",
       "fileSize": "Välj en bild som inte är tom och är högst 20 MB.",
-      "decode": "Bilden kunde inte öppnas. Prova en annan fil.",
+      "decode": "Webbläsaren kunde inte läsa bilden. Den kan vara skadad eller kräva en avkodare för exempelvis HEIC, TIFF eller RAW.",
       "dimensions": "Använd en bild med högst 25 megapixlar och 16 384 pixlar per sida.",
       "encode": "Webbläsaren kunde inte skapa formatet. Prova PNG eller en annan webbläsare.",
       "batchLimit": "Välj högst 20 filer med en sammanlagd storlek på högst 100 MB.",
       "outputLimit": "Konverterade bilder överstiger 100 MB. Prova färre bilder eller lägre kvalitet.",
       "archive": "Kunde inte skapa ZIP. Ladda ner bilderna separat eller försök igen.",
       "folderRead": "Kunde inte läsa mappen. Prova Välj mapp eller välj bilderna direkt.",
-      "noImages": "Inga bilder i ett format som stöds hittades. Välj en mapp med PNG, JPEG eller WebP."
+      "noImages": "Inga bilder hittades. Välj en mapp som innehåller bildfiler."
     },
     "batchLimits": "Högst 20 filer / 100 MB totalt. Nya filer och mappar läggs till i listan; dubbletter hoppas över.",
     "downloadAll": "Ladda ner alla (ZIP)",
@@ -684,7 +684,14 @@
       "error": "Misslyckades"
     },
     "folderPick": "Välj mapp",
-    "folderHint": "Inkluderar PNG-, JPEG- och WebP-bilder från alla undermappar. Övriga filer hoppas över.",
-    "scanning": "Söker i mappar…"
+    "folderHint": "Inkluderar bilder från alla undermappar. Andra filer hoppas över.",
+    "scanning": "Söker i mappar…",
+    "upload": "Lägg till dina bilder",
+    "settings": "Konverteringsinställningar",
+    "results": "Dina bilder",
+    "emptyTitle": "Redo när du är",
+    "emptyHint": "Lägg till bilder eller en mapp ovan. Dina konverterade filer och nedladdningar visas här.",
+    "formatNotes": "GIF använder en begränsad färgpalett. ICO ryms inom 256 × 256. SVG bäddar in en bild utan vektorisering.",
+    "inputSupport": "Öppna PNG, JPEG, WebP, GIF, BMP, SVG, ICO, AVIF och andra bilder som din webbläsare kan läsa. Stöd för HEIC, TIFF och RAW som indata beror på webbläsaren."
   }
 }

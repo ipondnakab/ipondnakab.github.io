@@ -27,6 +27,18 @@ const encodedBlob = () => {
 const png = (name: string) => new File(["x"], name, { type: "image/png" });
 
 describe("image converter controls", () => {
+  it("guides an empty batch and exposes progress after selecting images", () => {
+    render(<ImageTypeConvert />);
+    expect(screen.getByText("imageConvert.emptyTitle")).toBeInTheDocument();
+    expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+    select([png("ready.png")]);
+    expect(
+      screen.queryByText("imageConvert.emptyTitle"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("progressbar", { name: "imageConvert.results" }),
+    ).toHaveAttribute("aria-valuenow", "0");
+  });
   it("accepts multiple images and continues after one fails", async () => {
     let nextUrl = 0;
     vi.stubGlobal(
@@ -261,6 +273,61 @@ describe("image converter controls", () => {
     );
     expect(screen.getByText("direct.png")).toBeInTheDocument();
     expect(screen.getAllByRole("listitem")).toHaveLength(3);
+  });
+  it("offers eight output types and no quality control for lossless or palette formats", () => {
+    render(<ImageTypeConvert />);
+    expect(screen.getByLabelText(/imageConvert.choose/)).toHaveAttribute(
+      "accept",
+      expect.stringContaining("image/*"),
+    );
+    expect(screen.getAllByRole("option")).toHaveLength(8);
+    for (const format of [
+      "image/gif",
+      "image/bmp",
+      "image/tiff",
+      "image/x-icon",
+      "image/svg+xml",
+    ]) {
+      fireEvent.change(screen.getByLabelText("imageConvert.format"), {
+        target: { value: format },
+      });
+      expect(
+        screen.queryByLabelText("imageConvert.quality"),
+      ).not.toBeInTheDocument();
+    }
+  });
+  it("releases TIFF preview URLs along with output URLs on reset", async () => {
+    let nextUrl = 0;
+    vi.stubGlobal(
+      "URL",
+      class extends URL {
+        static createObjectURL = vi.fn(() => `blob:output-${++nextUrl}`);
+        static revokeObjectURL = vi.fn();
+      },
+    );
+    vi.mocked(convertFile)
+      .mockReset()
+      .mockResolvedValue({
+        blob: new Blob(["tiff"]),
+        preview: new Blob(["png"]),
+        width: 1,
+        height: 1,
+      });
+    render(<ImageTypeConvert />);
+    select([png("photo.png")]);
+    fireEvent.click(
+      screen.getByRole("button", { name: "imageConvert.convert" }),
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("img", { name: "imageConvert.output" }),
+      ).toHaveAttribute("src", "blob:output-2"),
+    );
+    expect(
+      screen.getByRole("link", { name: "imageConvert.download" }),
+    ).toHaveAttribute("href", "blob:output-1");
+    fireEvent.click(screen.getByRole("button", { name: "imageConvert.reset" }));
+    expect(URL.revokeObjectURL).toHaveBeenCalledTimes(2);
   });
   it("offers quality only for lossy formats", async () => {
     render(<ImageTypeConvert />);

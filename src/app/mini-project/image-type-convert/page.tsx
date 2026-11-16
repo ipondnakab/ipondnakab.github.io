@@ -3,7 +3,7 @@ import ImageTypeConvert from "@/features/image-type-convert/components/ImageType
 export const metadata: Metadata = {
   title: "Image Type Convert",
   description:
-    "Convert PNG, JPEG and WebP images privately in your browser. Preview, adjust quality and download without uploading your images.",
+    "Convert browser-readable images to PNG, JPEG, WebP, GIF, BMP, TIFF, ICO or SVG privately. Preview and download images or ZIP files without uploading.",
   alternates: { canonical: "/mini-project/image-type-convert" },
 };
 const ImageTypeConvertPage: React.FC = () => <ImageTypeConvert />;

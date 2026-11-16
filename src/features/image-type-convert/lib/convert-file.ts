@@ -1,5 +1,6 @@
 "use client";
 import { convertImage } from "@/features/image-type-convert/lib/convert";
+import { normalizeImageFile } from "@/features/image-type-convert/lib/input-type";
 import type {
   ConverterSettings,
   EncodedImage,
@@ -11,7 +12,7 @@ export const convertFile = async (
   signal: AbortSignal,
 ): Promise<EncodedImage> => {
   if (signal.aborted) throw new Error("cancelled");
-  const url = URL.createObjectURL(file);
+  const url = URL.createObjectURL(normalizeImageFile(file));
   const image = new Image();
   let cancel: () => void = () => {};
   try {
@@ -29,7 +30,21 @@ export const convertFile = async (
       Number(settings.quality) / 100,
     );
     if (signal.aborted) throw new Error("cancelled");
-    return { blob, width: image.naturalWidth, height: image.naturalHeight };
+    const scale =
+      settings.format === "image/x-icon"
+        ? Math.min(1, 256 / image.naturalWidth, 256 / image.naturalHeight)
+        : 1;
+    const preview =
+      settings.format === "image/tiff"
+        ? await convertImage(image, "image/png", 1)
+        : undefined;
+    if (signal.aborted) throw new Error("cancelled");
+    return {
+      blob,
+      width: Math.max(1, Math.round(image.naturalWidth * scale)),
+      height: Math.max(1, Math.round(image.naturalHeight * scale)),
+      ...(preview ? { preview } : {}),
+    };
   } finally {
     signal.removeEventListener("abort", cancel);
     image.onload = null;

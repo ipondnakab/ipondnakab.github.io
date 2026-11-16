@@ -15,3 +15,7 @@ results are discarded. New file and folder selections append without clearing ex
 Acceptance: converter is discoverable from catalogue and sitemap; conversion
 produces a correctly typed file with a matching extension; failures are localized
 and recoverable; keyboard users can select, convert, download and reset.
+
+Expanded input and export formats supersede the initial three-format scope above.
+See [formats.md](formats.md) for the eight exports, browser-dependent input
+support, ICO dimensions, palette GIF and raster-embedded SVG behavior.

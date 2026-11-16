@@ -42,6 +42,36 @@ describe("file decoding lifecycle", () => {
     ).rejects.toThrow("cancelled");
     expect(create).not.toHaveBeenCalled();
   });
+  it("adds a PNG preview for TIFF while retaining the TIFF download", async () => {
+    vi.stubGlobal(
+      "Image",
+      class {
+        naturalWidth = 2;
+        naturalHeight = 3;
+        onload: (() => void) | null = null;
+        onerror = null;
+        set src(value: string) {
+          if (value) queueMicrotask(() => this.onload?.());
+        }
+      },
+    );
+    vi.stubGlobal("URL", {
+      createObjectURL: () => "blob:input",
+      revokeObjectURL: vi.fn(),
+    });
+    const blob = new Blob(["tiff"], { type: "image/tiff" });
+    const preview = new Blob(["png"], { type: "image/png" });
+    vi.mocked(convertImage)
+      .mockReset()
+      .mockResolvedValueOnce(blob)
+      .mockResolvedValueOnce(preview);
+    const result = await convertFile(
+      new File(["x"], "image.gif", { type: "image/gif" }),
+      { format: "image/tiff", quality: "90" },
+      new AbortController().signal,
+    );
+    expect(result).toEqual({ blob, preview, width: 2, height: 3 });
+  });
   it("encodes a loaded image and releases its decode URL", async () => {
     vi.stubGlobal(
       "Image",

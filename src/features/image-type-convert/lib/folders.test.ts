@@ -52,6 +52,21 @@ describe("recursive folder import", () => {
     expect(files[0].file.type).toBe("image/jpeg");
     expect(files[0].path).toBe("Root/Nested/PHOTO.JPG");
   });
+  it("finds additional image types and normalizes generic MIME without importing documents", () => {
+    const files = folderSelection([
+      new File(["x"], "animation.GIF"),
+      new File(["x"], "photo.HEIC", { type: "application/octet-stream" }),
+      new File(["x"], "vector.svg", { type: "image/svg+xml" }),
+      new File(["x"], "scan.tiff"),
+      new File(["x"], "document.pdf", { type: "application/pdf" }),
+    ]);
+    expect(files.map(({ file }) => file.type)).toEqual([
+      "image/gif",
+      "image/heic",
+      "image/svg+xml",
+      "image/tiff",
+    ]);
+  });
   it("returns no entries for an empty folder", async () => {
     expect(
       await collectFolderImages(

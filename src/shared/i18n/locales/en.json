@@ -650,28 +650,28 @@
     "title": "Image Type Convert",
     "subtitle": "Convert multiple images at once, then download individually or as a ZIP.",
     "choose": "Choose images or drop files and folders here",
-    "limits": "PNG, JPEG or WebP · up to 20 MB / 25 MP",
+    "limits": "Image files · up to 20 MB / 25 MP each",
     "original": "Original image",
     "output": "Converted image",
     "format": "Output format",
     "quality": "Quality",
-    "note": "PNG is lossless. JPEG uses a white background. Animation and original metadata are not retained.",
+    "note": "PNG, WebP, TIFF and SVG preserve transparency. JPEG and BMP use a white background. Animation and original metadata are not retained.",
     "working": "Processing image…",
     "convert": "Convert all images",
     "download": "Download image",
     "reset": "Clear all / cancel",
     "privacy": "Your images stay on your device. Conversion runs in your browser.",
     "errors": {
-      "fileType": "Choose a PNG, JPEG or WebP image.",
+      "fileType": "Choose an image file.",
       "fileSize": "Choose a non-empty image up to 20 MB.",
-      "decode": "This image could not be opened. Try another file.",
+      "decode": "Your browser could not read this image. It may be damaged or need a decoder for formats such as HEIC, TIFF or RAW.",
       "dimensions": "Use an image up to 25 megapixels and 16,384 pixels per side.",
       "encode": "Your browser could not create this format. Try PNG or another browser.",
       "batchLimit": "Choose up to 20 files with a combined size of 100 MB or less.",
       "outputLimit": "Converted images exceeded 100 MB. Try fewer images or lower quality.",
       "archive": "Could not create the ZIP. Download images individually or try again.",
       "folderRead": "Could not read this folder. Try Choose folder or select the images directly.",
-      "noImages": "No supported images found. Choose a folder containing PNG, JPEG or WebP images."
+      "noImages": "No images found. Choose a folder containing image files."
     },
     "batchLimits": "Up to 20 files / 100 MB total. New files and folders are added to the list; repeated files are skipped.",
     "downloadAll": "Download all (ZIP)",
@@ -684,7 +684,14 @@
       "error": "Failed"
     },
     "folderPick": "Choose folder",
-    "folderHint": "Includes PNG, JPEG and WebP images from all subfolders. Other files are skipped.",
-    "scanning": "Scanning folders…"
+    "folderHint": "Includes images from all subfolders. Other files are skipped.",
+    "scanning": "Scanning folders…",
+    "upload": "Add your images",
+    "settings": "Conversion settings",
+    "results": "Your images",
+    "emptyTitle": "Ready when you are",
+    "emptyHint": "Add images or a folder above. Your converted files and downloads will appear here.",
+    "formatNotes": "GIF uses a limited color palette. ICO fits within 256 × 256. SVG embeds an image; it does not trace vectors.",
+    "inputSupport": "Open PNG, JPEG, WebP, GIF, BMP, SVG, ICO, AVIF and other images your browser can read. HEIC, TIFF and RAW input support depends on your browser."
   }
 }

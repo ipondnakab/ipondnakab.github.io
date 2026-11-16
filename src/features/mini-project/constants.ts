@@ -12,11 +12,11 @@ export const MINI_PROJECTS: readonly MiniProject[] = [
     href: "/mini-project/image-type-convert",
     icon: MdImage,
     description: {
-      en: "Convert PNG, JPEG and WebP images locally with a preview and adjustable quality. No image uploads.",
-      th: "แปลงรูปเป็น PNG, JPEG หรือ WebP พร้อมดูตัวอย่างและปรับคุณภาพได้ โดยไม่ต้องอัปโหลดรูป",
-      ja: "PNG・JPEG・WebP画像を端末内で変換。プレビューと画質調整に対応し、画像のアップロードは不要です。",
-      sv: "Konvertera PNG, JPEG och WebP lokalt med förhandsvisning och justerbar kvalitet. Ingen uppladdning.",
-      zh: "在本地转换 PNG、JPEG 和 WebP 图片，支持预览和画质调整，无需上传。",
+      en: "Convert images locally to PNG, JPEG, WebP, GIF, BMP, TIFF, ICO or SVG. Preview and download without uploading.",
+      th: "แปลงรูปภาพเป็น PNG, JPEG, WebP, GIF, BMP, TIFF, ICO หรือ SVG พร้อมดูตัวอย่างและดาวน์โหลดโดยไม่ต้องอัปโหลด",
+      ja: "画像を端末内でPNG・JPEG・WebP・GIF・BMP・TIFF・ICO・SVGに変換。アップロード不要でプレビューとダウンロードができます。",
+      sv: "Konvertera bilder lokalt till PNG, JPEG, WebP, GIF, BMP, TIFF, ICO eller SVG. Förhandsvisa och ladda ner utan uppladdning.",
+      zh: "在本地将图片转换为 PNG、JPEG、WebP、GIF、BMP、TIFF、ICO 或 SVG，支持预览和下载，无需上传。",
     },
   },
   {
