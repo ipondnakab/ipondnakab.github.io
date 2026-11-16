@@ -3,9 +3,9 @@
 import {
   FORMATS,
   MAX_BATCH_BYTES,
-  MAX_BATCH_FILES,
   QUALITY_OPTIONS,
 } from "@/features/image-type-convert/constants";
+import { appendFiles } from "@/features/image-type-convert/lib/append-files";
 import {
   buildZip,
   uniqueOutputName,
@@ -39,7 +39,14 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
   className = "",
 }) => {
   const { t } = useTranslation();
-  const [items, setItems] = useState<BatchItem[]>([]);
+  const [items, setItemState] = useState<BatchItem[]>([]);
+  const itemsRef = useRef<BatchItem[]>([]);
+  const setItems = (update: React.SetStateAction<BatchItem[]>) => {
+    const next =
+      typeof update === "function" ? update(itemsRef.current) : update;
+    itemsRef.current = next;
+    setItemState(next);
+  };
   const [error, setError] = useState<ConversionError | null>(null);
   const [busy, setBusy] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -48,20 +55,40 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
   const generation = useRef(0);
   const controller = useRef<AbortController | null>(null);
   const ownedUrls = useRef(new Set<string>());
+  const scans = useRef(new Set<AbortController>());
+  const archiveVersion = useRef(0);
+  const archiveRef = useRef<string | null>(null);
   const input = useRef<HTMLInputElement>(null);
   const folderInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const urls = ownedUrls.current;
+    const pendingScans = scans.current;
     return () => {
       generation.current += 1;
       controller.current?.abort();
+      archiveVersion.current += 1;
+      pendingScans.forEach((scan) => scan.abort());
+      pendingScans.clear();
       urls.forEach((url) => URL.revokeObjectURL(url));
       urls.clear();
     };
   }, []);
+  const invalidateArchive = () => {
+    archiveVersion.current += 1;
+    if (archiveRef.current) {
+      URL.revokeObjectURL(archiveRef.current);
+      ownedUrls.current.delete(archiveRef.current);
+    }
+    archiveRef.current = null;
+    setArchiveUrl(null);
+    setPacking(false);
+  };
   const clearResources = () => {
     generation.current += 1;
     controller.current?.abort();
+    scans.current.forEach((scan) => scan.abort());
+    scans.current.clear();
+    invalidateArchive();
     ownedUrls.current.forEach((url) => URL.revokeObjectURL(url));
     ownedUrls.current.clear();
     setScanning(false);
@@ -81,29 +108,22 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
       setError("noImages");
       return;
     }
-    if (
-      files.length > MAX_BATCH_FILES ||
-      files.reduce((sum, item) => sum + item.file.size, 0) > MAX_BATCH_BYTES
-    ) {
+    setError(null);
+    try {
+      const next = appendFiles(itemsRef.current, files);
+      if (next !== itemsRef.current) {
+        invalidateArchive();
+        setItems(next);
+      }
+    } catch {
       setError("batchLimit");
-      return;
     }
-    setItems(
-      files.map(({ file, path }, id) => {
-        const invalid = validateFile(file);
-        return {
-          id,
-          file,
-          path,
-          status: invalid ? "error" : "queued",
-          error: invalid ?? undefined,
-        };
-      }),
-    );
   };
+
   const selectFiles = (files: File[], folder = false) => {
     if (!files.length) return;
-    reset();
+    if (input.current) input.current.value = "";
+    if (folderInput.current) folderInput.current.value = "";
     installFiles(
       folder
         ? folderSelection(files)
@@ -111,10 +131,10 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
     );
   };
   const importDrop = async (entries: FileSystemEntry[], files: File[]) => {
-    reset();
+    setError(null);
     const token = generation.current;
     const abort = new AbortController();
-    controller.current = abort;
+    scans.current.add(abort);
     setScanning(true);
     try {
       const found = await collectFolderImages(entries, abort.signal);
@@ -128,7 +148,8 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
             : "folderRead",
         );
     } finally {
-      if (token === generation.current) setScanning(false);
+      scans.current.delete(abort);
+      if (token === generation.current) setScanning(scans.current.size > 0);
     }
   };
   const convert = async (settings: ConverterSettings) => {
@@ -137,7 +158,7 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
     const token = generation.current;
     const abort = new AbortController();
     controller.current = abort;
-    const queue: BatchItem[] = items.map((item) => {
+    const queue: BatchItem[] = itemsRef.current.map((item) => {
       const invalid = validateFile(item.file);
       return {
         id: item.id,
@@ -202,7 +223,7 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
   };
   const downloadAll = async () => {
     if (busy || packing) return;
-    const token = generation.current;
+    const token = archiveVersion.current;
     setPacking(true);
     setError(null);
     try {
@@ -210,13 +231,14 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
       for (const item of items) {
         if (!item.result) continue;
         const bytes = new Uint8Array(await item.result.blob.arrayBuffer());
-        if (token !== generation.current) return;
+        if (token !== archiveVersion.current) return;
         entries.push({ name: item.result.name, bytes });
       }
       if (!entries.length) return;
       const zip = new Blob([buildZip(entries)], { type: "application/zip" });
       const url = URL.createObjectURL(zip);
       ownedUrls.current.add(url);
+      archiveRef.current = url;
       setArchiveUrl(url);
       const link = document.createElement("a");
       link.href = url;
@@ -225,9 +247,9 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
       link.click();
       link.remove();
     } catch {
-      if (token === generation.current) setError("archive");
+      if (token === archiveVersion.current) setError("archive");
     } finally {
-      if (token === generation.current) setPacking(false);
+      if (token === archiveVersion.current) setPacking(false);
     }
   };
   const completed = items.filter(

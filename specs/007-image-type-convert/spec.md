@@ -9,8 +9,8 @@ Preserve pixel dimensions. JPEG flattens transparency onto white; PNG/WebP retai
 alpha. Output is a static image; animation and original metadata are not retained.
 No image uploads, no backend, no new dependency. Reject unreadable files, oversized
 images and unsupported encoders rather than downloading mislabeled PNG output.
-All UI copy supports en/th/ja/sv/zh and both themes. Replacing/resetting an image
-or leaving the route releases object URLs; obsolete async results are discarded.
+All UI copy supports en/th/ja/sv/zh and both themes. Clearing the selection or leaving the route releases object URLs; obsolete async
+results are discarded. New file and folder selections append without clearing existing results.
 
 Acceptance: converter is discoverable from catalogue and sitemap; conversion
 produces a correctly typed file with a matching extension; failures are localized

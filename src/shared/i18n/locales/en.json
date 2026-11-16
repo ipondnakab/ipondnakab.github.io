@@ -673,7 +673,7 @@
       "folderRead": "Could not read this folder. Try Choose folder or select the images directly.",
       "noImages": "No supported images found. Choose a folder containing PNG, JPEG or WebP images."
     },
-    "batchLimits": "Up to 20 files / 100 MB total. A new selection replaces the batch.",
+    "batchLimits": "Up to 20 files / 100 MB total. New files and folders are added to the list; repeated files are skipped.",
     "downloadAll": "Download all (ZIP)",
     "packing": "Preparing ZIP…",
     "progress": "{{completed}} / {{total}} processed · {{successful}} converted",

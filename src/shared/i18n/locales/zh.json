@@ -673,7 +673,7 @@
       "folderRead": "无法读取文件夹，请尝试“选择文件夹”或直接选择图片。",
       "noImages": "未找到支持的图片，请选择包含 PNG、JPEG 或 WebP 图片的文件夹。"
     },
-    "batchLimits": "最多 20 个文件，总计 100 MB。重新选择将替换当前批次。",
+    "batchLimits": "总计最多 20 个文件 / 100 MB。新文件和文件夹会追加到列表，重复文件会跳过。",
     "downloadAll": "下载全部（ZIP）",
     "packing": "正在准备 ZIP…",
     "progress": "已处理 {{completed}} / {{total}} · 成功 {{successful}}",

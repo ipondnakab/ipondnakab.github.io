@@ -1,12 +1,12 @@
 # Batch conversion extension
 
 Select or drop multiple images (up to 20 files, 100 MiB combined input).
-Selecting a new batch replaces the current one. Apply one output format and
+New selections append to the existing batch; repeated files are skipped. Apply one output format and
 quality to every file; process sequentially to limit decoded image memory.
 Show per-file progress, failures, previews, individual downloads, and a single
 ZIP download of successful results. One invalid file must not stop the batch.
 Deduplicate output filenames, including collisions after extension changes.
-Reset, replacement and unmount cancel pending work and release object URLs.
+Reset and unmount cancel pending work and release object URLs. Additions preserve existing results.
 Cap combined encoded results at 100 MiB. No new dependencies: a small ZIP-store
 writer with CRC32, UTF-8 filenames and ZIP directory records, covered by tests.
 
