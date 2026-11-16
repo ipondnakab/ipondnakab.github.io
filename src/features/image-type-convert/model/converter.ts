@@ -3,15 +3,32 @@ export interface ConverterSettings {
   format: ImageFormat;
   quality: string;
 }
-export interface SourceImage {
-  file: File;
-  url: string;
-  image: HTMLImageElement;
+export interface EncodedImage {
+  blob: Blob;
+  width: number;
+  height: number;
 }
-export interface ConvertedImage {
+export interface ConvertedImage extends EncodedImage {
   url: string;
   name: string;
-  size: number;
+}
+export interface BatchItem {
+  id: number;
+  file: File;
+  status: "queued" | "working" | "done" | "error";
+  error?: ConversionError;
+  result?: ConvertedImage;
+}
+export interface ArchiveEntry {
+  name: string;
+  bytes: Uint8Array;
 }
 export type ConversionError =
-  "fileType" | "fileSize" | "decode" | "dimensions" | "encode";
+  | "fileType"
+  | "fileSize"
+  | "decode"
+  | "dimensions"
+  | "encode"
+  | "batchLimit"
+  | "outputLimit"
+  | "archive";

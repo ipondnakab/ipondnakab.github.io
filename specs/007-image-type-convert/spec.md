@@ -1,8 +1,10 @@
 # Image Type Convert
 
 Add a browser-only image converter to Mini Projects at `/mini-project/image-type-convert`.
-Users choose or drop one PNG, JPEG, or WebP (up to 20 MiB / 25 megapixels), preview
-it, choose PNG/JPEG/WebP output and lossy quality, then download the result.
+Users choose or drop multiple PNG, JPEG, or WebP files (up to 20 MiB / 25 megapixels
+each; 20 files / 100 MiB per batch), choose output format and quality, then preview
+and download results individually or in a ZIP. Process sequentially; one failed
+file must not stop the batch. Cap combined encoded output at 100 MiB.
 Preserve pixel dimensions. JPEG flattens transparency onto white; PNG/WebP retain
 alpha. Output is a static image; animation and original metadata are not retained.
 No image uploads, no backend, no new dependency. Reject unreadable files, oversized

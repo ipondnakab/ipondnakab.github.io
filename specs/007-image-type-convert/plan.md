@@ -39,3 +39,7 @@ background, and preserved PNG/WebP alpha. Check corrupt-file errors, replacement
 and reset during processing, keyboard file selection, mobile width, all five
 languages and dark/light themes. WebP encoding depends on browser support; an
 unsupported encoder must show an error instead of returning mislabeled PNG.
+
+Batch support supersedes the initial single-file UI and validation totals above.
+See [batch.md](batch.md) for the current scope and verification: 145 tests pass,
+static export passes, converter First Load JS is 133 kB (+1 kB rounded).
