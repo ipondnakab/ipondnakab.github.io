@@ -2,7 +2,11 @@ export type MascotState = "idle" | "thinking" | "replying" | "walking";
 
 export type MascotFacing = "front" | "left" | "right";
 export type MascotPhase =
-  "closed" | "loading" | "entering" | "active" | "exiting";
+  | "closed"
+  | "loading"
+  | "entering"
+  | "active"
+  | "exiting";
 
 export interface SpriteRectangle {
   x: number;

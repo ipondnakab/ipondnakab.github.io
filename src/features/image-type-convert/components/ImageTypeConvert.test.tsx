@@ -1,7 +1,7 @@
-import ImageTypeConvert from "@/features/image-type-convert/components/ImageTypeConvert";
-import { convertFile } from "@/features/image-type-convert/lib/convert-file";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import ImageTypeConvert from "@/features/image-type-convert/components/ImageTypeConvert";
+import { convertFile } from "@/features/image-type-convert/lib/convert-file";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),

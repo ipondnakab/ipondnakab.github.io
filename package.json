@@ -10,16 +10,18 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn lint && next build",
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext .js,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
-    "format": "prettier --write '**/*.{js,ts,tsx,css,md,json}'",
-    "prepare": "husky install"
+    "lint": "oxlint && yarn format:check",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt .",
+    "prepare": "husky install",
+    "test:architecture": "vitest run src/shared/config/architecture.test.ts",
+    "format:check": "oxfmt --check ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -63,21 +65,15 @@
     "@types/react-dom": "^18",
     "@types/semver": "^7.8.0",
     "@types/three": "^0.182.0",
-    "@typescript-eslint/eslint-plugin": "^8.59.2",
-    "@typescript-eslint/parser": "^8.59.2",
     "@vitejs/plugin-react": "^6.0.5",
+    "archunit": "2.5.5",
     "autoprefixer": "^10.0.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-unused-imports": "^4.4.1",
     "husky": "^8.0.0",
     "jsdom": "^26",
     "lint-staged": "^15.2.0",
+    "oxfmt": "0.79.0",
+    "oxlint": "1.94.0",
     "postcss": "^8",
-    "prettier": "^3.1.1",
-    "prettier-plugin-organize-imports": "^4.3.0",
     "semver": "^7.8.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5",
@@ -89,12 +85,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+    "*.{js,jsx,cjs,mjs,ts,tsx,mts,cts}": [
+      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxfmt --no-error-on-unmatched-pattern"
     ],
-    "*.{json,css,md,html}": [
-      "prettier --write"
+    "*.{json,jsonc,css,scss,md,mdx,html,yml,yaml}": [
+      "oxfmt --no-error-on-unmatched-pattern"
     ]
   }
 }

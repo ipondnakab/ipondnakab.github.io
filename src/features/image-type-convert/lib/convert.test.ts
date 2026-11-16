@@ -1,9 +1,9 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   convertImage,
   outputName,
   validateFile,
 } from "@/features/image-type-convert/lib/convert";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => vi.restoreAllMocks());
 describe("image conversion", () => {

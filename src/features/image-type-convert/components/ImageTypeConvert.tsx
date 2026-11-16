@@ -1,5 +1,9 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FORMATS,
   MAX_BATCH_BYTES,
@@ -27,10 +31,6 @@ import type {
 } from "@/features/image-type-convert/model/converter";
 import FormHookWrapper from "@/shared/ui/form/FormHookWrapper";
 import InputSelect from "@/shared/ui/inputs/InputSelect";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 export interface ImageTypeConvertProps {
   className?: string;

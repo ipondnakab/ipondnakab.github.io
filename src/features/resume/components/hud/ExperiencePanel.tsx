@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import { WORK_EXPERIENCES } from "@/features/profile";
 import { localize } from "@/shared/lib/localize";
 
+import { slideIn, staggerParent } from "@/features/resume/lib/motion";
 import MotionCard from "./MotionCard";
-import { slideIn, staggerParent } from "./motion";
 
 export interface ExperiencePanelProps {}
 

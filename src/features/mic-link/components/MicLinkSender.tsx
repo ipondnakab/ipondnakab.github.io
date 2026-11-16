@@ -19,33 +19,27 @@ import {
   MIC_LINK_AUDIO_CONSTRAINTS,
   MIC_LINK_LOCAL_MONITOR_DEFAULT_VOLUME,
 } from "@/features/mic-link/constants";
-import {
-  AudioLevelMonitor,
-  createAudioLevelMonitor,
-} from "@/features/mic-link/lib/audio-level";
+import { createAudioLevelMonitor } from "@/features/mic-link/lib/audio-level";
 import {
   describePlatform,
-  DeviceAudioProfile,
   readCaptureLatencyMs,
 } from "@/features/mic-link/lib/device-audio-profile";
-import {
-  createLocalAudioMonitor,
-  LocalAudioMonitor,
-} from "@/features/mic-link/lib/local-audio-monitor";
-import {
-  MicLinkSenderSession,
-  openSenderSession,
-} from "@/features/mic-link/lib/signaling";
+import { createLocalAudioMonitor } from "@/features/mic-link/lib/local-audio-monitor";
+import { openSenderSession } from "@/features/mic-link/lib/signaling";
+import type { AudioLevelMonitor } from "@/features/mic-link/model/audio-level";
+import type { DeviceAudioProfile } from "@/features/mic-link/model/device-audio-profile";
+import type { LocalAudioMonitor } from "@/features/mic-link/model/local-audio-monitor";
 import {
   MicLinkQuality,
   MicLinkStatus,
 } from "@/features/mic-link/model/mic-link";
+import type { MicLinkSenderSession } from "@/features/mic-link/model/signaling";
 import { trackEvent } from "@/shared/lib/analytics";
 import {
   isWakeLockSupported,
   requestScreenWakeLock,
-  ScreenWakeLock,
 } from "@/shared/lib/screen-wake-lock";
+import type { ScreenWakeLock } from "@/shared/types/screen-wake-lock";
 import MicLinkLevelMeter from "./MicLinkLevelMeter";
 import MicLinkStatusChip from "./MicLinkStatusChip";
 

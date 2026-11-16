@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "semi": true,
+  "trailingComma": "all",
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "out/",
+    "public/",
+    "build/",
+    "dist/",
+    "coverage/",
+    "postcss.config.js",
+    "portfolio-api/**",
+    ".agents/**",
+    ".codex/**",
+    "yarn.lock"
+  ],
+  "sortImports": {
+    "partitionByNewline": true,
+    "newlinesBetween": false,
+    "sortSideEffects": false
+  }
+}

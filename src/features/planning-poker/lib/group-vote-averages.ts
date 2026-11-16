@@ -1,15 +1,8 @@
+import type { GroupAverage } from "@/features/planning-poker/model/group-vote-averages";
 import {
   PlayerVotes,
   RoundHistoryVote,
 } from "@/features/planning-poker/model/poker";
-
-// One group's slice of a completed round.
-export interface GroupAverage {
-  group: string | null; // null = players who picked no group
-  avg: string; // "-" when the group has nothing numeric to average
-  total: number; // votes cast in this group
-  playerCount: number; // players in this group
-}
 
 const isNumericScore = (score: string | null): score is string =>
   score !== null && score.trim() !== "" && !isNaN(Number(score));

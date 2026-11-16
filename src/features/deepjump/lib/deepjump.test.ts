@@ -1,9 +1,9 @@
+import { describe, expect, it } from "vitest";
 import {
   addToHistory,
   parseHistory,
   validateDeeplink,
 } from "@/features/deepjump/lib/deepjump";
-import { describe, expect, it } from "vitest";
 
 describe("deeplink validation", () => {
   it("preserves custom schemes, web URLs and Android intent extras", () => {

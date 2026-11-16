@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
 import * as THREE from "three";
 
-import { SceneMood } from "./CameraRig";
+import type { SceneMood } from "@/features/resume/model/camera-rig";
 
 export interface AtmosphereProps {
   moodRef: React.MutableRefObject<SceneMood>;

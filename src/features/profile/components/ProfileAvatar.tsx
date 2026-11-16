@@ -73,7 +73,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ className }) => {
       onSpin();
     }, 1000);
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const avatar = (

@@ -1,10 +1,10 @@
+import { describe, expect, it } from "vitest";
 import {
   createCompetition,
   randomMatches,
   standings,
 } from "@/features/badminton/lib/draw";
 import { Player } from "@/features/badminton/model/badminton";
-import { describe, expect, it } from "vitest";
 const players = (count: number): Player[] =>
   Array.from({ length: count }, (_, i) => ({
     id: String(i),

@@ -1,12 +1,12 @@
 "use client";
 
-import { MINI_PROJECTS } from "@/features/mini-project/constants";
-import { trackEvent } from "@/shared/lib/analytics";
-import { localize } from "@/shared/lib/localize";
 import { Button, Card, Link } from "@nextui-org/react";
 import { clsx } from "clsx";
 import { useTranslation } from "react-i18next";
 import { HiArrowRight } from "react-icons/hi";
+import { MINI_PROJECTS } from "@/features/mini-project/constants";
+import { trackEvent } from "@/shared/lib/analytics";
+import { localize } from "@/shared/lib/localize";
 
 const MiniProjectList = () => {
   const { t, i18n } = useTranslation();

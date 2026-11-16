@@ -1,12 +1,11 @@
 "use client";
+import type { ChipColor } from "@/features/mic-link/model/mic-link-status-chip";
 
 import { Chip } from "@nextui-org/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { MicLinkStatus } from "@/features/mic-link/model/mic-link";
-
-type ChipColor = "default" | "primary" | "success" | "warning" | "danger";
 
 const STATUS_COLORS: Record<MicLinkStatus, ChipColor> = {
   idle: "default",

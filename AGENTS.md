@@ -32,9 +32,9 @@ yarn test             # vitest run
 yarn test:watch       # vitest in watch mode
 yarn test:coverage    # v8 coverage
 yarn typecheck        # tsc --noEmit
-yarn lint             # eslint over .js/.ts/.tsx
-yarn lint:fix         # eslint --fix
-yarn format           # prettier --write across the repo
+yarn lint             # Oxlint + Oxfmt formatting check
+yarn lint:fix         # oxlint --fix
+yarn format           # Oxfmt across the repo
 ```
 
 **Definition of done** — all four, in order, with real results reported:
@@ -71,8 +71,8 @@ Features today: `planning-poker`, `pokdeng`, `mic-link`, `resume`, `chat`, `cont
 - **Components are arrow functions typed with `React.FC`**, each with an exported `XxxProps` interface and a `export default`.
 - **`"use client"`** goes at the very top of any file using hooks, browser APIs, or event handlers. Route pages stay server components that set `metadata` and render one feature component.
 - **Types live in `model/`** (feature) or `src/shared/types/` (cross-cutting). Static data lives in `constants`. Don't inline either in a component.
-- **No `any`** (ESLint error). Prefer explicit interfaces or `unknown`. Prefix intentionally-unused vars/args with `_`.
-- **No stray `console.*`** (ESLint error; only `console.warn`/`console.error` are allowed).
+- **No `any`** (Oxlint error). Prefer explicit interfaces or `unknown`. Prefix intentionally-unused vars/args with `_`.
+- **No stray `console.*`** (Oxlint error; only `console.warn`/`console.error` are allowed).
 - **Styling is Tailwind utility classes.** Use the NextUI theme tokens (`primary`, `background`) defined in `tailwind.config.ts` rather than hard-coded hex. Check dark (default) and light.
 - **All user-facing copy goes in every locale** under `src/shared/i18n/locales/`. A missing key is a bug.
 - **Forms** go through `src/shared/ui/form/FormHookWrapper` (React Hook Form) with the `src/shared/ui/inputs/*` field components. Validation is declarative via the `rules` prop.
@@ -85,21 +85,21 @@ Pure logic in `lib/` is the priority; that is where the real invariants are. Wri
 
 ## Formatting & hooks
 
-- Prettier: `printWidth: 80`, 2-space tabs, semicolons, `trailingComma: "all"`, imports auto-organized by `prettier-plugin-organize-imports`.
-- Husky + lint-staged run ESLint `--fix` and Prettier on staged files at commit time. Run `yarn lint:fix && yarn format` before committing.
+- Oxfmt (`.oxfmtrc.json`): `printWidth: 80`, two spaces, semicolons, `trailingComma: "all"`, and import sorting. Oxlint removes unused imports with `--fix`; the formatter only sorts them.
+- Husky + lint-staged run Oxlint `--fix` and Oxfmt on staged files at commit time. Run `yarn lint:fix && yarn format` before committing.
 
 ## Enforced lint rules (errors — the build fails on these)
 
-`.eslintrc.json` enforces these as **errors**:
+`oxlint.config.mts` enforces these as **errors**:
 
-- `@typescript-eslint/no-explicit-any` — no `any`.
+- `typescript/no-explicit-any` — no `any`.
 - `no-console` — no `console.*` except `console.warn` / `console.error`.
-- `unused-imports/*` — no unused imports/vars (prefix intentional ones with `_`).
+- `no-unused-vars` — no unused imports/vars (prefix intentional ones with `_`).
 - `no-restricted-imports` — bans `../` parent imports, **and** enforces the layering above via per-folder overrides.
-- `@typescript-eslint/consistent-type-definitions` — object shapes are `interface`, not `type`.
+- `typescript/consistent-type-definitions` — object shapes are `interface`, not `type`.
 - `eqeqeq` (smart), `no-var`, `prefer-const`, `no-unneeded-ternary`, `object-shorthand`.
 
-`next build` runs ESLint + type-check, so a violation breaks the build/deploy. Don't downgrade these to warnings to make a build pass — fix the code.
+`yarn build` runs the lint/format gate before Next.js type-checking and export, so a violation breaks the build/deploy. Don't downgrade these to warnings to make a build pass — fix the code.
 
 ## Environment & secrets
 

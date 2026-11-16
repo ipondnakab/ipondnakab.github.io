@@ -7,5 +7,11 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export { RESUME_CHAPTERS, RESUME_CHAPTER_COUNT } from "./constants/chapters";
-export type { ResumeChapter, ResumeChapterId } from "./model/resume";
+export {
+  RESUME_CHAPTERS,
+  RESUME_CHAPTER_COUNT,
+} from "@/features/resume/constants/chapters";
+export type {
+  ResumeChapter,
+  ResumeChapterId,
+} from "@/features/resume/model/resume";

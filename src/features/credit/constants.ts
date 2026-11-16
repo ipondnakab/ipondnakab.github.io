@@ -182,21 +182,15 @@ export const CREDIT_CATEGORIES: CreditCategory[] = [
         license: "MIT",
       },
       {
-        name: "ESLint",
+        name: "Oxlint",
         description: "Finds problems before they ship",
-        url: "https://eslint.org",
+        url: "https://oxc.rs/docs/guide/usage/linter",
         license: "MIT",
       },
       {
-        name: "typescript-eslint",
-        description: "Lets ESLint understand TypeScript",
-        url: "https://typescript-eslint.io",
-        license: "MIT",
-      },
-      {
-        name: "Prettier",
+        name: "Oxfmt",
         description: "An opinionated code formatter",
-        url: "https://prettier.io",
+        url: "https://oxc.rs/docs/guide/usage/formatter",
         license: "MIT",
       },
       {

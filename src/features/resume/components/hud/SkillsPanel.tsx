@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 
 import { SKILL_CATEGORIES } from "@/features/resume/constants/skills";
 
+import { slideIn, staggerParent } from "@/features/resume/lib/motion";
 import MotionCard from "./MotionCard";
-import { slideIn, staggerParent } from "./motion";
 
 export interface SkillsPanelProps {}
 

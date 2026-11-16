@@ -52,7 +52,7 @@ const PokdengPlayersModal: React.FC<PokdengPlayersModalProps> = ({
     setNewName("");
     // Re-seeding on every `players` change would fight the user's typing; the
     // drafts only need to be synced when the modal is (re)opened.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const commitName = (player: PokdengPlayer) => {

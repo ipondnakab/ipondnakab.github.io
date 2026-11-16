@@ -1,4 +1,5 @@
-import { db } from "@/shared/lib/firebase";
+import { winnerOf } from "./scoring";
+
 import {
   doc,
   getDoc,
@@ -6,16 +7,12 @@ import {
   runTransaction,
   serverTimestamp,
 } from "firebase/firestore";
-
-export type RoomMode = "standard" | "freehand";
-export type Score = [number, number];
-export interface ScoreRoom {
-  names: [string, string];
-  points: Score;
-  games: Score[];
-  mode: RoomMode;
-  revision: number;
-}
+import type {
+  RoomAction,
+  Score,
+  ScoreRoom,
+} from "@/features/badminton/model/realtime-room";
+import { db } from "@/shared/lib/firebase";
 const collection = "badmintonScoreRooms";
 const roomRef = (code: string) => doc(db, collection, code);
 export const normalizeCode = (value: string) =>
@@ -64,18 +61,7 @@ export const createRoom = async (code: string) => {
 export const roomExists = async (code: string) => {
   return (await getDoc(roomRef(code))).exists();
 };
-export const winnerOf = ([a, b]: Score): number | null => {
-  if (a === 30 && a > b) return 0;
-  if (b === 30 && b > a) return 1;
-  if (a >= 21 && a - b >= 2) return 0;
-  if (b >= 21 && b - a >= 2) return 1;
-  return null;
-};
-export type RoomAction =
-  | { type: "point"; side: 0 | 1; delta: -1 | 1 }
-  | { type: "reset" }
-  | { type: "mode"; mode: RoomMode }
-  | { type: "name"; side: 0 | 1; name: string };
+
 /** Pure scoring reducer shared by optimistic UI and Firestore transactions. */
 export const applyRoomAction = (
   current: ScoreRoom,

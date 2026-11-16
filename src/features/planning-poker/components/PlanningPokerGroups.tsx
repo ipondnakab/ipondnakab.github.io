@@ -1,7 +1,5 @@
 "use client";
 
-import { buildGroupAverage } from "@/features/planning-poker/lib/group-vote-averages";
-import { RoomData, RoomStats } from "@/features/planning-poker/model/poker";
 import {
   Button,
   Dropdown,
@@ -12,6 +10,8 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoChevronDown } from "react-icons/io5";
+import { buildGroupAverage } from "@/features/planning-poker/lib/group-vote-averages";
+import { RoomData, RoomStats } from "@/features/planning-poker/model/poker";
 
 import PlanningPokerGroupButton from "./PlanningPokerGroupButton";
 

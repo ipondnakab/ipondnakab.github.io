@@ -1,6 +1,3 @@
-import Deepjump from "@/features/deepjump/components/Deepjump";
-import { HISTORY_KEY } from "@/features/deepjump/constants";
-import en from "@/shared/i18n/locales/en.json";
 import {
   cleanup,
   fireEvent,
@@ -12,6 +9,9 @@ import {
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import Deepjump from "@/features/deepjump/components/Deepjump";
+import { HISTORY_KEY } from "@/features/deepjump/constants";
+import en from "@/shared/i18n/locales/en.json";
 
 const i18n = i18next.createInstance();
 beforeAll(async () => {

@@ -1,7 +1,4 @@
-export interface LocalAudioMonitor {
-  setVolume: (volume: number) => void;
-  stop: () => void;
-}
+import type { LocalAudioMonitor } from "@/features/mic-link/model/local-audio-monitor";
 
 // Loops the phone's own microphone straight back to its own output.
 //

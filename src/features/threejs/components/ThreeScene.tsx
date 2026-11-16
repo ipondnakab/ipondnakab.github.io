@@ -546,7 +546,6 @@ const ThreeScene: React.FC = () => {
       try {
         mixer?.stopAllAction?.();
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.warn("Failed to stop animations on cleanup.", error);
       }
 
@@ -585,7 +584,7 @@ const ThreeScene: React.FC = () => {
       renderer.domElement.parentNode?.removeChild(renderer.domElement);
       renderer.dispose();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleJoystickMove = (e: React.PointerEvent) => {

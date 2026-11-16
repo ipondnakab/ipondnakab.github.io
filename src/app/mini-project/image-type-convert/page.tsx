@@ -1,5 +1,5 @@
-import ImageTypeConvert from "@/features/image-type-convert/components/ImageTypeConvert";
 import type { Metadata } from "next";
+import ImageTypeConvert from "@/features/image-type-convert/components/ImageTypeConvert";
 export const metadata: Metadata = {
   title: "Image Type Convert",
   description:

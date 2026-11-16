@@ -1,9 +1,9 @@
 "use client";
 
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { DEFAULT_BADMINTON_SESSION } from "@/features/badminton/constants";
 import { loadSession, saveSession } from "@/features/badminton/lib/storage";
 import { BadmintonSession } from "@/features/badminton/model/badminton";
-import { SetStateAction, useEffect, useRef, useState } from "react";
 
 export const useBadmintonSession = () => {
   const restoredSession = useRef(DEFAULT_BADMINTON_SESSION);

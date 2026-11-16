@@ -2,7 +2,12 @@
 // Data lives in constants/resume-*.ts; these are the source-of-truth types.
 
 export type ResumeChapterId =
-  "intro" | "about" | "experience" | "skills" | "projects" | "contact";
+  | "intro"
+  | "about"
+  | "experience"
+  | "skills"
+  | "projects"
+  | "contact";
 
 // One cinematic camera pose plus the light intensity that eases alongside it.
 export interface CameraKeyframe {
@@ -19,7 +24,12 @@ export interface ResumeChapter {
 }
 
 export type SkillCategoryId =
-  "frontend" | "backend" | "languages" | "cloud" | "devops" | "ai";
+  | "frontend"
+  | "backend"
+  | "languages"
+  | "cloud"
+  | "devops"
+  | "ai";
 
 // A thin ring of skills orbiting the character.
 export interface SkillCategory {

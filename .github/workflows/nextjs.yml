@@ -101,11 +101,13 @@ jobs:
       - name: Typecheck
         run: ${{ steps.detect-package-manager.outputs.runner }} tsc --noEmit
       - name: Lint
-        run: ${{ steps.detect-package-manager.outputs.runner }} eslint . --ext .js,.ts,.tsx
+        run: ${{ steps.detect-package-manager.outputs.manager }} lint
+      - name: Architecture tests
+        run: ${{ steps.detect-package-manager.outputs.manager }} test:architecture
       - name: Test
         run: ${{ steps.detect-package-manager.outputs.runner }} vitest run
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: ${{ steps.detect-package-manager.outputs.manager }} build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

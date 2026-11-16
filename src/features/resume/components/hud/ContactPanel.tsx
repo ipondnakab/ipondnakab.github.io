@@ -7,10 +7,10 @@ import { HiOutlineMail } from "react-icons/hi";
 
 import { SOCIALS } from "@/shared/config/social";
 
+import { slideIn } from "@/features/resume/lib/motion";
 import { environment } from "@/shared/config/environment";
 import { trackEvent } from "@/shared/lib/analytics";
 import MotionCard from "./MotionCard";
-import { slideIn } from "./motion";
 
 export interface ContactPanelProps {}
 

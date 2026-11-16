@@ -1,7 +1,7 @@
 "use client";
-import { FieldController } from "@/shared/types/field-controller";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { FieldController } from "@/shared/types/field-controller";
 
 export interface InputSelectProps extends FieldController {
   label: string;

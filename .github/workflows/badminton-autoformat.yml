@@ -18,13 +18,13 @@ jobs:
           persist-credentials: true
       - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: "24"
           cache: yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Format affected files
         run: |
-          yarn prettier --write src/features/badminton/components/RealtimeBadmintonRoom.tsx src/features/badminton/lib/realtime-room.ts
+          yarn oxfmt src/features/badminton/components/RealtimeBadmintonRoom.tsx src/features/badminton/lib/realtime-room.ts
       - name: Verify lint
         run: yarn lint
       - name: Commit formatted files
@@ -33,6 +33,6 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add src/features/badminton/components/RealtimeBadmintonRoom.tsx src/features/badminton/lib/realtime-room.ts
-            git commit -m "style(badminton): apply Prettier formatting"
+            git commit -m "style(badminton): apply Oxfmt formatting"
             git push
           fi

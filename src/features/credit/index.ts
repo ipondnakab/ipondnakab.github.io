@@ -7,9 +7,9 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export { CREDITED_PROJECT_COUNT, CREDIT_CATEGORIES } from "./constants";
 export type {
   CreditCategory,
   CreditCategoryId,
   CreditedProject,
-} from "./model/credit";
+} from "@/features/credit/model/credit";
+export { CREDITED_PROJECT_COUNT, CREDIT_CATEGORIES } from "./constants";

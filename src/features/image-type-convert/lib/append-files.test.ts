@@ -1,9 +1,9 @@
+import { describe, expect, it } from "vitest";
 import { appendFiles } from "@/features/image-type-convert/lib/append-files";
 import type {
   BatchItem,
   SelectedImage,
 } from "@/features/image-type-convert/model/converter";
-import { describe, expect, it } from "vitest";
 const selected = (path: string, size = 1): SelectedImage => ({
   path,
   file: new File([new Uint8Array(size)], path.split("/").pop()!, {

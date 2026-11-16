@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { slideIn, staggerParent } from "./motion";
+import { slideIn, staggerParent } from "@/features/resume/lib/motion";
 
 export interface HeroPanelProps {}
 

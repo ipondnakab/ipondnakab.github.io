@@ -1,8 +1,8 @@
 "use client";
 
-import { RoomData } from "@/features/planning-poker/model/poker";
 import { Button, Card, Chip, Divider, Input, Spinner } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
+import { RoomData } from "@/features/planning-poker/model/poker";
 
 export interface PlanningPokerLobbyProps {
   roomId: string | null;

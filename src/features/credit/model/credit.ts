@@ -1,5 +1,11 @@
 export type CreditCategoryId =
-  "framework" | "ui" | "threeD" | "data" | "i18n" | "tooling" | "hosting";
+  | "framework"
+  | "ui"
+  | "threeD"
+  | "data"
+  | "i18n"
+  | "tooling"
+  | "hosting";
 
 export interface CreditedProject {
   /** Display name, spelled the way the project brands itself. */

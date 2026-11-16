@@ -29,8 +29,7 @@ const DrunkardGamePrivacy: React.FC<DrunkardGamePrivacyProps> = () => {
             "การตั้งค่าของแอป (ธีม, การตั้งค่าเสียง)",
             "ข้อมูลเกมที่บันทึกไว้ (King's Cup, Heads Up, Slot Machine)",
           ],
-          warning:
-            "⚠️ ข้อมูลเหล่านี้จะไม่ถูกส่งไปยังเซิร์ฟเวอร์หรือบุคคลที่สาม",
+          warning: "⚠️ ข้อมูลเหล่านี้จะไม่ถูกส่งไปยังเซิร์ฟเวอร์หรือบุคคลที่สาม",
         },
         admob: {
           title: "2. ข้อมูลจาก Google AdMob",

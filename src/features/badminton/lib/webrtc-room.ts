@@ -1,4 +1,3 @@
-import { db } from "@/shared/lib/firebase";
 import {
   collection,
   deleteDoc,
@@ -6,14 +5,13 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import type { ScoreRoom } from "./realtime-room";
-
-interface RoomMessage {
-  type: "score";
-  room: ScoreRoom;
-}
-type Status = "connecting" | "direct" | "firebase";
-type PeerSession = (() => void) & { broadcast: (room: ScoreRoom) => void };
+import type { ScoreRoom } from "@/features/badminton/model/realtime-room";
+import type {
+  PeerSession,
+  RoomMessage,
+  Status,
+} from "@/features/badminton/model/webrtc-room";
+import { db } from "@/shared/lib/firebase";
 
 const rtcConfig: RTCConfiguration = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],

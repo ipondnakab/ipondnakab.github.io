@@ -1,6 +1,6 @@
-import { RoomData } from "@/features/planning-poker/model/poker";
 import { Button, Card, Divider } from "@nextui-org/react";
 import { IoCafeOutline, IoSettingsOutline } from "react-icons/io5";
+import { RoomData } from "@/features/planning-poker/model/poker";
 
 export interface PlanningPokerCardSelectionProps {
   activeDeck: string[];

@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   BADMINTON_STORAGE_KEY,
   DEFAULT_BADMINTON_SESSION,
@@ -8,7 +9,6 @@ import {
 } from "@/features/badminton/lib/draw";
 import { loadSession, saveSession } from "@/features/badminton/lib/storage";
 import { Player } from "@/features/badminton/model/badminton";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 const players: Player[] = Array.from({ length: 4 }, (_, i) => ({
   id: String(i),
   name: `Player ${i}`,

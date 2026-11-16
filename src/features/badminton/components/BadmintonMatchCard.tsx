@@ -1,9 +1,9 @@
 "use client";
 
-import { Team } from "@/features/badminton/model/badminton";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoCheckmarkCircle, IoPersonOutline } from "react-icons/io5";
+import { Team } from "@/features/badminton/model/badminton";
 import BadmintonScoreboard from "./BadmintonScoreboard";
 
 export interface BadmintonMatchCardProps {

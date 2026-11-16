@@ -12,7 +12,7 @@
 **Language / version:** TypeScript 5 (strict), React 18, Next.js 14 App Router
 **Primary dependencies:** [NextUI, Tailwind, framer-motion, ... — list only what this feature adds or leans on]
 **Storage:** [Firestore collection / localStorage key / none]
-**Testing:** Vitest + Testing Library (`yarn test`)
+**Testing:** Vitest + Testing Library (`yarn test`); Oxlint + Oxfmt (`yarn lint`)
 **Target platform:** static export to GitHub Pages — no server at runtime
 **Project type:** single Next.js app (`src/app`, `src/features`, `src/shared`)
 **Performance goals:** [e.g. no increase in the route's First Load JS beyond X kB]

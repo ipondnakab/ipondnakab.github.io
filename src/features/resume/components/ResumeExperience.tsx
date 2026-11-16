@@ -12,10 +12,10 @@ import {
 } from "@/features/resume/constants/chapters";
 
 import { useTheme } from "next-themes";
-import ChapterNav from "./hud/ChapterNav";
-import HudLayer from "./hud/HudLayer";
-import ScrollHint from "./hud/ScrollHint";
-import { SceneMood } from "./scene/CameraRig";
+import ChapterNav from "@/features/resume/components/hud/ChapterNav";
+import HudLayer from "@/features/resume/components/hud/HudLayer";
+import ScrollHint from "@/features/resume/components/hud/ScrollHint";
+import type { SceneMood } from "@/features/resume/model/camera-rig";
 
 // The WebGL canvas can only run in the browser (no SSR for the static export).
 const ResumeCanvas = dynamic(() => import("./ResumeCanvas"), { ssr: false });

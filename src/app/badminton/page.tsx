@@ -1,5 +1,5 @@
-import Badminton from "@/features/badminton/components/Badminton";
 import type { Metadata } from "next";
+import Badminton from "@/features/badminton/components/Badminton";
 export const metadata: Metadata = {
   title: "Badminton Team Organizer",
   description:

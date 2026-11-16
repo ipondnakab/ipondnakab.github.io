@@ -1,9 +1,9 @@
-import type { MiniProject } from "@/features/mini-project/model/mini-project";
-import SpecKubIcon from "@/shared/ui/icons/SpecKubIcon";
 import { GiPartyPopper, GiPokerHand, GiShuttlecock } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
 import { MdImage, MdOpenInNew, MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
+import type { MiniProject } from "@/features/mini-project/model/mini-project";
+import SpecKubIcon from "@/shared/ui/icons/SpecKubIcon";
 
 export const MINI_PROJECTS: readonly MiniProject[] = [
   {

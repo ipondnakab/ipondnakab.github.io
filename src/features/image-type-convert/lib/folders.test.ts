@@ -1,8 +1,8 @@
+import { describe, expect, it, vi } from "vitest";
 import {
   collectFolderImages,
   folderSelection,
 } from "@/features/image-type-convert/lib/folders";
-import { describe, expect, it, vi } from "vitest";
 const fileEntry = (name: string, type = "image/png"): FileSystemEntry =>
   ({
     name,

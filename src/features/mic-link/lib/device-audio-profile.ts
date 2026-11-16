@@ -1,12 +1,4 @@
-export type DevicePlatform = "ios" | "android" | "desktop";
-
-export interface DeviceAudioProfile {
-  platform: DevicePlatform;
-  // What the OS charges to hand us a microphone buffer, if it will say.
-  captureLatencyMs?: number;
-  // What the OS charges to get a sample back out of the speaker.
-  outputLatencyMs?: number;
-}
+import type { DevicePlatform } from "@/features/mic-link/model/device-audio-profile";
 
 // Which platform this is matters more than any tuning we can do: Chrome on
 // Android routinely carries 100-300ms in its audio stack where iOS sits around

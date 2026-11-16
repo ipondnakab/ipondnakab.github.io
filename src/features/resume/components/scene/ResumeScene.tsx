@@ -3,8 +3,9 @@
 import { ContactShadows } from "@react-three/drei";
 import React, { Suspense } from "react";
 
+import type { SceneMood } from "@/features/resume/model/camera-rig";
 import Atmosphere from "./Atmosphere";
-import CameraRig, { SceneMood } from "./CameraRig";
+import CameraRig from "./CameraRig";
 import Character from "./Character";
 import SkillRings from "./SkillRings";
 

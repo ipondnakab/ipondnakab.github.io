@@ -1,5 +1,5 @@
-import StandaloneBadmintonScoreboard from "@/features/badminton/components/StandaloneBadmintonScoreboard";
 import type { Metadata } from "next";
+import StandaloneBadmintonScoreboard from "@/features/badminton/components/StandaloneBadmintonScoreboard";
 
 export const metadata: Metadata = {
   title: "Badminton Scoreboard",

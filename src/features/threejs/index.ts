@@ -7,4 +7,4 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export { GameState } from "./model/game-state";
+export { GameState } from "@/features/threejs/model/game-state";

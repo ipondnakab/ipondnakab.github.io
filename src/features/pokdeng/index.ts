@@ -12,4 +12,4 @@ export type {
   PokdengOutcome,
   PokdengPlayer,
   PokdengTurn,
-} from "./model/pokdeng";
+} from "@/features/pokdeng/model/pokdeng";

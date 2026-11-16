@@ -32,7 +32,7 @@ does not fail at review — it fails in production, silently, at build time.
 ### II. Feature modules with one-way dependencies
 
 Code is organised by feature, not by file type. The dependency graph points one
-way and is enforced by ESLint, not by convention.
+way and is enforced by Oxlint, not by convention.
 
 ```
 src/app/        routes: thin pages, metadata, composition
@@ -59,7 +59,7 @@ change touch?" has an answer before the work starts.
 
 ### III. Typed, linted, and no escape hatches
 
-`.eslintrc.json` enforces these as errors and `next build` runs them, so a
+`oxlint.config.mts` enforces these as errors and `yarn build` runs the lint and format gate before Next.js, so a
 violation breaks the deploy. They MUST NOT be downgraded to warnings to make a
 build pass.
 
@@ -77,7 +77,7 @@ A change is done when all four gates pass, in this order:
 
 ```bash
 yarn typecheck   # tsc --noEmit
-yarn lint        # eslint
+yarn lint        # Oxlint + Oxfmt formatting check
 yarn test        # vitest run
 yarn build       # next build — the static export
 ```
@@ -195,4 +195,11 @@ consistent. Version bumps follow semver — MAJOR for a removed or redefined
 principle, MINOR for a new principle or materially expanded guidance, PATCH for
 clarifications.
 
-**Version:** 1.1.0 | **Ratified:** 2026-08-18 | **Last amended:** 2026-08-18
+**Version:** 1.2.0 | **Ratified:** 2026-08-18 | **Last amended:** 2026-11-17
+
+### Amendment 1.2.0 — Oxlint and Oxfmt
+
+Replace ESLint/Prettier with Oxlint/Oxfmt at the user's request. Preserve error
+severities, architecture boundaries and the ordered gates. `yarn lint` includes
+`oxfmt --check`; `yarn build` invokes the same gate before Next 14, whose built-in
+ESLint-only integration is disabled. No lint/format enforcement is waived.

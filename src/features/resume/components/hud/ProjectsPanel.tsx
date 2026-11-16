@@ -20,8 +20,8 @@ import { OUTSOURCE_PROJECTS, ProjectExperience } from "@/features/profile";
 import { trackEvent } from "@/shared/lib/analytics";
 import { localize } from "@/shared/lib/localize";
 
+import { slideIn, staggerParent } from "@/features/resume/lib/motion";
 import MotionCard from "./MotionCard";
-import { slideIn, staggerParent } from "./motion";
 
 export interface ProjectsPanelProps {}
 

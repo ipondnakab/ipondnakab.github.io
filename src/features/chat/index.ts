@@ -7,4 +7,4 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export type { ChatMessage, ChatTranscript } from "./model/chat";
+export type { ChatMessage, ChatTranscript } from "@/features/chat/model/chat";

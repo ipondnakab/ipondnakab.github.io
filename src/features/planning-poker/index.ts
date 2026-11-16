@@ -8,18 +8,16 @@
  * `@/features/<name>/components/<Component>`.
  */
 export {
-  PLANNING_POKER_ADMIN_PARAM,
-  PLANNING_POKER_HISTORY_LIMIT,
-  PLANNING_POKER_MAX_GROUPS_LENGTH,
-  PLANNING_POKER_NOTE_MAX_LENGTH,
-} from "./constants";
-export { buildRoundHistoryEntry } from "./lib/build-round-history-entry";
+  DECKS,
+  DEFAULT_GROUP_COLOR,
+  GROUP_COLOR_OPTIONS,
+} from "@/features/planning-poker/constants";
+export { buildRoundHistoryEntry } from "@/features/planning-poker/lib/build-round-history-entry";
 export {
   buildGroupAverage,
   buildGroupAverages,
-} from "./lib/group-vote-averages";
-export type { GroupAverage } from "./lib/group-vote-averages";
-export { DECKS, DEFAULT_GROUP_COLOR, GROUP_COLOR_OPTIONS } from "./model/poker";
+} from "@/features/planning-poker/lib/group-vote-averages";
+export type { GroupAverage } from "@/features/planning-poker/model/group-vote-averages";
 export type {
   DeckType,
   GroupObject,
@@ -28,4 +26,10 @@ export type {
   RoomData,
   RoomStats,
   RoundHistoryEntry,
-} from "./model/poker";
+} from "@/features/planning-poker/model/poker";
+export {
+  PLANNING_POKER_ADMIN_PARAM,
+  PLANNING_POKER_HISTORY_LIMIT,
+  PLANNING_POKER_MAX_GROUPS_LENGTH,
+  PLANNING_POKER_NOTE_MAX_LENGTH,
+} from "./constants";

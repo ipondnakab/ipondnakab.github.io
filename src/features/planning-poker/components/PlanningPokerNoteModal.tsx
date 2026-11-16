@@ -1,6 +1,5 @@
 "use client";
 
-import { PLANNING_POKER_NOTE_MAX_LENGTH } from "@/features/planning-poker/constants";
 import {
   Button,
   Input,
@@ -12,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { PLANNING_POKER_NOTE_MAX_LENGTH } from "@/features/planning-poker/constants";
 
 export interface PlanningPokerNoteModalProps {
   isOpen: boolean;

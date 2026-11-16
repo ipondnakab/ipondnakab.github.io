@@ -1,1 +1,4 @@
-export type { DeepjumpForm, JumpHistoryEntry } from "./model/deepjump";
+export type {
+  DeepjumpForm,
+  JumpHistoryEntry,
+} from "@/features/deepjump/model/deepjump";

@@ -1,5 +1,5 @@
-import RealtimeBadmintonRoom from "@/features/badminton/components/RealtimeBadmintonRoom";
 import type { Metadata } from "next";
+import RealtimeBadmintonRoom from "@/features/badminton/components/RealtimeBadmintonRoom";
 
 export const metadata: Metadata = {
   title: "Live Badminton Scoreboard",

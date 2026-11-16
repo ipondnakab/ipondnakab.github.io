@@ -1,6 +1,6 @@
-import Deepjump from "@/features/deepjump/components/Deepjump";
 import type { Metadata } from "next";
 import React from "react";
+import Deepjump from "@/features/deepjump/components/Deepjump";
 
 export const metadata: Metadata = {
   title: "Deepjump",

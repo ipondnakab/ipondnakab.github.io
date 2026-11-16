@@ -1,11 +1,5 @@
 "use client";
 
-import { buildGroupAverages } from "@/features/planning-poker/lib/group-vote-averages";
-import {
-  DeckType,
-  GroupObject,
-  RoundHistoryEntry,
-} from "@/features/planning-poker/model/poker";
 import {
   Accordion,
   AccordionItem,
@@ -25,6 +19,12 @@ import {
   IoTimeOutline,
   IoTrashOutline,
 } from "react-icons/io5";
+import { buildGroupAverages } from "@/features/planning-poker/lib/group-vote-averages";
+import {
+  DeckType,
+  GroupObject,
+  RoundHistoryEntry,
+} from "@/features/planning-poker/model/poker";
 
 import PlanningPokerNoteModal from "./PlanningPokerNoteModal";
 

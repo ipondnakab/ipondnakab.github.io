@@ -9,6 +9,12 @@ existing file in the same folder and adapt it.
 
 ---
 
+Architecture rules run automatically with `yarn test`; use
+`yarn test:architecture` for a focused check. Oxlint discovers feature folders
+automatically. New features receive the same boundaries without configuration
+edits. Keep only the folders a feature uses, and export pure helpers/types/data
+from its public barrel when another feature or route needs them.
+
 ## 1. File & naming conventions
 
 | Thing                     | Convention                          | Example                                 |
@@ -29,7 +35,7 @@ Rules:
 - One primary component per file; `export default` that component.
 - A feature's code lives in one folder under `src/features/<name>/`.
 - Import repo-local modules with the `@/` alias (→ `./src/`); use relative `./`
-  only for same-folder siblings. `../` is banned by ESLint.
+  only for same-folder siblings. `../` is banned by Oxlint.
 
 ---
 
@@ -174,7 +180,7 @@ export interface RoomData {
 }
 ```
 
-- `interface` for object shapes (ESLint-enforced), `type` for unions/aliases.
+- `interface` for object shapes (Oxlint-enforced), `type` for unions/aliases.
 - `Record<K, V>` for maps; optional fields with `?`.
 - Avoid `any` — use `unknown` and narrow, or define a precise type.
 
@@ -397,22 +403,21 @@ The site is `output: "export"` — there is **no server at runtime**:
 
 ---
 
-## 16. Enforced rules (ESLint errors)
+## 16. Enforced rules (Oxlint errors)
 
-Wired into `.eslintrc.json` as **errors** — they fail `yarn lint` and
-`next build`, so they're not optional:
+Wired into `oxlint.config.mts` as **errors** — they fail `yarn lint` and
+`yarn build`, so they're not optional:
 
-| Rule                                             | What it enforces                                          |
-| ------------------------------------------------ | --------------------------------------------------------- |
-| `@typescript-eslint/no-explicit-any`             | No `any`. Use `unknown` + narrowing or a real type.       |
-| `no-console`                                     | No `console.*` except `warn`/`error`.                     |
-| `unused-imports/no-unused-imports`               | No unused imports.                                        |
-| `unused-imports/no-unused-vars`                  | No unused vars (prefix intentional with `_`).             |
-| `no-restricted-imports`                          | No `../`; **and the `app`/`features`/`shared` layering**. |
-| `@typescript-eslint/consistent-type-definitions` | Object shapes use `interface`, not `type`.                |
-| `eqeqeq` (smart)                                 | Use `===` / `!==` (allows `== null`).                     |
-| `no-var` / `prefer-const`                        | No `var`; `const` where not reassigned.                   |
-| `no-unneeded-ternary` / `object-shorthand`       | Cleaner expressions and object literals.                  |
+| Rule                                       | What it enforces                                          |
+| ------------------------------------------ | --------------------------------------------------------- |
+| `typescript/no-explicit-any`               | No `any`. Use `unknown` + narrowing or a real type.       |
+| `no-console`                               | No `console.*` except `warn`/`error`.                     |
+| `no-unused-vars`                           | No unused imports/vars (prefix intentional with `_`).     |
+| `no-restricted-imports`                    | No `../`; **and the `app`/`features`/`shared` layering**. |
+| `typescript/consistent-type-definitions`   | Object shapes use `interface`, not `type`.                |
+| `eqeqeq` (smart)                           | Use `===` / `!==` (allows `== null`).                     |
+| `no-var` / `prefer-const`                  | No `var`; `const` where not reassigned.                   |
+| `no-unneeded-ternary` / `object-shorthand` | Cleaner expressions and object literals.                  |
 
 Conventions that aren't auto-enforceable but are still required: `"use client"`
 on any file using hooks/browser APIs, `export default` for the primary

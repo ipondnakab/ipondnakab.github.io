@@ -34,7 +34,7 @@ src/shared/     ui/ layouts/ providers/ seo/ lib/ config/ i18n/ types/
   components**. Re-exporting a client component inflates every route that
   touches the barrel.
 
-`no-restricted-imports` overrides in `.eslintrc.json` enforce all of this.
+`no-restricted-imports` overrides in `oxlint.config.mts` enforce all of this.
 
 ## Conventions
 

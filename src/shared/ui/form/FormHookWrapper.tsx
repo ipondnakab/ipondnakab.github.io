@@ -45,7 +45,8 @@ interface FormHookWrapperProps<
 > extends UseFormProps<TFieldValues, TContext> {
   validateInitially?: boolean;
   validationSchema?:
-    ValidationSchema<TFieldValues> | (() => ValidationSchema<TFieldValues>);
+    | ValidationSchema<TFieldValues>
+    | (() => ValidationSchema<TFieldValues>);
   preventEnterSubmit?: boolean;
   onSubmit: SubmitHandler<TFieldValues, TContext>;
   onError?: SubmitErrorHandler<TFieldValues, TContext> | undefined;

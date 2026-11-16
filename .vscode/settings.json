@@ -1,15 +1,6 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "prettier.enable": true,
-  "prettier.prettierPath": "./node_modules/prettier",
-  "prettier.requireConfig": false,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
   "cSpell.words": [
     "deepjump",
     "Deeplink",
@@ -28,5 +19,8 @@
   "i18n-ally.displayLanguage": "en",
   "i18n-ally.enabledFrameworks": ["react", "i18next"],
   "i18n-ally.enabledParsers": ["json"],
-  "i18n-ally.keysInUse": ["nav.*"]
+  "i18n-ally.keysInUse": ["nav.*"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  }
 }

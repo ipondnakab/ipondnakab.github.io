@@ -1,8 +1,8 @@
+import { describe, expect, it } from "vitest";
 import {
   buildZip,
   uniqueOutputName,
 } from "@/features/image-type-convert/lib/archive";
-import { describe, expect, it } from "vitest";
 
 describe("batch downloads", () => {
   it("keeps output names unique after converting different extensions", () => {

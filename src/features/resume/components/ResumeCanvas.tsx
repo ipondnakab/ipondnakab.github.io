@@ -5,8 +5,8 @@ import { Canvas } from "@react-three/fiber";
 import React, { useState } from "react";
 import * as THREE from "three";
 
-import { SceneMood } from "./scene/CameraRig";
-import ResumeScene from "./scene/ResumeScene";
+import ResumeScene from "@/features/resume/components/scene/ResumeScene";
+import type { SceneMood } from "@/features/resume/model/camera-rig";
 
 export interface ResumeCanvasProps {
   progressRef: React.MutableRefObject<number>;

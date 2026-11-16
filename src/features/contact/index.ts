@@ -7,4 +7,4 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export type { ContactForm } from "./model/contact";
+export type { ContactForm } from "@/features/contact/model/contact";

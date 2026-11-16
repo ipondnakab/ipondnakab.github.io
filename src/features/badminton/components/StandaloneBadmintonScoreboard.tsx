@@ -1,12 +1,12 @@
 "use client";
 
-import BadmintonScoreboard from "@/features/badminton/components/BadmintonScoreboard";
-import { Team } from "@/features/badminton/model/badminton";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GiShuttlecock } from "react-icons/gi";
+import BadmintonScoreboard from "@/features/badminton/components/BadmintonScoreboard";
+import { Team } from "@/features/badminton/model/badminton";
 
 const StandaloneBadmintonScoreboard = () => {
   const { t } = useTranslation();

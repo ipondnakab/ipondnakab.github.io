@@ -1,5 +1,10 @@
 "use client";
 
+import Link from "next/link";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { FaApple, FaGooglePlay } from "react-icons/fa";
+import { HiArrowRight, HiClock } from "react-icons/hi";
 import {
   DRUNKARD_GAME_ANDROID_REDIRECT_DELAY_MS,
   DRUNKARD_GAME_HIGHLIGHTS,
@@ -10,10 +15,6 @@ import {
 import { getEvasivePosition } from "@/features/drunkard-game/lib/get-evasive-position";
 import { isAndroidUserAgent } from "@/features/drunkard-game/lib/is-android-user-agent";
 import type { EvasivePoint } from "@/features/drunkard-game/model/evasive-button";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { FaApple, FaGooglePlay } from "react-icons/fa";
-import { HiArrowRight, HiClock } from "react-icons/hi";
 
 export interface DrunkardGameLandingProps {}
 
@@ -268,12 +269,12 @@ const DrunkardGameLanding: React.FC<DrunkardGameLandingProps> = () => {
             <p className="mt-2 max-w-xl text-small leading-relaxed text-default-600">
               {t("drunkardGame.cta.description")}
             </p>
-            <a
+            <Link
               href="/drunkard-game/privacy"
               className="mt-3 inline-block text-small text-default-500 underline decoration-default-300 underline-offset-4 transition-colors hover:text-primary"
             >
               {t("drunkardGame.privacy")}
-            </a>
+            </Link>
           </div>
         </div>
         <a

@@ -27,14 +27,8 @@ import {
   MIC_LINK_ROOM_PARAM,
   MIC_LINK_STATS_INTERVAL_MS,
 } from "@/features/mic-link/constants";
-import {
-  createMicLinkMixer,
-  MicLinkMixer,
-} from "@/features/mic-link/lib/mixer";
-import {
-  MicLinkReceiverSession,
-  openReceiverSession,
-} from "@/features/mic-link/lib/signaling";
+import { createMicLinkMixer } from "@/features/mic-link/lib/mixer";
+import { openReceiverSession } from "@/features/mic-link/lib/signaling";
 import {
   MicLinkChannelState,
   MicLinkConnectionInfo,
@@ -42,6 +36,8 @@ import {
   MicLinkLatencyEstimate,
   MicLinkStatus,
 } from "@/features/mic-link/model/mic-link";
+import type { MicLinkMixer } from "@/features/mic-link/model/mixer";
+import type { MicLinkReceiverSession } from "@/features/mic-link/model/signaling";
 import { trackEvent } from "@/shared/lib/analytics";
 import MicLinkMixerStrip from "./MicLinkMixerStrip";
 import MicLinkStatusChip from "./MicLinkStatusChip";

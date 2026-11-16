@@ -1,5 +1,8 @@
 "use client";
 
+import { Button, Card } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DEFAULT_VALUES, HISTORY_KEY } from "@/features/deepjump/constants";
 import {
   addToHistory,
@@ -14,9 +17,6 @@ import {
 import ConfirmModal from "@/shared/ui/ConfirmModal";
 import FormHookWrapper from "@/shared/ui/form/FormHookWrapper";
 import InputString from "@/shared/ui/inputs/InputString";
-import { Button, Card } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import {
   IoArrowForward,

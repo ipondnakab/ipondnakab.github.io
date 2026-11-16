@@ -1,6 +1,5 @@
 "use client";
 
-import { RoomData } from "@/features/planning-poker/model/poker";
 import { Button, Card, Chip } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,6 +10,7 @@ import {
   IoShieldCheckmark,
   IoTimeOutline,
 } from "react-icons/io5";
+import { RoomData } from "@/features/planning-poker/model/poker";
 
 // Below `sm` these collapse to their icon: the label is hidden and the button
 // shrinks to a square, so the header row stops overflowing on a phone. The

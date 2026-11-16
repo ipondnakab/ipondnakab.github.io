@@ -1,18 +1,6 @@
 "use client";
 
 import {
-  applyRoomAction,
-  createRoom,
-  newRoomCode,
-  normalizeCode,
-  roomExists,
-  ScoreRoom,
-  subscribeRoom,
-  updateRoom,
-  winnerOf,
-} from "@/features/badminton/lib/realtime-room";
-import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
-import {
   Button,
   Input,
   Modal,
@@ -24,6 +12,18 @@ import Image from "next/image";
 import QRCode from "qrcode";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  applyRoomAction,
+  createRoom,
+  newRoomCode,
+  normalizeCode,
+  roomExists,
+  subscribeRoom,
+  updateRoom,
+} from "@/features/badminton/lib/realtime-room";
+import { winnerOf } from "@/features/badminton/lib/scoring";
+import { connectScorePeers } from "@/features/badminton/lib/webrtc-room";
+import type { ScoreRoom } from "@/features/badminton/model/realtime-room";
 
 const RealtimeBadmintonRoom = () => {
   const { t } = useTranslation();
@@ -232,7 +232,7 @@ const RealtimeBadmintonRoom = () => {
       if (roomCodeRef.current === code)
         setSyncing(pendingRef.current.length > 0);
     }
-  }, [code]);
+  }, [code, t]);
   const change = useCallback(
     (action: Parameters<typeof updateRoom>[1]) => {
       const current = roomRef.current;

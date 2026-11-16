@@ -17,8 +17,8 @@ jobs:
           node-version: "24"
           cache: yarn
       - run: yarn install --frozen-lockfile
-      - name: Apply Prettier to realtime files
-        run: yarn prettier --write src/features/badminton/components/RealtimeBadmintonRoom.tsx src/features/badminton/lib/realtime-room.ts src/app/mini-project/badminton/live/page.tsx
+      - name: Apply Oxfmt to realtime files
+        run: yarn oxfmt src/features/badminton/components/RealtimeBadmintonRoom.tsx src/features/badminton/lib/realtime-room.ts src/app/mini-project/badminton/live/page.tsx
       - name: Commit formatted files
         run: |
           git config user.name "github-actions[bot]"

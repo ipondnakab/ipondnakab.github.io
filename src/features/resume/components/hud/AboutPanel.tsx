@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+import { slideIn } from "@/features/resume/lib/motion";
 import MotionCard from "./MotionCard";
-import { slideIn } from "./motion";
 
 export interface AboutPanelProps {}
 

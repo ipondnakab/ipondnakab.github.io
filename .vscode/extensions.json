@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "lokalise.i18n-ally"
-  ]
+  "recommendations": ["oxc.oxc-vscode", "lokalise.i18n-ally"]
 }

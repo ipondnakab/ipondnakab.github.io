@@ -53,8 +53,11 @@ The features today: `planning-poker`, `pokdeng`, `mic-link`, `resume`, `chat`,
 | `features/X/` | `shared/`, own internals, `@/features/Y` (barrel) or `Y/components/Z` |
 | `shared/`     | `shared/` only — **never** `features/` or `app/`                      |
 
-This is enforced by `no-restricted-imports` overrides in `.eslintrc.json`, one
-per feature, so a violation fails `yarn lint` and therefore the build.
+This is enforced by `no-restricted-imports` overrides in `oxlint.config.mts`.
+The configuration discovers every folder under `src/features/` and generates
+identical boundaries for it, including future features. A violation fails
+`yarn lint` and therefore the build. ArchUnitTS tests independently verify the
+resolved source dependency graph, including alias and type imports.
 
 **When `shared/` needs a feature**, invert it. `DefaultLayout` needs the chat
 widget, so it takes an `overlay` slot and `app/layout.tsx` passes `<ChatWidget />`
@@ -73,10 +76,10 @@ manifest — tree-shaking does not remove it. Re-exporting `Contact` and
 imported by path:
 
 ```ts
-// route or another feature
-import ContactSuccess from "@/features/contact/components/ContactSuccess";
 // types, constants, helpers
 import type { ContactForm } from "@/features/contact";
+// route or another feature
+import ContactSuccess from "@/features/contact/components/ContactSuccess";
 ```
 
 `package.json` declares `"sideEffects": ["**/*.css"]` so webpack can tree-shake
@@ -134,14 +137,48 @@ Pure logic in `lib/` is the priority: it is where the real invariants live
 (zero-sum credit math, vote averaging, locale fallback) and it tests without a
 DOM.
 
+## Architecture tests
+
+```bash
+yarn test:architecture  # focused architecture suite
+yarn test               # includes architecture tests in the normal CI gate
+```
+
+The Husky pre-push hook runs `yarn test:architecture` after typecheck and lint.
+CI also runs it as a named gate before the full test suite and build, so an
+architecture failure blocks both a local push and deployment.
+
+`src/shared/config/architecture.test.ts` uses the development-only `archunit`
+package (ArchUnitTS), pinned to 2.5.5 under the MIT licence. The pinned core
+entry avoids the package root's automatic global matcher registration so Vitest
+can retain `globals: false`; rules are asserted with `.check()`. Recheck this
+entry when upgrading ArchUnitTS.
+
+The suite discovers all frontend features and verifies:
+
+- One-way dependencies, private feature internals and component-free barrels.
+- No production dependency cycles or static-export server entry points.
+- Documented source layers and feature folders, PascalCase component files,
+  kebab-case supporting modules and `.tsx` only when JSX is present.
+- Domain declarations in feature `model/` or `shared/types/`, runtime data
+  outside models, and named pure helpers outside component files.
+- Generated Oxlint rules reject forbidden import/re-export examples for every
+  feature while accepting own internals, public APIs and explicit components.
+
+Component props stay beside their components. Features only need folders they
+use; no empty folders or empty public barrels are required. A feature containing
+only components has no private-module graph test until it gains private modules,
+but its lint rules and other structure checks still apply. The independent
+`portfolio-api/` project retains its own rules and typecheck.
+
 ## The gates
 
 ```bash
 yarn typecheck && yarn lint && yarn test && yarn build
 ```
 
-`next build` runs ESLint and the type-check too, and the Pages workflow runs
-`tsc --noEmit`, `eslint` and `vitest run` as separate steps before building — so
+`yarn build` runs the Oxlint/Oxfmt gate and Next.js type-check too, and the Pages workflow runs
+`yarn typecheck`, `yarn lint` and `yarn test` as separate steps before building — so
 a violation of any rule above breaks the deploy and the CI summary names which
 gate failed. Fix the code rather than downgrading the rule.
 
@@ -156,3 +193,24 @@ The site is `output: "export"`. There are no API routes, no server actions and
 no server-only secrets. Anything that needs a backend lives in the separate
 `portfolio-api/` Vercel project and is reached over `NEXT_PUBLIC_API_BASE_URL`
 via `src/shared/config/environment.ts`.
+
+## Linting and formatting
+
+`oxlint.config.mts` discovers feature folders and generates import boundaries.
+Positive patterns keep private modules isolated without negated patterns
+accidentally exempting a barrel's component exports. Architecture rejection tests
+exercise the CLI's evaluated configuration in an isolated source tree.
+
+Oxlint uses native TypeScript, React, Next.js and accessibility rules. Unused
+imports are errors and can be removed by `yarn lint:fix`. Oxfmt sorts imports
+within existing groups, preserves side-effect import order, and keeps the existing
+80-column layout policy. It does not run a TypeScript import organizer.
+
+`yarn lint` combines Oxlint and `yarn format:check`. `yarn build` runs that gate
+before `next build`, so Next 14's disabled ESLint integration does not bypass lint
+or formatting. CI invokes package scripts rather than the replaced executables.
+
+React API deprecations use native import/property restrictions; the small local
+`tooling/oxlint-react-compat.mjs` plugin also rejects deprecated lifecycle names.
+`react/jsx-uses-react` and `react/jsx-uses-vars` are handled by Oxlint's JSX-aware
+unused-variable analysis. Check `specs/009-oxc-tooling/plan.md` for rule mappings.

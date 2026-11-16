@@ -66,7 +66,7 @@ anything unchecked has to be justified in the plan's Complexity Tracking table.
 
 Amend it with `/speckit.constitution` rather than editing it in isolation — the
 command propagates the change to `CLAUDE.md`, `docs/CODING_GUIDE.md`,
-`docs/ARCHITECTURE.md`, the plan template and `.eslintrc.json`.
+`docs/ARCHITECTURE.md`, the plan template and `oxlint.config.mts`.
 
 ## Syncing with upstream Spec Kit
 

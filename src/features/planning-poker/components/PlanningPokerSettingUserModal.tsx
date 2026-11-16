@@ -1,6 +1,5 @@
 "use client";
 
-import { RoomData } from "@/features/planning-poker/model/poker";
 import {
   Button,
   Chip,
@@ -12,6 +11,7 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
+import { RoomData } from "@/features/planning-poker/model/poker";
 
 export interface PlanningPokerSettingUserModalProps {
   isOpen: boolean;

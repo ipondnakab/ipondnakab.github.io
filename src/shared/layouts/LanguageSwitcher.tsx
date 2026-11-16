@@ -1,7 +1,5 @@
 "use client";
 
-import { LANGUAGE_OPTIONS } from "@/shared/i18n/languages";
-import { trackEvent } from "@/shared/lib/analytics";
 import {
   Button,
   Dropdown,
@@ -11,6 +9,8 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { LANGUAGE_OPTIONS } from "@/shared/i18n/languages";
+import { trackEvent } from "@/shared/lib/analytics";
 import FlagIcon from "./FlagIcon";
 
 export interface LanguageSwitcherProps {

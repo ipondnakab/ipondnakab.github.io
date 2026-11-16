@@ -1,5 +1,19 @@
 "use client";
 
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { GiShuttlecock } from "react-icons/gi";
+import {
+  IoAdd,
+  IoArrowForward,
+  IoCheckmark,
+  IoChevronDown,
+  IoClose,
+  IoPeopleOutline,
+  IoShuffleOutline,
+  IoTimeOutline,
+  IoTrophyOutline,
+} from "react-icons/io5";
 import {
   FORMATS,
   GENDERS,
@@ -20,20 +34,6 @@ import { PlayerForm, Team } from "@/features/badminton/model/badminton";
 import FormHookWrapper from "@/shared/ui/form/FormHookWrapper";
 import InputSelect from "@/shared/ui/inputs/InputSelect";
 import InputString from "@/shared/ui/inputs/InputString";
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { GiShuttlecock } from "react-icons/gi";
-import {
-  IoAdd,
-  IoArrowForward,
-  IoCheckmark,
-  IoChevronDown,
-  IoClose,
-  IoPeopleOutline,
-  IoShuffleOutline,
-  IoTimeOutline,
-  IoTrophyOutline,
-} from "react-icons/io5";
 import BadmintonMatchCard from "./BadmintonMatchCard";
 
 export interface BadmintonProps {}

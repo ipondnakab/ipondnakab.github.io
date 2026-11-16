@@ -1,11 +1,11 @@
+import { act, cleanup, renderHook } from "@testing-library/react";
+import React from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   BADMINTON_STORAGE_KEY,
   DEFAULT_BADMINTON_SESSION,
 } from "@/features/badminton/constants";
 import { useBadmintonSession } from "@/features/badminton/lib/use-badminton-session";
-import { act, cleanup, renderHook } from "@testing-library/react";
-import React from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => {
   cleanup();

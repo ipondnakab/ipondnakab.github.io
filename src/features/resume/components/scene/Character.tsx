@@ -93,7 +93,7 @@ const Character: React.FC<CharacterProps> = ({
     return () => {
       Object.values(snapshot).forEach((a) => a?.fadeOut(0.3));
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [actions]);
 
   useFrame((state, delta) => {

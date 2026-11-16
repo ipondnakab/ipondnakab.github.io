@@ -1,13 +1,5 @@
 "use client";
 
-import { PLANNING_POKER_MAX_GROUPS_LENGTH } from "@/features/planning-poker/constants";
-import {
-  DECKS,
-  DEFAULT_GROUP_COLOR,
-  DeckType,
-  GROUP_COLOR_OPTIONS,
-  GroupObject,
-} from "@/features/planning-poker/model/poker";
 import {
   Button,
   Checkbox,
@@ -24,6 +16,13 @@ import {
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import { IoAdd, IoTrashOutline } from "react-icons/io5";
+import {
+  DECKS,
+  DEFAULT_GROUP_COLOR,
+  GROUP_COLOR_OPTIONS,
+  PLANNING_POKER_MAX_GROUPS_LENGTH,
+} from "@/features/planning-poker/constants";
+import { DeckType, GroupObject } from "@/features/planning-poker/model/poker";
 
 export interface PlanningPokerDeckSettingsModalProps {
   isOpen: boolean;

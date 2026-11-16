@@ -1,6 +1,6 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import ResumeDownload from "@/features/resume/components/ResumeDownload";

@@ -7,11 +7,11 @@
  * route that touches the barrel. Import components by path instead, e.g.
  * `@/features/<name>/components/<Component>`.
  */
-export { OUTSOURCE_PROJECTS } from "./constants/outsource-projects";
-export { PROFILE_AVATARS } from "./constants/profile-avatars";
-export { WORK_EXPERIENCES } from "./constants/work-experiences";
-export type { ProfileAvatarImage } from "./model/profile";
+export { OUTSOURCE_PROJECTS } from "@/features/profile/constants/outsource-projects";
+export { PROFILE_AVATARS } from "@/features/profile/constants/profile-avatars";
+export { WORK_EXPERIENCES } from "@/features/profile/constants/work-experiences";
+export type { ProfileAvatarImage } from "@/features/profile/model/profile";
 export type {
   ProjectExperience,
   WorkExperience,
-} from "./model/work-experience";
+} from "@/features/profile/model/work-experience";

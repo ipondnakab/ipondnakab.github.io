@@ -12,4 +12,4 @@ export type {
   MicLinkQuality,
   MicLinkRoom,
   MicLinkStatus,
-} from "./model/mic-link";
+} from "@/features/mic-link/model/mic-link";

@@ -1,9 +1,9 @@
 "use client";
 
-import { RoomData } from "@/features/planning-poker/model/poker";
 import { Card, Chip, cn } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import { IoHelpOutline, IoPencil, IoTrashOutline } from "react-icons/io5";
+import { RoomData } from "@/features/planning-poker/model/poker";
 
 export interface PlanningPokerTableProps {
   roomData: RoomData | null;

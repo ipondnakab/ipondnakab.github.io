@@ -1,6 +1,6 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { convertImage } from "@/features/image-type-convert/lib/convert";
 import { convertFile } from "@/features/image-type-convert/lib/convert-file";
-import { afterEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/features/image-type-convert/lib/convert", () => ({
   convertImage: vi.fn(),
 }));

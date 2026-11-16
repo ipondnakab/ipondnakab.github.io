@@ -1,8 +1,8 @@
 "use client";
 
-import type { MascotState } from "@/features/chat/model/mascot";
 import { motion, useReducedMotion } from "framer-motion";
 import React from "react";
+import type { MascotState } from "@/features/chat/model/mascot";
 
 export interface PixelKhunKaoProps {
   className?: string;
