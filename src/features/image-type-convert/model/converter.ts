@@ -12,9 +12,12 @@ export interface ConvertedImage extends EncodedImage {
   url: string;
   name: string;
 }
-export interface BatchItem {
-  id: number;
+export interface SelectedImage {
   file: File;
+  path: string;
+}
+export interface BatchItem extends SelectedImage {
+  id: number;
   status: "queued" | "working" | "done" | "error";
   error?: ConversionError;
   result?: ConvertedImage;
@@ -31,4 +34,6 @@ export type ConversionError =
   | "encode"
   | "batchLimit"
   | "outputLimit"
-  | "archive";
+  | "archive"
+  | "folderRead"
+  | "noImages";

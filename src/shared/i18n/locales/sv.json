@@ -649,7 +649,7 @@
     "back": "Tillbaka till Mini Projects",
     "title": "Konvertera bildformat",
     "subtitle": "Konvertera flera bilder och ladda ner dem separat eller som ZIP.",
-    "choose": "Välj bilder eller släpp dem här",
+    "choose": "Välj bilder eller släpp filer och mappar här",
     "limits": "PNG, JPEG eller WebP · högst 20 MB / 25 MP",
     "original": "Originalbild",
     "output": "Konverterad bild",
@@ -669,7 +669,9 @@
       "encode": "Webbläsaren kunde inte skapa formatet. Prova PNG eller en annan webbläsare.",
       "batchLimit": "Välj högst 20 filer med en sammanlagd storlek på högst 100 MB.",
       "outputLimit": "Konverterade bilder överstiger 100 MB. Prova färre bilder eller lägre kvalitet.",
-      "archive": "Kunde inte skapa ZIP. Ladda ner bilderna separat eller försök igen."
+      "archive": "Kunde inte skapa ZIP. Ladda ner bilderna separat eller försök igen.",
+      "folderRead": "Kunde inte läsa mappen. Prova Välj mapp eller välj bilderna direkt.",
+      "noImages": "Inga bilder i ett format som stöds hittades. Välj en mapp med PNG, JPEG eller WebP."
     },
     "batchLimits": "Högst 20 filer / 100 MB totalt. Ett nytt urval ersätter listan.",
     "downloadAll": "Ladda ner alla (ZIP)",
@@ -680,6 +682,9 @@
       "working": "Konverterar…",
       "done": "Konverterad",
       "error": "Misslyckades"
-    }
+    },
+    "folderPick": "Välj mapp",
+    "folderHint": "Inkluderar PNG-, JPEG- och WebP-bilder från alla undermappar. Övriga filer hoppas över.",
+    "scanning": "Söker i mappar…"
   }
 }

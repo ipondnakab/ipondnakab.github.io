@@ -141,6 +141,53 @@ describe("image converter controls", () => {
       screen.getByRole("button", { name: "imageConvert.convert" }),
     ).toBeEnabled();
   });
+  it("shows relative paths from the folder picker and skips other files", () => {
+    render(<ImageTypeConvert />);
+    const file = png("photo.png");
+    Object.defineProperty(file, "webkitRelativePath", {
+      value: "Root/Trip/photo.png",
+    });
+    const picker = screen.getByLabelText("imageConvert.folderPick");
+    expect(picker).toHaveAttribute("webkitdirectory");
+    fireEvent.change(picker, {
+      target: {
+        files: [file, new File(["x"], "notes.txt", { type: "text/plain" })],
+      },
+    });
+    expect(screen.getByText("Root/Trip/photo.png")).toBeInTheDocument();
+    expect(screen.queryByText("notes.txt")).not.toBeInTheDocument();
+  });
+  it("scans dropped folders and ignores a cancelled scan", async () => {
+    render(<ImageTypeConvert />);
+    let finish!: (entries: FileSystemEntry[]) => void;
+    const directory = {
+      name: "Root",
+      isDirectory: true,
+      createReader: () => ({
+        readEntries: (success: typeof finish) => {
+          finish = success;
+        },
+      }),
+    };
+    const drop = screen.getByText("imageConvert.choose").closest("label")!;
+    fireEvent.drop(drop, {
+      dataTransfer: {
+        files: [],
+        items: [{ kind: "file", webkitGetAsEntry: () => directory }],
+      },
+    });
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "imageConvert.scanning",
+    );
+    fireEvent.click(screen.getByRole("button", { name: "imageConvert.reset" }));
+    finish([]);
+    await waitFor(() =>
+      expect(screen.getByRole("status")).not.toHaveTextContent(
+        "imageConvert.scanning",
+      ),
+    );
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
   it("offers quality only for lossy formats", async () => {
     render(<ImageTypeConvert />);
     expect(

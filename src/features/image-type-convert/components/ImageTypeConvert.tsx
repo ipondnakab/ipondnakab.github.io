@@ -15,10 +15,15 @@ import {
   validateFile,
 } from "@/features/image-type-convert/lib/convert";
 import { convertFile } from "@/features/image-type-convert/lib/convert-file";
+import {
+  collectFolderImages,
+  folderSelection,
+} from "@/features/image-type-convert/lib/folders";
 import type {
   BatchItem,
   ConversionError,
   ConverterSettings,
+  SelectedImage,
 } from "@/features/image-type-convert/model/converter";
 import FormHookWrapper from "@/shared/ui/form/FormHookWrapper";
 import InputSelect from "@/shared/ui/inputs/InputSelect";
@@ -37,12 +42,14 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
   const [items, setItems] = useState<BatchItem[]>([]);
   const [error, setError] = useState<ConversionError | null>(null);
   const [busy, setBusy] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [packing, setPacking] = useState(false);
   const [archiveUrl, setArchiveUrl] = useState<string | null>(null);
   const generation = useRef(0);
   const controller = useRef<AbortController | null>(null);
   const ownedUrls = useRef(new Set<string>());
   const input = useRef<HTMLInputElement>(null);
+  const folderInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const urls = ownedUrls.current;
     return () => {
@@ -57,6 +64,7 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
     controller.current?.abort();
     ownedUrls.current.forEach((url) => URL.revokeObjectURL(url));
     ownedUrls.current.clear();
+    setScanning(false);
     setArchiveUrl(null);
     setPacking(false);
     setBusy(false);
@@ -66,31 +74,65 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
     clearResources();
     setItems([]);
     if (input.current) input.current.value = "";
+    if (folderInput.current) folderInput.current.value = "";
   };
-  const selectFiles = (files: File[]) => {
-    if (!files.length) return;
-    reset();
+  const installFiles = (files: SelectedImage[]) => {
+    if (!files.length) {
+      setError("noImages");
+      return;
+    }
     if (
       files.length > MAX_BATCH_FILES ||
-      files.reduce((sum, file) => sum + file.size, 0) > MAX_BATCH_BYTES
+      files.reduce((sum, item) => sum + item.file.size, 0) > MAX_BATCH_BYTES
     ) {
       setError("batchLimit");
       return;
     }
     setItems(
-      files.map((file, id) => {
+      files.map(({ file, path }, id) => {
         const invalid = validateFile(file);
         return {
           id,
           file,
+          path,
           status: invalid ? "error" : "queued",
           error: invalid ?? undefined,
         };
       }),
     );
   };
+  const selectFiles = (files: File[], folder = false) => {
+    if (!files.length) return;
+    reset();
+    installFiles(
+      folder
+        ? folderSelection(files)
+        : files.map((file) => ({ file, path: file.name })),
+    );
+  };
+  const importDrop = async (entries: FileSystemEntry[], files: File[]) => {
+    reset();
+    const token = generation.current;
+    const abort = new AbortController();
+    controller.current = abort;
+    setScanning(true);
+    try {
+      const found = await collectFolderImages(entries, abort.signal);
+      if (token !== generation.current) return;
+      installFiles([...found, ...folderSelection(files)]);
+    } catch (reason) {
+      if (token === generation.current)
+        setError(
+          reason instanceof Error && reason.message === "batchLimit"
+            ? "batchLimit"
+            : "folderRead",
+        );
+    } finally {
+      if (token === generation.current) setScanning(false);
+    }
+  };
   const convert = async (settings: ConverterSettings) => {
-    if (busy || packing || !items.length) return;
+    if (scanning || busy || packing || !items.length) return;
     clearResources();
     const token = generation.current;
     const abort = new AbortController();
@@ -100,6 +142,7 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
       return {
         id: item.id,
         file: item.file,
+        path: item.path,
         status: invalid ? "error" : "queued",
         error: invalid ?? undefined,
       };
@@ -211,7 +254,22 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
           onDragOver={(event) => event.preventDefault()}
           onDrop={(event) => {
             event.preventDefault();
-            selectFiles(Array.from(event.dataTransfer.files));
+            // Capture entries synchronously: the drag data store closes after this event.
+            const entries: FileSystemEntry[] = [];
+            const files: File[] = [];
+            const dropped = Array.from(event.dataTransfer.items ?? []);
+            for (const item of dropped) {
+              if (item.kind !== "file") continue;
+              const entry = item.webkitGetAsEntry?.();
+              if (entry) entries.push(entry);
+              else {
+                const file = item.getAsFile();
+                if (file) files.push(file);
+              }
+            }
+            if (!dropped.length)
+              files.push(...Array.from(event.dataTransfer.files));
+            void importDrop(entries, files);
           }}
           className="flex min-h-44 cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-primary/50 bg-primary/5 p-6 text-center focus-within:ring-2 focus-within:ring-primary"
         >
@@ -242,7 +300,10 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
             preventEnterSubmit={false}
           >
             {({ watch }) => (
-              <fieldset disabled={busy || packing} className="space-y-5">
+              <fieldset
+                disabled={scanning || busy || packing}
+                className="space-y-5"
+              >
                 <InputSelect
                   name="format"
                   label={t("imageConvert.format")}
@@ -273,6 +334,7 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
                 <button
                   type="submit"
                   disabled={
+                    scanning ||
                     busy ||
                     packing ||
                     !items.some((item) => !validateFile(item.file))
@@ -286,8 +348,27 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
           </FormHookWrapper>
         </div>
       </div>
+      <div className="mt-4 flex flex-wrap items-center gap-4">
+        <label className="cursor-pointer rounded-xl border border-primary px-5 py-3 text-primary focus-within:ring-2 focus-within:ring-primary">
+          {t("imageConvert.folderPick")}
+          <input
+            ref={folderInput}
+            type="file"
+            multiple
+            {...{ webkitdirectory: "" }}
+            className="sr-only"
+            onChange={(event) =>
+              selectFiles(Array.from(event.target.files ?? []), true)
+            }
+          />
+        </label>
+        <p className="text-sm text-default-500">
+          {t("imageConvert.folderHint")}
+        </p>
+      </div>
       <div className="my-5 flex flex-wrap items-center gap-4">
         <p role="status" aria-live="polite">
+          {scanning && t("imageConvert.scanning")}
           {items.length > 0 &&
             t("imageConvert.progress", {
               completed,
@@ -327,13 +408,16 @@ const ImageTypeConvert: React.FC<ImageTypeConvertProps> = ({
           {t(`imageConvert.errors.${error}`)}
         </p>
       )}
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-busy={busy}>
+      <ul
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        aria-busy={busy || scanning}
+      >
         {items.map((item) => (
           <li
             key={item.id}
             className="min-w-0 space-y-3 rounded-2xl border border-default-200 bg-content1 p-4"
           >
-            <p className="break-all font-medium">{item.file.name}</p>
+            <p className="break-all font-medium">{item.path}</p>
             <p className="text-sm text-default-500">
               {(item.file.size / 1024).toFixed(1)} KB ·{" "}
               {t(`imageConvert.status.${item.status}`)}
