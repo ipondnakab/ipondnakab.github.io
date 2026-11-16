@@ -644,5 +644,42 @@
     "clearTitle": "Rensa all historik?",
     "clearDescription": "Alla sparade länkar tas bort från denna webbläsare. Detta kan inte ångras.",
     "cancel": "Avbryt"
+  },
+  "imageConvert": {
+    "back": "Tillbaka till Mini Projects",
+    "title": "Konvertera bildformat",
+    "subtitle": "Konvertera flera bilder och ladda ner dem separat eller som ZIP.",
+    "choose": "Välj bilder eller släpp dem här",
+    "limits": "PNG, JPEG eller WebP · högst 20 MB / 25 MP",
+    "original": "Originalbild",
+    "output": "Konverterad bild",
+    "format": "Utdataformat",
+    "quality": "Kvalitet",
+    "note": "PNG är förlustfritt. JPEG får vit bakgrund. Animation och ursprungliga metadata behålls inte.",
+    "working": "Bearbetar bilden…",
+    "convert": "Konvertera alla bilder",
+    "download": "Ladda ner bild",
+    "reset": "Rensa alla / avbryt",
+    "privacy": "Dina bilder stannar på din enhet. Konverteringen sker i webbläsaren.",
+    "errors": {
+      "fileType": "Välj en PNG-, JPEG- eller WebP-bild.",
+      "fileSize": "Välj en bild som inte är tom och är högst 20 MB.",
+      "decode": "Bilden kunde inte öppnas. Prova en annan fil.",
+      "dimensions": "Använd en bild med högst 25 megapixlar och 16 384 pixlar per sida.",
+      "encode": "Webbläsaren kunde inte skapa formatet. Prova PNG eller en annan webbläsare.",
+      "batchLimit": "Välj högst 20 filer med en sammanlagd storlek på högst 100 MB.",
+      "outputLimit": "Konverterade bilder överstiger 100 MB. Prova färre bilder eller lägre kvalitet.",
+      "archive": "Kunde inte skapa ZIP. Ladda ner bilderna separat eller försök igen."
+    },
+    "batchLimits": "Högst 20 filer / 100 MB totalt. Ett nytt urval ersätter listan.",
+    "downloadAll": "Ladda ner alla (ZIP)",
+    "packing": "Förbereder ZIP…",
+    "progress": "{{completed}} / {{total}} bearbetade · {{successful}} konverterade",
+    "status": {
+      "queued": "I kö",
+      "working": "Konverterar…",
+      "done": "Konverterad",
+      "error": "Misslyckades"
+    }
   }
 }

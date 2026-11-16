@@ -644,5 +644,42 @@
     "clearTitle": "Clear all history?",
     "clearDescription": "This will remove all saved links from this browser. This cannot be undone.",
     "cancel": "Cancel"
+  },
+  "imageConvert": {
+    "back": "Back to Mini Projects",
+    "title": "Image Type Convert",
+    "subtitle": "Convert multiple images at once, then download individually or as a ZIP.",
+    "choose": "Choose images or drop them here",
+    "limits": "PNG, JPEG or WebP · up to 20 MB / 25 MP",
+    "original": "Original image",
+    "output": "Converted image",
+    "format": "Output format",
+    "quality": "Quality",
+    "note": "PNG is lossless. JPEG uses a white background. Animation and original metadata are not retained.",
+    "working": "Processing image…",
+    "convert": "Convert all images",
+    "download": "Download image",
+    "reset": "Clear all / cancel",
+    "privacy": "Your images stay on your device. Conversion runs in your browser.",
+    "errors": {
+      "fileType": "Choose a PNG, JPEG or WebP image.",
+      "fileSize": "Choose a non-empty image up to 20 MB.",
+      "decode": "This image could not be opened. Try another file.",
+      "dimensions": "Use an image up to 25 megapixels and 16,384 pixels per side.",
+      "encode": "Your browser could not create this format. Try PNG or another browser.",
+      "batchLimit": "Choose up to 20 files with a combined size of 100 MB or less.",
+      "outputLimit": "Converted images exceeded 100 MB. Try fewer images or lower quality.",
+      "archive": "Could not create the ZIP. Download images individually or try again."
+    },
+    "batchLimits": "Up to 20 files / 100 MB total. A new selection replaces the batch.",
+    "downloadAll": "Download all (ZIP)",
+    "packing": "Preparing ZIP…",
+    "progress": "{{completed}} / {{total}} processed · {{successful}} converted",
+    "status": {
+      "queued": "Queued",
+      "working": "Converting…",
+      "done": "Converted",
+      "error": "Failed"
+    }
   }
 }

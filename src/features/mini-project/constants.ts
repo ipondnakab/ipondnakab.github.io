@@ -2,10 +2,23 @@ import type { MiniProject } from "@/features/mini-project/model/mini-project";
 import SpecKubIcon from "@/shared/ui/icons/SpecKubIcon";
 import { GiPartyPopper, GiPokerHand, GiShuttlecock } from "react-icons/gi";
 import { IoMicOutline, IoQrCodeOutline } from "react-icons/io5";
-import { MdOpenInNew, MdOutlineStyle } from "react-icons/md";
+import { MdImage, MdOpenInNew, MdOutlineStyle } from "react-icons/md";
 import { SiThreedotjs } from "react-icons/si";
 
 export const MINI_PROJECTS: readonly MiniProject[] = [
+  {
+    name: "image-type-convert",
+    title: "IMAGE TYPE CONVERT",
+    href: "/mini-project/image-type-convert",
+    icon: MdImage,
+    description: {
+      en: "Convert PNG, JPEG and WebP images locally with a preview and adjustable quality. No image uploads.",
+      th: "แปลงรูปเป็น PNG, JPEG หรือ WebP พร้อมดูตัวอย่างและปรับคุณภาพได้ โดยไม่ต้องอัปโหลดรูป",
+      ja: "PNG・JPEG・WebP画像を端末内で変換。プレビューと画質調整に対応し、画像のアップロードは不要です。",
+      sv: "Konvertera PNG, JPEG och WebP lokalt med förhandsvisning och justerbar kvalitet. Ingen uppladdning.",
+      zh: "在本地转换 PNG、JPEG 和 WebP 图片，支持预览和画质调整，无需上传。",
+    },
+  },
   {
     name: "speckub",
     title: "SpecKub",
