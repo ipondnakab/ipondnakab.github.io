@@ -649,7 +649,7 @@
     "back": "返回 Mini Projects",
     "title": "图片格式转换",
     "subtitle": "批量转换图片，单独下载或打包为 ZIP。",
-    "choose": "选择多张图片或拖放到这里",
+    "choose": "选择图片或将文件和文件夹拖放到这里",
     "limits": "PNG、JPEG 或 WebP · 最大 20 MB / 25 MP",
     "original": "原始图片",
     "output": "转换后的图片",
@@ -669,7 +669,9 @@
       "encode": "浏览器无法生成此格式，请尝试 PNG 或其他浏览器。",
       "batchLimit": "请选择最多 20 个文件，总大小不超过 100 MB。",
       "outputLimit": "转换结果总计超过 100 MB，请减少图片数量或降低画质。",
-      "archive": "无法创建 ZIP，请单独下载图片或重试。"
+      "archive": "无法创建 ZIP，请单独下载图片或重试。",
+      "folderRead": "无法读取文件夹，请尝试“选择文件夹”或直接选择图片。",
+      "noImages": "未找到支持的图片，请选择包含 PNG、JPEG 或 WebP 图片的文件夹。"
     },
     "batchLimits": "最多 20 个文件，总计 100 MB。重新选择将替换当前批次。",
     "downloadAll": "下载全部（ZIP）",
@@ -680,6 +682,9 @@
       "working": "转换中…",
       "done": "已转换",
       "error": "失败"
-    }
+    },
+    "folderPick": "选择文件夹",
+    "folderHint": "包含所有子文件夹中的 PNG、JPEG 和 WebP 图片，跳过其他文件。",
+    "scanning": "正在扫描文件夹…"
   }
 }

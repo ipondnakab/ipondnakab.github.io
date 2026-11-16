@@ -649,7 +649,7 @@
     "back": "Back to Mini Projects",
     "title": "Image Type Convert",
     "subtitle": "Convert multiple images at once, then download individually or as a ZIP.",
-    "choose": "Choose images or drop them here",
+    "choose": "Choose images or drop files and folders here",
     "limits": "PNG, JPEG or WebP · up to 20 MB / 25 MP",
     "original": "Original image",
     "output": "Converted image",
@@ -669,7 +669,9 @@
       "encode": "Your browser could not create this format. Try PNG or another browser.",
       "batchLimit": "Choose up to 20 files with a combined size of 100 MB or less.",
       "outputLimit": "Converted images exceeded 100 MB. Try fewer images or lower quality.",
-      "archive": "Could not create the ZIP. Download images individually or try again."
+      "archive": "Could not create the ZIP. Download images individually or try again.",
+      "folderRead": "Could not read this folder. Try Choose folder or select the images directly.",
+      "noImages": "No supported images found. Choose a folder containing PNG, JPEG or WebP images."
     },
     "batchLimits": "Up to 20 files / 100 MB total. A new selection replaces the batch.",
     "downloadAll": "Download all (ZIP)",
@@ -680,6 +682,9 @@
       "working": "Converting…",
       "done": "Converted",
       "error": "Failed"
-    }
+    },
+    "folderPick": "Choose folder",
+    "folderHint": "Includes PNG, JPEG and WebP images from all subfolders. Other files are skipped.",
+    "scanning": "Scanning folders…"
   }
 }
