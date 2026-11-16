@@ -84,14 +84,25 @@ describe("image converter controls", () => {
       ).toHaveAttribute("download", "converted-images.zip"),
     );
     expect(HTMLAnchorElement.prototype.click).toHaveBeenCalledTimes(1);
+    select([png("new.png")]);
+    expect(
+      screen.getAllByRole("link", { name: "imageConvert.download" }),
+    ).toHaveLength(2);
+    expect(
+      screen.getAllByRole("link", { name: "imageConvert.download" })[0],
+    ).toHaveAttribute("href", "blob:output-1");
+    expect(
+      screen.queryByRole("link", { name: "imageConvert.downloadAll" }),
+    ).not.toBeInTheDocument();
+    expect(URL.revokeObjectURL).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: "imageConvert.reset" }));
     expect(
       screen.queryAllByRole("link", { name: "imageConvert.download" }),
     ).toHaveLength(0);
     expect(URL.revokeObjectURL).toHaveBeenCalledTimes(3);
   });
-  it("discards pending results when a batch is replaced", async () => {
-    const create = vi.fn();
+  it("keeps active conversion and existing files when more images are added", async () => {
+    const create = vi.fn(() => "blob:converted");
     vi.stubGlobal(
       "URL",
       class extends URL {
@@ -116,13 +127,13 @@ describe("image converter controls", () => {
     await waitFor(() => expect(convertFile).toHaveBeenCalledTimes(1));
     const signal = vi.mocked(convertFile).mock.calls[0][2];
     select([png("new.png")]);
-    expect(signal.aborted).toBe(true);
+    expect(signal.aborted).toBe(false);
     finish({ blob: new Blob(["x"]), width: 1, height: 1 });
     await waitFor(() =>
       expect(screen.getByText("new.png")).toBeInTheDocument(),
     );
-    expect(create).not.toHaveBeenCalled();
-    expect(screen.queryByText("old.png")).not.toBeInTheDocument();
+    await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
+    expect(screen.getByText("old.png")).toBeInTheDocument();
   });
   it("rejects excessive batches and reports invalid files individually", () => {
     render(<ImageTypeConvert />);
@@ -187,6 +198,69 @@ describe("image converter controls", () => {
       ),
     );
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+  it("appends repeated selections, skips duplicates and preserves the list on overflow", () => {
+    render(<ImageTypeConvert />);
+    const first = png("first.png");
+    select([first]);
+    select([png("second.png")]);
+    select([first]);
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    select(Array.from({ length: 19 }, (_, i) => png(`extra-${i}.png`)));
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "imageConvert.errors.batchLimit",
+    );
+    expect(screen.getByText("first.png")).toBeInTheDocument();
+    expect(screen.getByText("second.png")).toBeInTheDocument();
+  });
+  it("appends overlapping folder scans and direct file selections without losing any", async () => {
+    render(<ImageTypeConvert />);
+    const callbacks: Array<(entries: FileSystemEntry[]) => void> = [];
+    const drop = screen.getByText("imageConvert.choose").closest("label")!;
+    for (const name of ["One", "Two"]) {
+      const directory = {
+        name,
+        isDirectory: true,
+        createReader: () => {
+          let read = false;
+          return {
+            readEntries: (success: (entries: FileSystemEntry[]) => void) => {
+              if (read) success([]);
+              else {
+                read = true;
+                callbacks.push(success);
+              }
+            },
+          };
+        },
+      };
+      fireEvent.drop(drop, {
+        dataTransfer: {
+          files: [],
+          items: [{ kind: "file", webkitGetAsEntry: () => directory }],
+        },
+      });
+    }
+    select([png("direct.png")]);
+    const entry = {
+      name: "photo.png",
+      isFile: true,
+      file: (success: (file: File) => void) => success(png("photo.png")),
+    } as unknown as FileSystemEntry;
+    callbacks[1]([entry]);
+    await waitFor(() =>
+      expect(screen.getByText("Two/photo.png")).toBeInTheDocument(),
+    );
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "imageConvert.scanning",
+    );
+    callbacks[0]([entry]);
+    await waitFor(() =>
+      expect(screen.getByText("One/photo.png")).toBeInTheDocument(),
+    );
+    expect(screen.getByText("direct.png")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
   it("offers quality only for lossy formats", async () => {
     render(<ImageTypeConvert />);

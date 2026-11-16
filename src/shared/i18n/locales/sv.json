@@ -673,7 +673,7 @@
       "folderRead": "Kunde inte läsa mappen. Prova Välj mapp eller välj bilderna direkt.",
       "noImages": "Inga bilder i ett format som stöds hittades. Välj en mapp med PNG, JPEG eller WebP."
     },
-    "batchLimits": "Högst 20 filer / 100 MB totalt. Ett nytt urval ersätter listan.",
+    "batchLimits": "Högst 20 filer / 100 MB totalt. Nya filer och mappar läggs till i listan; dubbletter hoppas över.",
     "downloadAll": "Ladda ner alla (ZIP)",
     "packing": "Förbereder ZIP…",
     "progress": "{{completed}} / {{total}} bearbetade · {{successful}} konverterade",
