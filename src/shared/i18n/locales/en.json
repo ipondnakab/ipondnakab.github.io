@@ -644,5 +644,29 @@
     "clearTitle": "Clear all history?",
     "clearDescription": "This will remove all saved links from this browser. This cannot be undone.",
     "cancel": "Cancel"
+  },
+  "imageConvert": {
+    "back": "Back to Mini Projects",
+    "title": "Image Type Convert",
+    "subtitle": "A new format for your image. Choose, convert, and download.",
+    "choose": "Choose an image or drop it here",
+    "limits": "PNG, JPEG or WebP · up to 20 MB / 25 MP",
+    "original": "Original image",
+    "output": "Converted image",
+    "format": "Output format",
+    "quality": "Quality",
+    "note": "PNG is lossless. JPEG uses a white background. Animation and original metadata are not retained.",
+    "working": "Processing image…",
+    "convert": "Convert image",
+    "download": "Download image",
+    "reset": "Clear image",
+    "privacy": "Your images stay on your device. Conversion runs in your browser.",
+    "errors": {
+      "fileType": "Choose a PNG, JPEG or WebP image.",
+      "fileSize": "Choose a non-empty image up to 20 MB.",
+      "decode": "This image could not be opened. Try another file.",
+      "dimensions": "Use an image up to 25 megapixels and 16,384 pixels per side.",
+      "encode": "Your browser could not create this format. Try PNG or another browser."
+    }
   }
 }

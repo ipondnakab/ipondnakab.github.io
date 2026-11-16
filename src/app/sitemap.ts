@@ -9,6 +9,7 @@ const ROUTES = [
   "",
   "/resume",
   "/mini-project",
+  "/mini-project/image-type-convert",
   "/badminton",
   "/deepjump",
   "/planning",
